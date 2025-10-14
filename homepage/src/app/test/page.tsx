@@ -1,5 +1,6 @@
 "use client"
 
+import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { motion } from 'motion/react'
 import { createElement, useState, useEffect } from 'react'
@@ -9,13 +10,6 @@ const softBouncePreset = {
   stiffness: 100,
   damping: 15,
 }
-
-export default function Page() {
-    const [mounted, setMounted] = useState(false)
-    
-    useEffect(() => {
-      setMounted(true)
-    }, [])
 
     const template = [
       {
@@ -52,6 +46,18 @@ export default function Page() {
       }
     ];
 
+  const titleAnimateD =
+    template.reduce((acc, cur) => {
+      return acc + (cur.text?.length || 0)
+    }, 0) * 50;
+
+export default function Page() {
+    const [mounted, setMounted] = useState(false)
+    
+    useEffect(() => {
+      setMounted(true)
+    }, [])
+
     if (!mounted) return <div>Loading...</div>
 
     return (
@@ -84,6 +90,13 @@ export default function Page() {
               )
             })}
           </motion.div>
+                    <BottomToUpTransitionView
+            delay={titleAnimateD + 500}
+            transition={softBouncePreset}
+            className="my-3 text-center lg:text-left"
+          >
+            <span className="opacity-80">A random developer</span>
+          </BottomToUpTransitionView>
         </div>
     )
 }

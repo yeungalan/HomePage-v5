@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, memo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Types
 interface MenuItem {
@@ -75,6 +76,49 @@ const clsxm = (...classes: (string | boolean | undefined)[]) => {
   return classes.filter(Boolean).join(' ');
 };
 
+// Animation variants
+const popoverVariants = {
+  initial: { 
+    opacity: 0, 
+    y: -10,
+    scale: 0.95
+  },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 500,
+      damping: 30,
+      mass: 0.8
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    y: -10,
+    scale: 0.95,
+    transition: { 
+      type: 'tween', 
+      duration: 0.15 
+    }
+  }
+};
+
+const itemVariants = {
+  initial: { opacity: 0, x: -10 },
+  animate: (index: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: index * 0.05,
+      type: 'spring',
+      stiffness: 400,
+      damping: 25
+    }
+  })
+};
+
 // Custom hooks
 const usePathname = () => {
   const [pathname, setPathname] = useState('/');
@@ -108,22 +152,46 @@ const MenuPopover = ({ children, subMenu }: { children: React.ReactNode; subMenu
       onMouseLeave={() => setIsOpen(false)}
     >
       {children}
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-          {subMenu.map((item, index) => (
-            <a
-              key={index}
-              href={item.path}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              target={item.path.startsWith('http') ? '_blank' : undefined}
-              rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
-            >
-              {item.icon && <span className="mr-2">{item.icon}</span>}
-              {item.title}
-            </a>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={popoverVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className={clsxm(
+              'absolute top-full left-0 mt-2 py-2 min-w-[200px] z-[99]',
+              'rounded-xl bg-white/80 dark:bg-neutral-900/80',
+              'border border-zinc-900/5 shadow-lg shadow-zinc-800/5 backdrop-blur-md',
+              'dark:border-zinc-100/10',
+              'focus-visible:ring-0 outline-none'
+            )}
+          >
+            {subMenu.map((item, index) => (
+              <motion.a
+                key={index}
+                custom={index}
+                variants={itemVariants}
+                initial="initial"
+                animate="animate"
+                href={item.path}
+                className={clsxm(
+                  'flex items-center px-4 py-3 text-sm',
+                  'text-gray-700 dark:text-gray-300',
+                  'hover:bg-blue-500/5 hover:text-blue-500',
+                  'transition-colors duration-200',
+                  'relative'
+                )}
+                target={item.path.startsWith('http') ? '_blank' : undefined}
+                rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
+              >
+                {item.icon && <span className="mr-2">{item.icon}</span>}
+                <span>{item.title}</span>
+              </motion.a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -145,7 +213,7 @@ const HeaderMenuItem = memo(({
         <a
           href={href}
           className={clsxm(
-            'relative block whitespace-nowrap px-4 py-2 transition-colors',
+            'relative block whitespace-nowrap px-4 py-2 transition-colors duration-200',
             isActive ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300 hover:text-blue-500/80'
           )}
           target={href.startsWith('http') ? '_blank' : undefined}
@@ -153,14 +221,23 @@ const HeaderMenuItem = memo(({
         >
           <span className="relative flex items-center gap-2">
             {isActive && (
-              <span className="flex items-center">
+              <motion.span 
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                className="flex items-center"
+              >
                 {subItemActive?.icon ?? section.icon}
-              </span>
+              </motion.span>
             )}
             <span>{subItemActive?.title ?? section.title}</span>
           </span>
           {isActive && (
-            <span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-blue-500/0 via-blue-500/70 to-blue-500/0" />
+            <motion.span 
+              layoutId="activeIndicator"
+              className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-blue-500/0 via-blue-500/70 to-blue-500/0"
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            />
           )}
         </a>
       </div>
@@ -181,7 +258,10 @@ const DesktopNav = () => {
   }, []);
 
   return (
-    <nav
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       onMouseMove={handleMouseMove}
       className={clsxm(
         'relative rounded-full transition-all duration-200',
@@ -191,7 +271,7 @@ const DesktopNav = () => {
         'group pointer-events-auto',
       )}
     >
-      <div
+      <motion.div
         className="spotlight pointer-events-none absolute -inset-px rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
           background: `radial-gradient(200px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.12) 0%, transparent 65%)`,
@@ -218,7 +298,7 @@ const DesktopNav = () => {
           );
         })}
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

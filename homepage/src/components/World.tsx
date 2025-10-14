@@ -219,7 +219,7 @@ export default function WorldMap() {
           arcsTransitionDuration={0}
 
           pointsData={airports}
-          pointLabel={(d) => `<div style="color: white; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px;">${d.city}<br/>${d.name}</div>`}
+          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
           pointColor={() => "orange"}
           pointAltitude={0}
           pointRadius={0.5}

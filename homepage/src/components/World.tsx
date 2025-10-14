@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import Globe from "react-globe.gl";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { csvParseRows } from "d3-dsv";
@@ -92,21 +91,19 @@ const dayNightShader = {
 };
 
 // --- UTIL: Get sun position for a given timestamp ---
-const sunPosAt = (dt: number) => {
+const sunPosAt = (dt) => {
   const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
   const t = solar.century(dt);
   const longitude = ((day - dt) / 864e5) * 360 - 180;
   return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
 };
 
-export const WorldMap = () => <World />;
-
-const World = () => {
-  const globeEl = useRef<any>();
+export default function WorldMap() {
+  const globeEl = useRef();
   const [airports, setAirports] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [dt, setDt] = useState(+new Date());
-  const [globeMaterial, setGlobeMaterial] = useState<any>();
+  const [globeMaterial, setGlobeMaterial] = useState(null);
 
   // Animate time
   useEffect(() => {
@@ -146,13 +143,19 @@ const World = () => {
 
       setAirports(filteredAirports);
       setRoutes(filteredRoutes);
+    }).catch(() => {
+      // If data files don't exist, continue without them
+      setAirports([]);
+      setRoutes([]);
     });
   }, []);
 
   // Set initial globe view
   useEffect(() => {
-    globeEl.current?.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
-  }, []);
+    if (globeEl.current) {
+      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
+    }
+  }, [globeMaterial]);
 
   // Load globe shader (day/night)
   useEffect(() => {
@@ -181,58 +184,79 @@ const World = () => {
 
   // Update sun position
   useEffect(() => {
-    globeMaterial?.uniforms.sunPosition.value.set(...sunPosAt(dt));
+    if (globeMaterial?.uniforms?.sunPosition?.value) {
+      globeMaterial.uniforms.sunPosition.value.set(...sunPosAt(dt));
+    }
   }, [dt, globeMaterial]);
 
-return (
-  <div style={{ position: "relative" }}>
-    <Globe
-      ref={globeEl}
-      globeMaterial={globeMaterial}
-      backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
-      onZoom={useCallback(
-        ({ lng, lat }) =>
-          globeMaterial?.uniforms.globeRotation.value.set(lng, lat),
-        [globeMaterial]
+  const handleZoom = useCallback(
+    ({ lng, lat }) => {
+      if (globeMaterial?.uniforms?.globeRotation?.value) {
+        globeMaterial.uniforms.globeRotation.value.set(lng, lat);
+      }
+    },
+    [globeMaterial]
+  );
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
+      {globeMaterial ? (
+        <Globe
+          ref={globeEl}
+          globeMaterial={globeMaterial}
+          backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
+          onZoom={handleZoom}
+          arcsData={routes}
+          arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
+          arcStartLat={(d) => +d.srcAirport.lat}
+          arcStartLng={(d) => +d.srcAirport.lng}
+          arcEndLat={(d) => +d.dstAirport.lat}
+          arcEndLng={(d) => +d.dstAirport.lng}
+          arcDashLength={1000}
+          arcDashGap={1}
+          arcDashInitialGap={() => Math.random()}
+          arcDashAnimateTime={4000}
+          arcColor={(d) => [
+            `rgba(255, 255, 255, ${OPACITY})`,
+            `rgba(255, 255, 255, ${OPACITY})`,
+          ]}
+          arcsTransitionDuration={0}
+          pointsData={airports}
+          pointColor={() => "orange"}
+          pointAltitude={0}
+          pointRadius={0.5}
+          pointsMerge={true}
+        />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            color: "white",
+            fontFamily: "monospace",
+          }}
+        >
+          Loading globe...
+        </div>
       )}
 
-      // --- ROUTES ---
-      arcsData={routes}
-      arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
-      arcStartLat={(d) => +d.srcAirport.lat}
-      arcStartLng={(d) => +d.srcAirport.lng}
-      arcEndLat={(d) => +d.dstAirport.lat}
-      arcEndLng={(d) => +d.dstAirport.lng}
-      arcDashLength={1000}
-      arcDashGap={1}
-      arcDashInitialGap={() => Math.random()}
-      arcDashAnimateTime={4000}
-      arcColor={(d) => [
-        `rgba(255, 255, 255, ${OPACITY})`,
-        `rgba(255, 255, 255, ${OPACITY})`,
-      ]}
-      arcsTransitionDuration={0}
-
-      // --- AIRPORT DOTS ---
-      pointsData={airports}
-      pointColor={() => "orange"}
-      pointAltitude={0}
-      pointRadius={0.5}
-      pointsMerge={true}
-    />
-
-    <div
-      style={{
-        position: "absolute",
-        bottom: 8,
-        left: 8,
-        color: "lightblue",
-        fontFamily: "monospace",
-      }}
-    >
-      {new Date(dt).toLocaleString()}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 8,
+          left: 8,
+          color: "lightblue",
+          fontFamily: "monospace",
+          fontSize: "14px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          padding: "4px 8px",
+          borderRadius: "4px",
+        }}
+      >
+        {new Date(dt).toLocaleString()}
+      </div>
     </div>
-  </div>
-);
-
-};
+  );
+}

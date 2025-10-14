@@ -5,3 +5,9 @@ export const microReboundPreset: Transition = {
   stiffness: 300,
   damping: 20,
 }
+
+export const softBouncePreset: Transition = {
+  type: 'spring',
+  damping: 10,
+  stiffness: 100,
+}

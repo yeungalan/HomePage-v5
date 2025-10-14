@@ -24,6 +24,9 @@ export const TextUpTransitionView: FC<
     text,
     ...rest
   } = props
+
+    //return <div>{children}</div>
+
   if (!appear) {
     // @ts-ignore
     return <div {...rest}>{text ?? children}</div>

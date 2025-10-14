@@ -1,4 +1,5 @@
 "use client"
+
 import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { softBouncePreset } from "@/constants/spring";
 import { m } from 'motion/react'
@@ -39,6 +40,8 @@ export default function Page() {
           }];
 
     return (
+        <>
+        <div>456</div>
           <m.div
             className="group relative text-center leading-[4] lg:text-left [&_*]:inline-block"
             initial={{ opacity: 0.0001, y: 50 }}
@@ -66,5 +69,6 @@ export default function Page() {
               )
             })}
           </m.div>
+          </>
     )
 }

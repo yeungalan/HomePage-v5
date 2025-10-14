@@ -1,6 +1,6 @@
 'use client'
 
-import { m } from 'motion/react'
+import { motion } from 'motion/react'
 import type { FC, JSX } from 'react'
 
 import { microReboundPreset } from '@/constants/spring'
@@ -35,7 +35,7 @@ export const TextUpTransitionView: FC<
   return (
     <div {...rest}>
       {Array.from(text ?? (children as string)).map((char, i) => (
-        <m.span
+        <motion.span
           key={i}
           className="inline-block whitespace-pre"
           initial={{ transform: 'translateY(10px)', opacity: 0.001 }}
@@ -51,7 +51,7 @@ export const TextUpTransitionView: FC<
           }}
         >
           {char}
-        </m.span>
+        </motion.span>
       ))}
     </div>
   )

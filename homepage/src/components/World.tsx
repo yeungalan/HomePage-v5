@@ -212,10 +212,6 @@ export default function WorldMap() {
           arcStartLng={(d) => +d.srcAirport.lng}
           arcEndLat={(d) => +d.dstAirport.lat}
           arcEndLng={(d) => +d.dstAirport.lng}
-          arcDashLength={1000}
-          arcDashGap={1}
-          arcDashInitialGap={() => Math.random()}
-          arcDashAnimateTime={4000}
           arcColor={(d) => [
             `rgba(255, 255, 255, ${OPACITY})`,
             `rgba(255, 255, 255, ${OPACITY})`,

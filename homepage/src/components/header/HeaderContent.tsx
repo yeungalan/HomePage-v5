@@ -23,12 +23,6 @@ import { useHeaderConfig } from './HeaderDataConfigureProvider'
 import { useHeaderHasMetaInfo, useMenuOpacity } from './hooks'
 import { MenuPopover } from './MenuPopover'
 
-type Component<P = {}> = React.FunctionComponent<{
-    className?: string;
-} & {
-    children?: React.ReactNode | undefined;
-} & P>
-
 export const HeaderContent = () => {
   return (
     <LayoutGroup>

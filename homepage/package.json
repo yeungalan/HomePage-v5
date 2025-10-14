@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "^2.1.6",
     "foxact": "^0.2.49",
     "motion": "^12.23.24",
     "next": "15.5.5",

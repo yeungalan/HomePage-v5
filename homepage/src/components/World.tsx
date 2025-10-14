@@ -1,84 +1,238 @@
-"use client"
-import Globe from 'react-globe.gl';
-  import React, { useState, useEffect, useRef } from 'react';
-  import { csvParseRows } from 'd3-dsv';
-  import indexBy from 'index-array-by';
+"use client";
 
-  const COUNTRY = 'United States';
-  const OPACITY = 1;
+import Globe from "react-globe.gl";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { csvParseRows } from "d3-dsv";
+import indexBy from "index-array-by";
+import {
+  TextureLoader,
+  ShaderMaterial,
+  Vector2,
+} from "three";
+import * as solar from "solar-calculator";
 
-  const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]) => ({ airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source });
-//const routeParse = ([airline, airlineId, srcIata, srcAirportId, dstIata, dstAirportId, codeshare, stops, equipment]) => ({ airline, airlineId, srcIata, srcAirportId, dstIata, dstAirportId, codeshare, stops, equipment});
-  const routeParse = ([srcIata, dstIata]) => ({srcIata, dstIata});
+const COUNTRY = "United States";
+const OPACITY = 1;
+const VELOCITY = 1; // minutes per frame
 
-export const WorldMap = () => {
-  return <World/>
+const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]) => ({
+  airportId,
+  name,
+  city,
+  country,
+  iata,
+  icao,
+  lat,
+  lng,
+  alt,
+  timezone,
+  dst,
+  tz,
+  type,
+  source,
+});
+
+const routeParse = ([srcIata, dstIata]) => ({ srcIata, dstIata });
+
+// --- SHADER ---
+const dayNightShader = {
+  vertexShader: `
+    varying vec3 vNormal;
+    varying vec2 vUv;
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    #define PI 3.141592653589793
+    uniform sampler2D dayTexture;
+    uniform sampler2D nightTexture;
+    uniform vec2 sunPosition;
+    uniform vec2 globeRotation;
+    varying vec3 vNormal;
+    varying vec2 vUv;
+
+    float toRad(in float a) {
+      return a * PI / 180.0;
+    }
+
+    vec3 Polar2Cartesian(in vec2 c) { // [lng, lat]
+      float theta = toRad(90.0 - c.x);
+      float phi = toRad(90.0 - c.y);
+      return vec3(
+        sin(phi) * cos(theta),
+        cos(phi),
+        sin(phi) * sin(theta)
+      );
+    }
+
+    void main() {
+      float invLon = toRad(globeRotation.x);
+      float invLat = -toRad(globeRotation.y);
+      mat3 rotX = mat3(
+        1, 0, 0,
+        0, cos(invLat), -sin(invLat),
+        0, sin(invLat), cos(invLat)
+      );
+      mat3 rotY = mat3(
+        cos(invLon), 0, sin(invLon),
+        0, 1, 0,
+        -sin(invLon), 0, cos(invLon)
+      );
+      vec3 rotatedSunDirection = rotX * rotY * Polar2Cartesian(sunPosition);
+      float intensity = dot(normalize(vNormal), normalize(rotatedSunDirection));
+      vec4 dayColor = texture2D(dayTexture, vUv);
+      vec4 nightColor = texture2D(nightTexture, vUv);
+      float blendFactor = smoothstep(-0.1, 0.1, intensity);
+      gl_FragColor = mix(nightColor, dayColor, blendFactor);
+    }
+  `,
 };
 
-    const World = () => {
-    const globeEl = useRef(undefined);
-    const [airports, setAirports] = useState([]);
-    const [routes, setRoutes] = useState([]);
+// --- UTIL: Get sun position for a given timestamp ---
+const sunPosAt = (dt: number) => {
+  const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
+  const t = solar.century(dt);
+  const longitude = ((day - dt) / 864e5) * 360 - 180;
+  return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
+};
 
-    useEffect(() => {
-      // load data
-      Promise.all([
-        fetch('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat').then(res => res.text())
-          .then(d => csvParseRows(d, airportParse)),
-        fetch('./routes.dat').then(res => res.text())
-          .then(d => csvParseRows(d, routeParse))
-      ]).then(([airports, routes]) => {
-        console.log(routes);
-        const byIata = indexBy(airports, 'iata', false);
+export const WorldMap = () => <World />;
 
-        const filteredRoutes = routes
-          .filter(d => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)) // exclude unknown airports
-          //.filter(d => d.stops === '0') // non-stop flights only
-          .map(d => Object.assign(d, {
+const World = () => {
+  const globeEl = useRef<any>();
+  const [airports, setAirports] = useState([]);
+  const [routes, setRoutes] = useState([]);
+  const [dt, setDt] = useState(+new Date());
+  const [globeMaterial, setGlobeMaterial] = useState<any>();
+
+  // Animate time
+  useEffect(() => {
+    (function iterateTime() {
+      setDt((t) => t + VELOCITY * 60 * 1000);
+      requestAnimationFrame(iterateTime);
+    })();
+  }, []);
+
+  // Load airports + routes
+  useEffect(() => {
+    Promise.all([
+      fetch("./airports.dat")
+        .then((res) => res.text())
+        .then((d) => csvParseRows(d, airportParse)),
+      fetch("./routes.dat")
+        .then((res) => res.text())
+        .then((d) => csvParseRows(d, routeParse)),
+    ]).then(([airports, routes]) => {
+      const byIata = indexBy(airports, "iata", false);
+
+      const filteredRoutes = routes
+        .filter(
+          (d) => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)
+        )
+        .map((d) =>
+          Object.assign(d, {
             srcAirport: byIata[d.srcIata],
-            dstAirport: byIata[d.dstIata]
-          }))
-          //.filter(d => d.srcAirport.country === COUNTRY && d.dstAirport.country !== COUNTRY); // international routes from country
+            dstAirport: byIata[d.dstIata],
+          })
+        );
 
-
-            const usedIatas = new Set(
+      const usedIatas = new Set(
         filteredRoutes.flatMap((r) => [r.srcIata, r.dstIata])
       );
-
       const filteredAirports = airports.filter((a) => usedIatas.has(a.iata));
 
+      setAirports(filteredAirports);
+      setRoutes(filteredRoutes);
+    });
+  }, []);
 
-        setAirports(filteredAirports);
-        setRoutes(filteredRoutes);
-      });
-    }, []);
+  // Set initial globe view
+  useEffect(() => {
+    globeEl.current?.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
+  }, []);
 
-    useEffect(() => {
-      // aim at continental US centroid
-      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
-    }, []);
+  // Load globe shader (day/night)
+  useEffect(() => {
+    Promise.all([
+      new TextureLoader().loadAsync(
+        "//cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg"
+      ),
+      new TextureLoader().loadAsync(
+        "//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg"
+      ),
+    ]).then(([dayTexture, nightTexture]) => {
+      setGlobeMaterial(
+        new ShaderMaterial({
+          uniforms: {
+            dayTexture: { value: dayTexture },
+            nightTexture: { value: nightTexture },
+            sunPosition: { value: new Vector2() },
+            globeRotation: { value: new Vector2() },
+          },
+          vertexShader: dayNightShader.vertexShader,
+          fragmentShader: dayNightShader.fragmentShader,
+        })
+      );
+    });
+  }, []);
 
-    return <Globe
+  // Update sun position
+  useEffect(() => {
+    globeMaterial?.uniforms.sunPosition.value.set(...sunPosAt(dt));
+  }, [dt, globeMaterial]);
+
+return (
+  <div style={{ position: "relative" }}>
+    <Globe
       ref={globeEl}
-      globeImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg"
+      globeMaterial={globeMaterial}
+      backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
+      onZoom={useCallback(
+        ({ lng, lat }) =>
+          globeMaterial?.uniforms.globeRotation.value.set(lng, lat),
+        [globeMaterial]
+      )}
 
+      // --- ROUTES ---
       arcsData={routes}
-      arcLabel={d => `${d.srcIata} &#8594; ${d.dstIata}`}
-      arcStartLat={d => +d.srcAirport.lat}
-      arcStartLng={d => +d.srcAirport.lng}
-      arcEndLat={d => +d.dstAirport.lat}
-      arcEndLng={d => +d.dstAirport.lng}
+      arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
+      arcStartLat={(d) => +d.srcAirport.lat}
+      arcStartLng={(d) => +d.srcAirport.lng}
+      arcEndLat={(d) => +d.dstAirport.lat}
+      arcEndLng={(d) => +d.dstAirport.lng}
       arcDashLength={1000}
       arcDashGap={1}
       arcDashInitialGap={() => Math.random()}
       arcDashAnimateTime={4000}
-      arcColor={d => [`rgba(255, 255, 255, ${OPACITY})`, `rgba(255, 255, 255, ${OPACITY})`]}
+      arcColor={(d) => [
+        `rgba(255, 255, 255, ${OPACITY})`,
+        `rgba(255, 255, 255, ${OPACITY})`,
+      ]}
       arcsTransitionDuration={0}
 
+      // --- AIRPORT DOTS ---
       pointsData={airports}
-      pointColor={() => 'orange'}
+      pointColor={() => "orange"}
       pointAltitude={0}
       pointRadius={0.5}
       pointsMerge={true}
-    />;
-  };
+    />
+
+    <div
+      style={{
+        position: "absolute",
+        bottom: 8,
+        left: 8,
+        color: "lightblue",
+        fontFamily: "monospace",
+      }}
+    >
+      {new Date(dt).toLocaleString()}
+    </div>
+  </div>
+);
+
+};

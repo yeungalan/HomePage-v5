@@ -9,7 +9,7 @@ import { createElement, useState, useEffect } from 'react'
 export default function Page() {
 
     return (
-        <div className="min-w-screen p-8 bg-green">
+        <div className="min-w-screen bg-green">
           <WorldMap/>
         </div>
     )

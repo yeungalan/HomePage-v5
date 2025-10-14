@@ -1,15 +1,21 @@
 'use client'
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, FunctionComponent, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 
 import { cloneDeep } from '@/lib/lodash'
 import { useAggregationSelector } from '@/providers/aggregation-data-provider'
 
-import { headerMenuConfig as baseHeaderMenuConfig } from './config'
+import { headerMenuConfig as baseHeaderMenuConfig, headerMenuConfig } from './config'
 
 const HeaderMenuConfigContext = createContext({
   config: baseHeaderMenuConfig,
 })
+
+type Component<P = {}> = FunctionComponent<{
+    className?: string;
+} & {
+    children?: ReactNode | undefined;
+} & P>
 
 export const useHeaderConfig = () => useContext(HeaderMenuConfigContext)
 export const HeaderDataConfigureProvider: Component = ({ children }) => {

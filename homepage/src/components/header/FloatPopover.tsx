@@ -22,15 +22,15 @@ import {
   useState,
 } from 'react'
 
-import { useIsMobile } from '~/atoms/hooks'
-import { microReboundPreset } from '~/constants/spring'
-import useClickAway from '~/hooks/common/use-click-away'
-import { useEventCallback } from '~/hooks/common/use-event-callback'
-import { clsxm } from '~/lib/helper'
+import { useIsMobile } from '@/atoms/hooks'
+import { microReboundPreset } from '@/constants/spring'
+import useClickAway from '@/hooks/common/use-click-away'
+import { useEventCallback } from '@/hooks/common/use-event-callback'
+import { clsxm } from '@/lib/helper'
 
-import { RootPortal } from '../portal'
-import type { PresentSheetProps } from '../sheet'
-import { PresentSheet } from '../sheet'
+import { RootPortal } from './RootPortal'
+import type { PresentSheetProps } from './sheet'
+import { PresentSheet } from './sheet'
 
 export const FloatPopover = function <T extends {}>(
   props: FloatPopoverProps<T> & {

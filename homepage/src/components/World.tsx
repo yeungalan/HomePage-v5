@@ -12,7 +12,7 @@ import * as solar from "solar-calculator";
 
 const COUNTRY = "United States";
 const OPACITY = 1;
-const VELOCITY = 1; // minutes per frame
+const VELOCITY = 0.2; // minutes per frame
 
 const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]) => ({
   airportId,
@@ -218,7 +218,7 @@ export default function WorldMap() {
           backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
           onZoom={handleZoom}
           arcsData={routes}
-          arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
+          arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
           arcStartLat={(d) => +d.srcAirport.lat}
           arcStartLng={(d) => +d.srcAirport.lng}
           arcEndLat={(d) => +d.dstAirport.lat}
@@ -229,7 +229,7 @@ export default function WorldMap() {
           ]}
           arcsTransitionDuration={0}
           pointsData={airports}
-          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
+          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}, ${d.country}<br/>${d.name}</div>`}
           pointColor={() => "orange"}
           pointAltitude={0}
           pointRadius={0.5}

@@ -104,14 +104,25 @@ export default function WorldMap() {
   const [routes, setRoutes] = useState([]);
   const [dt, setDt] = useState(+new Date());
   const [globeMaterial, setGlobeMaterial] = useState(null);
+  const [useActualTime, setUseActualTime] = useState(false);
+  const [isAnimated, setIsAnimated] = useState(true);
 
   // Animate time
   useEffect(() => {
+    if (!isAnimated) return;
+    
+    let animationId;
     (function iterateTime() {
-      setDt((t) => t + VELOCITY * 60 * 1000);
-      requestAnimationFrame(iterateTime);
+      setDt((t) => useActualTime ? +new Date() : t + VELOCITY * 60 * 1000);
+      animationId = requestAnimationFrame(iterateTime);
     })();
-  }, []);
+    
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isAnimated, useActualTime]);
 
   // Load airports + routes
   useEffect(() => {
@@ -217,14 +228,12 @@ export default function WorldMap() {
             `rgba(255, 255, 255, ${OPACITY})`,
           ]}
           arcsTransitionDuration={0}
-
           pointsData={airports}
           pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
           pointColor={() => "orange"}
           pointAltitude={0}
           pointRadius={0.5}
           pointsMerge={false}
-
         />
       ) : (
         <div
@@ -255,6 +264,53 @@ export default function WorldMap() {
         }}
       >
         {new Date(dt).toLocaleString()}
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 8,
+          right: 8,
+          display: "flex",
+          gap: "8px",
+        }}
+      >
+        <button
+          onClick={() => {
+            setUseActualTime(!useActualTime);
+            if (!useActualTime) {
+              setDt(+new Date());
+              setIsAnimated(true);
+            }
+          }}
+          style={{
+            color: "white",
+            fontFamily: "monospace",
+            fontSize: "14px",
+            backgroundColor: useActualTime ? "rgba(59, 130, 246, 0.8)" : "rgba(0, 0, 0, 0.5)",
+            padding: "8px 16px",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+            cursor: "pointer",
+          }}
+        >
+          Actual Time
+        </button>
+        <button
+          onClick={() => setIsAnimated(!isAnimated)}
+          style={{
+            color: "white",
+            fontFamily: "monospace",
+            fontSize: "14px",
+            backgroundColor: isAnimated ? "rgba(59, 130, 246, 0.8)" : "rgba(0, 0, 0, 0.5)",
+            padding: "8px 16px",
+            borderRadius: "4px",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+            cursor: "pointer",
+          }}
+        >
+          Animated
+        </button>
       </div>
     </div>
   );

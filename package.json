@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "@types/d3-dsv": "^3.0.7",
+    "d3-dsv": "^3.0.1",
+    "index-array-by": "^1.4.2",
     "jojoo": "^0.3.0",
     "jotai": "^2.15.0",
-    "motion": "^12.23.24"
+    "motion": "^12.23.24",
+    "react-globe.gl": "^2.36.0"
   }
 }

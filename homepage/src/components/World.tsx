@@ -217,11 +217,14 @@ export default function WorldMap() {
             `rgba(255, 255, 255, ${OPACITY})`,
           ]}
           arcsTransitionDuration={0}
+
           pointsData={airports}
+          pointLabel={(d) => `<div style="color: white; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px;">${d.city}<br/>${d.name}</div>`}
           pointColor={() => "orange"}
           pointAltitude={0}
           pointRadius={0.5}
-          pointsMerge={true}
+          pointsMerge={false}
+
         />
       ) : (
         <div

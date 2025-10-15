@@ -71,13 +71,6 @@ export const ActivityPostList = () => {
         })}
       </ul>
 
-      <Link
-        className="flex items-center justify-end opacity-70 duration-200 hover:text-accent"
-        href={"!234"}
-      >
-        <i className="i-mingcute-arrow-right-circle-line" />
-        <span className="ml-2">还有更多</span>
-      </Link>
     </motion.section>
   )
 }

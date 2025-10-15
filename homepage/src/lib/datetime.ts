@@ -42,19 +42,19 @@ export const relativeTimeFromNow = (
 
   const elapsed = +current - +time
 
-  if (elapsed < msPerMinute) {
+ if (elapsed < msPerMinute) {
     const gap = Math.ceil(elapsed / 1000)
-    return gap <= 0 ? '刚刚' : `${gap} 秒前`
+    return gap <= 0 ? 'Just now' : `${gap} second(s) ago`
   } else if (elapsed < msPerHour) {
-    return `${Math.round(elapsed / msPerMinute)} 分钟前`
+    return `${Math.round(elapsed / msPerMinute)} minute(s) ago`
   } else if (elapsed < msPerDay) {
-    return `${Math.round(elapsed / msPerHour)} 小时前`
+    return `${Math.round(elapsed / msPerHour)} hour(s) ago`
   } else if (elapsed < msPerMonth) {
-    return `${Math.round(elapsed / msPerDay)} 天前`
+    return `${Math.round(elapsed / msPerDay)} day(s) ago`
   } else if (elapsed < msPerYear) {
-    return `${Math.round(elapsed / msPerMonth)} 个月前`
+    return `${Math.round(elapsed / msPerMonth)} months ago`
   } else {
-    return `${Math.round(elapsed / msPerYear)} 年前`
+    return `${Math.round(elapsed / msPerYear)} years ago`
   }
 }
 export const dayOfYear = () => {

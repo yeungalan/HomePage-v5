@@ -11,34 +11,32 @@ type Component<P = {}> = FunctionComponent<{
 const footerConfig = {
   linkSections: [
     {
-      name: '关于',
+      name: 'About',
       links: [
-        { name: '关于本站', href: '/about', external: false },
-        { name: '留言板', href: '/message', external: false },
+        { name: 'This site', href: '/about', external: false },
+        { name: 'Status mointor', href: '/message', external: false },
       ],
     },
     {
-      name: '社交',
+      name: 'Socials',
       links: [
         { name: 'GitHub', href: 'https://github.com', external: true },
         { name: 'Twitter', href: 'https://twitter.com', external: true },
-        { name: 'Telegram', href: 'https://t.me', external: true },
       ],
     },
     {
-      name: '更多',
+      name: 'More',
       links: [
-        { name: '友链', href: '/friends', external: false },
-        { name: '项目', href: '/projects', external: false },
-        { name: '时间线', href: '/timeline', external: false },
+        { name: 'Quick links', href: '/friends', external: false },
+        { name: 'Administrator System', href: '/projects', external: false },
       ],
     },
   ],
   otherInfo: {
-    date: '2020-{{now}}',
+    date: '2015-{{now}}',
     icp: {
-      text: '粤ICP备xxxxxxxx号',
-      link: 'https://beian.miit.gov.cn/',
+      text: 'A.Yeung 2025 Global Infrastructure Project',
+      link: 'https://cloudflare.com/',
     },
   },
 }
@@ -119,7 +117,7 @@ const Divider: Component = ({ className }) => {
 }
 
 const PoweredBy: Component = ({ className }) => {
-  return <span className={className}>Powered by Next.js.</span>
+  return <span className={className}>Powered by CloudFlare and Next.js.</span>
 }
 
 const FooterBottom = () => {
@@ -145,7 +143,7 @@ const FooterBottom = () => {
           <Divider className="inline" />
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          Stay hungry. Stay foolish.
+          Work Hard. Have Fun. Make History
         </span>
       </div>
       <div>

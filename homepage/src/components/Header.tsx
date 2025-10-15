@@ -46,7 +46,7 @@ const mockHeaderMenuConfig: MenuItem[] = [
     path: '#',
     subMenu: [
       { title: 'Projects', icon: 'mingcute:flask-line', path: '/projects' },
-      { title: 'Friends Link', icon: 'mingcute:earth-line', path: 'https://travel.moe/go.html' },
+      { title: 'Friends Link', icon: 'mingcute:earth-line', path: '/friends' },
     ],
   },
 ];

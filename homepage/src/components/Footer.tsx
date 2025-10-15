@@ -54,7 +54,7 @@ const windsock = [
 export const Footer = () => {
   return (
     <>
-      <div className="center mt-28 flex flex-col">
+      <div className="center mt-10 mb-20 flex flex-col">
         <div className="my-5 text-2xl font-medium">Quick links</div>
         <div className="mb-24 opacity-90">Want to go somewhere else?</div>
         <ul className="flex flex-col flex-wrap gap-2 gap-y-8 opacity-80 lg:flex-row">

@@ -9,6 +9,8 @@ import {
   Vector2,
 } from "three";
 import * as solar from "solar-calculator";
+import { motion } from "framer-motion";
+import { Icon } from '@iconify/react';
 
 const COUNTRY = "United States";
 const OPACITY = 1;
@@ -98,22 +100,30 @@ const sunPosAt = (dt) => {
   return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
 };
 
+type TimeMode = 'paused' | 'realtime' | 'animated';
+
 export default function WorldMap() {
   const globeEl = useRef();
   const [airports, setAirports] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [dt, setDt] = useState(+new Date());
   const [globeMaterial, setGlobeMaterial] = useState(null);
-  const [useActualTime, setUseActualTime] = useState(false);
-  const [isAnimated, setIsAnimated] = useState(true);
+  const [timeMode, setTimeMode] = useState<TimeMode>('animated');
 
-  // Animate time
+  // Animate time based on mode
   useEffect(() => {
-    if (!isAnimated) return;
+    if (timeMode === 'paused') return;
     
     let animationId;
     (function iterateTime() {
-      setDt((t) => useActualTime ? +new Date() : t + VELOCITY * 60 * 1000);
+      setDt((t) => {
+        if (timeMode === 'realtime') {
+          return +new Date();
+        } else if (timeMode === 'animated') {
+          return t + VELOCITY * 60 * 1000;
+        }
+        return t;
+      });
       animationId = requestAnimationFrame(iterateTime);
     })();
     
@@ -122,7 +132,7 @@ export default function WorldMap() {
         cancelAnimationFrame(animationId);
       }
     };
-  }, [isAnimated, useActualTime]);
+  }, [timeMode]);
 
   // Load airports + routes
   useEffect(() => {
@@ -209,6 +219,22 @@ export default function WorldMap() {
     [globeMaterial]
   );
 
+  const handleModeChange = (mode: TimeMode) => {
+    setTimeMode(mode);
+    if (mode === 'realtime') {
+      setDt(+new Date());
+    }
+  };
+
+  const getIndicatorPosition = () => {
+    const positions = {
+      paused: 4,
+      realtime: 36,
+      animated: 68,
+    };
+    return positions[timeMode];
+  };
+
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh" }}>
       {globeMaterial ? (
@@ -266,51 +292,66 @@ export default function WorldMap() {
         {new Date(dt).toLocaleString()}
       </div>
 
+      {/* Time Control Switch */}
       <div
         style={{
           position: "absolute",
           bottom: 8,
           right: 8,
-          display: "flex",
-          gap: "8px",
         }}
       >
-        <button
-          onClick={() => {
-            setUseActualTime(!useActualTime);
-            if (!useActualTime) {
-              setDt(+new Date());
-              setIsAnimated(true);
-            }
-          }}
-          style={{
-            color: "white",
-            fontFamily: "monospace",
-            fontSize: "14px",
-            backgroundColor: useActualTime ? "rgba(59, 130, 246, 0.8)" : "rgba(0, 0, 0, 0.5)",
-            padding: "8px 16px",
-            borderRadius: "4px",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            cursor: "pointer",
-          }}
-        >
-          Actual Time
-        </button>
-        <button
-          onClick={() => setIsAnimated(!isAnimated)}
-          style={{
-            color: "white",
-            fontFamily: "monospace",
-            fontSize: "14px",
-            backgroundColor: isAnimated ? "rgba(59, 130, 246, 0.8)" : "rgba(0, 0, 0, 0.5)",
-            padding: "8px 16px",
-            borderRadius: "4px",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            cursor: "pointer",
-          }}
-        >
-          Animated
-        </button>
+        <div className="relative inline-block">
+          {/* Animated Indicator */}
+          <motion.div
+            className="absolute top-[4px] z-0 size-[32px] rounded-full bg-white shadow-lg"
+            initial={false}
+            animate={{
+              left: getIndicatorPosition(),
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+            }}
+          />
+
+          {/* Button Group */}
+          <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
+            <button
+              aria-label="Pause time"
+              type="button"
+              onClick={() => handleModeChange('paused')}
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              style={{
+                color: timeMode === 'paused' ? '#000' : '#fff',
+              }}
+            >
+              <Icon icon="mdi:pause" className="text-[18px]" />
+            </button>
+            <button
+              aria-label="Real time"
+              type="button"
+              onClick={() => handleModeChange('realtime')}
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              style={{
+                color: timeMode === 'realtime' ? '#000' : '#fff',
+              }}
+            >
+              <Icon icon="mdi:clock-outline" className="text-[18px]" />
+            </button>
+            <button
+              aria-label="Animated time"
+              type="button"
+              onClick={() => handleModeChange('animated')}
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              style={{
+                color: timeMode === 'animated' ? '#000' : '#fff',
+              }}
+            >
+              <Icon icon="mdi:fast-forward" className="text-[18px]" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

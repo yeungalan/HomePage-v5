@@ -19,6 +19,7 @@ const htmlElements = [
 </span>,
   <span className="font-bold text-green-600">Photographer</span>,
   <span className="font-bold text-orange-600">Adventurer</span>,
+    <span className="font-bold text-blue-600">Security Researcher</span>,
 ];
 
 const greetings = {

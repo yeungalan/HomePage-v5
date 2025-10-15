@@ -198,7 +198,7 @@ export const RealFooter = () => {
           <FooterInfo />
 
           <div className="mt-6 block text-center md:absolute md:bottom-0 md:right-0 md:mt-0">
-            {/*<ThemeSwitcher /> */}
+            {/*<ThemeSwitcher />*/}
           </div>
         </div>
       </div>

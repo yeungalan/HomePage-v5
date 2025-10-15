@@ -10,5 +10,8 @@
     "react-globe.gl": "^2.36.0",
     "solar": "^0.1.6",
     "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@iconify-json/mingcute": "^1.2.5"
   }
 }

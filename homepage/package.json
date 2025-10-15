@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.10",
     "dayjs": "^1.11.18",
+    "mingcute_icon": "^2.9.6",
     "motion": "^12.23.24",
     "next": "15.5.5",
     "react": "19.1.0",
@@ -26,6 +27,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@iconify-json/mingcute": "^1.2.5",
+    "@iconify/json": "^2.2.395",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

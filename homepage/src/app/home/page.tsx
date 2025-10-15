@@ -11,7 +11,8 @@ import clsx from 'clsx'
 import { m, motion } from 'motion/react'
 import Image from 'next/image'
 import type * as React from 'react'
-import { createElement } from 'react'
+import { createElement, useState } from 'react'
+
 
 export default function Home() {
   return (
@@ -68,6 +69,19 @@ const Hero = () => {
       return acc + (cur.text?.length || 0)
     }, 0) * 50;
     
+const [quoteIndex, setQuoteIndex] = useState(0);
+
+const quotes = [
+  '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。',
+  '我们仰望星空，却发现星空也在凝视着我们。',
+  '在无限的时间长河里，生命只是一颗瞬间即逝的火花。',
+  '科技的尽头不是征服，而是理解与和谐。',
+];
+
+const handleRefreshQuote = () => {
+  setQuoteIndex((prev) => (prev + 1) % quotes.length);
+};
+
   return (
     <div className="mt-20 min-w-0 max-w-screen overflow-hidden lg:mt-[-4.5rem] lg:h-dvh lg:min-h-[800px]">
       <TwoColumnLayout leftContainerClassName="mt-[120px] lg:mt-0 lg:h-[15rem] lg:h-1/2">
@@ -107,23 +121,33 @@ const Hero = () => {
           />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0.0001, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={softBouncePreset}
-          className={clsx(
-            'center inset-x-0 bottom-0 mt-12 flex flex-col lg:absolute lg:mt-0',
+<motion.div
+  key={quoteIndex} // Add key for re-animation on quote change
+  initial={{ opacity: 0.0001, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={softBouncePreset}
+  className={clsx(
+    'center inset-x-0 bottom-0 mt-12 flex flex-col lg:absolute lg:mt-0',
+    'center text-neutral-800/80 dark:text-neutral-200/80',
+  )}
+>
+  <div className="flex items-center gap-3">
+    <small className="text-center">
+      {quotes[quoteIndex]}
+    </small>
+    <button
+      onClick={handleRefreshQuote}
+      className="shrink-0 rounded-full p-1.5 transition-colors hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50"
+      aria-label="换一句"
+    >
+      <i className="i-mingcute-refresh-1-line text-lg" />
+    </button>
+  </div>
+  <span className="mt-8 animate-bounce">
+    <i className="i-mingcute-right-line rotate-90 text-2xl" />
+  </span>
+</motion.div>
 
-            'center text-neutral-800/80 dark:text-neutral-200/80',
-          )}
-        >
-          <small className="text-center">
-            当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。
-          </small>
-          <span className="mt-8 animate-bounce">
-            <i className="i-mingcute-right-line rotate-90 text-2xl" />
-          </span>
-        </motion.div>
       </TwoColumnLayout>
     </div>
   )

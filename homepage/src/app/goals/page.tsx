@@ -92,7 +92,7 @@ function FlightCalculator() {
         dstAirport.lat, dstAirport.lon
       );
       setDistance(dist);
-      setDuration(dist / 900); // 900 km/h, duration in hours
+      setDuration(dist / 800 + 0.5); // 900 km/h, duration in hours
       setProgress(0);
       setElapsedTime(0);
       setIsFlying(true);
@@ -189,11 +189,22 @@ function FlightCalculator() {
       </div>
 
       {/* Flight Progress Bar */}
-      {isFlying && (
+      <motion.div
+        initial={false}
+        animate={{ 
+          height: isFlying ? 'auto' : 0,
+          opacity: isFlying ? 1 : 0,
+        }}
+        transition={{ 
+          duration: 0.5,
+          ease: "easeInOut"
+        }}
+        className="overflow-hidden"
+      >
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           className="bg-white/70 rounded-xl p-6"
         >
           {/* Progress Bar Container */}
@@ -275,7 +286,7 @@ function FlightCalculator() {
             </div>
           </div>
         </motion.div>
-      )}
+      </motion.div>
     </motion.div>
   );
 }

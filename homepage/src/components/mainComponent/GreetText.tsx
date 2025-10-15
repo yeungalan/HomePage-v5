@@ -14,7 +14,9 @@ const softBouncePreset = {
 
 const htmlElements = [
   <span className="font-bold text-purple-600">Traveller</span>,
-  <span className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-800/0 hover:dark:bg-gray-800/100 bg-opacity-0 hover:bg-opacity-100 transition-background duration-200">&lt;Software Engineer!&nbsp;/&gt;</span>,
+<span className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-800/0 hover:dark:bg-gray-800/100 bg-opacity-0 hover:bg-opacity-100 transition-background duration-200">
+  &lt;Software Engineer&nbsp;/&gt;<span className="inline-block w-0.5 h-[0.9em] bg-current ml-1 align-middle animate-[blink_1s_ease-in-out_infinite]"></span>
+</span>,
   <span className="font-bold text-green-600">Photographer</span>,
   <span className="font-bold text-orange-600">Adventurer</span>,
 ];
@@ -117,7 +119,7 @@ export default function GiantGreetText() {
         transition={softBouncePreset}
         className="my-3 text-center lg:text-left"
       >
-        <span className="opacity-80">A random developer</span>
+        <span className="opacity-80">Protecting What Matters Most, One Identity at a Time, with Love in AWS</span>
       </BottomToUpTransitionView>
     </>
   )

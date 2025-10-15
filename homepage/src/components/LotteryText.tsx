@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,7 +15,6 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const containerRef = React.useRef<HTMLSpanElement>(null);
 
   const handleHover = () => {
     if (!isHovered) {
@@ -26,8 +26,7 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
 
   return (
     <motion.span
-      ref={containerRef}
-      className={`relative inline-block cursor-pointer align-top ${className}`}
+      className={`relative inline-block cursor-pointer ${className}`}
       onMouseEnter={handleHover}
       initial={{ y: 10, opacity: 0.001 }}
       animate={{ 
@@ -41,6 +40,7 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
           delay: initialDelay
         }
       }}
+      style={{ verticalAlign: 'baseline' }}
     >
       <span className="invisible whitespace-nowrap">
         {elements[currentIndex]}

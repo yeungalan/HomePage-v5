@@ -28,7 +28,7 @@ interface HeaderProps {
 const mockHeaderMenuConfig: MenuItem[] = [
   {
     title: 'Home',
-    path: '/home',
+    path: '/',
     icon: 'cbi:target',
   },
   {

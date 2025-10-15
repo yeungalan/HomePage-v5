@@ -1,123 +1,118 @@
 'use client'
 
-// DONT USE FOR NOW
-
 import clsx from 'clsx'
-import { m, motion } from 'motion/react'
+import { motion } from 'framer-motion'
 import { useMemo } from 'react'
 
-import { ScrollArea } from '@/components/ScrollArea'
-import { softBouncePreset } from '@/constants/spring'
+import { ActivityCard } from './ActivityCard'
 
-import { ActivityCard } from '@/components/ActivityCard'
-import { IcTwotoneSignpost } from './icons/menu-collection'
-
-interface ActivityType {
-    created: string;
-    id: string;
-    nid?: number;
-    slug?: string;
-    title: string;
-    bizType?: string;
+const softBouncePreset = {
+  type: "spring",
+  stiffness: 100,
+  damping: 15
 }
 
-// Dummy data
-const data = {
-  posts: [
-    {
-      id: '1',
-      nid: 101,
-      slug: 'my-first-blog-post',
-      title: 'Getting Started with Next.js 14',
-      created: '2025-10-12T10:30:00Z'
-    },
-    {
-      id: '2',
-      nid: 102,
-      slug: 'typescript-tips',
-      title: 'Advanced TypeScript Tips and Tricks',
-      created: '2025-10-10T15:20:00Z'
-    },
-    {
-      id: '3',
-      nid: 103,
-      slug: 'react-patterns',
-      title: 'Modern React Patterns in 2025',
-      created: '2025-10-08T09:15:00Z'
-    }
-  ],
-  notes: [
-    {
-      id: '4',
-      nid: 201,
-      title: 'Quick thought about design systems',
-      created: '2025-10-11T14:45:00Z'
-    },
-    {
-      id: '5',
-      nid: 202,
-      title: 'Coffee and code - a perfect combination',
-      created: '2025-10-09T08:30:00Z'
-    }
-  ],
-  projects: [
-    {
-      id: '6',
-      slug: 'portfolio-redesign',
-      title: 'Portfolio Website Redesign',
-      created: '2025-10-13T11:00:00Z'
-    },
-    {
-      id: '7',
-      slug: 'open-source-library',
-      title: 'Released new open source library',
-      created: '2025-10-07T16:40:00Z'
-    }
-  ]
+interface Experience {
+  id: string
+  type: 'work' | 'education' | 'milestone'
+  title: string
+  organization?: string
+  startDate: string
+  endDate: string
+  icon: string
+  isOngoing?: boolean
 }
+
+const experiences: Experience[] = [
+  {
+    id: '1',
+    type: 'work',
+    title: 'Software Engineer I',
+    organization: 'AWS',
+    startDate: 'Sept 2024',
+    endDate: 'Present',
+    icon: 'mdi:aws',
+    isOngoing: true
+  },
+  {
+    id: '2',
+    type: 'work',
+    title: 'Cloud Support Engineer I',
+    organization: 'AWS',
+    startDate: 'Sept 2023',
+    endDate: 'Sept 2024',
+    icon: 'mdi:cloud-check'
+  },
+  {
+    id: '3',
+    type: 'education',
+    title: 'Computer Engineering',
+    organization: 'University of Washington',
+    startDate: 'June 2021',
+    endDate: 'June 2023',
+    icon: 'mdi:school'
+  },
+  {
+    id: '4',
+    type: 'milestone',
+    title: 'Moved to America',
+    startDate: '2019',
+    endDate: '2019',
+    icon: 'mdi:airplane'
+  },
+  {
+    id: '5',
+    type: 'work',
+    title: 'imuslab',
+    startDate: '2018',
+    endDate: '2023',
+    icon: 'mdi:flask'
+  },
+  {
+    id: '6',
+    type: 'education',
+    title: 'Graduated from High School',
+    startDate: '2018',
+    endDate: '2018',
+    icon: 'mdi:school-outline'
+  }
+]
 
 const isLoading = false
 
-export const Timeline = () => {
+export default function Timeline() {
   const flatData = useMemo(() => {
-    return [...Object.entries(data || {})]
-      .flatMap(([type, items]) => {
-        if (!Array.isArray(items)) return []
-        return items.map((item: any) => {
-          return { ...item, bizType: type }
-        })
-      })
-      .sort((a, b) => {
-        return new Date(b.created).getTime() - new Date(a.created).getTime()
-      }) as ActivityType[]
-    // .slice(0, 6) as ReactActivityType[]
+    return [...experiences].sort((a, b) => {
+      const dateA = a.endDate === 'Present' ? '9999' : a.endDate
+      const dateB = b.endDate === 'Present' ? '9999' : b.endDate
+      return dateB.localeCompare(dateA)
+    })
   }, [])
 
   return (
     <motion.div
       initial={{ opacity: 0.0001, y: 50 }}
       transition={softBouncePreset}
-      className="mt-8 w-full text-lg lg:mt-0"
+      className="mt-8 w-full text-lg lg:mt-0 max-w-3xl"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      <motion.h2 className="mb-8 text-2xl font-medium leading-loose lg:ml-14">
-        最近发生的事
+      <motion.h2 className="mb-12 text-3xl font-medium">
+        Experience
       </motion.h2>
 
       {isLoading ? (
         <div className="relative h-[400px] max-h-[80vh]">
-          <ul className="shiro-timeline mt-4 flex animate-pulse flex-col pb-4 pl-2 text-slate-200 dark:!text-neutral-700">
+          <ul className="flex animate-pulse flex-col pb-4 pl-2 text-slate-200 dark:!text-neutral-700">
             {new Array(6).fill(null).map((_, i) => {
               return (
                 <li key={i} className="flex w-full items-center gap-2">
                   <div
                     className={clsx(
-                      IcTwotoneSignpost,
+                      'rounded-full border shrink-0 text-base center inline-flex size-[32px]',
                       'border-0 bg-current text-inherit',
                     )}
                   />
-
                   <div className="mb-4 box-content h-16 w-full rounded-md bg-current" />
                 </li>
               )
@@ -125,20 +120,38 @@ export const Timeline = () => {
           </ul>
         </div>
       ) : (
-        <ScrollArea rootClassName="h-[400px] relative max-h-[80vh]">
-          <ul className="shiro-timeline mt-4 flex flex-col pb-8 pl-2">
-            {flatData.map((activity) => {
+        <div className="relative">
+          {/* Timeline line - positioned to go through the center of the icons */}
+          <div 
+            className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-pink-300 via-pink-200 to-pink-100 dark:from-pink-700 dark:via-pink-800 dark:to-pink-900" 
+            style={{ height: 'calc(100% - 60px)' }}
+          />
+          
+          <ul className="flex flex-col relative">
+            {flatData.map((activity, index) => {
               return (
-                <li
-                  key={`${activity.bizType}-${activity.id}-${activity.created}`}
-                  className="flex min-w-0 justify-between"
+                <motion.li
+                  key={`${activity.type}-${activity.id}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, ...softBouncePreset }}
+                  viewport={{ once: true }}
+                  className="flex min-w-0 relative"
                 >
-                  <ActivityCard />
-                </li>
+                  <ActivityCard
+                    type={activity.type}
+                    title={activity.title}
+                    organization={activity.organization}
+                    startDate={activity.startDate}
+                    endDate={activity.endDate}
+                    icon={activity.icon}
+                    isOngoing={activity.isOngoing}
+                  />
+                </motion.li>
               )
             })}
           </ul>
-        </ScrollArea>
+        </div>
       )}
     </motion.div>
   )

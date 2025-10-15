@@ -1,95 +1,70 @@
 'use client'
 
 import clsx from 'clsx'
-import Link from 'next/link'
+import { Icon } from '@iconify/react'
 import { useMemo } from 'react'
 
-import {
-  FaSolidFeatherAlt,
-  IcTwotoneSignpost,
-  MdiLightbulbOn20,
-} from '@/components/icons/menu-collection'
-
 export const iconClassName =
-  'rounded-full border shrink-0 border-accent/30 text-xs center inline-flex size-[21px] text-accent'
+  'rounded-full border shrink-0 border-pink-300 dark:border-pink-700 text-base center inline-flex size-[32px] text-pink-500 dark:text-pink-400 bg-white dark:bg-zinc-900'
 
-export const ActivityCard = () => {
+interface ActivityCardProps {
+  type: 'work' | 'education' | 'milestone'
+  title: string
+  organization?: string
+  startDate: string
+  endDate: string
+  icon: string
+  isOngoing?: boolean
+}
+
+const formatDateRange = (start: string, end: string, isOngoing?: boolean) => {
+  if (isOngoing) {
+    return `${start} - Present`
+  }
+  if (start === end) {
+    return start
+  }
+  return `${start} - ${end}`
+}
+
+export const ActivityCard = ({
+  type,
+  title,
+  organization,
+  startDate,
+  endDate,
+  icon,
+  isOngoing
+}: ActivityCardProps) => {
   const Content = useMemo(() => {
-        let toLink = `/posts/134`
-        /*
-        return (
-          <div className="relative flex flex-col justify-center gap-2">
-            <div
-              className={clsx(
-                'absolute left-0 top-1/2 -translate-y-1/4',
-                iconClassName,
-              )}
-            >
-              <i className="i-mingcute-comment-line" />
-            </div>
-            <div className="flex items-center gap-2 pl-8">
-              <div className="space-x-2">
-                {"123" && (
-                  <img
-                    src={"456"}
-                    className="inline size-[16px] rounded-full ring-2 ring-slate-200 dark:ring-zinc-800"
-                  />
-                )}
-                <span className="font-medium">{"789"}</span>{' '}
-                <small>在</small>{' '}
-                <Link className="shiro-link--underline" href={toLink}>
-                  <b>
-                    '一条想法中'
-                  </b>
-                </Link>{' '}
-                <small>说：</small>
-              </div>
-            </div>
-            <div className="flex pl-8">
-              <div
-                className={clsx(
-                  'relative inline-block rounded-xl p-3 text-zinc-800 dark:text-zinc-200',
-                  'rounded-tl-sm bg-zinc-600/5 dark:bg-zinc-500/20',
-                  'max-w-full overflow-auto',
-                )}
-              >
-                {"ABCDEFG"}
-              </div>
-            </div>
-          </div>
-        )
-      */
-      
-        return (
-          <div className="flex translate-y-1/4 gap-2">
-            <div className={clsx(iconClassName)}>
-              <FaSolidFeatherAlt />
-            </div>
-            <div className="space-x-2">
-              <small>发布了</small>{' '}
-              <Link href={"456"}>
-                <b>456</b>
-              </Link>
-            </div>
-          </div>
-        )
+    return (
+      <div className="flex gap-4 items-start w-full">
+        <div className={clsx(iconClassName, 'flex-shrink-0')}>
+          <Icon icon={icon} />
+        </div>
         
-        /*
-        return (
-          <div className="flex translate-y-1/4 gap-2">
-            <div className={clsx(iconClassName)}>
-              <IcTwotoneSignpost />
+        <div className="flex-1 min-w-0">
+          <div className="text-base text-zinc-800 dark:text-zinc-200 space-y-1">
+            <div className="font-medium">{title}</div>
+            {organization && (
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                {organization}
+              </div>
+            )}
+            <div className="text-sm text-zinc-500 dark:text-zinc-500">
+              {formatDateRange(startDate, endDate, isOngoing)}
             </div>
-            <div className="space-x-2">
-              <small>发布了</small>{' '}
-              <Link href={`/posts/${activity.slug}`}>
-                <b>{activity.title}</b>
-              </Link>
-            </div>
+            {isOngoing && (
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                Current
+              </div>
+            )}
           </div>
-        )
-          */
-  }, [])
+        </div>
+      </div>
+    )
+  }, [type, title, organization, startDate, endDate, icon, isOngoing])
 
-  return <div className="pb-4 text-base">{Content}</div>
+  return <div className="pb-8 text-base w-full">{Content}</div>
 }

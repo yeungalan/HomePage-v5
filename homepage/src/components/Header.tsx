@@ -28,18 +28,10 @@ const mockHeaderMenuConfig: MenuItem[] = [
     title: 'Home',
     path: '/home',
     icon: 'cbi:target',
-    subMenu: [
-      { path: '/header', title: '关于' },
-      { path: '/contact', title: '联系' }
-    ],
   },
   {
     title: 'Places I visited',
     path: '/world',
-    subMenu: [
-      { path: '/categories/tech', title: '技术' },
-      { path: '/categories/life', title: '生活' }
-    ],
     icon: 'mdi:world',
   },
   {
@@ -334,8 +326,20 @@ const DesktopNav = ({
 };
 
 // Main Header Component
-export default function Header({ forceDarkMode = false }: HeaderProps) {
+export default function Header({ forceDarkMode: propForceDarkMode = false }: HeaderProps) {
   const [hasShadow, setHasShadow] = useState(false);
+  const pathname = usePathname();
+
+  // Check if "Places I visited" tab is active
+  const placesSection = mockHeaderMenuConfig.find(item => item.path === '/world');
+  const isPlacesActive = pathname === '/world' || 
+    pathname.startsWith('/world/') ||
+    placesSection?.subMenu?.some(item => 
+      item.path === pathname || pathname.slice(1) === item.path
+    );
+
+  // Use dark mode if Places tab is active OR if explicitly forced via props
+  const forceDarkMode = isPlacesActive || propForceDarkMode;
 
   useEffect(() => {
     const handleScroll = () => {

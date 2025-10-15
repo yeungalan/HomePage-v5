@@ -1,6 +1,6 @@
-/* eslint-disable @eslint-react/no-missing-key */
 import type { ReactNode } from 'react'
 import { memo, useMemo } from 'react'
+import { Icon } from '@iconify/react'
 
 import { BilibiliIcon } from '@/components/icons/platform/BilibiliIcon'
 import { BlueskyIcon } from '@/components/icons/platform/BlueskyIcon'
@@ -16,30 +16,30 @@ interface SocialIconProps {
 
 const iconSet: Record<
   string,
-  [string, ReactNode, string, (id: string) => string]
+  [string, string | (() => ReactNode), string, (id: string) => string]
 > = {
   github: [
     'Github',
-    <i className="i-mingcute-github-line" />,
+    'mingcute:github-line',
     '#181717',
     (id) => `https://github.com/${id}`,
   ],
   twitter: [
     'Twitter',
-    <i className="i-mingcute-twitter-line" />,
+    'mingcute:twitter-line',
     '#1DA1F2',
     (id) => `https://twitter.com/${id}`,
   ],
-  x: ['X', <XIcon />, 'rgba(36,46,54,1.00)', (id) => `https://x.com/${id}`],
+  x: ['X', () => <XIcon />, 'rgba(36,46,54,1.00)', (id) => `https://x.com/${id}`],
   telegram: [
     'Telegram',
-    <i className="i-mingcute-telegram-line" />,
+    'mingcute:telegram-line',
     '#0088cc',
     (id) => `https://t.me/${id}`,
   ],
   mail: [
     'Email',
-    <i className="i-mingcute-mail-line" />,
+    'mingcute:mail-line',
     '#D44638',
     (id) => `mailto:${id}`,
   ],
@@ -49,52 +49,52 @@ const iconSet: Record<
   get feed() {
     return this.rss
   },
-  rss: ['RSS', <i className="i-mingcute-rss-line" />, '#FFA500', (id) => id],
+  rss: ['RSS', 'mingcute:rss-line', '#FFA500', (id) => id],
   bilibili: [
     '哔哩哔哩',
-    <BilibiliIcon />,
+    () => <BilibiliIcon />,
     '#00A1D6',
     (id) => `https://space.bilibili.com/${id}`,
   ],
   netease: [
     '网易云音乐',
-    <NeteaseCloudMusicIcon />,
+    () => <NeteaseCloudMusicIcon />,
     '#C20C0C',
     (id) => `https://music.163.com/#/user/home?id=${id}`,
   ],
   qq: [
     'QQ',
-    <i className="i-mingcute-qq-fill" />,
+    'mingcute:qq-fill',
     '#1e6fff',
     (id) => `https://wpa.qq.com/msgrd?v=3&uin=${id}&site=qq&menu=yes`,
   ],
   wechat: [
     '微信',
-    <i className="i-mingcute-wechat-fill" />,
+    'mingcute:wechat-fill',
     '#2DC100',
     (id) => id,
   ],
   weibo: [
     '微博',
-    <i className="i-mingcute-weibo-line" />,
+    'mingcute:weibo-line',
     '#E6162D',
     (id) => `https://weibo.com/${id}`,
   ],
   discord: [
     'Discord',
-    <i className="i-mingcute-discord-fill" />,
+    'mingcute:discord-fill',
     '#7289DA',
     (id) => `https://discord.gg/${id}`,
   ],
   bluesky: [
     'Bluesky',
-    <BlueskyIcon />,
+    () => <BlueskyIcon />,
     '#0085FF',
     (id) => `https://bsky.app/profile/${id}`,
   ],
   steam: [
     'Steam',
-    <SteamIcon />,
+    () => <SteamIcon />,
     '#0F1C30',
     (id) => `https://steamcommunity.com/id/${id}`,
   ],
@@ -105,57 +105,34 @@ export const isSupportIcon = (icon: string) => icons.includes(icon)
 export const SocialIcon = memo((props: SocialIconProps) => {
   const { id, type } = props
 
-  const [name, Icon, iconBg, hrefFn] = useMemo(() => {
-    const [name, Icon, iconBg, hrefFn] = (iconSet as any)[type as any] || []
-    return [name, Icon, iconBg, hrefFn]
+  const [name, iconData, iconBg, hrefFn] = useMemo(() => {
+    const [name, iconData, iconBg, hrefFn] = (iconSet as any)[type as any] || []
+    return [name, iconData, iconBg, hrefFn]
   }, [type])
 
   if (!name) return null
   const href = hrefFn(id)
-
-  /*
-  return (
-    <FloatPopover
-      type="tooltip"
-      triggerElement={
-        <MotionButtonBase
-          className="center flex aspect-square size-10 rounded-full text-2xl text-white"
-          style={{
-            background: iconBg,
-          }}
-        >
-          <a
-            target="_blank"
-            href={href}
-            className="center flex"
-            rel="noreferrer"
-          >
-            {Icon}
-          </a>
-        </MotionButtonBase>
-      }
-    >
-      {name}
-    </FloatPopover>
-  )
-    */
+  
+  const IconComponent = typeof iconData === 'string' 
+    ? <Icon icon={iconData} /> 
+    : iconData()
 
   return (
     <MotionButtonBase
-          className="center flex aspect-square size-10 rounded-full text-2xl text-white"
-          style={{
-            background: iconBg,
-          }}
-        >
-          <a
-            target="_blank"
-            href={href}
-            className="center flex"
-            rel="noreferrer"
-          >
-            {Icon}
-          </a>
-        </MotionButtonBase>
+      className="center flex aspect-square size-10 rounded-full text-2xl text-white"
+      style={{
+        background: iconBg,
+      }}
+    >
+      <a
+        target="_blank"
+        href={href}
+        className="center flex"
+        rel="noreferrer"
+      >
+        {IconComponent}
+      </a>
+    </MotionButtonBase>
   )
 })
 SocialIcon.displayName = 'SocialIcon'

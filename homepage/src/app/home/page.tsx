@@ -3,7 +3,7 @@
 import { ActivityPostList } from '@/components/ActivityPostList'
 import { BottomToUpTransitionView } from '@/components/BottomToUpTransitionView'
 import GiantGreetText, { GiantGreetTextTemplate } from '@/components/mainComponent/GreetText'
-import { SocialIcon } from '@/components/SocialIcon'
+import { isSupportIcon, SocialIcon } from '@/components/SocialIcon'
 import { TextUpTransitionView } from '@/components/TextUpTransitionView'
 import { softBouncePreset } from '@/constants/spring'
 import { clsxm } from '@/lib/helper'
@@ -105,8 +105,10 @@ const handleRefreshQuote = () => {
           <GiantGreetText/>
 
           <ul className="center mx-[60px] mt-8 flex flex-wrap gap-6 lg:mx-auto lg:mt-28 lg:justify-start lg:gap-4">
-            {Object.entries([]).map(
+            {Object.entries([["twitter", "yeungbluecat123"]]).map(
               ([type, id]: any, index) => {
+                console.log(type);
+                if (!isSupportIcon(type)) return null
                 return (
                   <BottomToUpTransitionView
                     key={type}
@@ -114,6 +116,7 @@ const handleRefreshQuote = () => {
                     className="inline-block"
                     as="li"
                   >
+                    123
                     <SocialIcon id={id} type={type} />
                   </BottomToUpTransitionView>
                 )

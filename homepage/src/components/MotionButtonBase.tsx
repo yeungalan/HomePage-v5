@@ -1,7 +1,7 @@
 'use client'
 
 import type { HTMLMotionProps } from 'motion/react'
-import { m } from 'motion/react'
+import { motion } from 'motion/react'
 import { forwardRef } from 'react'
 
 export const MotionButtonBase = forwardRef<
@@ -9,7 +9,7 @@ export const MotionButtonBase = forwardRef<
   HTMLMotionProps<'button'>
 >(({ children, ...rest }, ref) => {
   return (
-    <m.button
+    <motion.button
       initial={true}
       whileFocus={{ scale: 1.02 }}
       whileHover={{ scale: 1.02 }}
@@ -18,7 +18,7 @@ export const MotionButtonBase = forwardRef<
       ref={ref}
     >
       {children}
-    </m.button>
+    </motion.button>
   )
 })
 

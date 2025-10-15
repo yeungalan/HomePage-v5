@@ -11,7 +11,7 @@ import {
 } from '@/components/icons/menu-collection'
 
 export const iconClassName =
-  'rounded-full border shrink-0 border-accent/30 text-xs center inline-flex size-6 text-accent'
+  'rounded-full border shrink-0 border-accent/30 text-xs center inline-flex size-[21px] text-accent'
 
 export const ActivityCard = () => {
   const Content = useMemo(() => {

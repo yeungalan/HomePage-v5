@@ -85,7 +85,7 @@ const quotes = [
   '當我們終於理解宇宙的時候，或許宇宙也理解了我們。',
 ];
 
-const [quoteIndex, setQuoteIndex] = useState(0);
+const [quoteIndex, setQuoteIndex] = useState(Math.floor(Math.random() * quotes.length));
 const [hasChanged, setHasChanged] = useState(false);
 
 const handleRefreshQuote = () => {

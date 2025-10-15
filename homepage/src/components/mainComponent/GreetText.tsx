@@ -21,15 +21,33 @@ const htmlElements = [
   <span className="font-bold text-orange-600">Adventurer</span>,
 ];
 
+const greetings = {
+  'zh-TW': '嗨，',
+  'ja-JP': 'こんにちは、',
+  'en-US': 'Hi, ',
+  'fr-FR': 'Bonjour, ',
+};
+
+const getRandomGreeting = () => {
+  const languages = Object.keys(greetings) as Array<keyof typeof greetings>;
+  const randomLang = languages[Math.floor(Math.random() * languages.length)];
+  return greetings[randomLang];
+};
+
 export const GiantGreetTextTemplate = [
   {
     "type": "h1",
-    "text": "Hi, This ",
+    "text": getRandomGreeting(),
+    "class": "font-light text-4xl"
+  },
+    {
+    "type": "h1",
+    "text": "This ",
     "class": "font-light text-4xl"
   },
   {
     "type": "h1",
-    "text": "is ",
+    "text": "is",
     "class": "font-light text-4xl"
   },
   {

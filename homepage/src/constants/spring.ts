@@ -6,6 +6,11 @@ export const microReboundPreset: Transition = {
   damping: 20,
 }
 
+export const microDampingPreset: Transition = {
+  type: 'spring',
+  damping: 24,
+}
+
 export const softBouncePreset: Transition = {
   type: 'spring',
   damping: 10,

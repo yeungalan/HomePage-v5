@@ -104,7 +104,7 @@
 
     & > li::after {
       content: '';
-      left: calc(-1rem - 4.1px);
+      left: calc(-1rem - 3.52px);
       top: 50%;
       transform: translateY(-50%);
       height: 8px;

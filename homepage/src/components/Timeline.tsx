@@ -10,8 +10,6 @@ import { softBouncePreset } from '@/constants/spring'
 import { ActivityCard } from '@/components/ActivityCard'
 import { IcTwotoneSignpost } from './icons/menu-collection'
 
-import "@/styles/style.css";
-
 interface ActivityType {
     created: string;
     id: string;

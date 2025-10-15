@@ -7,7 +7,6 @@ import * as React from 'react'
 import { RelativeTime } from '@/components/RelativeTime'
 import { softBouncePreset } from '@/constants/spring'
 
-import "@/styles/style.css";
 
 export const ActivityPostList = () => {
   return (

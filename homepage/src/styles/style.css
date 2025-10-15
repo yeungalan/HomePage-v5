@@ -3,11 +3,7 @@
 @layer components {
   /* Extend Tailwind classnames */
   .border-border {
-    border-color: rgb(24 24 27 / 0.1);
-    
-    @media (prefers-color-scheme: dark) {
-      border-color: rgb(63 63 70);
-    }
+    @apply border-zinc-900/10 dark:border-zinc-700;
   }
 
   .cover-mask-b {
@@ -20,37 +16,37 @@
     width: 0 !important;
     height: 0 !important;
   }
-  
   .shiro-timeline a {
-    text-decoration: none !important;
+    @apply !no-underline;
   }
-  
   .shiro-link--underline,
   .shiro-timeline a {
     color: currentColor;
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: rgb(24 24 27 / 0.2);
-    border-width: 0;
+
+    @apply decoration-zinc-900/20 dark:decoration-zinc-100/20 hover:no-underline;
+
     background-image: linear-gradient(
-      #33A6B8,
-      #33A6B8
+      var(--color-accent),
+      var(--color-accent)
     );
     background-size: 0% 1.5px;
     background-repeat: no-repeat;
-    background-position: left 1.2em;
+    /* NOTE: this won't work with background images   */
+
     transition: all 500ms ease;
 
-    @media (prefers-color-scheme: dark) {
-      text-decoration-color: rgb(244 244 245 / 0.2);
-    }
+    @apply border-0;
+
+    background-position: left 1.2em;
 
     &:hover {
-      text-decoration: none;
       background-size: 100% 1.5px;
       text-shadow:
         0.05em 0 var(--color-base-100),
         -0.05em 0 var(--color-base-100);
+
       transition: all 250ms ease;
     }
 
@@ -65,21 +61,19 @@
 
   .shiro-timeline {
     position: relative;
-    min-width: 0;
-    flex: 1 1 0%;
-    list-style-position: inside;
-    justify-content: space-between;
 
     & a {
       line-height: 1.6;
     }
+
+    @apply min-w-0 flex-1 list-inside justify-between;
 
     & > li::before {
       content: '';
       position: absolute;
       left: -17px;
       bottom: 0;
-      border-left: 2px solid #33A6B8;
+      border-left: 2px solid var(--color-accent);
     }
 
     & > li:first-child:last-child::before {
@@ -102,6 +96,7 @@
     & > li {
       position: relative;
       list-style-type: none;
+
       line-height: 1.6;
       padding: 3px 0;
       margin: 0 0 0 1rem;
@@ -116,7 +111,7 @@
       width: 8px;
       border-radius: 50%;
       position: absolute;
-      background-color: #33A6B8;
+      background-color: var(--color-accent);
     }
   }
 }
@@ -183,23 +178,22 @@
 
 @layer components {
   .page-head-gradient {
-    pointer-events: none;
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: 500px;
-    width: 100%;
+    @apply pointer-events-none absolute inset-x-0 top-0 h-[500px] w-full;
+
     background: linear-gradient(
       to right,
       rgb(var(--gradient-from) / 0.3) 0,
       rgb(var(--gradient-to) / 0.3) 100%
     );
+
     mask-image: linear-gradient(#000 0, #ffffff00 70%);
+
     animation: fade-in 1s ease 0.2s both;
   }
 
   [data-theme='dark'] .page-head-gradient {
-    filter: brightness(0.75);
+    @apply brightness-75;
+
     background: linear-gradient(
       90deg,
       rgb(var(--gradient-from) / 0.2) 0,
@@ -332,7 +326,7 @@
     --alpha: 2;
   }
 
-  [theme='dark'] .shadow-perfect {
+  [data-theme='dark'] .shadow-perfect {
     --tint: 221;
   }
 }
@@ -366,7 +360,6 @@
         calc(100% - 50px) 100%;
     }
   }
-  
   @keyframes mask-up {
     100% {
       mask-size:
@@ -375,7 +368,6 @@
         100% 30px;
     }
   }
-  
   @keyframes mask-down {
     100% {
       mask-size:

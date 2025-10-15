@@ -17,24 +17,45 @@ export const ActivityPostList = () => {
       className="mt-8 flex flex-col gap-4 lg:mt-0"
       viewport={{ once: true }}
     >
-      <h2 className="text-2xl font-medium leading-loose">最近更新的文稿</h2>
+      <h2 className="text-2xl font-medium leading-loose">Awards and Certifications</h2>
       <ul className="shiro-timeline mt-4">
-        {[{
+        {[
+          {
             id: "1",
-            title: "234",
-            created: "2025-05-01 10:01:01",
+            title: "Professional Association of Diving Instructors - Open Water",
+            created: "2025-07-28 00:00:00",
+        },
+          {
+            id: "1",
+            title: "Japanese-Language Proficiency Test - N5",
+            created: "2025-01-10 00:00:00",
+        }
+          ,{
+            id: "1",
+            title: "AWS Certified Security – Specialty",
+            created: "2024-02-27 00:00:00",
+        },
+        {
+            id: "1",
+            title: "University of Washington - Annual Dean's List",
+            created: "2023-06-13 00:00:00",
         },
     {
             id: "2",
-            title: "234",
-            created: "2025-05-01 10:01:01",
+            title: "AWS Certified Solutions Architect – Associate",
+            created: "2022-07-27 00:00:00",
+        },
+          {
+            id: "3",
+            title: "AWS Certified Cloud Practitioner",
+            created: "2022-07-06 00:00:00",
         }].map((post) => {
           return (
             <li key={post.id} className="flex min-w-0 justify-between">
               <Link
                 prefetch
                 className="min-w-0 shrink truncate"
-                href={"5677"}
+                href={"#"}
               >
                 {post.title}
               </Link>

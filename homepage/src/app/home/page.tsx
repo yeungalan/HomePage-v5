@@ -13,6 +13,7 @@ import Image from 'next/image'
 import type * as React from 'react'
 import { createElement, useState } from 'react'
 import { Icon } from '@iconify/react';
+import { Timeline } from '@/components/Timeline'
 
 export default function Home() {
   return (
@@ -181,7 +182,7 @@ const ActivityScreen = () => {
         leftContainerClassName="[&>div]:w-full"
       >
         <ActivityPostList />
-        <ActivityPostList />
+        <Timeline />
       </TwoColumnLayout>
     </div>
   )

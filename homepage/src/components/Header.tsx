@@ -2,6 +2,8 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Types
 interface MenuItem {
@@ -99,24 +101,6 @@ const itemVariants = {
   })
 };
 
-// Custom hooks
-const usePathname = () => {
-  const [pathname, setPathname] = useState('/');
-  
-  useEffect(() => {
-    const handlePopState = () => {
-      setPathname(window.location.pathname);
-    };
-    
-    window.addEventListener('popstate', handlePopState);
-    setPathname(window.location.pathname);
-    
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-  
-  return pathname;
-};
-
 // Components
 const MenuPopover = ({ 
   children, 
@@ -203,7 +187,7 @@ const HeaderMenuItem = memo(({
   return (
     <MenuPopover subMenu={section.subMenu} forceDarkMode={forceDarkMode}>
       <div>
-        <a
+        <Link
           href={href}
           className={clsxm(
             'relative block whitespace-nowrap px-4 py-2 transition-colors duration-200',
@@ -242,11 +226,13 @@ const HeaderMenuItem = memo(({
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
             />
           )}
-        </a>
+        </Link>
       </div>
     </MenuPopover>
   );
 });
+
+HeaderMenuItem.displayName = 'HeaderMenuItem';
 
 const DesktopNav = ({ 
   hasShadow, 

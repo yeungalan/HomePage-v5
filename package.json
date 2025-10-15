@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@floating-ui/react-dom": "^2.1.6",
     "@types/d3-dsv": "^3.0.7",
     "calculator": "^0.1.12",
     "d3-dsv": "^3.0.1",

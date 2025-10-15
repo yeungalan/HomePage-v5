@@ -8,6 +8,7 @@ import { NeteaseCloudMusicIcon } from '@/components/icons/platform/NeteaseIcon'
 import { SteamIcon } from '@/components/icons/platform/SteamIcon'
 import { XIcon } from '@/components/icons/platform/XIcon'
 import { MotionButtonBase } from '@/components/MotionButtonBase'
+import { FloatPopover } from './FloatPopOver'
 
 interface SocialIconProps {
   type: string
@@ -118,21 +119,28 @@ export const SocialIcon = memo((props: SocialIconProps) => {
     : iconData()
 
   return (
-    <MotionButtonBase
-      className="center flex aspect-square size-10 rounded-full text-2xl text-white"
-      style={{
-        background: iconBg,
-      }}
+<FloatPopover
+      type="tooltip"
+      triggerElement={
+        <MotionButtonBase
+          className="center flex aspect-square size-10 rounded-full text-2xl text-white"
+          style={{
+            background: iconBg,
+          }}
+        >
+          <a
+            target="_blank"
+            href={href}
+            className="center flex"
+            rel="noreferrer"
+          >
+            {IconComponent}
+          </a>
+        </MotionButtonBase>
+      }
     >
-      <a
-        target="_blank"
-        href={href}
-        className="center flex"
-        rel="noreferrer"
-      >
-        {IconComponent}
-      </a>
-    </MotionButtonBase>
+      {name}
+    </FloatPopover>
   )
 })
 SocialIcon.displayName = 'SocialIcon'

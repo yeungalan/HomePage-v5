@@ -293,14 +293,22 @@ function FlightCalculator() {
 
 export default function TimelinePage() {
   const [time, setTime] = useState(new Date());
+  const [dateKey, setDateKey] = useState(new Date().toDateString());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(new Date());
+      const newTime = new Date();
+      setTime(newTime);
+      
+      // Update dateKey when the date changes (at midnight)
+      const newDateKey = newTime.toDateString();
+      if (newDateKey !== dateKey) {
+        setDateKey(newDateKey);
+      }
     }, 10); // Update every 10ms for fast running effect
 
     return () => clearInterval(timer);
-  }, []);
+  }, [dateKey]);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -310,9 +318,11 @@ export default function TimelinePage() {
   const utcMinutes = time.getUTCMinutes().toString().padStart(2, '0');
   const utcSeconds = time.getUTCSeconds().toString().padStart(2, '0');
 
-  // Calculate day of year
-  const startOfYear = new Date(time.getFullYear(), 0, 1);
-  const dayOfYear = Math.ceil((time - startOfYear) / (1000 * 60 * 60 * 24));
+  // Calculate day of year - recalculates when dateKey changes
+  const startOfYear = new Date(time.getFullYear(), 0, 0);
+  const diff = time - startOfYear;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
   
   // Calculate year progress (running number with more decimals)
   const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
@@ -352,7 +362,7 @@ export default function TimelinePage() {
         >
           <div className="flex justify-center items-center gap-4 mb-6">
             <motion.div
-              key={hours}
+              key={`hours-${hours}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -362,7 +372,7 @@ export default function TimelinePage() {
             </motion.div>
             <span className="text-8xl font-bold text-gray-400">:</span>
             <motion.div
-              key={minutes}
+              key={`minutes-${minutes}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -372,7 +382,7 @@ export default function TimelinePage() {
             </motion.div>
             <span className="text-8xl font-bold text-slate-500">:</span>
             <motion.div
-              key={seconds}
+              key={`seconds-${seconds}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}

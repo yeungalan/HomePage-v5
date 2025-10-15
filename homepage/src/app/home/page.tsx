@@ -76,18 +76,18 @@ const Hero = () => {
     
 
 const quotes = [
-  '當第一顆衛星飛向大氣層外，我們便以為自己終有一日會征服宇宙。',
-  '我們仰望星空，卻發現星空也在凝視著我們。',
-  '在無限的時間長河裡，生命只是一顆瞬間即逝的火花。',
-  '科技的盡頭不是征服，而是理解與和諧。',
-  '宇宙不欠我們任何解釋，我們卻欠宇宙一份敬畏。',
-  '文明如同漂流瓶，在黑暗的宇宙中尋找回音。',
-  '每個文明都是宇宙中孤獨的歌者，歌唱著只有自己能懂的旋律。',
-  '時間是最溫柔的刀，無聲無息地切割著一切存在。',
-  '我們探索未知，不是為了征服黑暗，而是為了點亮更多的燭光。',
-  '在宇宙的尺度面前，傲慢與謙卑都失去了意義。',
-  '真正的智慧不在於知道答案，而在於懂得提出正確的問題。',
-  '當我們終於理解宇宙的時候，或許宇宙也理解了我們。',
+  'When the first satellite flew beyond the atmosphere, we thought we would one day conquer the universe.',
+  'We gaze up at the stars, only to find the stars are gazing back at us.',
+  'In the infinite river of time, life is but a spark that vanishes in an instant.',
+  'The end of technology is not conquest, but understanding and harmony.',
+  'The universe owes us no explanation, yet we owe the universe our reverence.',
+  'Civilization is like a drifting bottle, seeking echoes in the dark universe.',
+  'Every civilization is a lonely singer in the cosmos, singing melodies only they can understand.',
+  'Time is the gentlest blade, silently cutting through all existence.',
+  'We explore the unknown not to conquer the darkness, but to light more candles.',
+  'Before the scale of the universe, both arrogance and humility lose their meaning.',
+  'True wisdom lies not in knowing the answers, but in knowing how to ask the right questions.',
+  'When we finally understand the universe, perhaps the universe will understand us too.',
 ];
 
 const [quoteIndex, setQuoteIndex] = useState(Math.floor(Math.random() * quotes.length));
@@ -105,9 +105,12 @@ const handleRefreshQuote = () => {
           <GiantGreetText/>
 
           <ul className="center mx-[60px] mt-8 flex flex-wrap gap-6 lg:mx-auto lg:mt-28 lg:justify-start lg:gap-4">
-            {Object.entries([["twitter", "yeungbluecat123"]]).map(
+            {Object.entries({
+  twitter: "yeungbluecat123",
+  github: "yeungalan",
+}).map(
               ([type, id]: any, index) => {
-                console.log(type);
+                console.log(type, id, index);
                 if (!isSupportIcon(type)) return null
                 return (
                   <BottomToUpTransitionView
@@ -116,7 +119,6 @@ const handleRefreshQuote = () => {
                     className="inline-block"
                     as="li"
                   >
-                    123
                     <SocialIcon id={id} type={type} />
                   </BottomToUpTransitionView>
                 )
@@ -131,7 +133,7 @@ const handleRefreshQuote = () => {
           <Image
             height={300}
             width={300}
-            src={""}
+            src={"https://avatar.iran.liara.run/public/1"}
             alt="Site Owner Avatar"
             className={clsxm(
               'aspect-square rounded-full border border-slate-200 dark:border-neutral-800',

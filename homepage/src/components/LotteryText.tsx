@@ -13,7 +13,7 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
   className = '',
   initialDelay = 0 
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(Math.floor(Math.random() * elements.length));
   const [isHovered, setIsHovered] = useState(false);
 
   const handleHover = () => {

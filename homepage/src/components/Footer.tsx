@@ -55,8 +55,8 @@ export const Footer = () => {
   return (
     <>
       <div className="center mt-28 flex flex-col">
-        <div className="my-5 text-2xl font-medium">风向标</div>
-        <div className="mb-24 opacity-90">去到别去看看？</div>
+        <div className="my-5 text-2xl font-medium">Quick links</div>
+        <div className="mb-24 opacity-90">Want to go somewhere else?</div>
         <ul className="flex flex-col flex-wrap gap-2 gap-y-8 opacity-80 lg:flex-row">
           {windsock.map((item, index) => {
             return (
@@ -102,28 +102,6 @@ export const Footer = () => {
             )
           })}
         </ul>
-      </div>
-
-      <div className="mt-24 flex justify-center gap-4">
-        <StyledButton
-          className="center flex gap-2 bg-red-400"
-          onClick={() => {
-          }}
-        >
-          喜欢本站 <i className="i-mingcute-heart-fill" />{' '}
-          <NumberSmoothTransition>
-            {1234 as any as string}
-          </NumberSmoothTransition>
-        </StyledButton>
-
-        <StyledButton
-          className="center flex gap-2"
-          onClick={() => {
-          }}
-        >
-          订阅
-          <i className="i-material-symbols-notifications-active" />
-        </StyledButton>
       </div>
     </>
   )

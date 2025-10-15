@@ -14,12 +14,14 @@ import type * as React from 'react'
 import { createElement, useState } from 'react'
 import { Icon } from '@iconify/react';
 import Timeline from '@/components/Timeline'
+import { Footer } from '@/components/Footer'
 
 export default function Home() {
   return (
     <div>
       <Hero />
       <ActivityScreen />
+       <Footer/>
     </div>
   )
 }

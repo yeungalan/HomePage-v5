@@ -185,7 +185,7 @@ const handleRefreshQuote = () => {
 
 const ActivityScreen = () => {
   return (
-    <div className="mt-24">
+    <div className="mt-24 px-4 sm:px-6 lg:px-0">
       <TwoColumnLayout
         rightContainerClassName="block lg:flex [&>div]:w-full pr-4"
         leftContainerClassName="[&>div]:w-full"

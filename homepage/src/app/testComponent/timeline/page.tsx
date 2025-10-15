@@ -8,8 +8,8 @@ import { createElement, useState, useEffect } from 'react'
 import {LotteryText} from "@/components/LotteryText";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Timeline } from "@/components/Timeline";
 import { ActivityPostList } from "@/components/ActivityPostList";
+import Timeline from "@/components/Timeline";
 
 export default function Page() {
 

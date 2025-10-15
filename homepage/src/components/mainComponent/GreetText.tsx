@@ -106,7 +106,7 @@ export default function GiantGreetText() {
           // Handle LotteryText component
           if (type === 'LotteryText') {
             return (
-              <span key={i} className="inline-block min-w-[400px]">
+              <span key={i} className="inline-block min-w-0 w-auto">
                 {createElement(
                   LotteryText,
                   { 

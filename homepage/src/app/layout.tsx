@@ -25,9 +25,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <Header forceDarkMode={true} />
+      <Header forceDarkMode={false} />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

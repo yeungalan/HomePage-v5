@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback, memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Icon } from '@iconify/react';
 
 // Types
 interface MenuItem {
@@ -24,54 +25,36 @@ interface HeaderProps {
 // Mock data
 const mockHeaderMenuConfig: MenuItem[] = [
   {
-    title: '首页',
-    path: '/home/',
-    icon: '🏠',
+    title: 'Home',
+    path: '/home',
+    icon: 'cbi:target',
     subMenu: [
       { path: '/header', title: '关于' },
       { path: '/contact', title: '联系' }
     ],
   },
   {
-    title: '文稿',
-    path: '/testComponent/world',
+    title: 'Places I visited',
+    path: '/world',
     subMenu: [
       { path: '/categories/tech', title: '技术' },
       { path: '/categories/life', title: '生活' }
     ],
-    icon: '📝',
+    icon: 'mdi:world',
   },
   {
-    title: '手记',
-    path: '/notes',
-    icon: '✍️',
+    title: 'Goals',
+    path: '/goals',
+    icon: 'mage:goals',
     exclude: ['/notes/topics'],
   },
   {
-    title: '时光',
-    icon: '⏰',
-    path: '/timeline',
-    subMenu: [
-      { title: '手记', icon: '✍️', path: '/timeline?type=note' },
-      { title: '文稿', icon: '📖', path: '/timeline?type=post' },
-      { title: '回忆', icon: '💭', path: '/timeline?memory=1' },
-      { title: '专栏', path: '/notes/topics', icon: '📚' },
-    ],
-  },
-  {
-    title: '友链',
-    icon: '👥',
-    path: '/friends',
-  },
-  {
-    title: '更多',
-    icon: '⚙️',
+    title: 'More',
+    icon: 'mingcute:settings-3-line',
     path: '#',
     subMenu: [
-      { title: '思考', icon: '💡', path: '/thinking' },
-      { title: '项目', icon: '🧪', path: '/projects' },
-      { title: '一言', path: '/says', icon: '💬' },
-      { title: '跃迁', icon: '🌍', path: 'https://travel.moe/go.html' },
+      { title: 'Projects', icon: 'mingcute:flask-line', path: '/projects' },
+      { title: 'Friends Link', icon: 'mingcute:earth-line', path: 'https://travel.moe/go.html' },
     ],
   },
 ];
@@ -199,7 +182,9 @@ const MenuPopover = ({
                 target={item.path.startsWith('http') ? '_blank' : undefined}
                 rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
               >
-                {item.icon && <span className="mr-2">{item.icon}</span>}
+                {item.icon && (
+                  <Icon icon={item.icon} className="text-base mr-2" />
+                )}
                 <span>{item.title}</span>
               </motion.a>
             ))}
@@ -245,7 +230,10 @@ const HeaderMenuItem = memo(({
                 transition={{ type: 'spring', stiffness: 500, damping: 25 }}
                 className="flex items-center"
               >
-                {subItemActive?.icon ?? section.icon}
+                <Icon 
+                  icon={subItemActive?.icon ?? section.icon} 
+                  className="text-base"
+                />
               </motion.span>
             )}
             <span>{subItemActive?.title ?? section.title}</span>

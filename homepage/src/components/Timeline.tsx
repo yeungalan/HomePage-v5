@@ -2,7 +2,8 @@
 
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import { useMemo } from 'react'
+import { useMemo, useRef, useEffect, useState } from 'react'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 import { ActivityCard } from './ActivityCard'
 
@@ -37,7 +38,7 @@ const experiences: Experience[] = [
   {
     id: '2',
     type: 'work',
-    title: 'Cloud Support Engineer I',
+    title: 'Cloud Engineer I',
     organization: 'AWS',
     startDate: 'Sept 2023',
     endDate: 'Sept 2024',
@@ -52,7 +53,7 @@ const experiences: Experience[] = [
     endDate: 'June 2023',
     icon: 'mdi:school'
   },
-  {
+    {
     id: '4',
     type: 'milestone',
     title: 'Moved to America',
@@ -81,6 +82,34 @@ const experiences: Experience[] = [
 const isLoading = false
 
 export default function Timeline() {
+  const leftSideRef = useRef<HTMLDivElement>(null)
+  const [leftSideHeight, setLeftSideHeight] = useState(0)
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (leftSideRef.current) {
+        const awardsSection = document.querySelector('.shiro-timeline')?.parentElement
+        if (awardsSection) {
+          setLeftSideHeight(awardsSection.clientHeight)
+        }
+      }
+    }
+
+    updateHeight()
+    window.addEventListener('resize', updateHeight)
+    
+    // Use MutationObserver to detect when the left side content loads
+    const observer = new MutationObserver(updateHeight)
+    if (leftSideRef.current) {
+      observer.observe(document.body, { childList: true, subtree: true })
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateHeight)
+      observer.disconnect()
+    }
+  }, [])
+
   const flatData = useMemo(() => {
     return [...experiences].sort((a, b) => {
       const dateA = a.endDate === 'Present' ? '9999' : a.endDate
@@ -91,13 +120,14 @@ export default function Timeline() {
 
   return (
     <motion.div
+      ref={leftSideRef}
       initial={{ opacity: 0.0001, y: 50 }}
       transition={softBouncePreset}
-      className="mt-8 w-full text-lg lg:mt-0 max-w-3xl"
+      className="flex flex-col gap-4 mt-8 w-full text-lg lg:mt-0 max-w-3xl"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      <motion.h2 className="mb-12 text-3xl font-medium">
+      <motion.h2 className="text-2xl font-medium leading-loose">
         Experience
       </motion.h2>
 
@@ -120,38 +150,49 @@ export default function Timeline() {
           </ul>
         </div>
       ) : (
-        <div className="relative">
-          {/* Timeline line - positioned to go through the center of the icons */}
-          <div 
-            className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-pink-300 via-pink-200 to-pink-100 dark:from-pink-700 dark:via-pink-800 dark:to-pink-900" 
-            style={{ height: 'calc(100% - 60px)' }}
-          />
-          
-          <ul className="flex flex-col relative">
-            {flatData.map((activity, index) => {
-              return (
-                <motion.li
-                  key={`${activity.type}-${activity.id}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1, ...softBouncePreset }}
-                  viewport={{ once: true }}
-                  className="flex min-w-0 relative"
-                >
-                  <ActivityCard
-                    type={activity.type}
-                    title={activity.title}
-                    organization={activity.organization}
-                    startDate={activity.startDate}
-                    endDate={activity.endDate}
-                    icon={activity.icon}
-                    isOngoing={activity.isOngoing}
-                  />
-                </motion.li>
-              )
-            })}
-          </ul>
-        </div>
+        <ScrollArea.Root className="relative overflow-hidden" style={{ height: leftSideHeight > 0 ? `${leftSideHeight}px` : 'auto' }}>
+          <ScrollArea.Viewport className="w-full h-full">
+            <div className="relative">
+              {/* Timeline line - positioned to go through the center of the icons */}
+              <div 
+                className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-pink-300 via-pink-200 to-pink-100 dark:from-pink-700 dark:via-pink-800 dark:to-pink-900" 
+                style={{ height: 'calc(100% - 60px)' }}
+              />
+              
+              <ul className="flex flex-col relative">
+                {flatData.map((activity, index) => {
+                  return (
+                    <motion.li
+                      key={`${activity.type}-${activity.id}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1, ...softBouncePreset }}
+                      viewport={{ once: true }}
+                      className="flex min-w-0 relative"
+                    >
+                      <ActivityCard
+                        type={activity.type}
+                        title={activity.title}
+                        organization={activity.organization}
+                        startDate={activity.startDate}
+                        endDate={activity.endDate}
+                        icon={activity.icon}
+                        isOngoing={activity.isOngoing}
+                      />
+                    </motion.li>
+                  )
+                })}
+              </ul>
+            </div>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar
+            className="flex select-none touch-none p-0.5 bg-transparent transition-colors duration-150 ease-out hover:bg-gray-100 dark:hover:bg-gray-800 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2.5"
+            orientation="vertical"
+          >
+            <ScrollArea.Thumb className="flex-1 bg-gray-400 dark:bg-gray-600 rounded-[10px] relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+          </ScrollArea.Scrollbar>
+          <ScrollArea.Corner className="bg-transparent" />
+        </ScrollArea.Root>
       )}
     </motion.div>
   )

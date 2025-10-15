@@ -15,6 +15,7 @@ import { createElement, useState } from 'react'
 import { Icon } from '@iconify/react';
 import Timeline from '@/components/Timeline'
 import { Footer } from '@/components/Footer'
+import { RealFooter } from '@/components/FooterLinks'
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Hero />
       <ActivityScreen />
        <Footer/>
+       <RealFooter/>
     </div>
   )
 }

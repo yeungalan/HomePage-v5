@@ -3,6 +3,264 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 
+// Flight Calculator Component
+function FlightCalculator() {
+  const [srcCode, setSrcCode] = useState('');
+  const [dstCode, setDstCode] = useState('');
+  const [srcAirport, setSrcAirport] = useState(null);
+  const [dstAirport, setDstAirport] = useState(null);
+  const [distance, setDistance] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isFlying, setIsFlying] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  // Haversine formula to calculate distance between two coordinates
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
+
+  // Fetch airport data
+  const fetchAirportData = async (code) => {
+    try {
+      const response = await fetch('/airports.dat');
+      const text = await response.text();
+      const lines = text.split('\n');
+      
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length >= 8) {
+          const iataCode = parts[4]?.replace(/"/g, '');
+          if (iataCode === code.toUpperCase()) {
+            return {
+              name: parts[1]?.replace(/"/g, ''),
+              city: parts[2]?.replace(/"/g, ''),
+              country: parts[3]?.replace(/"/g, ''),
+              iata: iataCode,
+              lat: parseFloat(parts[6]),
+              lon: parseFloat(parts[7])
+            };
+          }
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching airport data:', error);
+      return null;
+    }
+  };
+
+  // Handle source airport input
+  const handleSrcChange = async (e) => {
+    const code = e.target.value.toUpperCase();
+    setSrcCode(code);
+    
+    if (code.length === 3) {
+      const airport = await fetchAirportData(code);
+      setSrcAirport(airport);
+    } else {
+      setSrcAirport(null);
+    }
+  };
+
+  // Handle destination airport input
+  const handleDstChange = async (e) => {
+    const code = e.target.value.toUpperCase();
+    setDstCode(code);
+    
+    if (code.length === 3) {
+      const airport = await fetchAirportData(code);
+      setDstAirport(airport);
+    } else {
+      setDstAirport(null);
+    }
+  };
+
+  // Calculate distance and duration when both airports are set
+  useEffect(() => {
+    if (srcAirport && dstAirport) {
+      const dist = calculateDistance(
+        srcAirport.lat, srcAirport.lon,
+        dstAirport.lat, dstAirport.lon
+      );
+      setDistance(dist);
+      setDuration(dist / 900); // 900 km/h, duration in hours
+      setProgress(0);
+      setElapsedTime(0);
+      setIsFlying(true);
+    } else {
+      setIsFlying(false);
+      setProgress(0);
+      setElapsedTime(0);
+    }
+  }, [srcAirport, dstAirport]);
+
+  // Animate progress bar based on actual time
+  useEffect(() => {
+    if (!isFlying || duration === 0) return;
+
+    const startTime = Date.now();
+    const durationMs = duration * 3600 * 1000; // Convert hours to milliseconds
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const elapsedSeconds = elapsed / 1000;
+      const newProgress = Math.min((elapsed / durationMs) * 100, 100);
+      
+      setProgress(newProgress);
+      setElapsedTime(elapsedSeconds);
+
+      if (newProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isFlying, duration]);
+
+  const isCompleted = progress >= 100;
+
+  // Format elapsed time to HH:MM:SS
+  const formatElapsedTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+      className="bg-gradient-to-br from-sky-100/80 to-blue-100/80 rounded-2xl p-8 border border-sky-200 shadow-lg"
+    >
+      <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-900">
+        <Icon icon="mdi:airplane" className="text-4xl" />
+        <span>Flight Distance</span>
+      </h2>
+
+      {/* Airport Input Fields */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            From (IATA Code)
+          </label>
+          <input
+            type="text"
+            value={srcCode}
+            onChange={handleSrcChange}
+            maxLength={3}
+            placeholder="e.g., JFK"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono uppercase"
+          />
+          {srcAirport && (
+            <p className="text-sm text-gray-600 mt-2">
+              {srcAirport.name}, {srcAirport.city}
+            </p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            To (IATA Code)
+          </label>
+          <input
+            type="text"
+            value={dstCode}
+            onChange={handleDstChange}
+            maxLength={3}
+            placeholder="e.g., LAX"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono uppercase"
+          />
+          {dstAirport && (
+            <p className="text-sm text-gray-600 mt-2">
+              {dstAirport.name}, {dstAirport.city}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Flight Progress Bar */}
+      {isFlying && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="bg-white/70 rounded-xl p-6"
+        >
+          {/* Progress Bar Container */}
+          <div className="relative mb-8">
+            {/* Progress Bar */}
+            <div className="relative h-3 bg-gray-200 rounded-full overflow-visible">
+              <motion.div
+                className={`absolute top-0 left-0 h-full rounded-full ${
+                  isCompleted 
+                    ? 'bg-gradient-to-r from-green-400 to-green-600' 
+                    : 'bg-gradient-to-r from-blue-400 to-blue-600'
+                }`}
+                style={{ width: `${progress}%` }}
+                transition={{ duration: 0.1, ease: "linear" }}
+              />
+            </div>
+            
+            {/* Airplane Icon - Centered with white background for clearance */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white rounded-full px-2 py-1 shadow-md">
+              <Icon 
+                icon="mdi:airplane" 
+                className={`text-4xl ${
+                  isCompleted ? 'text-green-600' : 'text-blue-600'
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Completion Status */}
+          {isCompleted && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center justify-center gap-2 mb-4 text-green-600 font-semibold text-lg"
+            >
+              <Icon icon="mdi:check-circle" className="text-2xl" />
+              <span>Completed</span>
+            </motion.div>
+          )}
+
+          {/* Flight Info */}
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Distance</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {distance.toFixed(0)} km
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Est. Duration</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {Math.floor(duration)}h {Math.round((duration % 1) * 60)}m
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Elapsed Time</p>
+              <p className="text-2xl font-bold text-blue-600 font-mono">
+                {formatElapsedTime(elapsedTime)}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+}
+
 export default function TimelinePage() {
   const [time, setTime] = useState(new Date());
 
@@ -128,6 +386,9 @@ export default function TimelinePage() {
             </p>
           </div>
         </motion.div>
+
+        {/* Flight Distance Calculator */}
+        <FlightCalculator />
 
         {/* Message */}
         <motion.div

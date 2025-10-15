@@ -1,16 +1,15 @@
 "use client"
+import dynamic from 'next/dynamic';
 
-import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
-import { TextUpTransitionView } from "@/components/TextUpTransitionView";
-import WorldMap from "@/components/World";
-import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
+const WorldMap = dynamic(() => import('@/components/World'), {
+  ssr: false,
+  loading: () => <div>Loading map...</div> // Optional loading component
+});
 
 export default function Page() {
-
-    return (
-        <div className="min-w-screen bg-green">
-          <WorldMap/>
-        </div>
-    )
+  return (
+    <div className="min-w-screen bg-green">
+      <WorldMap/>
+    </div>
+  )
 }

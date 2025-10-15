@@ -250,9 +250,28 @@ function FlightCalculator() {
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">Elapsed Time</p>
-              <p className="text-2xl font-bold text-blue-600 font-mono">
-                {formatElapsedTime(elapsedTime)}
-              </p>
+              <div className="flex justify-center gap-1">
+                {formatElapsedTime(elapsedTime).split('').map((char, index) => (
+                  <motion.span
+                    key={`${index}-${char}`}
+                    initial={{ rotateX: -90, opacity: 0 }}
+                    animate={{ rotateX: 0, opacity: 1 }}
+                    transition={{ 
+                      duration: 0.6,
+                      ease: "easeOut"
+                    }}
+                    className={`text-2xl font-bold font-mono inline-block ${
+                      char === ':' ? 'text-gray-400' : 'text-blue-600'
+                    }`}
+                    style={{
+                      transformOrigin: 'center',
+                      perspective: '1000px'
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>

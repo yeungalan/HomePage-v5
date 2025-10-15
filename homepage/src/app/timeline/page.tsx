@@ -9,11 +9,13 @@ import {LotteryText} from "@/components/LotteryText";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Timeline } from "@/components/Timeline";
+import { ActivityPostList } from "@/components/ActivityPostList";
 
 export default function Page() {
 
     return (
-        <div className="min-w-screen bg-green">
+        <div className="w-[500px] pl-[50px]">
+         <ActivityPostList/>
          <Timeline/>
         </div>
     )

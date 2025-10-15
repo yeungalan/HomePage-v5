@@ -17,6 +17,10 @@ interface SubMenuItem {
   icon?: string;
 }
 
+interface HeaderProps {
+  forceDarkMode?: boolean;
+}
+
 // Mock data
 const mockHeaderMenuConfig: MenuItem[] = [
   {
@@ -139,7 +143,15 @@ const usePathname = () => {
 };
 
 // Components
-const MenuPopover = ({ children, subMenu }: { children: React.ReactNode; subMenu?: SubMenuItem[] }) => {
+const MenuPopover = ({ 
+  children, 
+  subMenu, 
+  forceDarkMode 
+}: { 
+  children: React.ReactNode; 
+  subMenu?: SubMenuItem[];
+  forceDarkMode?: boolean;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!subMenu || subMenu.length === 0) {
@@ -162,10 +174,11 @@ const MenuPopover = ({ children, subMenu }: { children: React.ReactNode; subMenu
             exit="exit"
             className={clsxm(
               'absolute top-full left-0 mt-2 py-2 min-w-[200px] z-[99]',
-              'rounded-xl bg-white/80 dark:bg-neutral-900/80',
-              'border border-zinc-900/5 shadow-lg shadow-zinc-800/5 backdrop-blur-md',
-              'dark:border-zinc-100/10',
-              'focus-visible:ring-0 outline-none'
+              'rounded-xl backdrop-blur-md',
+              'border shadow-lg focus-visible:ring-0 outline-none',
+              forceDarkMode
+                ? 'bg-[#1d1d1f]/90 border-zinc-100/10 shadow-zinc-950/50'
+                : 'bg-white/80 dark:bg-neutral-900/80 border-zinc-900/5 shadow-zinc-800/5 dark:border-zinc-100/10'
             )}
           >
             {subMenu.map((item, index) => (
@@ -178,10 +191,10 @@ const MenuPopover = ({ children, subMenu }: { children: React.ReactNode; subMenu
                 href={item.path}
                 className={clsxm(
                   'flex items-center px-4 py-3 text-sm',
-                  'text-gray-700 dark:text-gray-300',
-                  'hover:bg-blue-500/5 hover:text-blue-500',
-                  'transition-colors duration-200',
-                  'relative'
+                  'transition-colors duration-200 relative',
+                  forceDarkMode
+                    ? 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-blue-500/5 hover:text-blue-500'
                 )}
                 target={item.path.startsWith('http') ? '_blank' : undefined}
                 rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
@@ -200,22 +213,26 @@ const MenuPopover = ({ children, subMenu }: { children: React.ReactNode; subMenu
 const HeaderMenuItem = memo(({ 
   section, 
   isActive, 
-  subItemActive 
+  subItemActive,
+  forceDarkMode
 }: { 
   section: MenuItem; 
   isActive: boolean; 
-  subItemActive?: SubMenuItem 
+  subItemActive?: SubMenuItem;
+  forceDarkMode?: boolean;
 }) => {
   const href = section.path;
 
   return (
-    <MenuPopover subMenu={section.subMenu}>
+    <MenuPopover subMenu={section.subMenu} forceDarkMode={forceDarkMode}>
       <div>
         <a
           href={href}
           className={clsxm(
             'relative block whitespace-nowrap px-4 py-2 transition-colors duration-200',
-            isActive ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300 hover:text-blue-500/80'
+            forceDarkMode
+              ? isActive ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400/80'
+              : isActive ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300 hover:text-blue-500/80'
           )}
           target={href.startsWith('http') ? '_blank' : undefined}
           rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
@@ -236,7 +253,12 @@ const HeaderMenuItem = memo(({
           {isActive && (
             <motion.span 
               layoutId="activeIndicator"
-              className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-blue-500/0 via-blue-500/70 to-blue-500/0"
+              className={clsxm(
+                'absolute inset-x-1 -bottom-px h-px',
+                forceDarkMode
+                  ? 'bg-gradient-to-r from-blue-400/0 via-blue-400/70 to-blue-400/0'
+                  : 'bg-gradient-to-r from-blue-500/0 via-blue-500/70 to-blue-500/0'
+              )}
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
             />
           )}
@@ -246,7 +268,13 @@ const HeaderMenuItem = memo(({
   );
 });
 
-const DesktopNav = ({ hasShadow }: { hasShadow: boolean }) => {
+const DesktopNav = ({ 
+  hasShadow, 
+  forceDarkMode 
+}: { 
+  hasShadow: boolean;
+  forceDarkMode?: boolean;
+}) => {
   const pathname = usePathname();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -266,20 +294,32 @@ const DesktopNav = ({ hasShadow }: { hasShadow: boolean }) => {
       onMouseMove={handleMouseMove}
       className={clsxm(
         'relative rounded-full transition-all duration-200',
-        'bg-gradient-to-b from-zinc-50/70 to-white/90',
-        'backdrop-blur-md',
-        hasShadow ? '' : 'ring-1 ring-zinc-900/5 dark:ring-zinc-100/10 shadow-lg shadow-zinc-800/5',
-        'dark:from-zinc-900/70 dark:to-zinc-800/90',
-        'group pointer-events-auto',
+        'backdrop-blur-md group pointer-events-auto',
+        forceDarkMode
+          ? 'bg-[#1d1d1f]/90'
+          : 'bg-gradient-to-b from-zinc-50/70 to-white/90 dark:from-zinc-900/70 dark:to-zinc-800/90',
+        hasShadow ? '' : 'ring-1 shadow-lg',
+        forceDarkMode
+          ? 'ring-zinc-100/10 shadow-zinc-950/50'
+          : 'ring-zinc-900/5 dark:ring-zinc-100/10 shadow-zinc-800/5'
       )}
     >
       <motion.div
         className="spotlight pointer-events-none absolute -inset-px rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(200px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.12) 0%, transparent 65%)`,
+          background: `radial-gradient(200px circle at ${mousePos.x}px ${mousePos.y}px, ${
+            forceDarkMode 
+              ? 'rgba(59, 130, 246, 0.15)' 
+              : 'rgba(59, 130, 246, 0.12)'
+          } 0%, transparent 65%)`,
         }}
       />
-      <div className="flex px-4 font-medium text-zinc-800 dark:text-zinc-200">
+      <div className={clsxm(
+        'flex px-4 font-medium',
+        forceDarkMode
+          ? 'text-zinc-200'
+          : 'text-zinc-800 dark:text-zinc-200'
+      )}>
         {mockHeaderMenuConfig.map((section) => {
           const subItemActive = section.subMenu?.find(item => 
             item.path === pathname || pathname.slice(1) === item.path
@@ -296,6 +336,7 @@ const DesktopNav = ({ hasShadow }: { hasShadow: boolean }) => {
               key={section.path}
               subItemActive={subItemActive}
               isActive={isActive}
+              forceDarkMode={forceDarkMode}
             />
           );
         })}
@@ -305,7 +346,7 @@ const DesktopNav = ({ hasShadow }: { hasShadow: boolean }) => {
 };
 
 // Main Header Component
-export default function Header() {
+export default function Header({ forceDarkMode = false }: HeaderProps) {
   const [hasShadow, setHasShadow] = useState(false);
 
   useEffect(() => {
@@ -321,11 +362,17 @@ export default function Header() {
   return (
     <header className={clsxm(
       'fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-200',
-      'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md',
-      hasShadow && 'shadow-sm border-b border-zinc-900/5 dark:border-zinc-100/10'
+      'backdrop-blur-md',
+      forceDarkMode
+        ? 'bg-[#1d1d1f]/60'
+        : 'bg-white/60 dark:bg-zinc-900/60',
+      hasShadow && 'shadow-sm border-b',
+      forceDarkMode
+        ? 'border-zinc-100/10'
+        : 'border-zinc-900/5 dark:border-zinc-100/10'
     )}>      
       <div className="relative mx-auto flex items-center justify-center h-full max-w-7xl px-8">
-        <DesktopNav hasShadow={hasShadow} />
+        <DesktopNav hasShadow={hasShadow} forceDarkMode={forceDarkMode} />
       </div>
     </header>
   );

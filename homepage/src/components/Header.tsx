@@ -21,7 +21,7 @@ interface SubMenuItem {
 const mockHeaderMenuConfig: MenuItem[] = [
   {
     title: '首页',
-    path: '/',
+    path: '/home/',
     icon: '🏠',
     subMenu: [
       { path: '/header', title: '关于' },
@@ -30,7 +30,7 @@ const mockHeaderMenuConfig: MenuItem[] = [
   },
   {
     title: '文稿',
-    path: '/posts',
+    path: '/testComponent/world',
     subMenu: [
       { path: '/categories/tech', title: '技术' },
       { path: '/categories/life', title: '生活' }
@@ -246,7 +246,7 @@ const HeaderMenuItem = memo(({
   );
 });
 
-const DesktopNav = () => {
+const DesktopNav = ({ hasShadow }: { hasShadow: boolean }) => {
   const pathname = usePathname();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -267,8 +267,9 @@ const DesktopNav = () => {
       className={clsxm(
         'relative rounded-full transition-all duration-200',
         'bg-gradient-to-b from-zinc-50/70 to-white/90',
-        'shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md',
-        'dark:from-zinc-900/70 dark:to-zinc-800/90 dark:ring-zinc-100/10',
+        'backdrop-blur-md',
+        hasShadow ? '' : 'ring-1 ring-zinc-900/5 dark:ring-zinc-100/10 shadow-lg shadow-zinc-800/5',
+        'dark:from-zinc-900/70 dark:to-zinc-800/90',
         'group pointer-events-auto',
       )}
     >
@@ -319,11 +320,12 @@ export default function Header() {
 
   return (
     <header className={clsxm(
-      'fixed top-0 left-0 right-0 z-50 h-16 transition-shadow duration-200',
-      hasShadow && 'shadow-sm'
+      'fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-200',
+      'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md',
+      hasShadow && 'shadow-sm border-b border-zinc-900/5 dark:border-zinc-100/10'
     )}>      
       <div className="relative mx-auto flex items-center justify-center h-full max-w-7xl px-8">
-        <DesktopNav />
+        <DesktopNav hasShadow={hasShadow} />
       </div>
     </header>
   );

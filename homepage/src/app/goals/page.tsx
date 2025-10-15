@@ -3,12 +3,21 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 
+interface Airport {
+  name: string;
+  city: string;
+  country: string;
+  iata: string;
+  lat: number;
+  lon: number;
+}
+
 // Flight Calculator Component
 function FlightCalculator() {
   const [srcCode, setSrcCode] = useState('');
   const [dstCode, setDstCode] = useState('');
-  const [srcAirport, setSrcAirport] = useState(null);
-  const [dstAirport, setDstAirport] = useState(null);
+  const [srcAirport, setSrcAirport] = useState<Airport | null>(null);
+  const [dstAirport, setDstAirport] = useState<Airport | null>(null);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -16,7 +25,7 @@ function FlightCalculator() {
   const [elapsedTime, setElapsedTime] = useState(0);
 
   // Haversine formula to calculate distance between two coordinates
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // Earth's radius in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -29,7 +38,7 @@ function FlightCalculator() {
   };
 
   // Fetch airport data
-  const fetchAirportData = async (code) => {
+  const fetchAirportData = async (code: string) => {
     try {
       const response = await fetch('/airports.dat');
       const text = await response.text();
@@ -59,7 +68,7 @@ function FlightCalculator() {
   };
 
   // Handle source airport input
-  const handleSrcChange = async (e) => {
+  const handleSrcChange = async (e: { target: { value: string; }; }) => {
     const code = e.target.value.toUpperCase();
     setSrcCode(code);
     
@@ -72,7 +81,7 @@ function FlightCalculator() {
   };
 
   // Handle destination airport input
-  const handleDstChange = async (e) => {
+  const handleDstChange = async (e: { target: { value: string; }; }) => {
     const code = e.target.value.toUpperCase();
     setDstCode(code);
     
@@ -129,7 +138,7 @@ function FlightCalculator() {
   const isCompleted = progress >= 100;
 
   // Format elapsed time to HH:MM:SS
-  const formatElapsedTime = (seconds) => {
+  const formatElapsedTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
@@ -320,23 +329,23 @@ export default function TimelinePage() {
 
   // Calculate day of year - recalculates when dateKey changes
   const startOfYear = new Date(time.getFullYear(), 0, 0);
-  const diff = time - startOfYear;
+  const diff = +time - (+startOfYear);
   const oneDay = 1000 * 60 * 60 * 24;
   const dayOfYear = Math.floor(diff / oneDay);
   
   // Calculate year progress (running number with more decimals)
-  const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  const isLeapYear = (year: number) => (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
   const daysInYear = isLeapYear(time.getFullYear()) ? 366 : 365;
   const daysLeft = daysInYear - dayOfYear;
   
   // Year progress as running number
   const msInYear = daysInYear * 24 * 60 * 60 * 1000;
-  const msSinceYearStart = time - startOfYear;
+  const msSinceYearStart = +time - (+startOfYear);
   const yearProgress = ((msSinceYearStart / msInYear) * 100).toFixed(6);
   
   // Today progress as running number
   const startOfDay = new Date(time.getFullYear(), time.getMonth(), time.getDate());
-  const elapsedMs = time - startOfDay;
+  const elapsedMs = +time - (+startOfDay);
   const totalDayMs = 24 * 60 * 60 * 1000;
   const todayProgress = ((elapsedMs / totalDayMs) * 100).toFixed(6);
 

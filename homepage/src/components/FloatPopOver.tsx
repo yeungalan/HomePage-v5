@@ -1,3 +1,4 @@
+import { microReboundPreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
 import { useFloating, autoUpdate, flip, offset, shift  } from '@floating-ui/react-dom';
 import { AnimatePresence, motion } from 'motion/react';
@@ -34,22 +35,15 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
           return isClient
         }
 
-        // Extracted spring preset
-        const microReboundPreset = {
-          type: 'spring',
-          stiffness: 300,
-          damping: 20,
-        }
-
         // Extracted click away hook
-        const useClickAway = (ref, onClickAway, events = ['mousedown', 'touchstart']) => {
+        const useClickAway = (ref: any, onClickAway: any, events = ['mousedown', 'touchstart']) => {
           const savedCallback = useRef(onClickAway)
           useEffect(() => {
             savedCallback.current = onClickAway
           }, [onClickAway])
           
           useEffect(() => {
-            const handler = (event) => {
+            const handler = (event: { target: any; }) => {
               const { current: el } = ref
               el &&
                 !el.contains(event.target) &&
@@ -67,17 +61,17 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
         }
 
         // Extracted event callback hook
-        const useEventCallback = (fn) => {
+        const useEventCallback = (fn: any) => {
           const ref = useRef(fn)
           useEffect(() => {
             ref.current = fn
           }, [fn])
 
-          return useCallback((...args) => ref.current(...args), [])
+          return useCallback((...args: any) => ref.current(...args), [])
         }
 
         // Simple portal component (replaces RootPortal)
-        const RootPortal = (props) => {
+        const RootPortal = (props: { children: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; to: any; }) => {
           const isClient = useIsClient()
           if (!isClient) {
             return null
@@ -110,7 +104,7 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
         const usePopoverAction = () => useContext(PopoverActionContext)
 
         // Main FloatPopover component
-        export const FloatPopover = (props) => {
+        export const FloatPopover = (props: { mobileAsSheet?: any; children?: any; sheet?: any; triggerElement?: any; TriggerComponent?: any; triggerComponentProps?: any; }) => {
           const isMobile = useIsMobile()
           if (isMobile && props.mobileAsSheet) {
             const { triggerElement, TriggerComponent, triggerComponentProps } = props
@@ -130,7 +124,7 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
           return <RealFloatPopover {...props} />
         }
 
-        const RealFloatPopover = (props) => {
+        const RealFloatPopover = (props: { [x: string]: any; children?: any; headless?: any; wrapperClassName?: any; TriggerComponent?: any; triggerElement?: any; trigger?: any; padding?: any; offset?: any; popoverWrapperClassNames?: any; popoverClassNames?: any; debug?: any; animate?: any; as?: any; type?: any; triggerComponentProps?: any; isDisabled?: any; onOpen?: any; onClose?: any; to?: any; asChild?: any; }) => {
           const {
             headless = false,
             wrapperClassName: wrapperClassNames,

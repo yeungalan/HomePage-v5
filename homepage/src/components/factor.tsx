@@ -14,6 +14,7 @@ import { isHydrationEnded } from '@/components/common/HydrationEndDetector'
 import { microReboundPreset } from '@/constants/spring'
 
 import type { BaseTransitionProps } from './typings'
+import { useRef } from 'react'
 
 interface TransitionViewParams {
   from: TargetAndTransition
@@ -78,8 +79,10 @@ export const createTransitionView = (params: TransitionViewParams) => {
       delete motionProps.animate
     }
 
+    const rref = useRef<HTMLDivElement>(null);
+
     return (
-      <motion.div ref={ref} {...motionProps} {...rest}>
+      <motion.div ref={rref} {...motionProps} {...rest}>
         {props.children}
       </motion.div>
     )

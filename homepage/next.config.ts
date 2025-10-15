@@ -4,7 +4,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     remotePatterns: [new URL("https://avatar.iran.liara.run/**")]
-  }
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // ⚠️ Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

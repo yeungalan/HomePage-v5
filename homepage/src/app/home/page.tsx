@@ -12,7 +12,7 @@ import { m, motion } from 'motion/react'
 import Image from 'next/image'
 import type * as React from 'react'
 import { createElement, useState } from 'react'
-
+import { Icon } from '@iconify/react';
 
 export default function Home() {
   return (
@@ -69,16 +69,27 @@ const Hero = () => {
       return acc + (cur.text?.length || 0)
     }, 0) * 50;
     
-const [quoteIndex, setQuoteIndex] = useState(0);
 
 const quotes = [
-  '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。',
-  '我们仰望星空，却发现星空也在凝视着我们。',
-  '在无限的时间长河里，生命只是一颗瞬间即逝的火花。',
-  '科技的尽头不是征服，而是理解与和谐。',
+  '當第一顆衛星飛向大氣層外，我們便以為自己終有一日會征服宇宙。',
+  '我們仰望星空，卻發現星空也在凝視著我們。',
+  '在無限的時間長河裡，生命只是一顆瞬間即逝的火花。',
+  '科技的盡頭不是征服，而是理解與和諧。',
+  '宇宙不欠我們任何解釋，我們卻欠宇宙一份敬畏。',
+  '文明如同漂流瓶，在黑暗的宇宙中尋找回音。',
+  '每個文明都是宇宙中孤獨的歌者，歌唱著只有自己能懂的旋律。',
+  '時間是最溫柔的刀，無聲無息地切割著一切存在。',
+  '我們探索未知，不是為了征服黑暗，而是為了點亮更多的燭光。',
+  '在宇宙的尺度面前，傲慢與謙卑都失去了意義。',
+  '真正的智慧不在於知道答案，而在於懂得提出正確的問題。',
+  '當我們終於理解宇宙的時候，或許宇宙也理解了我們。',
 ];
 
+const [quoteIndex, setQuoteIndex] = useState(0);
+const [hasChanged, setHasChanged] = useState(false);
+
 const handleRefreshQuote = () => {
+  setHasChanged(true);
   setQuoteIndex((prev) => (prev + 1) % quotes.length);
 };
 
@@ -122,7 +133,6 @@ const handleRefreshQuote = () => {
         </div>
 
 <motion.div
-  key={quoteIndex} // Add key for re-animation on quote change
   initial={{ opacity: 0.0001, y: 50 }}
   animate={{ opacity: 1, y: 0 }}
   transition={softBouncePreset}
@@ -132,19 +142,29 @@ const handleRefreshQuote = () => {
   )}
 >
   <div className="flex items-center gap-3">
-    <small className="text-center">
+    <motion.small
+      key={quoteIndex}
+      initial={hasChanged ? { opacity: 0, scaleY: 0, scaleX: 1.2 } : { opacity: 1, scaleY: 1, scaleX: 1 }}
+      animate={{ opacity: 1, scaleY: 1, scaleX: 1 }}
+      transition={{
+        duration: hasChanged ? 0.4 : 0,
+        ease: [0.34, 1.56, 0.64, 1],
+      }}
+      className="text-center origin-center"
+    >
       {quotes[quoteIndex]}
-    </small>
+    </motion.small>
     <button
       onClick={handleRefreshQuote}
       className="shrink-0 rounded-full p-1.5 transition-colors hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50"
       aria-label="换一句"
     >
-      <i className="i-mingcute-refresh-1-line text-lg" />
+      <Icon icon="mingcute:refresh-1-line" className="text-xs" />
     </button>
   </div>
   <span className="mt-8 animate-bounce">
-    <i className="i-mingcute-right-line rotate-90 text-2xl" />
+          <Icon icon="mingcute:right-line" className="rotate-90 text-2xl" />
+
   </span>
 </motion.div>
 

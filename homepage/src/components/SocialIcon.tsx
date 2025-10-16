@@ -38,6 +38,12 @@ const iconSet: Record<
     '#0088cc',
     (id) => `https://t.me/${id}`,
   ],
+  linkedin: [
+    'Linkedin',
+    'mingcute:linkedin-line',
+    '#0088cc',
+    (id) => `https://t.me/${id}`,
+  ],
   mail: [
     'Email',
     'mingcute:mail-line',

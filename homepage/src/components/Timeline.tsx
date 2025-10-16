@@ -42,7 +42,7 @@ const experiences: Experience[] = [
     organization: 'AWS',
     startDate: 'Sept 2023',
     endDate: 'Sept 2024',
-    icon: 'mdi:cloud-check'
+    icon: 'mdi:aws'
   },
   {
     id: '3',
@@ -67,7 +67,7 @@ const experiences: Experience[] = [
     title: 'imuslab',
     startDate: '2018',
     endDate: '2023',
-    icon: 'mdi:flask'
+    icon: 'mdi:office-building'
   },
   {
     id: '6',

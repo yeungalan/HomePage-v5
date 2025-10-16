@@ -108,6 +108,7 @@ const handleRefreshQuote = () => {
             {Object.entries({
   twitter: "yeungbluecat123",
   github: "yeungalan",
+  linkedin: "yeungalan",
 }).map(
               ([type, id]: any, index) => {
                 console.log(type, id, index);
@@ -151,6 +152,7 @@ const handleRefreshQuote = () => {
     'center text-neutral-800/80 dark:text-neutral-200/80',
   )}
 >
+<div className="px-4 sm:px-0">
   <div className="flex items-center gap-3">
     <motion.small
       key={quoteIndex}
@@ -172,6 +174,7 @@ const handleRefreshQuote = () => {
       <Icon icon="mingcute:refresh-1-line" className="text-xs" />
     </button>
   </div>
+</div>
   <span className="mt-8 animate-bounce">
           <Icon icon="mingcute:right-line" className="rotate-90 text-2xl" />
 

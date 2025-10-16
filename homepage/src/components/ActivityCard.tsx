@@ -44,10 +44,10 @@ export const ActivityCard = ({
         </div>
         
         <div className="flex-1 min-w-0">
-          <div className="text-base text-zinc-800 dark:text-zinc-200 space-y-1">
+          <div className="text-base text-zinc-800 dark:text-white space-y-1">
             <div className="font-medium">{title}</div>
             {organization && (
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">
+              <div className="text-sm text-zinc-600 dark:text-white">
                 {organization}
               </div>
             )}

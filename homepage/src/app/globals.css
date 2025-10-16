@@ -1,6 +1,9 @@
 /* app.css or global.css */
 @import "tailwindcss";
 
+/* Use @variant instead of @custom-variant for Tailwind v4 */
+@variant dark ([data-theme='dark'] &);
+
 /* Define theme variables using @theme directive */
 @theme {
   /* Font families */
@@ -75,30 +78,7 @@
   --tab-radius: 0.5rem;
 }
 
-/* Dark mode theme */
-@media (prefers-color-scheme: dark) {
-  @theme {
-    /* Theme colors - Dark mode */
-    --color-primary: #F596AA;
-    --color-secondary: #FB966E;
-    --color-accent: #F596AA;
-    
-    /* Background - Dark mode */
-    --color-base-100: #1C1C1E;
-    --color-base-content: #FFFFFF;
-    
-    /* Status colors - Dark mode */
-    --color-info: #0A84FF;
-    --color-success: #30D158;
-    --color-warning: #FF9F0A;
-    --color-error: #FF453A;
-    
-    /* Neutral */
-    --color-neutral: #48484A;
-  }
-}
-
-/* Alternative: Manual dark mode with [data-theme="dark"] */
+/* Dark mode theme - REMOVED @media query, only use data-theme */
 [data-theme="dark"] {
   --color-primary: #F596AA;
   --color-secondary: #FB966E;
@@ -118,10 +98,8 @@
     border-color: rgb(24 24 27 / 0.1);
   }
   
-  @media (prefers-color-scheme: dark) {
-    .border-border {
-      border-color: rgb(63 63 70);
-    }
+  [data-theme="dark"] .border-border {
+    border-color: rgb(63 63 70);
   }
 
   .cover-mask-b {
@@ -151,11 +129,9 @@
     transition: all 500ms ease;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .shiro-link--underline,
-    .shiro-timeline a {
-      text-decoration-color: rgb(244 244 245 / 0.2);
-    }
+  [data-theme="dark"] .shiro-link--underline,
+  [data-theme="dark"] .shiro-timeline a {
+    text-decoration-color: rgb(244 244 245 / 0.2);
   }
 
   .shiro-link--underline:hover,

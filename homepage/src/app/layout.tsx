@@ -27,11 +27,11 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
-      <Header />
+    <html lang="en" data-theme="light">
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header />
         {children}
       </body>
     </html>

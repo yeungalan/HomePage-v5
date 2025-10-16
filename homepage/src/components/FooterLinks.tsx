@@ -44,7 +44,7 @@ const footerConfig = {
 export const FooterInfo = () => {
   return (
     <>
-      <div className="relative">
+      <div className="relative text-white">
         <FooterLinkSection />
       </div>
 
@@ -126,7 +126,7 @@ const FooterBottom = () => {
   const { date = currentYear, icp } = otherInfo || {}
 
   return (
-    <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left">
+    <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
       <div>
         <span>© {date.replace('{{now}}', currentYear)} </span>
         <a href="/">Alan Yeung & alanyeung.co and its affiliates</a>

@@ -338,7 +338,7 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
   }, []);
 
   return (
-    <header className={clsxm(
+    <div className={clsxm(
       'fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-200',
       'backdrop-blur-md',
       forceDarkMode
@@ -352,6 +352,6 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
       <div className="relative mx-auto flex items-center justify-center h-full max-w-7xl px-8">
         <DesktopNav hasShadow={hasShadow} forceDarkMode={forceDarkMode} />
       </div>
-    </header>
+    </div>
   );
 }

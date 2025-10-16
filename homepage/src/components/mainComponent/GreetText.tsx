@@ -136,7 +136,7 @@ export default function GiantGreetText() {
       <BottomToUpTransitionView
         delay={titleAnimateD + 500}
         transition={softBouncePreset}
-        className="my-3 text-center lg:text-left"
+        className="my-3 text-center lg:text-left dark:text-white"
       >
         <span className="opacity-80">Protecting What Matters Most, One Identity at a Time, with Love in AWS</span>
       </BottomToUpTransitionView>

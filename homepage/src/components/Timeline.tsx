@@ -47,7 +47,7 @@ const experiences: Experience[] = [
   {
     id: '3',
     type: 'education',
-    title: 'Computer Engineering',
+    title: 'Computer Engineering (GPA 3.75/4.00)',
     organization: 'University of Washington',
     startDate: 'June 2021',
     endDate: 'June 2023',

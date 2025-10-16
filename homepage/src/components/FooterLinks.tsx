@@ -36,7 +36,7 @@ const footerConfig = {
     date: '2015-{{now}}',
     icp: {
       text: 'A.Yeung 2025 Global Infrastructure Project',
-      link: 'https://cloudflare.com/',
+      link: 'https://vercel.com/',
     },
   },
 }
@@ -117,7 +117,7 @@ const Divider: Component = ({ className }) => {
 }
 
 const PoweredBy: Component = ({ className }) => {
-  return <span className={className}>Powered by CloudFlare and Next.js.</span>
+  return <span className={className}>Powered by Vercel and Next.js.</span>
 }
 
 const FooterBottom = () => {

@@ -112,9 +112,26 @@ export default function Timeline() {
 
   const flatData = useMemo(() => {
     return [...experiences].sort((a, b) => {
-      const dateA = a.endDate === 'Present' ? '9999' : a.endDate
-      const dateB = b.endDate === 'Present' ? '9999' : b.endDate
-      return dateB.localeCompare(dateA)
+      // Convert date strings to comparable format
+      const parseDate = (dateStr: string) => {
+        if (dateStr === 'Present') return '9999-12'
+        // Handle formats like "Sept 2024", "June 2021", or just "2019"
+        const monthMap: { [key: string]: string } = {
+          'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
+          'May': '05', 'June': '06', 'Jul': '07', 'Aug': '08',
+          'Sept': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+        }
+        const parts = dateStr.split(' ')
+        if (parts.length === 2) {
+          const [month, year] = parts
+          return `${year}-${monthMap[month] || '01'}`
+        }
+        return `${dateStr}-01` // For year-only dates
+      }
+      
+      const dateA = parseDate(a.startDate)
+      const dateB = parseDate(b.startDate)
+      return dateB.localeCompare(dateA) // Most recent first
     })
   }, [])
 

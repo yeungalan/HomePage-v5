@@ -203,7 +203,7 @@ export default function WorldMap() {
   useEffect(() => {
     Promise.all([
       new TextureLoader().loadAsync(
-        "./day.png"
+        "./day.jpg"
       ),
       new TextureLoader().loadAsync(
         "./night.jpg"

@@ -264,7 +264,7 @@ export default function WorldMap() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full overflow-hidden" style={{ height: '100dvh' }}>
       {globeMaterial ? (
         <Globe
           ref={globeEl}
@@ -298,24 +298,30 @@ export default function WorldMap() {
         </div>
       )}
 
-      {/* Time Display - Mobile Responsive */}
+      {/* Time Display - Mobile Responsive with Safe Area */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4"
+        className="absolute left-2 sm:left-4"
+        style={{
+          bottom: isMobile ? 'max(env(safe-area-inset-bottom, 16px) + 44px, 60px)' : '1rem'
+        }}
       >
         <div className="bg-black/70 backdrop-blur-sm text-sky-300 font-mono text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-sky-500/30 shadow-lg">
           {formatDate(dt)}
         </div>
       </motion.div>
 
-      {/* Time Control Switch - Mobile Responsive */}
+      {/* Time Control Switch - Mobile Responsive with Safe Area */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4"
+        className="absolute right-2 sm:right-4"
+        style={{
+          bottom: isMobile ? 'max(env(safe-area-inset-bottom, 16px) + 44px, 60px)' : '1rem'
+        }}
       >
         <div className="relative inline-block">
           {/* Animated Indicator */}
@@ -377,7 +383,10 @@ export default function WorldMap() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
-          className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg border border-white/20 pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg border border-white/20 pointer-events-none"
+          style={{
+            top: 'max(env(safe-area-inset-top, 16px) + 16px, 32px)'
+          }}
         >
           <div className="flex items-center gap-2">
             <Icon icon="mdi:gesture-swipe" className="text-base" />

@@ -109,19 +109,6 @@ export default function WorldMap() {
   const [dt, setDt] = useState(+new Date());
   const [globeMaterial, setGlobeMaterial] = useState(null);
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Animate time based on mode
   useEffect(() => {
@@ -184,13 +171,12 @@ export default function WorldMap() {
     });
   }, []);
 
-  // Set initial globe view - adjust for mobile
+  // Set initial globe view
   useEffect(() => {
     if (globeEl.current) {
-      const altitude = isMobile ? 2.5 : 2;
-      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude });
+      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
     }
-  }, [globeMaterial, isMobile]);
+  }, [globeMaterial]);
 
   // Load globe shader (day/night)
   useEffect(() => {
@@ -249,22 +235,8 @@ export default function WorldMap() {
     return positions[timeMode];
   };
 
-  // Format date for mobile - shorter format
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    if (isMobile) {
-      return date.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-    return date.toLocaleString();
-  };
-
   return (
-    <div className="relative w-full overflow-hidden" style={{ height: '100dvh' }}>
+    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
       {globeMaterial ? (
         <Globe
           ref={globeEl}
@@ -283,53 +255,58 @@ export default function WorldMap() {
           ]}
           arcsTransitionDuration={0}
           pointsData={airports}
-          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded text-xs sm:text-sm">${d.city}<br/>${d.name}</div>`}
+          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
           pointColor={() => "orange"}
           pointAltitude={0}
-          pointRadius={isMobile ? 0.3 : 0.5}
+          pointRadius={0.5}
           pointsMerge={false}
         />
       ) : (
-        <div className="flex justify-center items-center h-full text-white font-mono text-sm sm:text-base">
-          <div className="text-center">
-            <div className="mb-2">Loading globe...</div>
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            color: "white",
+            fontFamily: "monospace",
+          }}
+        >
+          Loading globe...
         </div>
       )}
 
-      {/* Time Display - Mobile Responsive with Safe Area */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="absolute left-2 sm:left-4"
+      <div
         style={{
-          bottom: isMobile ? 'max(env(safe-area-inset-bottom, 16px) + 44px, 60px)' : '1rem'
+          position: "absolute",
+          bottom: 8,
+          left: 8,
+          color: "lightblue",
+          fontFamily: "monospace",
+          fontSize: "14px",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          padding: "4px 8px",
+          borderRadius: "4px",
         }}
       >
-        <div className="bg-black/70 backdrop-blur-sm text-sky-300 font-mono text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-sky-500/30 shadow-lg">
-          {formatDate(dt)}
-        </div>
-      </motion.div>
+        {new Date(dt).toLocaleString()}
+      </div>
 
-      {/* Time Control Switch - Mobile Responsive with Safe Area */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="absolute right-2 sm:right-4"
+      {/* Time Control Switch */}
+      <div
         style={{
-          bottom: isMobile ? 'max(env(safe-area-inset-bottom, 16px) + 44px, 60px)' : '1rem'
+          position: "absolute",
+          bottom: 8,
+          right: 8,
         }}
       >
         <div className="relative inline-block">
           {/* Animated Indicator */}
           <motion.div
-            className="absolute top-[3px] sm:top-[4px] z-0 h-[28px] w-[28px] sm:h-[32px] sm:w-[32px] rounded-full bg-white shadow-lg"
+            className="absolute top-[4px] z-0 size-[32px] rounded-full bg-white shadow-lg"
             initial={false}
             animate={{
-              left: isMobile ? getIndicatorPosition() * 0.875 : getIndicatorPosition(),
+              left: getIndicatorPosition(),
             }}
             transition={{
               type: "spring",
@@ -339,61 +316,43 @@ export default function WorldMap() {
           />
 
           {/* Button Group */}
-          <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 bg-black/50 backdrop-blur-sm p-[2px] sm:p-[3px]">
+          <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
             <button
               aria-label="Pause time"
               type="button"
               onClick={() => handleModeChange('paused')}
-              className="relative z-10 inline-flex h-[28px] w-[28px] sm:h-[32px] sm:w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors touch-manipulation"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
               style={{
                 color: timeMode === 'paused' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:pause" className="text-[16px] sm:text-[18px]" />
+              <Icon icon="mdi:pause" className="text-[18px]" />
             </button>
             <button
               aria-label="Real time"
               type="button"
               onClick={() => handleModeChange('realtime')}
-              className="relative z-10 inline-flex h-[28px] w-[28px] sm:h-[32px] sm:w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors touch-manipulation"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
               style={{
                 color: timeMode === 'realtime' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:clock-outline" className="text-[16px] sm:text-[18px]" />
+              <Icon icon="mdi:clock-outline" className="text-[18px]" />
             </button>
             <button
               aria-label="Animated time"
               type="button"
               onClick={() => handleModeChange('animated')}
-              className="relative z-10 inline-flex h-[28px] w-[28px] sm:h-[32px] sm:w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors touch-manipulation"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
               style={{
                 color: timeMode === 'animated' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:fast-forward" className="text-[16px] sm:text-[18px]" />
+              <Icon icon="mdi:fast-forward" className="text-[18px]" />
             </button>
           </div>
         </div>
-      </motion.div>
-
-      {/* Mobile Help Text - Only show on mobile on first load */}
-      {isMobile && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="absolute left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg border border-white/20 pointer-events-none"
-          style={{
-            top: 'max(env(safe-area-inset-top, 16px) + 16px, 32px)'
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <Icon icon="mdi:gesture-swipe" className="text-base" />
-            <span>Swipe to rotate • Pinch to zoom</span>
-          </div>
-        </motion.div>
-      )}
+      </div>
     </div>
   );
 }

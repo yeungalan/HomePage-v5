@@ -20,10 +20,10 @@ const FRIENDS_DATA = [
 
 export default function Page() {
   return (
-    <div>
+    <div className={"pt-5"}>
       <header className="mb-10">
-        <h1 className="text-4xl font-bold mb-4">Friends</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-400">Friend Links</h3>
+        <h1 className="text-4xl font-bold mb-4 dark:text-white">Friends</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">Friend Links</h3>
       </header>
 
       <main className="mt-10 flex w-full flex-col">
@@ -93,8 +93,8 @@ const Card: FC<{ link: typeof FRIENDS_DATA[0] }> = ({ link }) => {
         className="ring-2 ring-gray-400/30 dark:ring-zinc-50"
       />
       <span className="flex h-full flex-col items-center justify-center space-y-2 py-3">
-        <span className="text-lg font-medium">{link.name}</span>
-        <span className="line-clamp-2 text-balance break-all text-center text-sm opacity-80">
+        <span className="text-lg font-medium dark:text-gray-100">{link.name}</span>
+        <span className="line-clamp-2 text-balance break-all text-center text-sm opacity-80 dark:text-gray-300">
           {link.description}
         </span>
       </span>

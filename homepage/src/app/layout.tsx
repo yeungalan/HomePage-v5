@@ -4,6 +4,7 @@ import "./globals.css";
 import "@/styles/style.css";
 import 'mingcute_icon/font/Mingcute.css'
 import Header from "@/components/Header";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,8 @@ export default function RootLayout({
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
+        <ThemeProvider>        <Header />
+{children}</ThemeProvider>
       </body>
     </html>
   );

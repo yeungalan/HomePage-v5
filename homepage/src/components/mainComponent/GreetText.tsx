@@ -5,6 +5,7 @@ import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { LotteryText } from "@/components/LotteryText";
 import { motion } from 'motion/react'
 import { createElement, useState, useEffect } from 'react'
+import { FullPageLoading } from "../Loading";
 
 const softBouncePreset = {
   type: "spring" as const,
@@ -85,7 +86,7 @@ export default function GiantGreetText() {
     setMounted(true)
   }, [])
 
-  if (!mounted) return <div className="h-32">Loading...</div>
+  //if (!mounted) return <FullPageLoading/>
 
   return (
     <div className="px-4 sm:px-6 lg:px-0">

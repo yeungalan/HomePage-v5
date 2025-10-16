@@ -150,17 +150,17 @@ function FlightCalculator() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.5 }}
-      className="bg-gradient-to-br from-sky-100/80 to-blue-100/80 rounded-2xl p-8 border border-sky-200 shadow-lg"
+      className="bg-gradient-to-br from-sky-100/80 to-blue-100/80 dark:from-sky-900/30 dark:to-blue-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-sky-200 dark:border-sky-700 shadow-lg"
     >
-      <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-900">
-        <Icon icon="mdi:airplane" className="text-4xl" />
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
+        <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
         <span>Flight Distance</span>
       </h2>
 
       {/* Airport Input Fields */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             From (IATA Code)
           </label>
           <input
@@ -169,16 +169,16 @@ function FlightCalculator() {
             onChange={handleSrcChange}
             maxLength={3}
             placeholder="e.g., JFK"
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono uppercase"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg font-mono uppercase"
           />
           {srcAirport && (
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 truncate">
               {srcAirport.name}, {srcAirport.city}
             </p>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             To (IATA Code)
           </label>
           <input
@@ -187,10 +187,10 @@ function FlightCalculator() {
             onChange={handleDstChange}
             maxLength={3}
             placeholder="e.g., LAX"
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono uppercase"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg font-mono uppercase"
           />
           {dstAirport && (
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 truncate">
               {dstAirport.name}, {dstAirport.city}
             </p>
           )}
@@ -214,12 +214,12 @@ function FlightCalculator() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="bg-white/70 rounded-xl p-6"
+          className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-4 sm:p-6"
         >
           {/* Progress Bar Container */}
-          <div className="relative mb-8">
+          <div className="relative mb-6 sm:mb-8">
             {/* Progress Bar */}
-            <div className="relative h-3 bg-gray-200 rounded-full overflow-visible">
+            <div className="relative h-2 sm:h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-visible">
               <motion.div
                 className={`absolute top-0 left-0 h-full rounded-full ${
                   isCompleted 
@@ -232,10 +232,10 @@ function FlightCalculator() {
             </div>
             
             {/* Airplane Icon - Centered with white background for clearance */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white rounded-full px-2 py-1 shadow-md">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 shadow-md">
               <Icon 
                 icon="mdi:airplane" 
-                className={`text-4xl ${
+                className={`text-2xl sm:text-4xl ${
                   isCompleted ? 'text-green-600' : 'text-blue-600'
                 }`}
               />
@@ -247,30 +247,30 @@ function FlightCalculator() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-center gap-2 mb-4 text-green-600 font-semibold text-lg"
+              className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-green-600 font-semibold text-base sm:text-lg"
             >
-              <Icon icon="mdi:check-circle" className="text-2xl" />
+              <Icon icon="mdi:check-circle" className="text-xl sm:text-2xl" />
               <span>Completed</span>
             </motion.div>
           )}
 
           {/* Flight Info */}
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Distance</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {distance.toFixed(0)} km
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Distance</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
+                {distance.toFixed(0)} <span className="text-sm sm:text-base">km</span>
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Est. Duration</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {Math.floor(duration)}h {Math.round((duration % 1) * 60)}m
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Est. Duration</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
+                {Math.floor(duration)}<span className="text-sm">h</span> {Math.round((duration % 1) * 60)}<span className="text-sm">m</span>
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Elapsed Time</p>
-              <div className="flex justify-center gap-1">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Elapsed</p>
+              <div className="flex justify-center gap-0.5">
                 {formatElapsedTime(elapsedTime).split('').map((char, index) => (
                   <motion.span
                     key={`${index}-${char}`}
@@ -280,7 +280,7 @@ function FlightCalculator() {
                       duration: 0.6,
                       ease: "easeOut"
                     }}
-                    className={`text-2xl font-bold font-mono inline-block ${
+                    className={`text-base sm:text-2xl font-bold font-mono inline-block ${
                       char === ':' ? 'text-gray-400' : 'text-blue-600'
                     }`}
                     style={{
@@ -350,16 +350,16 @@ export default function TimelinePage() {
   const todayProgress = ((elapsedMs / totalDayMs) * 100).toFixed(6);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 p-8 pt-[50px]">
-      <div className="max-w-4xl mx-auto space-y-12 pt-[50px]">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-[50px] sm:pt-[60px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-5xl font-bold mb-4 text-gray-900">Timeline</h1>
-          <p className="text-xl text-gray-600">{daysLeft} days left until 2026</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 text-gray-900 dark:text-white">Timeline</h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">{daysLeft} days left until 2026</p>
         </motion.div>
 
         {/* Large Clock */}
@@ -367,44 +367,44 @@ export default function TimelinePage() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white/70 backdrop-blur-sm rounded-3xl p-12 border border-gray-200 shadow-2xl"
+          className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-gray-200 dark:border-gray-700 shadow-2xl"
         >
-          <div className="flex justify-center items-center gap-4 mb-6">
+          <div className="flex justify-center items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
             <motion.div
               key={`hours-${hours}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="text-8xl font-bold font-mono tracking-tight"
+              className="text-4xl sm:text-6xl md:text-8xl font-bold font-mono tracking-tight dark:text-white"
             >
               {hours}
             </motion.div>
-            <span className="text-8xl font-bold text-gray-400">:</span>
+            <span className="text-4xl sm:text-6xl md:text-8xl font-bold text-gray-400 dark:text-gray-500">:</span>
             <motion.div
               key={`minutes-${minutes}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="text-8xl font-bold font-mono tracking-tight"
+              className="text-4xl sm:text-6xl md:text-8xl font-bold font-mono tracking-tight dark:text-white"
             >
               {minutes}
             </motion.div>
-            <span className="text-8xl font-bold text-slate-500">:</span>
+            <span className="text-4xl sm:text-6xl md:text-8xl font-bold text-slate-500 dark:text-slate-400">:</span>
             <motion.div
               key={`seconds-${seconds}`}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="text-8xl font-bold font-mono tracking-tight text-blue-400"
+              className="text-4xl sm:text-6xl md:text-8xl font-bold font-mono tracking-tight text-blue-400 dark:text-blue-500"
             >
               {seconds}
             </motion.div>
           </div>
           
           {/* UTC Time */}
-          <div className="flex justify-center items-center gap-2 text-gray-500">
-            <Icon icon="mdi:earth" className="text-xl" />
-            <span className="text-lg font-mono">
+          <div className="flex justify-center items-center gap-2 text-gray-500 dark:text-gray-400">
+            <Icon icon="mdi:earth" className="text-lg sm:text-xl" />
+            <span className="text-sm sm:text-base md:text-lg font-mono">
               UTC {utcHours}:{utcMinutes}:{utcSeconds}
             </span>
           </div>
@@ -415,22 +415,22 @@ export default function TimelinePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
         >
-          <div className="bg-white/60 rounded-2xl p-6 border border-gray-200 shadow-sm">
-            <p className="text-gray-600 text-sm mb-2">Today is day</p>
-            <p className="text-4xl font-bold text-gray-900">{dayOfYear}</p>
-            <p className="text-gray-400 text-xs mt-1">of 2025</p>
+          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Today is day</p>
+            <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{dayOfYear}</p>
+            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">of 2025</p>
           </div>
-          <div className="bg-white/60 rounded-2xl p-6 border border-gray-200 shadow-sm">
-            <p className="text-gray-600 text-sm mb-2">Year progress</p>
-            <p className="text-4xl font-bold text-blue-600 font-mono">
+          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Year progress</p>
+            <p className="text-2xl sm:text-4xl font-bold text-blue-600 dark:text-blue-500 font-mono break-all">
               {yearProgress}%
             </p>
           </div>
-          <div className="bg-white/60 rounded-2xl p-6 border border-gray-200 shadow-sm">
-            <p className="text-gray-600 text-sm mb-2">Today progress</p>
-            <p className="text-4xl font-bold text-green-600 font-mono">
+          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Today progress</p>
+            <p className="text-2xl sm:text-4xl font-bold text-green-600 dark:text-green-500 font-mono break-all">
               {todayProgress}%
             </p>
           </div>
@@ -444,9 +444,9 @@ export default function TimelinePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center"
+          className="text-center px-4"
         >
-          <p className="text-2xl text-gray-600 font-light">Live in the present, cherish the moment</p>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-light">Live in the present, cherish the moment</p>
         </motion.div>
 
         {/* 2025 Goals */}
@@ -454,39 +454,39 @@ export default function TimelinePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="bg-gradient-to-br from-blue-100/80 to-purple-100/80 rounded-2xl p-8 border border-blue-200 shadow-lg"
+          className="bg-gradient-to-br from-blue-100/80 to-purple-100/80 dark:from-blue-900/30 dark:to-purple-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-200 dark:border-blue-700 shadow-lg"
         >
-          <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-900">
-            <Icon icon="mdi:target" className="text-4xl" />
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
+            <Icon icon="mdi:target" className="text-3xl sm:text-4xl" />
             <span>2025 Goals</span>
           </h2>
-          <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-white/60 rounded-xl border border-gray-200">
-              <Icon icon="mdi:check-circle" className="text-3xl text-green-500 flex-shrink-0 mt-1" />
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:check-circle" className="text-2xl sm:text-3xl text-green-500 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-lg mb-1 text-gray-900">Diving</h3>
-                <p className="text-gray-600">Completed</p>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Diving</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Completed</p>
               </div>
             </div>
-            <div className="flex items-start gap-4 p-4 bg-white/60 rounded-xl border border-gray-200">
-              <Icon icon="mdi:progress-clock" className="text-3xl text-yellow-500 flex-shrink-0 mt-1" />
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-lg mb-1 text-gray-900">Motorcycle</h3>
-                <p className="text-gray-600">In progress</p>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Motorcycle</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
               </div>
             </div>
-            <div className="flex items-start gap-4 p-4 bg-white/60 rounded-xl border border-gray-200">
-              <Icon icon="mdi:arm-flex" className="text-3xl text-blue-500 flex-shrink-0 mt-1" />
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:arm-flex" className="text-2xl sm:text-3xl text-blue-500 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-lg mb-1 text-gray-900">Stay Healthy</h3>
-                <p className="text-gray-600">Trying hard</p>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Stay Healthy</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Trying hard</p>
               </div>
             </div>
-            <div className="flex items-start gap-4 p-4 bg-white/60 rounded-xl border border-gray-200">
-              <Icon icon="mdi:heart-outline" className="text-3xl text-pink-500 flex-shrink-0 mt-1" />
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:heart-outline" className="text-2xl sm:text-3xl text-pink-500 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-lg mb-1 text-gray-900">Find a Person I Care Of</h3>
-                <p className="text-gray-600">In progress</p>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Find a Person I Care Of</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
               </div>
             </div>
           </div>

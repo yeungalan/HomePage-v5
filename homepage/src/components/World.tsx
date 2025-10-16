@@ -182,10 +182,10 @@ export default function WorldMap() {
   useEffect(() => {
     Promise.all([
       new TextureLoader().loadAsync(
-        "//cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg"
+        "./day.png"
       ),
       new TextureLoader().loadAsync(
-        "//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg"
+        "./night.jpg"
       ),
     ]).then(([dayTexture, nightTexture]) => {
       setGlobeMaterial(

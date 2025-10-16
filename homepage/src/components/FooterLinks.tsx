@@ -34,10 +34,10 @@ const footerConfig = {
     },
   ],
   otherInfo: {
-    date: '2015-{{now}}',
+    date: '2016-{{now}}',
     icp: {
-      text: 'A.Yeung 2025 Global Infrastructure Project',
-      link: 'https://vercel.com/',
+      text: 'Project Atlas: Global Infrastructure Modernization Initiative 2025',
+      link: '#',
     },
   },
 }
@@ -144,7 +144,7 @@ const FooterBottom = () => {
           <Divider className="inline" />
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          Work Hard. Have Fun. Make History
+          R. 2025 Oct 15 v. Beta
         </span>
       </div>
       <div>

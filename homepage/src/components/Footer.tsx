@@ -7,7 +7,7 @@ import { NumberSmoothTransition } from "./NumberSmoothTransition"
 
 const windsock = [
   {
-    title: 'Notes',
+    title: 'Post',
     path: '/posts',
     type: 'Post',
     subMenu: [],

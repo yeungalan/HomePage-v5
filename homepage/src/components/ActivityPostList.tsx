@@ -17,7 +17,7 @@ export const ActivityPostList = () => {
       className="mt-8 flex flex-col gap-4 lg:mt-0"
       viewport={{ once: true }}
     >
-      <h2 className="text-2xl font-medium leading-loose">Awards and Certifications</h2>
+      <h2 className="text-2xl font-medium leading-loose dark:text-white">Awards and Certifications</h2>
       <ul className="shiro-timeline mt-4">
         {[
           {
@@ -54,13 +54,13 @@ export const ActivityPostList = () => {
             <li key={post.id} className="flex min-w-0 justify-between">
               <Link
                 prefetch
-                className="min-w-0 shrink truncate"
+                className="min-w-0 shrink truncate dark:text-white"
                 href={"#"}
               >
                 {post.title}
               </Link>
 
-              <span className="ml-2 shrink-0 self-end text-xs opacity-70">
+              <span className="ml-2 shrink-0 self-end text-xs opacity-70 dark:text-white">
                 <RelativeTime
                   date={post.created}
                   displayAbsoluteTimeAfterDay={180}

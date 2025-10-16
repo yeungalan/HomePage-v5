@@ -236,7 +236,7 @@ export default function WorldMap() {
   };
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
+    <div className="relative w-full h-screen">
       {globeMaterial ? (
         <Globe
           ref={globeEl}
@@ -262,44 +262,20 @@ export default function WorldMap() {
           pointsMerge={false}
         />
       ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            color: "white",
-            fontFamily: "monospace",
-          }}
-        >
+        <div className="flex justify-center items-center h-full text-white font-mono">
           Loading globe...
         </div>
       )}
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: 8,
-          left: 8,
-          color: "lightblue",
-          fontFamily: "monospace",
-          fontSize: "14px",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          padding: "4px 8px",
-          borderRadius: "4px",
-        }}
-      >
+      {/* Time Display - Positioned above mobile navigation bars */}
+      <div className="absolute left-2 text-sky-300 font-mono text-sm bg-black/50 px-2 py-1 rounded" 
+           style={{ bottom: 'max(5rem, calc(env(safe-area-inset-bottom) + 1rem))' }}>
         {new Date(dt).toLocaleString()}
       </div>
 
-      {/* Time Control Switch */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 8,
-          right: 8,
-        }}
-      >
+      {/* Time Control Switch - Positioned above mobile navigation bars */}
+      <div className="absolute right-2" 
+           style={{ bottom: 'max(5rem, calc(env(safe-area-inset-bottom) + 1rem))' }}>
         <div className="relative inline-block">
           {/* Animated Indicator */}
           <motion.div
@@ -321,7 +297,7 @@ export default function WorldMap() {
               aria-label="Pause time"
               type="button"
               onClick={() => handleModeChange('paused')}
-              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
               style={{
                 color: timeMode === 'paused' ? '#000' : '#fff',
               }}
@@ -332,7 +308,7 @@ export default function WorldMap() {
               aria-label="Real time"
               type="button"
               onClick={() => handleModeChange('realtime')}
-              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
               style={{
                 color: timeMode === 'realtime' ? '#000' : '#fff',
               }}
@@ -343,7 +319,7 @@ export default function WorldMap() {
               aria-label="Animated time"
               type="button"
               onClick={() => handleModeChange('animated')}
-              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 text-current transition-colors"
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
               style={{
                 color: timeMode === 'animated' ? '#000' : '#fff',
               }}

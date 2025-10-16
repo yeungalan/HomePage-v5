@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface LotteryTextProps {
@@ -14,20 +13,40 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
   initialDelay = 0 
 }) => {
   const [currentIndex, setCurrentIndex] = useState(Math.floor(Math.random() * elements.length));
-  const [isHovered, setIsHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const canTriggerRef = useRef(true);
+  const touchTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const handleHover = () => {
-    if (!isHovered) {
-      setIsHovered(true);
-      setCurrentIndex((prev) => (prev + 1) % elements.length);
-      setTimeout(() => setIsHovered(false), 600);
+  const handleInteractionStart = () => {
+    if (!canTriggerRef.current || isAnimating) return;
+    
+    canTriggerRef.current = false;
+    setIsAnimating(true);
+    setCurrentIndex((prev) => (prev + 1) % elements.length);
+    
+    setTimeout(() => setIsAnimating(false), 600);
+  };
+
+  const handleInteractionEnd = () => {
+    if (touchTimeoutRef.current) {
+      clearTimeout(touchTimeoutRef.current);
     }
+    
+    touchTimeoutRef.current = setTimeout(() => {
+      canTriggerRef.current = true;
+    }, 300);
   };
 
   return (
     <motion.span
       className={`relative inline-block cursor-pointer ${className}`}
-      onMouseEnter={handleHover}
+      onTouchStart={(e) => {
+        e.preventDefault();
+        handleInteractionStart();
+      }}
+      onTouchEnd={handleInteractionEnd}
+      onMouseEnter={handleInteractionStart}
+      onMouseLeave={handleInteractionEnd}
       initial={{ y: 10, opacity: 0.001 }}
       animate={{ 
         y: 0, 

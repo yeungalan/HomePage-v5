@@ -109,6 +109,7 @@ export default function WorldMap() {
   const [dt, setDt] = useState(+new Date());
   const [globeMaterial, setGlobeMaterial] = useState(null);
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Animate time based on mode
   useEffect(() => {
@@ -133,6 +134,25 @@ export default function WorldMap() {
       }
     };
   }, [timeMode]);
+
+  // Listen for screen size changes and update dimensions
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add event listener
+    window.addEventListener('resize', updateDimensions);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
   // Load airports + routes
   useEffect(() => {
@@ -236,46 +256,60 @@ export default function WorldMap() {
   };
 
   return (
-    <div className="relative w-full h-screen">
-      {globeMaterial ? (
-        <Globe
-          ref={globeEl}
-          globeMaterial={globeMaterial}
-          backgroundImageUrl="sky.png"
-          onZoom={handleZoom}
-          arcsData={routes}
-          arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
-          arcStartLat={(d) => +d.srcAirport.lat}
-          arcStartLng={(d) => +d.srcAirport.lng}
-          arcEndLat={(d) => +d.dstAirport.lat}
-          arcEndLng={(d) => +d.dstAirport.lng}
-          arcColor={(d) => [
-            `rgba(255, 255, 255, ${OPACITY})`,
-            `rgba(255, 255, 255, ${OPACITY})`,
-          ]}
-          arcsTransitionDuration={0}
-          pointsData={airports}
-          pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
-          pointColor={() => "orange"}
-          pointAltitude={0}
-          pointRadius={0.5}
-          pointsMerge={false}
-        />
-      ) : (
-        <div className="flex justify-center items-center h-full text-white font-mono">
-          Loading globe...
-        </div>
-      )}
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Globe Container - Always Centered */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {globeMaterial ? (
+          <div className="w-full h-full" key={`${dimensions.width}-${dimensions.height}`}>
+            <Globe
+              ref={globeEl}
+              globeMaterial={globeMaterial}
+              backgroundImageUrl="sky.png"
+              onZoom={handleZoom}
+              arcsData={routes}
+              arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
+              arcStartLat={(d) => +d.srcAirport.lat}
+              arcStartLng={(d) => +d.srcAirport.lng}
+              arcEndLat={(d) => +d.dstAirport.lat}
+              arcEndLng={(d) => +d.dstAirport.lng}
+              arcColor={(d) => [
+                `rgba(255, 255, 255, ${OPACITY})`,
+                `rgba(255, 255, 255, ${OPACITY})`,
+              ]}
+              arcsTransitionDuration={0}
+              pointsData={airports}
+              pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
+              pointColor={() => "orange"}
+              pointAltitude={0}
+              pointRadius={0.5}
+              pointsMerge={false}
+              width={dimensions.width}
+              height={dimensions.height}
+            />
+          </div>
+        ) : (
+          <div className="flex justify-center items-center text-white font-mono">
+            Loading globe...
+          </div>
+        )}
+      </div>
 
-      {/* Time Display - Positioned above mobile navigation bars */}
-      <div className="absolute left-2 text-sky-300 font-mono text-sm bg-black/50 px-2 py-1 rounded" 
-           style={{ bottom: 'max(5rem, calc(env(safe-area-inset-bottom) + 1rem))' }}>
+      {/* Time Display - Fixed to Bottom Left */}
+      <div 
+        className="fixed left-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        style={{ 
+          bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
+          left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
+        }}
+      >
         {new Date(dt).toLocaleString()}
       </div>
 
-      {/* Time Control Switch - Positioned above mobile navigation bars */}
-      <div className="absolute right-2" 
-           style={{ bottom: 'max(5rem, calc(env(safe-area-inset-bottom) + 1rem))' }}>
+<div className="fixed right-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10" 
+           style={{ 
+          bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
+          right: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
+        }}>
         <div className="relative inline-block">
           {/* Animated Indicator */}
           <motion.div

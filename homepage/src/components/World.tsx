@@ -11,6 +11,7 @@ import {
 import * as solar from "solar-calculator";
 import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
+import { FullPageLoading } from "./Loading";
 
 const COUNTRY = "United States";
 const OPACITY = 1;
@@ -288,8 +289,8 @@ export default function WorldMap() {
             />
           </div>
         ) : (
-          <div className="flex justify-center items-center text-white font-mono">
-            Loading globe...
+          <div className="flex justify-center items-center text-neutral-900 dark:text-white font-mono">
+            <FullPageLoading/>
           </div>
         )}
       </div>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import { RealFooter } from '@/components/FooterLinks';
 
 interface Airport {
   name: string;
@@ -350,6 +351,7 @@ export default function TimelinePage() {
   const todayProgress = ((elapsedMs / totalDayMs) * 100).toFixed(6);
 
   return (
+    <>
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-[50px] sm:pt-[60px]">
         {/* Header */}
@@ -493,5 +495,8 @@ export default function TimelinePage() {
         </motion.div>
       </div>
     </div>
+           <RealFooter/>
+    
+          </>
   );
 }

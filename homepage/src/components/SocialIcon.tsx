@@ -42,7 +42,7 @@ const iconSet: Record<
     'Linkedin',
     'mingcute:linkedin-line',
     '#0088cc',
-    (id) => `https://t.me/${id}`,
+    (id) => `https://linkedin.com/in/${id}`,
   ],
   mail: [
     'Email',

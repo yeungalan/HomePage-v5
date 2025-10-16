@@ -108,7 +108,7 @@ const handleRefreshQuote = () => {
             {Object.entries({
   twitter: "yeungbluecat123",
   github: "yeungalan",
-  linkedin: "yeungalan",
+  linkedin: "ho-yeung",
 }).map(
               ([type, id]: any, index) => {
                 console.log(type, id, index);

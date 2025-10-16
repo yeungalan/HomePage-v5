@@ -241,7 +241,7 @@ export default function WorldMap() {
         <Globe
           ref={globeEl}
           globeMaterial={globeMaterial}
-          backgroundImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png"
+          backgroundImageUrl="sky.png"
           onZoom={handleZoom}
           arcsData={routes}
           arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}

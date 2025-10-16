@@ -13,13 +13,13 @@ const softBouncePreset = {
 }
 
 const htmlElements = [
-  <span className="font-bold text-purple-600">Traveller</span>,
-<span className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-800/0 hover:dark:bg-gray-800/100 bg-opacity-0 hover:bg-opacity-100 transition-background duration-200">
-  &lt;Software Engineer&nbsp;/&gt;<span className="inline-block w-0.5 h-[0.9em] bg-current ml-1 align-middle animate-[blink_1s_ease-in-out_infinite]"></span>
-</span>,
-  <span className="font-bold text-green-600">Photographer</span>,
-  <span className="font-bold text-orange-600">Adventurer</span>,
-    <span className="font-bold text-blue-600">Security Researcher</span>,
+  <span className="font-bold text-purple-600 dark:text-cyan-400">Traveller</span>,
+  <span className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 hover:dark:bg-gray-700 transition-colors duration-200">
+    &lt;Software Engineer&nbsp;/&gt;<span className="inline-block w-0.5 h-[0.9em] bg-current ml-1 align-middle animate-[blink_1s_ease-in-out_infinite]"></span>
+  </span>,
+  <span className="font-bold text-green-600 dark:text-teal-400">Photographer</span>,
+  <span className="font-bold text-orange-600 dark:text-blue-400">Adventurer</span>,
+  <span className="font-bold text-blue-600 dark:text-indigo-400">Security Researcher</span>,
 ];
 
 const greetings = {
@@ -39,22 +39,22 @@ export const GiantGreetTextTemplate = [
   {
     "type": "h1",
     "text": getRandomGreeting(),
-    "class": "font-light text-4xl"
+    "class": "font-light text-4xl dark:text-white"
   },
     {
     "type": "h1",
     "text": "This ",
-    "class": "font-light text-4xl"
+    "class": "font-light text-4xl dark:text-white"
   },
   {
     "type": "h1",
     "text": "is",
-    "class": "font-light text-4xl"
+    "class": "font-light text-4xl dark:text-white"
   },
   {
     "type": "h1",
     "text": "Alan.",
-    "class": "font-medium mx-2 text-4xl"
+    "class": "font-medium mx-2 text-4xl dark:text-white"
   },
   {
     "type": "br"
@@ -62,7 +62,7 @@ export const GiantGreetTextTemplate = [
   {
     "type": "h1",
     "text": "I'm a ",
-    "class": "font-light text-4xl",
+    "class": "font-light text-4xl dark:text-white",
   },
   {
     "type": "LotteryText",

@@ -88,7 +88,7 @@ export default function GiantGreetText() {
   if (!mounted) return <div className="h-32">Loading...</div>
 
   return (
-    <>
+    <div className="px-4 sm:px-6 lg:px-0">
       <motion.div
         className="group relative text-center leading-[4] lg:text-left [&_*]:inline-block min-h-[100px]"
         initial={{ opacity: 0.0001, y: 50 }}
@@ -140,6 +140,6 @@ export default function GiantGreetText() {
       >
         <span className="opacity-80">Protecting What Matters Most, One Identity at a Time, with Love in AWS</span>
       </BottomToUpTransitionView>
-    </>
+    </div>
   )
 }

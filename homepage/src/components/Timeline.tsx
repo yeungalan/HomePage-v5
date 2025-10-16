@@ -6,12 +6,7 @@ import { useMemo, useRef, useEffect, useState } from 'react'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 import { ActivityCard } from './ActivityCard'
-
-const softBouncePreset = {
-  type: "spring",
-  stiffness: 100,
-  damping: 15
-}
+import { softBouncePreset } from '@/constants/spring'
 
 interface Experience {
   id: string

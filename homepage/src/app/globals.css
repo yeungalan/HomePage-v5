@@ -168,7 +168,7 @@
   .shiro-timeline > li::before {
     content: '';
     position: absolute;
-    left: -17px;
+    left: -19px;
     bottom: 0;
     border-left: 2px solid #33A6B8;
   }

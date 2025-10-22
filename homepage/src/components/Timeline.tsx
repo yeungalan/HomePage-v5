@@ -192,7 +192,7 @@ export default function Timeline() {
 
       {isLoading ? (
         <div className="relative h-[400px] max-h-[80vh]">
-          <ul className="flex animate-pulse flex-col pb-4 pl-2 text-slate-200 dark:!text-neutral-700">
+          <ul className="flex animate-pulse flex-col pb-4 pl-2 text-slate-200 dark:text-neutral-700">
             {new Array(6).fill(null).map((_, i) => {
               return (
                 <li key={i} className="flex w-full items-center gap-2">
@@ -236,7 +236,7 @@ export default function Timeline() {
             <div className="relative">
               {/* Timeline line - positioned to go through the center of the icons */}
               <div 
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-pink-300 via-pink-200 to-pink-100 dark:from-pink-700 dark:via-pink-800 dark:to-pink-900" 
+                className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-[#33A6B8] via-[#33A6B8] to-[#33A6B8] dark:from-[#33A6B8] dark:via-[#33A6B8] dark:to-p[#33A6B8]" 
                 style={{ height: 'calc(100% - 60px)' }}
               />
               

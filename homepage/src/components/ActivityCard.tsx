@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react'
 import { useMemo } from 'react'
 
 export const iconClassName =
-  'rounded-full border shrink-0 border-pink-300 dark:border-pink-700 text-base center inline-flex size-[32px] text-pink-500 dark:text-pink-400 bg-white dark:bg-zinc-900'
+  'rounded-full border shrink-0 border-[#33A6B8] dark:border-[#33A6B8] text-base center inline-flex size-[32px] text-[#33A6B8] dark:text-[#33A6B8] bg-white dark:bg-zinc-900'
 
 interface ActivityCardProps {
   type: 'work' | 'education' | 'milestone'
@@ -44,14 +44,14 @@ export const ActivityCard = ({
         </div>
         
         <div className="flex-1 min-w-0">
-          <div className="text-base text-zinc-800 space-y-1">
+          <div className="text-base text-zinc-800 space-y-1 dark:text-white">
             <div className="font-medium">{title}</div>
             {organization && (
-              <div className="text-sm text-zinc-600">
+              <div className="text-sm text-zinc-600 dark:text-white">
                 {organization}
               </div>
             )}
-            <div className="text-sm text-zinc-500 dark:text-zinc-500">
+            <div className="text-sm text-zinc-500 dark:text-white">
               {formatDateRange(startDate, endDate, isOngoing)}
             </div>
             {isOngoing && (

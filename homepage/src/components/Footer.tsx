@@ -29,7 +29,7 @@ export const Footer = () => {
   return (
     <>
       <div className="center mt-10 mb-20 flex flex-col">
-        <div className="my-5 text-2xl font-medium">Quick links</div>
+        <div className="my-5 text-2xl font-medium text-black dark:text-white">Quick links</div>
         <div className="mb-15 opacity-90">Want to go somewhere else?</div>
         <ul className="flex flex-col flex-wrap gap-2 gap-y-8 opacity-80 lg:flex-row">
           {windsock.map((item, index) => {

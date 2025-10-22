@@ -17,7 +17,7 @@ export const ActivityPostList = () => {
       className="mt-8 flex flex-col lg:mt-0 pl-4 w-full"
       viewport={{ once: true }}
     >
-      <h2 className="text-2xl font-medium leading-loose dark:text-white">Awards and Certifications</h2>
+      <h2 className="text-2xl font-medium leading-loose">Awards and Certifications</h2>
       <ul className="shiro-timeline mt-4">
         {[
           {

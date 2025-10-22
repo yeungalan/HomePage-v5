@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 /* Use @variant instead of @custom-variant for Tailwind v4 */
-@variant dark ([data-theme='dark'] &);
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Define theme variables using @theme directive */
 @theme {

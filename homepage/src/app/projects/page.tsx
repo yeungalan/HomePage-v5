@@ -13,7 +13,7 @@ const PROJECT_DATA = [
   {
     id: '1',
     name: 'Photo',
-    url: 'https://photos.alanyenug.co',
+    url: 'https://photos.alanyeung.co',
     avatar: '',
     description: 'My own photo gallery',
   },

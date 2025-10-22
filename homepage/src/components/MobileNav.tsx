@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useDragControls, PanInfo } from 'framer-motion';
-import * as Dialog from '@radix-ui/react-dialog';
-import { Icon } from '@iconify/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useDragControls, PanInfo } from "framer-motion";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Types
 interface MenuItem {
@@ -26,27 +26,37 @@ interface MobileNavProps {
   forceDarkMode?: boolean;
 }
 
-// Utility function
-const clsxm = (...classes: (string | boolean | undefined)[]) => {
-  return classes.filter(Boolean).join(' ');
-};
+// Utility
+const clsxm = (...classes: (string | boolean | undefined)[]) =>
+  classes.filter(Boolean).join(" ");
 
 export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // controls portal mount
+  const [internalOpen, setInternalOpen] = useState(false); // controls animation
   const [dragY, setDragY] = useState(0);
   const dragControls = useDragControls();
   const pathname = usePathname();
 
+  // Open menu
+  const openMenu = () => {
+    setIsOpen(true);
+    setInternalOpen(true);
+  };
+
+  // Close menu with animation
+  const closeMenu = () => {
+    setInternalOpen(false);
+    setTimeout(() => setIsOpen(false), 250); // wait for exit animation
+  };
+
   const handleDragEnd = (event: any, info: PanInfo) => {
-    // Close if dragged down more than 150px or with sufficient velocity
     if (info.offset.y > 150 || info.velocity.y > 500) {
-      setIsOpen(false);
+      closeMenu();
     }
-    setDragY(0); // Reset drag position
+    setDragY(0);
   };
 
   const handleDrag = (event: any, info: PanInfo) => {
-    // Track drag position for height extension when dragging up
     setDragY(info.offset.y);
   };
 
@@ -56,24 +66,24 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
 
   return (
     <>
-      {/* Mobile Menu Button - Left Side */}
+      {/* Mobile Menu Button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={openMenu}
         className={clsxm(
-          'flex items-center justify-center w-10 h-10 rounded-full transition-colors',
+          "flex items-center justify-center w-10 h-10 rounded-full transition-colors",
           forceDarkMode
-            ? 'text-gray-300 hover:bg-white/10'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+            ? "text-gray-300 hover:bg-white/10"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
         )}
         aria-label="Open navigation menu"
       >
         <Icon icon="mingcute:menu-line" className="text-2xl" />
       </button>
 
-      <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog.Root open={true} onOpenChange={() => {}}>
         <Dialog.Portal>
           <AnimatePresence>
-            {isOpen && (
+            {internalOpen && (
               <>
                 {/* Overlay */}
                 <Dialog.Overlay asChild>
@@ -83,18 +93,18 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100]"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMenu} // overlay triggers slide-down
                   />
                 </Dialog.Overlay>
 
-                {/* Content */}
+                {/* Menu Content */}
                 <Dialog.Content asChild>
                   <motion.div
-                    initial={{ y: '100%' }}
+                    initial={{ y: "100%" }}
                     animate={{ y: 0 }}
-                    exit={{ y: '100%' }}
+                    exit={{ y: "100%" }}
                     transition={{
-                      type: 'spring',
+                      type: "spring",
                       damping: 30,
                       stiffness: 400,
                       mass: 0.8,
@@ -103,128 +113,112 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     dragControls={dragControls}
                     dragConstraints={{ top: 0, bottom: 0 }}
                     dragElastic={{ top: 0.2, bottom: 0.7 }}
-                    dragMomentum={true}
-                    dragTransition={{ 
-                      bounceStiffness: 400, 
-                      bounceDamping: 25,
-                      power: 0.2,
-                      timeConstant: 200,
-                    }}
+                    dragMomentum
                     onDrag={handleDrag}
                     onDragEnd={handleDragEnd}
                     className={clsxm(
-                      'fixed left-0 right-0 z-[101]',
-                      'rounded-t-2xl shadow-2xl',
-                      'flex flex-col',
-                      forceDarkMode
-                        ? 'bg-[#1d1d1f]'
-                        : 'bg-white dark:bg-zinc-900'
+                      "fixed left-0 right-0 z-[101] rounded-t-2xl shadow-2xl flex flex-col",
+                      forceDarkMode ? "bg-[#1d1d1f]" : "bg-white dark:bg-zinc-900"
                     )}
-                    style={{ 
-                      touchAction: 'none',
+                    style={{
+                      touchAction: "none",
                       bottom: 0,
-                      // Extend to full height when dragging up (negative dragY)
-                      maxHeight: dragY < 0 ? '100vh' : '85vh',
-                      // Smooth transition for height changes
-                      transition: 'max-height 0.1s ease-out',
+                      maxHeight: dragY < 0 ? "100vh" : "85vh",
+                      transition: "max-height 0.1s ease-out",
                     }}
                   >
-                    {/* Drag Handle Bar */}
+                    {/* Drag Handle */}
                     <div
                       className={clsxm(
-                        'w-full py-3 cursor-grab active:cursor-grabbing',
-                        'flex justify-center rounded-t-2xl',
-                        'transition-colors duration-200',
-                        'hover:bg-gray-100 dark:hover:bg-zinc-700/50',
+                        "w-full py-3 cursor-grab active:cursor-grabbing",
+                        "flex justify-center rounded-t-2xl",
+                        "transition-colors duration-200",
+                        "hover:bg-gray-100 dark:hover:bg-zinc-700/50",
                         forceDarkMode
-                          ? 'bg-zinc-800/30'
-                          : 'bg-gray-50 dark:bg-zinc-800/30'
+                          ? "bg-zinc-800/30"
+                          : "bg-gray-50 dark:bg-zinc-800/30"
                       )}
                       onPointerDown={(e) => dragControls.start(e)}
                     >
-                      <motion.div 
+                      <motion.div
                         className={clsxm(
-                          'w-10 h-1 rounded-full',
-                          forceDarkMode
-                            ? 'bg-zinc-600'
-                            : 'bg-gray-300 dark:bg-zinc-600'
+                          "w-10 h-1 rounded-full",
+                          forceDarkMode ? "bg-zinc-600" : "bg-gray-300 dark:bg-zinc-600"
                         )}
                         whileHover={{ scaleX: 1.2 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 20 }}
                       />
                     </div>
 
-                    {/* Menu Content */}
+                    {/* Menu Items */}
                     <div className="flex-1 overflow-y-auto px-5 pb-6 pt-2">
                       {menuConfig.map((section, idx) => {
-                        const subItemActive = section.subMenu?.find(item => 
-                          item.path === pathname || pathname.slice(1) === item.path
+                        const subItemActive = section.subMenu?.find(
+                          (item) =>
+                            item.path === pathname || pathname.slice(1) === item.path
                         );
 
-                        const isActive = pathname === section.path ||
+                        const isActive =
+                          pathname === section.path ||
                           (pathname.startsWith(`${section.path}/`) &&
-                          !section.exclude?.includes(pathname)) ||
+                            !section.exclude?.includes(pathname)) ||
                           !!subItemActive;
 
                         return (
                           <div key={section.path}>
-                            {/* Section Header - Full width hover */}
                             <Link
-                              href={section.path === '#' ? '#' : section.path}
+                              href={section.path === "#" ? "#" : section.path}
                               onClick={(e) => {
-                                if (section.path === '#') {
-                                  e.preventDefault();
-                                } else {
-                                  setIsOpen(false);
-                                }
+                                if (section.path === "#") e.preventDefault();
+                                else closeMenu();
                               }}
                               className={clsxm(
-                                'flex items-center gap-2.5 w-full py-2.5 px-1 -mx-1 rounded-lg',
-                                'transition-all duration-200',
-                                'hover:bg-gray-100 dark:hover:bg-zinc-800',
-                                'active:scale-[0.98]',
+                                "flex items-center gap-2.5 w-full py-2.5 px-1 -mx-1 rounded-lg",
+                                "transition-all duration-200",
+                                "hover:bg-gray-100 dark:hover:bg-zinc-800",
+                                "active:scale-[0.98]",
                                 forceDarkMode
                                   ? isActive
-                                    ? 'text-white'
-                                    : 'text-gray-300'
+                                    ? "text-white"
+                                    : "text-gray-300"
                                   : isActive
-                                    ? 'text-gray-200'
-                                    : 'text-gray-700 dark:text-gray-300'
+                                  ? "text-gray-400 dark:text-gray-200"
+                                  : "text-gray-700 dark:text-gray-300"
                               )}
                             >
-                              <Icon 
-                                icon={subItemActive?.icon ?? section.icon} 
-                                className="text-[18px] flex-shrink-0 ml-1" 
+                              <Icon
+                                icon={subItemActive?.icon ?? section.icon}
+                                className="text-[18px] flex-shrink-0 ml-1"
                               />
                               <span className="text-[15px] font-normal">
                                 {subItemActive?.title ?? section.title}
                               </span>
                             </Link>
 
-                            {/* Section Items */}
                             {section.subMenu && section.subMenu.length > 0 && (
                               <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 ml-7 mb-1">
                                 {section.subMenu.map((item) => {
-                                  const isSubItemActive = pathname === item.path || pathname.slice(1) === item.path;
+                                  const isSubItemActive =
+                                    pathname === item.path || pathname.slice(1) === item.path;
                                   return (
                                     <Link
                                       key={item.path}
                                       href={item.path}
-                                      onClick={() => setIsOpen(false)}
+                                      onClick={closeMenu}
                                       className={clsxm(
-                                        'py-2 px-2 text-[14px] rounded-md',
-                                        'transition-all duration-200',
-                                        'active:scale-[0.97]',
+                                        "py-2 px-2 text-[14px] rounded-md",
+                                        "transition-all duration-200",
+                                        "active:scale-[0.97]",
                                         forceDarkMode
                                           ? isSubItemActive
-                                            ? 'text-white bg-blue-500/20 font-medium shadow-sm'
-                                            : 'text-gray-400 hover:text-gray-200 hover:bg-white/10 hover:shadow-sm'
+                                            ? "text-white bg-blue-500/20 font-medium shadow-sm"
+                                            : "text-gray-400 hover:text-gray-200 hover:bg-white/10 hover:shadow-sm"
                                           : isSubItemActive
-                                            ? 'text-gray-900 bg-blue-500/10 font-medium shadow-sm'
-                                            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:shadow-sm'
+                                          ? "text-gray-900 bg-blue-500/10 font-medium shadow-sm"
+                                          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:shadow-sm"
                                       )}
-                                      target={item.path.startsWith('http') ? '_blank' : undefined}
-                                      rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                      target={item.path.startsWith("http") ? "_blank" : undefined}
+                                      rel={item.path.startsWith("http") ? "noopener noreferrer" : undefined}
                                     >
                                       {item.title}
                                     </Link>
@@ -233,14 +227,15 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                               </div>
                             )}
 
-                            {/* Divider */}
                             {idx < menuConfig.length - 1 && (
-                              <div className={clsxm(
-                                'my-3 border-b',
-                                forceDarkMode
-                                  ? 'border-zinc-700/50'
-                                  : 'border-gray-200/60 dark:border-zinc-700/50'
-                              )} />
+                              <div
+                                className={clsxm(
+                                  "my-3 border-b",
+                                  forceDarkMode
+                                    ? "border-zinc-700/50"
+                                    : "border-gray-200/60 dark:border-zinc-700/50"
+                                )}
+                              />
                             )}
                           </div>
                         );

@@ -13,6 +13,8 @@
     "@iconify/react": "^6.0.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-scroll-area": "^1.2.10",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "d3-dsv": "^3.0.1",
     "dayjs": "^1.11.18",
     "install": "^0.13.0",

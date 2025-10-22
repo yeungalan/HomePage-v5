@@ -16,6 +16,7 @@ import { Icon } from '@iconify/react';
 import Timeline from '@/components/Timeline'
 import { Footer } from '@/components/Footer'
 import { RealFooter } from '@/components/FooterLinks'
+import { ParticlesBackground } from '@/components/ParticlesBackground'
 
 export default function Home() {
   return (
@@ -189,6 +190,7 @@ const handleRefreshQuote = () => {
 const ActivityScreen = () => {
   return (
     <div className="mt-24 px-4 sm:px-6 lg:px-0">
+      <ParticlesBackground />
       <TwoColumnLayout
         // 👇 override only this section to force top alignment
         className="lg:items-start"

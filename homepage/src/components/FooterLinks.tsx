@@ -15,21 +15,21 @@ const footerConfig = {
       name: 'About',
       links: [
         { name: 'This site', href: '/about', external: false },
-        { name: 'Status mointor', href: '/message', external: false },
+        { name: 'Status mointor', href: 'https://stats.uptimerobot.com/JKvyVhBqBO', external: true },
       ],
     },
     {
       name: 'Socials',
       links: [
-        { name: 'GitHub', href: 'https://github.com', external: true },
-        { name: 'Twitter', href: 'https://twitter.com', external: true },
+        { name: 'GitHub', href: 'https://github.com/yeungalan', external: true },
+        { name: 'Twitter', href: 'https://twitter.com/yeungbluecat123', external: true },
       ],
     },
     {
       name: 'More',
       links: [
-        { name: 'Quick links', href: '/friends', external: false },
-        { name: 'Administrator System', href: '/projects', external: false },
+        { name: 'Friends', href: '/friends', external: false },
+        { name: 'Projects', href: '/projects', external: false },
       ],
     },
   ],
@@ -144,7 +144,7 @@ const FooterBottom = () => {
           <Divider className="inline" />
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          R. 2025 Oct 21 v. RC
+          R. 2025 Oct 21 Release Candiate
         </span>
       </div>
       <div>

@@ -152,7 +152,7 @@ function FlightCalculator() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.5 }}
-      className="bg-gradient-to-br from-sky-100/80 to-blue-100/80 dark:from-sky-900/30 dark:to-blue-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-sky-200 dark:border-sky-700 shadow-lg"
+      className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700"
     >
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
         <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
@@ -171,7 +171,7 @@ function FlightCalculator() {
             onChange={handleSrcChange}
             maxLength={3}
             placeholder="e.g., JFK"
-            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg font-mono uppercase"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"
           />
           {srcAirport && (
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 truncate">
@@ -190,7 +190,7 @@ function FlightCalculator() {
             onChange={handleDstChange}
             maxLength={3}
             placeholder="e.g., LAX"
-            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/80 dark:bg-gray-800/80 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-lg font-mono uppercase"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"
           />
           {dstAirport && (
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 truncate">
@@ -203,7 +203,7 @@ function FlightCalculator() {
       {/* Flight Information Display */}
       {srcAirport && dstAirport && (
         <div className="space-y-3 sm:space-y-4">
-          <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+          <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Distance</p>
@@ -221,7 +221,7 @@ function FlightCalculator() {
           </div>
 
           {/* Real-time Progress Bar */}
-          <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+          <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs text-gray-500 dark:text-gray-400">Flight Progress</p>
               <p className="text-xs font-mono text-gray-600 dark:text-gray-300">
@@ -232,8 +232,8 @@ function FlightCalculator() {
               <motion.div
                 className={`h-full rounded-full ${
                   isCompleted 
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
-                    : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                    ? 'bg-gray-900 dark:bg-gray-100' 
+                    : 'bg-gray-600 dark:bg-gray-400'
                 }`}
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
@@ -248,7 +248,7 @@ function FlightCalculator() {
                 <Icon 
                   icon={isCompleted ? "mdi:check-circle" : "mdi:airplane"} 
                   className={`text-base sm:text-lg ${
-                    isCompleted ? 'text-green-500' : 'text-blue-500'
+                    isCompleted ? 'text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'
                   }`}
                 />
                 <p className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -265,9 +265,9 @@ function FlightCalculator() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-green-100 dark:bg-green-900/30 rounded-xl p-3 sm:p-4 border border-green-300 dark:border-green-700"
+              className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-300 dark:border-gray-600"
             >
-              <p className="text-sm sm:text-base text-green-800 dark:text-green-200 text-center font-medium">
+              <p className="text-sm sm:text-base text-gray-900 dark:text-gray-100 text-center font-medium">
                 ✈️ Flight completed! You&apos;ve arrived at {dstAirport.city}!
               </p>
             </motion.div>
@@ -333,7 +333,7 @@ export default function Timeline() {
 
   return (
     <>
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-[50px] sm:pt-[60px]">
         {/* Header */}
         <motion.div
@@ -350,7 +350,7 @@ export default function Timeline() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-gray-200 dark:border-gray-700 shadow-2xl"
+          className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-gray-200 dark:border-gray-700"
         >
           <div className="flex justify-center items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
             <motion.div
@@ -378,8 +378,7 @@ export default function Timeline() {
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="text-4xl sm:text-6xl md:text-8xl font-bold font-mono tracking-tight text-blue-400 dark:text-blue-500"
-            >
+              className="text-4xl sm:text-6xl md:text-8xl font-bold font-mono tracking-tight text-blue-400 dark:text-blue-500"            >
               {seconds}
             </motion.div>
           </div>
@@ -400,20 +399,20 @@ export default function Timeline() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
         >
-          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
             <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Today is day</p>
             <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{dayOfYear}</p>
             <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">of {currentYear}</p>
           </div>
-          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
             <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Year progress</p>
-            <p className="text-2xl sm:text-4xl font-bold text-blue-600 dark:text-blue-500 font-mono break-all">
+            <p className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white font-mono break-all">
               {yearProgress}%
             </p>
           </div>
-          <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
             <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Today progress</p>
-            <p className="text-2xl sm:text-4xl font-bold text-green-600 dark:text-green-500 font-mono break-all">
+            <p className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white font-mono break-all">
               {todayProgress}%
             </p>
           </div>
@@ -437,35 +436,35 @@ export default function Timeline() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="bg-gradient-to-br from-blue-100/80 to-purple-100/80 dark:from-blue-900/30 dark:to-purple-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-200 dark:border-blue-700 shadow-lg"
+          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700"
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
             <Icon icon="mdi:target" className="text-3xl sm:text-4xl" />
             <span>{currentYear} Goals</span>
           </h2>
           <div className="space-y-3 sm:space-y-4">
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
               <Icon icon="mdi:check-circle" className="text-2xl sm:text-3xl text-green-500 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Diving</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Completed</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
               <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Motorcycle</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Icon icon="mdi:arm-flex" className="text-2xl sm:text-3xl text-blue-500 flex-shrink-0 mt-1" />
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:arm-flex" className="text-2xl sm:text-3xl text-gray-500 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Stay Healthy</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Trying hard</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
               <Icon icon="mdi:heart-outline" className="text-2xl sm:text-3xl text-pink-500 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Find a Person I Care Of</h3>

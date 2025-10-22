@@ -144,7 +144,7 @@ const FooterBottom = () => {
           <Divider className="inline" />
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          R. 2025 Oct 15 v. Beta
+          R. 2025 Oct 21 v. RC
         </span>
       </div>
       <div>

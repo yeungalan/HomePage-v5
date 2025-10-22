@@ -142,28 +142,31 @@ const MenuPopover = ({
             )}
           >
             {subMenu.map((item, index) => (
-              <motion.a
+              <motion.div
                 key={index}
                 custom={index}
                 variants={itemVariants}
                 initial="initial"
                 animate="animate"
-                href={item.path}
-                className={clsxm(
-                  'flex items-center px-4 py-3 text-sm',
-                  'transition-colors duration-200 relative',
-                  forceDarkMode
-                    ? 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-blue-500/5 hover:text-blue-500'
-                )}
-                target={item.path.startsWith('http') ? '_blank' : undefined}
-                rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
               >
-                {item.icon && (
-                  <Icon icon={item.icon} className="text-base mr-2" />
-                )}
-                <span>{item.title}</span>
-              </motion.a>
+                <Link
+                  href={item.path}
+                  className={clsxm(
+                    'flex items-center px-4 py-3 text-sm',
+                    'transition-colors duration-200 relative',
+                    forceDarkMode
+                      ? 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-blue-500/5 hover:text-blue-500'
+                  )}
+                  target={item.path.startsWith('http') ? '_blank' : undefined}
+                  rel={item.path.startsWith('http') ? 'noopener noreferrer' : undefined}
+                >
+                  {item.icon && (
+                    <Icon icon={item.icon} className="text-base mr-2" />
+                  )}
+                  <span>{item.title}</span>
+                </Link>
+              </motion.div>
             ))}
           </motion.div>
         )}

@@ -29,7 +29,7 @@ export const Loading: Component<LoadingProps> = ({
       data-hide-print
       className={clsxm('my-20 flex flex-col center', className)}
     >
-      <Icon icon="eos-icons:three-dots-loading" className={"dark:text-white text-8xl"} />
+      <Icon icon="eos-icons:three-dots-loading" className={"text-white text-8xl"} />
       {!!nextLoadingText && (
         <span className="mt-2 block">{nextLoadingText}</span>
       )}

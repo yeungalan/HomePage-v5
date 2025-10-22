@@ -289,8 +289,10 @@ export default function WorldMap() {
             />
           </div>
         ) : (
+          <div className="bg-black h-full w-full">
           <div className="flex justify-center items-center text-neutral-900 dark:text-white font-mono">
             <FullPageLoading/>
+          </div>
           </div>
         )}
       </div>

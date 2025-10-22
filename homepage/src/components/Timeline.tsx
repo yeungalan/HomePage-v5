@@ -135,6 +135,7 @@ export default function Timeline() {
   }, [])
 
   // Handle scroll detection for gradient effects
+  // Handle scroll detection for gradient effects
   useEffect(() => {
     const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
     if (!scrollElement) return
@@ -144,38 +145,33 @@ export default function Timeline() {
       const scrollHeight = scrollElement.scrollHeight
       const clientHeight = scrollElement.clientHeight
 
-      // Check if at top (with small threshold for floating point precision)
       const atTop = scrollTop <= 1
-      setIsAtTop(atTop)
-
-      // Check if at bottom
       const atBottom = scrollTop + clientHeight >= scrollHeight - 1
-      setIsAtBottom(atBottom)
-
-      // Check if content is scrollable
       const scrollable = scrollHeight > clientHeight
+
+      setIsAtTop(atTop)
+      setIsAtBottom(atBottom)
       setCanScroll(scrollable)
     }
 
-    handleScroll()
+    // Attach listeners
     scrollElement.addEventListener('scroll', handleScroll)
 
-    // Check if content is scrollable on mount
-    const checkScrollable = () => {
-      const scrollHeight = scrollElement.scrollHeight
-      const clientHeight = scrollElement.clientHeight
-      setCanScroll(scrollHeight > clientHeight)
-    }
+    // Immediately check scroll state after mount
+    handleScroll()
 
-    // Use ResizeObserver to detect content changes
-    const resizeObserver = new ResizeObserver(checkScrollable)
+    // Check if content changes dynamically
+    const resizeObserver = new ResizeObserver(() => {
+      handleScroll() // Re-run logic when content height changes
+    })
     resizeObserver.observe(scrollElement)
 
     return () => {
       scrollElement.removeEventListener('scroll', handleScroll)
       resizeObserver.disconnect()
     }
-  }, [flatData]) // Re-run when data changes
+  }, [flatData])
+
 
   return (
     <motion.div

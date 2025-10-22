@@ -78,32 +78,11 @@ const isLoading = false
 
 export default function Timeline() {
   const leftSideRef = useRef<HTMLDivElement>(null)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [leftSideHeight, setLeftSideHeight] = useState(0)
-
-  useEffect(() => {
-    const updateHeight = () => {
-      if (leftSideRef.current) {
-        const awardsSection = document.querySelector('.shiro-timeline')?.parentElement
-        if (awardsSection) {
-          setLeftSideHeight(awardsSection.clientHeight)
-        }
-      }
-    }
-
-    updateHeight()
-    window.addEventListener('resize', updateHeight)
-    
-    // Use MutationObserver to detect when the left side content loads
-    const observer = new MutationObserver(updateHeight)
-    if (leftSideRef.current) {
-      observer.observe(document.body, { childList: true, subtree: true })
-    }
-
-    return () => {
-      window.removeEventListener('resize', updateHeight)
-      observer.disconnect()
-    }
-  }, [])
+  const [isAtTop, setIsAtTop] = useState(true)
+  const [isAtBottom, setIsAtBottom] = useState(false)
+  const [canScroll, setCanScroll] = useState(false)
 
   const flatData = useMemo(() => {
     return [...experiences].sort((a, b) => {
@@ -123,12 +102,80 @@ export default function Timeline() {
         }
         return `${dateStr}-01` // For year-only dates
       }
-      
+
       const dateA = parseDate(a.startDate)
       const dateB = parseDate(b.startDate)
       return dateB.localeCompare(dateA) // Most recent first
     })
   }, [])
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (leftSideRef.current) {
+        const awardsSection = document.querySelector('.shiro-timeline')?.parentElement
+        if (awardsSection) {
+          setLeftSideHeight(awardsSection.clientHeight)
+        }
+      }
+    }
+
+    updateHeight()
+    window.addEventListener('resize', updateHeight)
+
+    // Use MutationObserver to detect when the left side content loads
+    const observer = new MutationObserver(updateHeight)
+    if (leftSideRef.current) {
+      observer.observe(document.body, { childList: true, subtree: true })
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateHeight)
+      observer.disconnect()
+    }
+  }, [])
+
+  // Handle scroll detection for gradient effects
+  useEffect(() => {
+    const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (!scrollElement) return
+
+    const handleScroll = () => {
+      const scrollTop = scrollElement.scrollTop
+      const scrollHeight = scrollElement.scrollHeight
+      const clientHeight = scrollElement.clientHeight
+
+      // Check if at top (with small threshold for floating point precision)
+      const atTop = scrollTop <= 1
+      setIsAtTop(atTop)
+
+      // Check if at bottom
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1
+      setIsAtBottom(atBottom)
+
+      // Check if content is scrollable
+      const scrollable = scrollHeight > clientHeight
+      setCanScroll(scrollable)
+    }
+
+    handleScroll()
+    scrollElement.addEventListener('scroll', handleScroll)
+
+    // Check if content is scrollable on mount
+    const checkScrollable = () => {
+      const scrollHeight = scrollElement.scrollHeight
+      const clientHeight = scrollElement.clientHeight
+      setCanScroll(scrollHeight > clientHeight)
+    }
+
+    // Use ResizeObserver to detect content changes
+    const resizeObserver = new ResizeObserver(checkScrollable)
+    resizeObserver.observe(scrollElement)
+
+    return () => {
+      scrollElement.removeEventListener('scroll', handleScroll)
+      resizeObserver.disconnect()
+    }
+  }, [flatData]) // Re-run when data changes
 
   return (
     <motion.div
@@ -162,7 +209,29 @@ export default function Timeline() {
           </ul>
         </div>
       ) : (
-        <ScrollArea.Root className="relative overflow-hidden" style={{ height: leftSideHeight > 0 ? `${leftSideHeight}px` : 'auto' }}>
+        <ScrollArea.Root ref={scrollAreaRef} className="relative overflow-hidden" style={{ height: leftSideHeight > 0 ? `${leftSideHeight}px` : 'auto' }}>
+          {/* Top gradient overlay - only show when not at top and content is scrollable */}
+          {canScroll && !isAtTop && (
+            <div
+              className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
+              style={{
+                height: '60px',
+                background: 'linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)',
+              }}
+            />
+          )}
+
+          {/* Bottom gradient overlay - only show when not at bottom and content is scrollable */}
+          {canScroll && !isAtBottom && (
+            <div
+              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
+              style={{
+                height: '60px',
+                background: 'linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)',
+              }}
+            />
+          )}
+
           <ScrollArea.Viewport className="w-full h-full">
             <div className="relative">
               {/* Timeline line - positioned to go through the center of the icons */}

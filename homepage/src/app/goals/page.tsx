@@ -372,7 +372,7 @@ export default function Timeline() {
             >
               {minutes}
             </motion.div>
-            <span className="text-4xl sm:text-6xl md:text-8xl font-bold text-slate-500 dark:text-slate-400">:</span>
+            <span className="text-4xl sm:text-6xl md:text-8xl font-bold text-gray-400 dark:text-gray-500">:</span>
             <motion.div
               key={`seconds-${seconds}`}
               initial={{ y: -20, opacity: 0 }}

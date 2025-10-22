@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MobileNav } from './MobileNav';
 
 // Types
 interface MenuItem {
@@ -349,8 +350,28 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
         ? 'border-zinc-100/10'
         : 'border-zinc-900/5 dark:border-zinc-100/10'
     )}>      
-      <div className="relative mx-auto flex items-center justify-center h-full max-w-7xl px-8">
-        <DesktopNav hasShadow={hasShadow} forceDarkMode={forceDarkMode} />
+      <div className="relative mx-auto flex items-center justify-between h-full max-w-7xl px-4 sm:px-8">
+        {/* Desktop Navigation - hidden on mobile */}
+        <div className="hidden md:flex flex-1 items-center justify-center">
+          <DesktopNav hasShadow={hasShadow} forceDarkMode={forceDarkMode} />
+        </div>
+
+        {/* Mobile Navigation - visible on mobile */}
+        <div className="flex md:hidden items-center justify-between w-full">
+          {/* Mobile Menu Button - Left Side */}
+          <MobileNav 
+            menuConfig={mockHeaderMenuConfig} 
+            forceDarkMode={forceDarkMode}
+          />
+
+          {/* Logo or Brand (optional) - Right Side */}
+          <div className={clsxm(
+            'text-lg font-semibold',
+            forceDarkMode ? 'text-white' : 'text-gray-900 dark:text-white'
+          )}>
+            {/* Add your logo here */}
+          </div>
+        </div>
       </div>
     </div>
   );

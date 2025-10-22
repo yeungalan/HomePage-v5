@@ -188,7 +188,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                                     ? 'text-white'
                                     : 'text-gray-300'
                                   : isActive
-                                    ? 'text-gray-900'
+                                    ? 'text-gray-200'
                                     : 'text-gray-700 dark:text-gray-300'
                               )}
                             >

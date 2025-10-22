@@ -1,10 +1,9 @@
 "use client"
-import WorldMap from '@/components/World';
 import dynamic from 'next/dynamic';
 
-/*
+
 const WorldMap = dynamic(() => import('@/components/World'), {
-  ssr: true,
+  ssr: false,
   loading: () => <div>Loading map...</div> // Optional loading component
 });
 
@@ -16,8 +15,9 @@ export default function Page() {
   )
 }
 
-*/
 
+
+/*
 export default function Page() {
   return (
     <div className="min-w-screen bg-black">
@@ -25,3 +25,4 @@ export default function Page() {
     </div>
   )
 }
+  */

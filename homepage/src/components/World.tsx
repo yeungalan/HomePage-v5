@@ -190,12 +190,13 @@ export default function WorldMap() {
       setAirports([]);
       setRoutes([]);
     });
+
   }, []);
 
   // Set initial globe view
   useEffect(() => {
     if (globeEl.current) {
-      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 });
+      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
     }
   }, [globeMaterial]);
 
@@ -261,7 +262,16 @@ export default function WorldMap() {
       {/* Globe Container - Always Centered */}
       <div className="absolute inset-0 flex items-center justify-center">
         {globeMaterial ? (
-          <div className="w-full h-full" key={`${dimensions.width}-${dimensions.height}`}>
+          <motion.div 
+            className="w-full h-full" 
+            key={`${dimensions.width}-${dimensions.height}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ 
+              duration: 1.2,
+              ease: "easeOut"
+            }}
+          >
             <Globe
               ref={globeEl}
               globeMaterial={globeMaterial}
@@ -287,7 +297,7 @@ export default function WorldMap() {
               width={dimensions.width}
               height={dimensions.height}
             />
-          </div>
+          </motion.div>
         ) : (
           <div className="bg-black h-full w-full">
           <div className="flex justify-center items-center text-neutral-900 dark:text-white font-mono">
@@ -298,21 +308,37 @@ export default function WorldMap() {
       </div>
 
       {/* Time Display - Fixed to Bottom Left */}
-      <div 
+      <motion.div 
         className="fixed left-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
         style={{ 
           bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
           left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
         }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : 20 }}
+        transition={{ 
+          duration: 0.8,
+          delay: 0.3,
+          ease: "easeOut"
+        }}
       >
         {new Date(dt).toLocaleString()}
-      </div>
+      </motion.div>
 
-<div className="fixed right-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10" 
-           style={{ 
+      <motion.div 
+        className="fixed right-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10" 
+        style={{ 
           bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
           right: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
-        }}>
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : 20 }}
+        transition={{ 
+          duration: 0.8,
+          delay: 0.5,
+          ease: "easeOut"
+        }}
+      >
         <div className="relative inline-block">
           {/* Animated Indicator */}
           <motion.div
@@ -365,7 +391,7 @@ export default function WorldMap() {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

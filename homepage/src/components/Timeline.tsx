@@ -210,25 +210,19 @@ export default function Timeline() {
         </div>
       ) : (
         <ScrollArea.Root ref={scrollAreaRef} className="relative overflow-hidden" style={{ height: leftSideHeight > 0 ? `${leftSideHeight}px` : 'auto' }}>
-          {/* Top gradient overlay - only show when not at top and content is scrollable */}
           {canScroll && !isAtTop && (
             <div
-              className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
-              style={{
-                height: '60px',
-                background: 'linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)',
-              }}
+              className="absolute top-0 left-0 right-0 z-10 pointer-events-none h-[60px]
+                        bg-[linear-gradient(to_bottom,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
+                        dark:bg-[linear-gradient(to_bottom,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
             />
           )}
 
-          {/* Bottom gradient overlay - only show when not at bottom and content is scrollable */}
           {canScroll && !isAtBottom && (
             <div
-              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
-              style={{
-                height: '60px',
-                background: 'linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%)',
-              }}
+              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none h-[60px]
+                        bg-[linear-gradient(to_top,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
+                        dark:bg-[linear-gradient(to_top,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
             />
           )}
 

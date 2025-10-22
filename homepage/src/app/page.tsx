@@ -190,8 +190,10 @@ const ActivityScreen = () => {
   return (
     <div className="mt-24 px-4 sm:px-6 lg:px-0">
       <TwoColumnLayout
-        rightContainerClassName="block lg:flex [&>div]:w-full pr-4"
+        // 👇 override only this section to force top alignment
+        className="lg:items-start"
         leftContainerClassName="[&>div]:w-full"
+        rightContainerClassName="block lg:flex [&>div]:w-full pr-4"
       >
         <ActivityPostList />
         <Timeline />
@@ -199,3 +201,4 @@ const ActivityScreen = () => {
     </div>
   )
 }
+

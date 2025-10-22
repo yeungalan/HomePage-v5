@@ -182,7 +182,7 @@ export default function Timeline() {
       ref={leftSideRef}
       initial={{ opacity: 0.0001, y: 50 }}
       transition={softBouncePreset}
-      className="flex flex-col w-full text-lg mt-8 lg:mt-0 max-w-3xl"
+      className="pl-4 flex flex-col w-full text-lg mt-8 lg:mt-0 max-w-3xl"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >

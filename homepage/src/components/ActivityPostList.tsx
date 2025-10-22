@@ -14,7 +14,7 @@ export const ActivityPostList = () => {
       initial={{ opacity: 0.0001, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={softBouncePreset}
-      className="mt-8 flex flex-col gap-4 lg:mt-0"
+      className="mt-8 flex flex-col lg:mt-0 pl-4 w-full"
       viewport={{ once: true }}
     >
       <h2 className="text-2xl font-medium leading-loose dark:text-white">Awards and Certifications</h2>

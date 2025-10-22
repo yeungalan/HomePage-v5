@@ -44,7 +44,7 @@ const TwoColumnLayout = ({
   return (
     <div
       className={clsxm(
-        'relative mx-auto block size-full min-w-0 max-w-[1800px] flex-col flex-wrap items-start lg:flex lg:flex-row',
+        'relative mx-auto block size-full min-w-0 max-w-[1800px] flex-col flex-wrap items-center lg:flex lg:flex-row',
         className,
       )}
     >
@@ -100,7 +100,7 @@ const handleRefreshQuote = () => {
 
   return (
     <div className="mt-20 min-w-0 max-w-screen overflow-hidden lg:mt-[-4.5rem] lg:h-dvh lg:min-h-[800px]">
-      <TwoColumnLayout leftContainerClassName="mt-[120px] lg:mt-0 lg:h-[15rem] lg:h-1/2">
+      <TwoColumnLayout leftContainerClassName="pr-4 pl-4 mt-[120px] lg:mt-0 lg:h-[15rem] lg:h-1/2">
         <>
           <GiantGreetText/>
 

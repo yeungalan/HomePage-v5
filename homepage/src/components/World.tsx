@@ -111,6 +111,7 @@ export default function WorldMap() {
   const [globeMaterial, setGlobeMaterial] = useState(null);
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isAnimating, setIsAnimating] = useState(true);
 
   // Animate time based on mode
   useEffect(() => {
@@ -193,11 +194,55 @@ export default function WorldMap() {
 
   }, []);
 
-  // Set initial globe view
+  // Set initial globe view and enable zoom after animation
   useEffect(() => {
     if (globeEl.current) {
+      // Disable rotation controls during animation
+      globeEl.current.controls().enableRotate = false;
+      
+      // Initialize globe rotation uniform immediately
+      const initialPOV = globeEl.current.pointOfView();
+      if (globeMaterial?.uniforms?.globeRotation?.value && initialPOV) {
+        globeMaterial.uniforms.globeRotation.value.set(
+          initialPOV.lng || -98.5, 
+          initialPOV.lat || 39.6
+        );
+      }
+      
       globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
+      
+      // Enable rotation after animation completes
+      setTimeout(() => {
+        setIsAnimating(false);
+        if (globeEl.current) {
+          globeEl.current.controls().enableRotate = true;
+        }
+      }, 6000);
     }
+  }, [globeMaterial]);
+
+  // Continuously update globe rotation to sync shader with camera
+  useEffect(() => {
+    if (!globeEl.current || !globeMaterial) return;
+    
+    let animationFrame;
+    const updateRotation = () => {
+      if (globeEl.current && globeMaterial?.uniforms?.globeRotation?.value) {
+        const pov = globeEl.current.pointOfView();
+        if (pov && pov.lng !== undefined && pov.lat !== undefined) {
+          globeMaterial.uniforms.globeRotation.value.set(pov.lng, pov.lat);
+        }
+      }
+      animationFrame = requestAnimationFrame(updateRotation);
+    };
+    
+    updateRotation();
+    
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
   }, [globeMaterial]);
 
   // Load globe shader (day/night)
@@ -233,12 +278,27 @@ export default function WorldMap() {
   }, [dt, globeMaterial]);
 
   const handleZoom = useCallback(
-    ({ lng, lat }) => {
+    ({ lng, lat, altitude }) => {
+      // Block zoom during animation
+      if (isAnimating) return;
+      
       if (globeMaterial?.uniforms?.globeRotation?.value) {
         globeMaterial.uniforms.globeRotation.value.set(lng, lat);
       }
+      
+      // Enforce altitude limits
+      if (globeEl.current && altitude !== undefined) {
+        const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
+        if (altitude !== clampedAltitude) {
+          const currentPOV = globeEl.current.pointOfView();
+          globeEl.current.pointOfView({
+            ...currentPOV,
+            altitude: clampedAltitude
+          }, 0);
+        }
+      }
     },
-    [globeMaterial]
+    [globeMaterial, isAnimating]
   );
 
   const handleModeChange = (mode: TimeMode) => {
@@ -278,7 +338,7 @@ export default function WorldMap() {
               backgroundImageUrl="sky.png"
               onZoom={handleZoom}
               arcsData={routes}
-              arcLabel={(d) => `${d.srcIata} → ${d.dstIata}`}
+              arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
               arcStartLat={(d) => +d.srcAirport.lat}
               arcStartLng={(d) => +d.srcAirport.lng}
               arcEndLat={(d) => +d.dstAirport.lat}

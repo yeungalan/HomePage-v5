@@ -43,13 +43,22 @@ const experiences: Experience[] = [
     id: '3',
     type: 'education',
     title: 'Computer Engineering (GPA 3.75/4.00)',
-    organization: 'University of Washington',
+    organization: 'University of Washington Seattle Campus',
     startDate: 'June 2021',
     endDate: 'June 2023',
     icon: 'mdi:school'
   },
     {
     id: '4',
+    type: 'education',
+    title: 'Engineering',
+    organization: 'The Chinese University of Hong Kong',
+    startDate: 'Sept 2019',
+    endDate: 'July 2020',
+    icon: 'mdi:school'
+  },
+    {
+    id: '5',
     type: 'milestone',
     title: 'Moved to America',
     startDate: '2019',
@@ -57,7 +66,7 @@ const experiences: Experience[] = [
     icon: 'mdi:airplane'
   },
   {
-    id: '5',
+    id: '6',
     type: 'work',
     title: 'imuslab',
     startDate: '2018',
@@ -65,9 +74,9 @@ const experiences: Experience[] = [
     icon: 'mdi:office-building'
   },
   {
-    id: '6',
+    id: '7',
     type: 'education',
-    title: 'Graduated from High School',
+    title: 'High school graduation',
     startDate: '2018',
     endDate: '2018',
     icon: 'mdi:school-outline'
@@ -227,9 +236,24 @@ export default function Timeline() {
               {/* Timeline line - positioned to go through the center of the icons */}
               <div 
                 className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-[#33A6B8] via-[#33A6B8] to-[#33A6B8] dark:from-[#33A6B8] dark:via-[#33A6B8] dark:to-p[#33A6B8]" 
-                style={{ height: 'calc(100% - 60px)' }}
+                style={{ height: 'calc(100% - 45px)' }}
               />
-              
+              <div
+                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
+                style={{
+                  backgroundImage: `
+                    repeating-linear-gradient(
+                      to bottom,
+                      #33A6B8, 
+                      #33A6B8 4px,
+                      ${typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(24,24,27,0.8)' : 'transparent'} 4px,
+                      transparent 8px
+                    )
+                  `,
+                }}
+              />
+
+
               <ul className="flex flex-col relative">
                 {flatData.map((activity, index) => {
                   return (

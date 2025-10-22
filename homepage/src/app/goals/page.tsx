@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { RealFooter } from '@/components/FooterLinks';
+import { getDayOfYear, differenceInDays, endOfYear, startOfYear } from 'date-fns';
 
 interface Airport {
   name: string;
@@ -178,6 +179,7 @@ function FlightCalculator() {
             </p>
           )}
         </div>
+
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             To (IATA Code)
@@ -198,127 +200,103 @@ function FlightCalculator() {
         </div>
       </div>
 
-      {/* Flight Progress Bar */}
-      <motion.div
-        initial={false}
-        animate={{ 
-          height: isFlying ? 'auto' : 0,
-          opacity: isFlying ? 1 : 0,
-        }}
-        transition={{ 
-          duration: 0.5,
-          ease: "easeInOut"
-        }}
-        className="overflow-hidden"
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-4 sm:p-6"
-        >
-          {/* Progress Bar Container */}
-          <div className="relative mb-6 sm:mb-8">
-            {/* Progress Bar */}
-            <div className="relative h-2 sm:h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-visible">
-              <motion.div
-                className={`absolute top-0 left-0 h-full rounded-full ${
-                  isCompleted 
-                    ? 'bg-gradient-to-r from-green-400 to-green-600' 
-                    : 'bg-gradient-to-r from-blue-400 to-blue-600'
-                }`}
-                style={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
-              />
-            </div>
-            
-            {/* Airplane Icon - Centered with white background for clearance */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 shadow-md">
-              <Icon 
-                icon="mdi:airplane" 
-                className={`text-2xl sm:text-4xl ${
-                  isCompleted ? 'text-green-600' : 'text-blue-600'
-                }`}
-              />
-            </div>
-          </div>
-
-          {/* Completion Status */}
-          {isCompleted && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-green-600 font-semibold text-base sm:text-lg"
-            >
-              <Icon icon="mdi:check-circle" className="text-xl sm:text-2xl" />
-              <span>Completed</span>
-            </motion.div>
-          )}
-
-          {/* Flight Info */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Distance</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
-                {distance.toFixed(0)} <span className="text-sm sm:text-base">km</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Est. Duration</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
-                {Math.floor(duration)}<span className="text-sm">h</span> {Math.round((duration % 1) * 60)}<span className="text-sm">m</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Elapsed</p>
-              <div className="flex justify-center gap-0.5">
-                {formatElapsedTime(elapsedTime).split('').map((char, index) => (
-                  <motion.span
-                    key={`${index}-${char}`}
-                    initial={{ rotateX: -90, opacity: 0 }}
-                    animate={{ rotateX: 0, opacity: 1 }}
-                    transition={{ 
-                      duration: 0.6,
-                      ease: "easeOut"
-                    }}
-                    className={`text-base sm:text-2xl font-bold font-mono inline-block ${
-                      char === ':' ? 'text-gray-400' : 'text-blue-600'
-                    }`}
-                    style={{
-                      transformOrigin: 'center',
-                      perspective: '1000px'
-                    }}
-                  >
-                    {char}
-                  </motion.span>
-                ))}
+      {/* Flight Information Display */}
+      {srcAirport && dstAirport && (
+        <div className="space-y-3 sm:space-y-4">
+          <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Distance</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {distance.toFixed(0)} km
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {duration.toFixed(1)} hrs
+                </p>
               </div>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+
+          {/* Real-time Progress Bar */}
+          <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400">Flight Progress</p>
+              <p className="text-xs font-mono text-gray-600 dark:text-gray-300">
+                {formatElapsedTime(elapsedTime)} / {duration.toFixed(1)}h
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 sm:h-3 overflow-hidden">
+              <motion.div
+                className={`h-full rounded-full ${
+                  isCompleted 
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                    : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                }`}
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.1 }}
+              />
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {srcAirport.iata}
+              </p>
+              <div className="flex items-center gap-1">
+                <Icon 
+                  icon={isCompleted ? "mdi:check-circle" : "mdi:airplane"} 
+                  className={`text-base sm:text-lg ${
+                    isCompleted ? 'text-green-500' : 'text-blue-500'
+                  }`}
+                />
+                <p className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  {progress.toFixed(1)}%
+                </p>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {dstAirport.iata}
+              </p>
+            </div>
+          </div>
+
+          {isCompleted && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-green-100 dark:bg-green-900/30 rounded-xl p-3 sm:p-4 border border-green-300 dark:border-green-700"
+            >
+              <p className="text-sm sm:text-base text-green-800 dark:text-green-200 text-center font-medium">
+                ✈️ Flight completed! You&apos;ve arrived at {dstAirport.city}!
+              </p>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {!srcAirport || !dstAirport ? (
+        <div className="text-center py-6 sm:py-8">
+          <Icon icon="mdi:airplane-search" className="text-4xl sm:text-5xl text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
+            Enter both airport codes to calculate flight distance
+          </p>
+        </div>
+      ) : null}
     </motion.div>
   );
 }
 
-export default function TimelinePage() {
+export default function Timeline() {
   const [time, setTime] = useState(new Date());
-  const [dateKey, setDateKey] = useState(new Date().toDateString());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const newTime = new Date();
-      setTime(newTime);
-      
-      // Update dateKey when the date changes (at midnight)
-      const newDateKey = newTime.toDateString();
-      if (newDateKey !== dateKey) {
-        setDateKey(newDateKey);
-      }
-    }, 10); // Update every 10ms for fast running effect
+      setTime(new Date());
+    }, 100);
 
     return () => clearInterval(timer);
-  }, [dateKey]);
+  }, []);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -328,25 +306,28 @@ export default function TimelinePage() {
   const utcMinutes = time.getUTCMinutes().toString().padStart(2, '0');
   const utcSeconds = time.getUTCSeconds().toString().padStart(2, '0');
 
-  // Calculate day of year - recalculates when dateKey changes
-  const startOfYear = new Date(time.getFullYear(), 0, 0);
-  const diff = +time - (+startOfYear);
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(diff / oneDay);
+  // Using date-fns for accurate date calculations
+  const currentYear = time.getFullYear();
+  const nextYear = currentYear + 1;
   
-  // Calculate year progress (running number with more decimals)
+  // Get day of year (1-365/366)
+  const dayOfYear = getDayOfYear(time);
+  
+  // Calculate days left in the year
+  const daysLeft = differenceInDays(endOfYear(time), time);
+  
+  // Check if leap year
   const isLeapYear = (year: number) => (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-  const daysInYear = isLeapYear(time.getFullYear()) ? 366 : 365;
-  const daysLeft = daysInYear - dayOfYear;
+  const daysInYear = isLeapYear(currentYear) ? 366 : 365;
   
   // Year progress as running number
   const msInYear = daysInYear * 24 * 60 * 60 * 1000;
-  const msSinceYearStart = +time - (+startOfYear);
+  const msSinceYearStart = time.getTime() - startOfYear(time).getTime();
   const yearProgress = ((msSinceYearStart / msInYear) * 100).toFixed(6);
   
   // Today progress as running number
   const startOfDay = new Date(time.getFullYear(), time.getMonth(), time.getDate());
-  const elapsedMs = +time - (+startOfDay);
+  const elapsedMs = time.getTime() - startOfDay.getTime();
   const totalDayMs = 24 * 60 * 60 * 1000;
   const todayProgress = ((elapsedMs / totalDayMs) * 100).toFixed(6);
 
@@ -361,7 +342,7 @@ export default function TimelinePage() {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 text-gray-900 dark:text-white">Timeline</h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">{daysLeft} days left until 2026</p>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">{daysLeft} days left until {nextYear}</p>
         </motion.div>
 
         {/* Large Clock */}
@@ -422,7 +403,7 @@ export default function TimelinePage() {
           <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
             <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Today is day</p>
             <p className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{dayOfYear}</p>
-            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">of 2025</p>
+            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">of {currentYear}</p>
           </div>
           <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
             <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">Year progress</p>
@@ -460,7 +441,7 @@ export default function TimelinePage() {
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
             <Icon icon="mdi:target" className="text-3xl sm:text-4xl" />
-            <span>2025 Goals</span>
+            <span>{currentYear} Goals</span>
           </h2>
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-gray-200 dark:border-gray-700">

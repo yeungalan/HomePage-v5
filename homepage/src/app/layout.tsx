@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 //import "@/styles/style.css";
 import 'mingcute_icon/font/Mingcute.css'
@@ -14,7 +14,14 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+})
+
+const notoSansTC = Noto_Sans_TC({
+  weight: ['100','200','300','400','500','600','700','800','900'], // all weights
+  subsets: ['latin', 'latin-ext'], // include necessary subsets
+  display: 'swap',
 });
+
 
 export const metadata: Metadata = {
   title: "Alan Yeung @ Seattle, WA",
@@ -33,7 +40,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body
-        className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >
 <NextThemeProvider
           attribute="class"

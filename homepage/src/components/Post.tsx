@@ -20,6 +20,12 @@ interface NoteModel {
   images?: Image[]
   topic?: {
     name: string
+    tags?: string[]
+  }
+  category?: {
+    name: string
+    caption?: string
+    avatar?: string
   }
 }
 
@@ -34,13 +40,81 @@ interface NoteWrappedPayload {
   data: NoteModel
 }
 
-// Mock data
-const mockNoteData: NoteWrappedPayload = {
-  data: {
-    id: '1',
-    nid: 'demo-note',
-    title: 'Demo Note - Standalone Version',
-    text: `# Welcome to the Standalone Notes Demo
+interface AutomateField {
+  topic?: string
+  id?: string
+  createdDate?: string
+  editedDate?: string
+  tags?: string[]
+  category?: string
+  categoryCaption?: string
+  categoryAvatar?: string
+}
+
+// Function to parse markdown with automate fields
+const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; markdown: string } => {
+  const automateFieldRegex = /### AUTOMATE FIELD\n([\s\S]*?)\n### AUTOMATE FIELD END/
+  const match = content.match(automateFieldRegex)
+  
+  const metadata: AutomateField = {}
+  let markdown = content
+  
+  if (match) {
+    const metadataBlock = match[1]
+    const lines = metadataBlock.split('\n')
+    
+    lines.forEach(line => {
+      const [key, value] = line.split('=').map(s => s.trim())
+      if (key && value) {
+        switch (key) {
+          case 'Topic':
+            metadata.topic = value
+            break
+          case 'ID':
+            metadata.id = value
+            break
+          case 'CREATED_DATE':
+            metadata.createdDate = value
+            break
+          case 'EDITED_DATE':
+            metadata.editedDate = value
+            break
+          case 'TAG':
+            metadata.tags = value.split(',').map(t => t.trim())
+            break
+          case 'CATEGORY':
+            metadata.category = value
+            break
+          case 'CATEGORY_CAPTION':
+            metadata.categoryCaption = value
+            break
+          case 'CATEGORY_AVATAR':
+            metadata.categoryAvatar = value
+            break
+        }
+      }
+    })
+    
+    // Remove the metadata block from the markdown
+    markdown = content.replace(automateFieldRegex, '').trim()
+  }
+  
+  return { metadata, markdown }
+}
+
+// Mock data with automate fields
+const mockMarkdownContent = `### AUTOMATE FIELD
+Topic=Demo Topic
+ID=demo-note
+CREATED_DATE=2025-01-22T00:01:01Z
+EDITED_DATE=2025-01-22T12:30:00Z
+TAG=Demo, Tutorial, Standalone
+CATEGORY=Greeting
+CATEGORY_CAPTION=Welcome to our demo
+CATEGORY_AVATAR=https://via.placeholder.com/150
+### AUTOMATE FIELD END
+
+# Welcome to the Standalone Notes Demo
 
 This is a demonstration of the extracted notes functionality without backend dependencies.
 
@@ -70,9 +144,18 @@ function hello() {
 - Item 2
 - Item 3
 
-This demonstrates the core functionality of the notes system without requiring a backend connection.`,
-    created: new Date().toISOString(),
-    modified: new Date().toISOString(),
+This demonstrates the core functionality of the notes system without requiring a backend connection.`
+
+const { metadata, markdown } = parseMarkdownWithMetadata(mockMarkdownContent)
+
+const mockNoteData: NoteWrappedPayload = {
+  data: {
+    id: metadata.id || '1',
+    nid: metadata.id || 'demo-note',
+    title: 'Demo Note - Standalone Version',
+    text: markdown,
+    created: metadata.createdDate || new Date().toISOString(),
+    modified: metadata.editedDate || new Date().toISOString(),
     hide: false,
     allowComment: true,
     meta: {
@@ -80,8 +163,14 @@ This demonstrates the core functionality of the notes system without requiring a
     },
     images: [],
     topic: {
-      name: 'Demo Topic'
-    }
+      name: metadata.topic || 'Demo Topic',
+      tags: metadata.tags || []
+    },
+    category: metadata.category ? {
+      name: metadata.category,
+      caption: metadata.categoryCaption,
+      avatar: metadata.categoryAvatar
+    } : undefined
   }
 }
 
@@ -248,14 +337,20 @@ const NoteMarkdown = () => {
 
 const NoteMetaBar = () => {
   const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
+  const tags = topic?.tags || []
   
   return (
-    <div className="flex items-center gap-2 text-sm text-gray-600">
+    <div className="flex items-center gap-2 text-sm text-gray-600 flex-wrap">
       {topic && (
-        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
           {topic.name}
         </span>
       )}
+      {tags.map((tag, index) => (
+        <span key={index} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+          #{tag}
+        </span>
+      ))}
     </div>
   )
 }
@@ -272,20 +367,48 @@ const NoteBanner: React.FC<{ type: string; message: string }> = ({ type, message
 
 const NoteLeftSidebar = () => {
   const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
+  const category = useCurrentNoteDataSelector((data) => data?.data.category)
   const nid = useCurrentNoteNid()
+  const tags = topic?.tags || []
   
   return (
     <div className="sticky top-[90px] mr-4">
       <div className="space-y-4">
         <div className="rounded-lg border border-gray-200 p-4">
-          <h3 className="font-semibold text-gray-900 mb-2 text-sm">Note Info</h3>
-          {topic && (
-            <div className="text-sm text-gray-600">
-              <span className="font-medium">Topic:</span> {topic.name}
+          <h3 className="font-semibold text-gray-900 mb-3 text-sm">Note Info</h3>
+          
+          {category && (
+            <div className="mb-3 pb-3 border-b border-gray-100">
+              <div className="text-xs text-gray-500 mb-1">Category</div>
+              <div className="text-sm font-medium text-gray-900">{category.name}</div>
+              {category.caption && (
+                <div className="text-xs text-gray-600 mt-1">{category.caption}</div>
+              )}
             </div>
           )}
+          
+          {topic && (
+            <div className="mb-3">
+              <div className="text-xs text-gray-500 mb-1">Topic</div>
+              <div className="text-sm text-gray-900">{topic.name}</div>
+            </div>
+          )}
+          
+          {tags.length > 0 && (
+            <div className="mb-3">
+              <div className="text-xs text-gray-500 mb-2">Tags</div>
+              <div className="flex flex-wrap gap-1">
+                {tags.map((tag, index) => (
+                  <span key={index} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          
           {nid && (
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-xs text-gray-600">
               <span className="font-medium">ID:</span> {nid}
             </div>
           )}
@@ -748,30 +871,43 @@ const NoteActionButtons: React.FC = () => {
 }
 
 const AuthorIntroduction: React.FC = () => {
+  const category = useCurrentNoteDataSelector((data) => data?.data.category)
+  
   return (
     <div className="mt-16 pt-8 border-t border-gray-200">
       <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Author Image */}
+        {/* Author/Category Image */}
         <div className="flex-shrink-0">
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-            {/* Placeholder avatar - replace with actual image */}
-            <svg className="w-16 h-16 md:w-20 md:h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </div>
+          {category?.avatar ? (
+            <img 
+              src={category.avatar} 
+              alt={category.name}
+              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+              {/* Placeholder avatar */}
+              <svg className="w-16 h-16 md:w-20 md:h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+          )}
         </div>
         
-        {/* Author Info */}
+        {/* Author/Category Info */}
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">About the Author</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            {category?.name || 'About the Author'}
+          </h3>
           <p className="text-base text-gray-600 mb-3 leading-relaxed">
-            Hi! I'm a passionate developer and writer sharing my thoughts and experiences. 
-            I love exploring new technologies, building creative projects, and documenting my journey.
+            {category?.caption || 'Hi! I\'m a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey.'}
           </p>
-          <p className="text-base text-gray-600 mb-4 leading-relaxed">
-            When I'm not coding, you can find me reading, experimenting with new ideas, 
-            or contributing to open-source projects. Feel free to connect with me!
-          </p>
+          {!category?.caption && (
+            <p className="text-base text-gray-600 mb-4 leading-relaxed">
+              When I'm not coding, you can find me reading, experimenting with new ideas, 
+              or contributing to open-source projects. Feel free to connect with me!
+            </p>
+          )}
           
           {/* Social Links */}
           <div className="flex flex-wrap gap-3">

@@ -103,48 +103,7 @@ const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; 
 }
 
 // Mock data with automate fields
-const mockMarkdownContent = `### AUTOMATE FIELD
-Topic=Demo Topic
-ID=demo-note
-CREATED_DATE=2025-01-22T00:01:01Z
-EDITED_DATE=2025-01-22T12:30:00Z
-TAG=Demo, Tutorial, Standalone
-CATEGORY=Greeting
-CATEGORY_CAPTION=Welcome to our demo
-CATEGORY_AVATAR=https://via.placeholder.com/150
-### AUTOMATE FIELD END
-
-# Welcome to the Standalone Notes Demo
-
-This is a demonstration of the extracted notes functionality without backend dependencies.
-
-## Features Included
-
-- **Note Layout**: Responsive grid layout with sidebar
-- **Note Display**: Title, date, and content rendering
-- **Markdown Support**: Basic markdown rendering
-- **Meta Information**: Creation and modification dates
-- **Responsive Design**: Mobile and desktop layouts
-
-## Sample Content
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-### Code Example
-
-\`\`\`javascript
-function hello() {
-  console.log("Hello from standalone notes!");
-}
-\`\`\`
-
-### List Example
-
-- Item 1
-- Item 2
-- Item 3
-
-This demonstrates the core functionality of the notes system without requiring a backend connection.`
+const mockMarkdownContent = `Internal Server Error.`
 
 const { metadata, markdown } = parseMarkdownWithMetadata(mockMarkdownContent)
 
@@ -953,9 +912,39 @@ const NoteRightSidebar: React.FC = () => {
 }
 
 // Main component
-const Post: React.FC = () => {
-  const [currentNote] = useState<NoteWrappedPayload>(mockNoteData)
-  const [currentNid] = useState<string>(mockNoteData.data.nid)
+const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
+  // Use provided markdown or fall back to mock data
+  const content = markdownContent || mockMarkdownContent
+  const { metadata, markdown } = parseMarkdownWithMetadata(content)
+  
+  const noteData: NoteWrappedPayload = {
+    data: {
+      id: metadata.id || '1',
+      nid: metadata.id || 'demo-note',
+      title: 'Demo Note - Standalone Version',
+      text: markdown,
+      created: metadata.createdDate || new Date().toISOString(),
+      modified: metadata.editedDate || new Date().toISOString(),
+      hide: false,
+      allowComment: true,
+      meta: {
+        cover: undefined
+      },
+      images: [],
+      topic: {
+        name: metadata.topic || 'Demo Topic',
+        tags: metadata.tags || []
+      },
+      category: metadata.category ? {
+        name: metadata.category,
+        caption: metadata.categoryCaption,
+        avatar: metadata.categoryAvatar
+      } : undefined
+    }
+  }
+  
+  const [currentNote] = useState<NoteWrappedPayload>(noteData)
+  const [currentNid] = useState<string>(noteData.data.nid)
 
   return (
     <div className="min-h-screen">

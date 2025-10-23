@@ -55,55 +55,6 @@ This is a demonstration of the extracted notes functionality without backend dep
 ## Sample Content
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 ### Code Example
 
@@ -324,7 +275,7 @@ const NoteLeftSidebar = () => {
   const nid = useCurrentNoteNid()
   
   return (
-    <div className="sticky top-[120px] mt-[120px] mr-4">
+    <div className="sticky top-[90px] mr-4">
       <div className="space-y-4">
         <div className="rounded-lg border border-gray-200 p-4">
           <h3 className="font-semibold text-gray-900 mb-2 text-sm">Note Info</h3>
@@ -357,20 +308,25 @@ const TocItem: React.FC<{
   rootDepth: number
   onClick: (anchorId: string) => void
 }> = ({ item, isActive, rootDepth, onClick }) => {
-  const paddingLeft = `${(item.depth - rootDepth) * 0.75}rem`
+  const baseIndent = (item.depth - rootDepth) * 0.75
+  const paddingLeft = isActive ? `${baseIndent + 0.75}rem` : `${baseIndent}rem`
   
   return (
     <button
       onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'block w-full text-left text-sm py-1.5 px-2 rounded transition-colors',
+        'relative block w-full text-left text-sm py-1.5 px-2 rounded transition-all',
         isActive
           ? 'bg-blue-50 text-blue-700 font-medium'
           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
       )}
       style={{ paddingLeft }}
+      title={item.title}
     >
-      {item.title}
+      {isActive && (
+        <span className="absolute inset-y-[3px] left-0 w-[2px] rounded-sm bg-blue-500" />
+      )}
+      <span>{item.title}</span>
     </button>
   )
 }
@@ -507,7 +463,7 @@ const ActionButton: React.FC<{
 }> = ({ icon, label, onClick, count }) => {
   return (
     <button
-      className="relative flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
+      className="relative flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
       onClick={onClick}
       title={label}
     >
@@ -518,6 +474,86 @@ const ActionButton: React.FC<{
         </span>
       )}
     </button>
+  )
+}
+
+const ReadingProgress: React.FC = () => {
+  const [progress, setProgress] = useState(0)
+  
+  useEffect(() => {
+    const calculateProgress = () => {
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      const scrollTop = window.scrollY
+      
+      // Calculate how much of the document has been scrolled
+      const scrollableHeight = documentHeight - windowHeight
+      const scrollPercentage = scrollableHeight > 0 
+        ? Math.min(Math.round((scrollTop / scrollableHeight) * 100), 100)
+        : 0
+      
+      setProgress(scrollPercentage)
+    }
+    
+    // Calculate on mount
+    calculateProgress()
+    
+    // Add scroll listener
+    window.addEventListener('scroll', calculateProgress)
+    window.addEventListener('resize', calculateProgress)
+    
+    return () => {
+      window.removeEventListener('scroll', calculateProgress)
+      window.removeEventListener('resize', calculateProgress)
+    }
+  }, [])
+  
+  // Circle parameters - smaller size
+  const size = 40
+  const strokeWidth = 3
+  const radius = (size - strokeWidth) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (progress / 100) * circumference
+  
+  return (
+    <div className="flex items-center gap-3">
+      {/* SVG Circle Progress */}
+      <div className="relative inline-flex items-center justify-center flex-shrink-0">
+        <svg 
+          width={size} 
+          height={size}
+          className="transform -rotate-90"
+        >
+          {/* Background circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#E5E7EB"
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+          {/* Progress circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#EF4444"
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            className="transition-all duration-300 ease-out"
+          />
+        </svg>
+      </div>
+      
+      {/* Percentage text */}
+      <div className="text-sm font-medium text-gray-700">
+        {progress}%
+      </div>
+    </div>
   )
 }
 
@@ -558,7 +594,7 @@ const NoteActionButtons: React.FC = () => {
   return (
     <div className="space-y-2">
       <h3 className="font-semibold text-gray-900 mb-3 text-sm">Actions</h3>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col space-y-2">
         <ActionButton
           icon={liked ? "❤️" : "🤍"}
           label="Like"
@@ -585,13 +621,69 @@ const NoteActionButtons: React.FC = () => {
   )
 }
 
+const AuthorIntroduction: React.FC = () => {
+  return (
+    <div className="mt-16 pt-8 border-t border-gray-200">
+      <div className="flex flex-col md:flex-row gap-6 items-start">
+        {/* Author Image */}
+        <div className="flex-shrink-0">
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+            {/* Placeholder avatar - replace with actual image */}
+            <svg className="w-16 h-16 md:w-20 md:h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+        </div>
+        
+        {/* Author Info */}
+        <div className="flex-1">
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">About the Author</h3>
+          <p className="text-base text-gray-600 mb-3 leading-relaxed">
+            Hi! I'm a passionate developer and writer sharing my thoughts and experiences. 
+            I love exploring new technologies, building creative projects, and documenting my journey.
+          </p>
+          <p className="text-base text-gray-600 mb-4 leading-relaxed">
+            When I'm not coding, you can find me reading, experimenting with new ideas, 
+            or contributing to open-source projects. Feel free to connect with me!
+          </p>
+          
+          {/* Social Links */}
+          <div className="flex flex-wrap gap-3">
+            <a 
+              href="#" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+            >
+              <span>🔗</span>
+              Website
+            </a>
+            <a 
+              href="#" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
+            >
+              <span>💼</span>
+              GitHub
+            </a>
+            <a 
+              href="#" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
+            >
+              <span>🐦</span>
+              Twitter
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const NoteRightSidebar: React.FC = () => {
   return (
-    <div className="sticky top-[120px] mt-[120px] min-h-[300px] hidden xl:block">
+    <div className="sticky top-[90px] min-h-[300px] hidden xl:block">
       <div className="ml-4 space-y-8">
         <TableOfContents />
         <div className="border-t pt-6">
-          <NoteActionButtons />
+          <ReadingProgress />
         </div>
       </div>
     </div>
@@ -642,6 +734,9 @@ const Post: React.FC = () => {
                   </header>
                   <NoteMarkdown />
                 </article>
+                
+                {/* Author Introduction */}
+                <AuthorIntroduction />
               </div>
             </PaperWithMainContainer>
 

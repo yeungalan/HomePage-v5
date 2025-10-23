@@ -308,24 +308,24 @@ const TocItem: React.FC<{
   rootDepth: number
   onClick: (anchorId: string) => void
 }> = ({ item, isActive, rootDepth, onClick }) => {
-  const baseIndent = (item.depth - rootDepth) * 0.75
+  const baseIndent = (item.depth - rootDepth) * 0.5
   
   return (
     <button
       onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'relative block w-full text-left text-sm py-2 px-3 rounded-md transition-all duration-200',
+        'relative block w-full text-left text-xs py-1.5 px-2 rounded transition-all duration-200',
         isActive
           ? 'text-blue-600 font-medium bg-blue-50/50'
           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
       )}
-      style={{ paddingLeft: `${baseIndent + 0.75}rem` }}
+      style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
       title={item.title}
     >
       {isActive && (
-        <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-blue-600" />
+        <span className="absolute inset-y-1.5 left-0 w-[2px] rounded-r-full bg-blue-600" />
       )}
-      <span className="block truncate">{item.title}</span>
+      <span className="block truncate leading-tight">{item.title}</span>
     </button>
   )
 }
@@ -498,9 +498,9 @@ const TableOfContents: React.FC = () => {
   if (headings.length === 0) return null
   
   return (
-    <div className="space-y-2">
-      <h3 className="font-semibold text-gray-900 mb-4 text-sm">Table of Contents</h3>
-      <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+    <div className="space-y-2 max-w-[200px]">
+      <h3 className="font-semibold text-gray-900 mb-3 text-xs">Table of Contents</h3>
+      <div className="space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
         {headings.map((heading) => (
           <TocItem
             key={`${heading.anchorId}-${heading.index}`}

@@ -3,6 +3,12 @@
 import React, { useState, useEffect, createContext, useContext, useRef } from 'react'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 // Mock data types (extracted from @mx-space/api-client)
 interface NoteModel {
@@ -234,61 +240,108 @@ const FloatPopover: React.FC<{
 }
 
 // Simple markdown renderer with heading IDs
-const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
-  const renderMarkdown = (text: string) => {
-    let html = text
-    let headingCounter = 0
-    let isFirstH1 = true
-    
-    // Headers with IDs for TOC (skip first h1)
-    html = html.replace(/^# (.*$)/gim, (match, title) => {
-      if (isFirstH1) {
-        isFirstH1 = false
-        // Don't render the first h1 at all, it's shown in NoteTitle
-        return ''
-      }
-      const id = `heading-${++headingCounter}`
-      return `<h1 id="${id}" data-markdown-heading="true">${title}</h1>`
-    })
-    html = html.replace(/^## (.*$)/gim, (match, title) => {
-      const id = `heading-${++headingCounter}`
-      return `<h2 id="${id}" data-markdown-heading="true">${title}</h2>`
-    })
-    html = html.replace(/^### (.*$)/gim, (match, title) => {
-      const id = `heading-${++headingCounter}`
-      return `<h3 id="${id}" data-markdown-heading="true">${title}</h3>`
-    })
-    
-    // Bold
-    html = html.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-    // Italic
-    html = html.replace(/\*(.*)\*/gim, '<em>$1</em>')
-    // Code blocks
-    html = html.replace(/```(\w+)?\n([\s\S]*?)```/gim, '<pre><code>$2</code></pre>')
-    // Inline code
-    html = html.replace(/`([^`]+)`/gim, '<code>$1</code>')
-    // Lists
-    html = html.replace(/^\- (.*$)/gim, '<li>$1</li>')
-    // Paragraphs
-    html = html.replace(/\n\n/gim, '</p><p>')
-    
-    // Wrap in paragraph tags
-    html = '<p>' + html + '</p>'
-    // Fix list items
-    html = html.replace(/(<li>.*<\/li>)/gims, '<ul>$1</ul>')
-    // Clean up empty paragraphs
-    html = html.replace(/<p>\s*<\/p>/g, '')
-    
-    return html
-  }
 
+const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
   return (
-    <div 
-      className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-gray-800 [&_pre]:text-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit"
-      dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-    />
-  )
-}
+    <div
+      className="
+        prose prose-neutral dark:prose-invert max-w-none
+        prose-h1:mt-8 prose-h1:mb-4 prose-h1:font-semibold prose-h1:text-3xl
+        prose-h2:mt-8 prose-h2:mb-4 prose-h2:font-semibold prose-h2:text-2xl
+        prose-h3:mt-8 prose-h3:mb-4 prose-h3:font-semibold prose-h3:text-xl
+        prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
+        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+      "
+    >
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[
+          rehypeSlug,
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: "append",
+              content: {
+                type: "element",
+                tagName: "a",
+                properties: {
+                  className: [
+                    "text-gray-400",
+                    "hover:text-blue-500",
+                    "ml-1",
+                    "no-underline",
+                  ],
+                },
+                children: [{ type: "text", value: "" }],
+              },
+            },
+          ],
+        ]}
+        components={{
+          h1({ node, ...props }) {
+            const text = String(props.children);
+            // skip first h1
+            if (text === content.match(/^#\s+(.+)$/m)?.[1]) return null;
+            return (
+              <h1
+                {...props}
+                id={text.toLowerCase().replace(/\s+/g, "-")}
+                data-markdown-heading="true"
+              />
+            );
+          },
+          h2({ node, ...props }) {
+            const text = String(props.children);
+            return (
+              <h2
+                {...props}
+                id={text.toLowerCase().replace(/\s+/g, "-")}
+                data-markdown-heading="true"
+              />
+            );
+          },
+          h3({ node, ...props }) {
+            const text = String(props.children);
+            return (
+              <h3
+                {...props}
+                id={text.toLowerCase().replace(/\s+/g, "-")}
+                data-markdown-heading="true"
+              />
+            );
+          },
+          code({ inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || "");
+            return !inline && match ? (
+              <SyntaxHighlighter
+                style={
+                  typeof window !== "undefined" &&
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? oneDark
+                    : oneLight
+                }
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              >
+                {String(children).replace(/\n$/, "")}
+              </SyntaxHighlighter>
+            ) : (
+              <code
+                className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+                {...props}
+              >
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+};
 
 // Note components
 const NoteDateMeta = () => {

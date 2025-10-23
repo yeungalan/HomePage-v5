@@ -48,6 +48,7 @@ const mockHeaderMenuConfig: MenuItem[] = [
     icon: 'mingcute:settings-3-line',
     path: '#',
     subMenu: [
+      { title: 'Posts [WIP]', icon: 'mingcute:flask-line', path: '/posts/sample' },
       { title: 'Projects', icon: 'mingcute:flask-line', path: '/projects' },
       { title: 'Friends Link', icon: 'mingcute:earth-line', path: '/friends' },
     ],

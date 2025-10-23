@@ -280,7 +280,7 @@ const NoteDateMeta = () => {
   const created = useCurrentNoteDataSelector((data) => data?.data.created)
 
   if (!created) return null
-  const dateFormat = dayjs(created).format('YYYY 年 M 月 D 日 dddd')
+  const dateFormat = dayjs(created).format('MMMM D, YYYY')
 
   return (
     <span className="inline-flex items-center gap-1">
@@ -300,9 +300,9 @@ const NoteHeaderDate = () => {
   
   if (!date?.created) return null
 
-  const tips = `创建于 ${parseDate(date.created, 'YYYY 年 M 月 D 日 dddd')}${
+  const tips = `Created on ${parseDate(date.created, 'MMMM D, YYYY')}${
     date.modified
-      ? `，修改于 ${parseDate(date.modified, 'YYYY 年 M 月 D 日 dddd')}`
+      ? `, modified on ${parseDate(date.modified, 'MMMM D, YYYY')}`
       : ''
   }`
 
@@ -985,7 +985,7 @@ const Post: React.FC = () => {
                 </span>
 
                 {currentNote.data.hide && (
-                  <NoteBanner type="warning" message="这篇文章是非公开的,仅登录可见" />
+                  <NoteBanner type="warning" message="This article is private, only visible when logged in" />
                 )}
               </div>
 

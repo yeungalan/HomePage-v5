@@ -307,24 +307,24 @@ const TocItem: React.FC<{
   isActive: boolean
   rootDepth: number
   onClick: (anchorId: string) => void
-}> = ({ item, isActive, rootDepth, onClick }) => {
+  itemIndex: number
+  setRef: (el: HTMLButtonElement | null) => void
+}> = ({ item, isActive, rootDepth, onClick, itemIndex, setRef }) => {
   const baseIndent = (item.depth - rootDepth) * 0.5
   
   return (
     <button
+      ref={setRef}
       onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'relative block w-full text-left text-xs py-1.5 px-2 rounded transition-all duration-200',
+        'relative block w-full text-left text-xs py-1 px-2 rounded transition-colors duration-200',
         isActive
-          ? 'text-blue-600 font-medium bg-blue-50/50'
-          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          ? 'text-blue-600 font-medium'
+          : 'text-gray-600 hover:text-gray-900'
       )}
       style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
       title={item.title}
     >
-      {isActive && (
-        <span className="absolute inset-y-1.5 left-0 w-[2px] rounded-r-full bg-blue-600" />
-      )}
       <span className="block truncate leading-tight">{item.title}</span>
     </button>
   )
@@ -343,10 +343,47 @@ const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ child
 const TableOfContents: React.FC = () => {
   const [headings, setHeadings] = useState<TocItem[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [activeIndex, setActiveIndex] = useState<number>(-1)
+  const [indicatorStyle, setIndicatorStyle] = useState<{ top: number; height: number }>({ top: 0, height: 0 })
   const isManualClickRef = useRef(false)
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const lastScrollTopRef = useRef(0)
   const userScrolledRef = useRef(false)
+  const itemRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
+  
+  // Update active index when active ID changes
+  useEffect(() => {
+    if (activeId) {
+      const index = headings.findIndex(h => h.anchorId === activeId)
+      setActiveIndex(index)
+    }
+  }, [activeId, headings])
+  
+  // Update indicator position based on actual element measurements
+  useEffect(() => {
+    if (activeIndex >= 0 && itemRefs.current.has(activeIndex)) {
+      const activeElement = itemRefs.current.get(activeIndex)
+      if (activeElement) {
+        const rect = activeElement.getBoundingClientRect()
+        const containerElement = activeElement.parentElement?.parentElement
+        if (containerElement) {
+          const containerRect = containerElement.getBoundingClientRect()
+          setIndicatorStyle({
+            top: activeElement.offsetTop,
+            height: rect.height
+          })
+        }
+      }
+    }
+  }, [activeIndex])
+  
+  const setItemRef = (index: number) => (el: HTMLButtonElement | null) => {
+    if (el) {
+      itemRefs.current.set(index, el)
+    } else {
+      itemRefs.current.delete(index)
+    }
+  }
   
   useEffect(() => {
     // Find all headings with data-markdown-heading attribute
@@ -500,16 +537,44 @@ const TableOfContents: React.FC = () => {
   return (
     <div className="space-y-2 max-w-[200px]">
       <h3 className="font-semibold text-gray-900 mb-3 text-xs">Table of Contents</h3>
-      <div className="space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-        {headings.map((heading) => (
-          <TocItem
-            key={`${heading.anchorId}-${heading.index}`}
-            item={heading}
-            isActive={heading.anchorId === activeId}
-            rootDepth={rootDepth}
-            onClick={scrollToHeading}
+      <div className="relative space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+        {/* Animated background indicator */}
+        {activeIndex >= 0 && indicatorStyle.height > 0 && (
+          <div
+            className="absolute left-0 w-full bg-blue-50/50 rounded transition-all duration-300 ease-out pointer-events-none z-0"
+            style={{
+              top: `${indicatorStyle.top}px`,
+              height: `${indicatorStyle.height}px`,
+              transform: 'translateZ(0)',
+            }}
           />
-        ))}
+        )}
+        
+        {/* Animated left border indicator */}
+        {activeIndex >= 0 && indicatorStyle.height > 0 && (
+          <div
+            className="absolute left-0 w-[2px] bg-blue-600 rounded-r-full transition-all duration-300 ease-out pointer-events-none z-10"
+            style={{
+              top: `${indicatorStyle.top + 4}px`,
+              height: `${indicatorStyle.height - 8}px`,
+              transform: 'translateZ(0)',
+            }}
+          />
+        )}
+        
+        <div className="relative z-20">
+          {headings.map((heading, index) => (
+            <TocItem
+              key={`${heading.anchorId}-${heading.index}`}
+              item={heading}
+              isActive={heading.anchorId === activeId}
+              rootDepth={rootDepth}
+              onClick={scrollToHeading}
+              itemIndex={index}
+              setRef={setItemRef(index)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )

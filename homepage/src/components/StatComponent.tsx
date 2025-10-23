@@ -14,7 +14,7 @@ export default function StatsComponent() {
     // Style the stats panel
     stats.dom.style.position = 'fixed'
     stats.dom.style.left = '0'
-    stats.dom.style.top = '150'
+    stats.dom.style.top = '0'
     stats.dom.style.zIndex = '9999'
     
     document.body.appendChild(stats.dom)

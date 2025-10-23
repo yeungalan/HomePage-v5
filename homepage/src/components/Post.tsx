@@ -55,8 +55,39 @@ This is a demonstration of the extracted notes functionality without backend dep
 ## Sample Content
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 ### Code Example
+
+dasdasdasdas
+asdasdasdas
+dasdasdasdas
+
 
 \`\`\`javascript
 function hello() {
@@ -69,6 +100,15 @@ function hello() {
 - Item 1
 - Item 2
 - Item 3
+
+## dadasdasdas
+dadasdadasdasdasdas
+
+### dasdasdasdadas
+asdasdasdasdas
+
+### dasdasdasda
+dasdasdasdasd
 
 This demonstrates the core functionality of the notes system without requiring a backend connection.`,
     created: new Date().toISOString(),
@@ -363,64 +403,61 @@ const TableOfContents: React.FC = () => {
     })
     
     setHeadings(tocItems)
+  }, [])
+  
+  useEffect(() => {
+    if (headings.length === 0) return
     
-    // Set up intersection observer for active heading
-    const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        // Find the entry that's most visible
-        let mostVisible: IntersectionObserverEntry | null = null
-        let maxRatio = 0
+    const updateActiveHeading = () => {
+      // Calculate current scroll percentage
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const scrollPercentage = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+      
+      // Get all heading elements with their scroll percentages
+      const headingPositions = headings.map(({ anchorId }) => {
+        const element = document.getElementById(anchorId)
+        if (!element) return null
         
-        entries.forEach((entry: IntersectionObserverEntry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-            maxRatio = entry.intersectionRatio
-            mostVisible = entry
-          }
-        })
+        const rect = element.getBoundingClientRect()
+        const absoluteTop = rect.top + scrollTop
+        // Calculate what percentage of the page this heading is at
+        const headingPercentage = docHeight > 0 
+          ? (absoluteTop / (docHeight + window.innerHeight)) * 100 
+          : 0
         
-        if (mostVisible && mostVisible.target instanceof HTMLElement) {
-          setActiveId(mostVisible.target.id)
+        return {
+          id: anchorId,
+          percentage: headingPercentage
         }
-      },
-      { 
-        rootMargin: '-20% 0px -70% 0px',
-        threshold: [0, 0.25, 0.5, 0.75, 1]
-      }
-    )
-    
-    headingElements.forEach((heading) => {
-      observer.observe(heading)
-    })
-    
-    // Also set up a scroll listener as backup
-    const handleScroll = () => {
-      const headingElements = document.querySelectorAll('h1[data-markdown-heading], h2[data-markdown-heading], h3[data-markdown-heading], h4[data-markdown-heading], h5[data-markdown-heading], h6[data-markdown-heading]')
-      const scrollPosition = window.scrollY + 200
+      }).filter((h): h is { id: string; percentage: number } => h !== null)
       
-      let currentActiveId: string | null = null
+      // Find the active heading - the last one whose position is <= current scroll percentage
+      let newActiveId: string | null = headingPositions[0]?.id || null
       
-      headingElements.forEach((heading) => {
-        const rect = heading.getBoundingClientRect()
-        const elementTop = rect.top + window.scrollY
-        
-        if (elementTop <= scrollPosition) {
-          currentActiveId = heading.id
+      for (const heading of headingPositions) {
+        if (scrollPercentage >= heading.percentage - 5) { // 5% threshold for better UX
+          newActiveId = heading.id
+        } else {
+          break
         }
-      })
-      
-      if (currentActiveId && currentActiveId !== activeId) {
-        setActiveId(currentActiveId)
       }
+      
+      setActiveId(newActiveId)
     }
     
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Set initial active heading
+    // Set initial active heading
+    updateActiveHeading()
+    
+    // Add scroll and resize listeners
+    window.addEventListener('scroll', updateActiveHeading, { passive: true })
+    window.addEventListener('resize', updateActiveHeading)
     
     return () => {
-      observer.disconnect()
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', updateActiveHeading)
+      window.removeEventListener('resize', updateActiveHeading)
     }
-  }, [activeId])
+  }, [headings])
   
   const rootDepth = headings.length > 0 
     ? headings.reduce((min, item) => Math.min(min, item.depth), headings[0]?.depth || 1)

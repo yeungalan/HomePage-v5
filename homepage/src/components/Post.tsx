@@ -245,6 +245,8 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
   return (
     <div
       className="
+        dark:text-white
+        dark:bg-black
         prose prose-neutral dark:prose-invert max-w-none
         prose-h1:mt-8 prose-h1:mb-4 prose-h1:font-semibold prose-h1:text-3xl
         prose-h2:mt-8 prose-h2:mb-4 prose-h2:font-semibold prose-h2:text-2xl
@@ -281,7 +283,7 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
           h1({ node, ...props }) {
             const text = String(props.children);
             // skip first h1
-            if (text === content.match(/^#\s+(.+)$/m)?.[1]) return null;
+            if (text === content.match(/^<Post\s+(.+)$/m)?.[1]) return null;
             return (
               <h1
                 {...props}
@@ -387,7 +389,7 @@ const NoteTitle = () => {
   if (!title) return null
   return (
     <div className="relative">
-      <h1 className="my-8 text-balance text-left text-4xl font-bold leading-tight text-gray-900">
+      <h1 className="my-8 text-balance text-left text-4xl font-bold leading-tight text-gray-900 dark:text-white">
         {title}
       </h1>
     </div>
@@ -416,7 +418,7 @@ const NoteMetaBar = () => {
       )}
       {tags.map((tag, index) => (
         <span key={index} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-          #{tag}
+          Post{tag}
         </span>
       ))}
     </div>
@@ -443,31 +445,31 @@ const NoteLeftSidebar = () => {
     <div className="sticky top-[90px] mr-4">
       <div className="space-y-4">
         <div className="rounded-lg border border-gray-200 p-4">
-          <h3 className="font-semibold text-gray-900 mb-3 text-sm">Note Info</h3>
+          <h3 className="font-semibold text-gray-900 mb-3 text-sm dark:text-white">Note Info</h3>
           
           {category && (
             <div className="mb-3 pb-3 border-b border-gray-100">
-              <div className="text-xs text-gray-500 mb-1">Category</div>
-              <div className="text-sm font-medium text-gray-900">{category.name}</div>
+              <div className="text-xs text-gray-500 mb-1 dark:text-white">Category</div>
+              <div className="text-sm font-medium text-gray-900 dark:text-white">{category.name}</div>
               {category.caption && (
-                <div className="text-xs text-gray-600 mt-1">{category.caption}</div>
+                <div className="text-xs text-gray-600 mt-1 dark:text-white">{category.caption}</div>
               )}
             </div>
           )}
           
           {topic && (
             <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-1">Topic</div>
-              <div className="text-sm text-gray-900">{topic.name}</div>
+              <div className="text-xs text-gray-500 mb-1 dark:text-white">Topic</div>
+              <div className="text-sm text-gray-900 dark:text-white">{topic.name}</div>
             </div>
           )}
           
           {tags.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-2">Tags</div>
+              <div className="text-xs text-gray-500 mb-2 dark:text-white">Tags</div>
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag, index) => (
-                  <span key={index} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
+                  <span key={index} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs dark:text-black">
                     #{tag}
                   </span>
                 ))}
@@ -476,7 +478,7 @@ const NoteLeftSidebar = () => {
           )}
           
           {nid && (
-            <div className="text-xs text-gray-600">
+            <div className="text-xs text-gray-600 dark:text-white">
               <span className="font-medium">ID:</span> {nid}
             </div>
           )}
@@ -510,8 +512,8 @@ const TocItem: React.FC<{
       className={clsx(
         'relative block w-full text-left text-xs py-1 px-2 rounded transition-colors duration-200',
         isActive
-          ? 'text-blue-600 font-medium'
-          : 'text-gray-600 hover:text-gray-900'
+          ? 'text-blue-600 font-medium dark:text-white'
+          : 'text-gray-600 hover:text-gray-900 dark:text-white'
       )}
       style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
       title={item.title}
@@ -524,7 +526,7 @@ const TocItem: React.FC<{
 const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="relative w-full">
-      <div className="rounded-lg bg-white p-8 shadow-sm">
+      <div className="rounded-lg bg-white p-8 shadow-sm dark:bg-black">
         {children}
       </div>
     </div>
@@ -727,7 +729,7 @@ const TableOfContents: React.FC = () => {
   
   return (
     <div className="space-y-2 max-w-[200px]">
-      <h3 className="font-semibold text-gray-900 mb-3 text-xs">Table of Contents</h3>
+      <h3 className="font-semibold text-gray-900 mb-3 text-xs dark:text-white">Table of Contents</h3>
       <div className="relative space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
         {/* Animated background indicator */}
         {activeIndex >= 0 && indicatorStyle.height > 0 && (
@@ -867,7 +869,7 @@ const ReadingProgress: React.FC = () => {
       </div>
       
       {/* Percentage text */}
-      <div className="text-sm font-medium text-gray-700">
+      <div className="text-sm font-medium text-gray-700 dark:text-white">
         {progress}%
       </div>
     </div>
@@ -964,10 +966,10 @@ const AuthorIntroduction: React.FC = () => {
         
         {/* Author/Category Info */}
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          <h3 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">
             {category?.name || 'About the Author'}
           </h3>
-          <p className="text-base text-gray-600 mb-3 leading-relaxed">
+          <p className="text-base text-gray-600 mb-3 leading-relaxed dark:text-white">
             {category?.caption || 'Hi! I\'m a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey.'}
           </p>
           {!category?.caption && (
@@ -976,31 +978,6 @@ const AuthorIntroduction: React.FC = () => {
               or contributing to open-source projects. Feel free to connect with me!
             </p>
           )}
-          
-          {/* Social Links */}
-          <div className="flex flex-wrap gap-3">
-            <a 
-              href="#" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
-            >
-              <span>🔗</span>
-              Website
-            </a>
-            <a 
-              href="#" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
-            >
-              <span>💼</span>
-              GitHub
-            </a>
-            <a 
-              href="#" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
-            >
-              <span>🐦</span>
-              Twitter
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -1123,7 +1100,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             <PaperWithMainContainer>
               <div>
                 <NoteTitle />
-                <span className="flex flex-wrap items-center text-sm text-gray-600">
+                <span className="flex flex-wrap items-center text-sm text-gray-600 dark:text-white">
                   <NoteHeaderDate />
                   <div className="ml-4">
                     <NoteMetaBar />
@@ -1136,7 +1113,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               </div>
 
               <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-gray-800 [&_pre]:text-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

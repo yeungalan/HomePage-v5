@@ -57,7 +57,10 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
   };
 
   const handleDrag = (event: any, info: PanInfo) => {
-    setDragY(info.offset.y);
+    // Only allow positive drag values (downward)
+    if (info.offset.y > 0) {
+      setDragY(info.offset.y);
+    }
   };
 
   useEffect(() => {
@@ -112,7 +115,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     drag="y"
                     dragControls={dragControls}
                     dragConstraints={{ top: 0, bottom: 0 }}
-                    dragElastic={{ top: 0.2, bottom: 0.7 }}
+                    dragElastic={{ top: 0, bottom: 0.7 }}
                     dragMomentum
                     onDrag={handleDrag}
                     onDragEnd={handleDragEnd}
@@ -123,8 +126,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     style={{
                       touchAction: "none",
                       bottom: 0,
-                      maxHeight: dragY < 0 ? "100vh" : "85vh",
-                      transition: "max-height 0.1s ease-out",
+                      maxHeight: "85vh",
                     }}
                   >
                     {/* Drag Handle */}
@@ -182,7 +184,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                                     ? "text-white"
                                     : "text-gray-300"
                                   : isActive
-                                  ? "text-gray-400 dark:text-gray-200"
+                                  ? "text-blue-400 dark:text-gray-200"
                                   : "text-gray-700 dark:text-gray-300"
                               )}
                             >
@@ -214,8 +216,8 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                                             ? "text-white bg-blue-500/20 font-medium shadow-sm"
                                             : "text-gray-400 hover:text-gray-200 hover:bg-white/10 hover:shadow-sm"
                                           : isSubItemActive
-                                          ? "text-gray-900 bg-blue-500/10 font-medium shadow-sm"
-                                          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:shadow-sm"
+                                          ? "text-gray-900 dark:text-white bg-blue-500/10 font-medium shadow-sm"
+                                          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-sm"
                                       )}
                                       target={item.path.startsWith("http") ? "_blank" : undefined}
                                       rel={item.path.startsWith("http") ? "noopener noreferrer" : undefined}

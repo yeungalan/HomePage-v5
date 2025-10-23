@@ -5,6 +5,7 @@ import "./globals.css";
 import 'mingcute_icon/font/Mingcute.css'
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
+import StatsComponent from "@/components/StatComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
+          <StatsComponent />
           {children}
         </NextThemeProvider>
       </body>

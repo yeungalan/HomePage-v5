@@ -106,6 +106,11 @@ function FlightCalculator() {
       setProgress(0);
       setElapsedTime(0);
       setIsFlying(true);
+      
+      // Request notification permission when flight starts
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
     } else {
       setIsFlying(false);
       setProgress(0);

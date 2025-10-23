@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=Getting Started with React
+Topic=Getting Started with React 101
 ID=react-getting-started
 CREATED_DATE=2025-01-20T10:00:00Z
 EDITED_DATE=2025-01-22T15:30:00Z
@@ -9,7 +9,7 @@ CATEGORY_CAPTION=Building modern web applications with React
 CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 ### AUTOMATE FIELD END
 
-# Getting Started with React
+# Getting Started with React 202
 
 Welcome to this comprehensive guide on React! In this tutorial, we'll explore the fundamentals of React and build your first component.
 

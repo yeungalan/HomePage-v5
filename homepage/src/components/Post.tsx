@@ -9,6 +9,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { FullPageLoading } from './Loading';
 
 // Mock data types (extracted from @mx-space/api-client)
 interface NoteModel {
@@ -115,51 +116,7 @@ const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; 
   return { metadata, markdown, title }
 }
 
-// Mock data with automate fields
-const mockMarkdownContent = `### AUTOMATE FIELD
-Topic=Demo Topic
-ID=demo-note
-CREATED_DATE=2025-01-22T00:01:01Z
-EDITED_DATE=2025-01-22T12:30:00Z
-TAG=Demo, Tutorial, Standalone
-CATEGORY=Greeting
-CATEGORY_CAPTION=Welcome to our demo
-CATEGORY_AVATAR=https://via.placeholder.com/150
-### AUTOMATE FIELD END
-
-# Welcome to the Standalone Notes Demo
-
-This is a demonstration of the extracted notes functionality without backend dependencies.
-
-## Features Included
-
-- **Note Layout**: Responsive grid layout with sidebar
-- **Note Display**: Title, date, and content rendering
-- **Markdown Support**: Basic markdown rendering
-- **Meta Information**: Creation and modification dates
-- **Responsive Design**: Mobile and desktop layouts
-
-## Sample Content
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-### Code Example
-
-\`\`\`javascript
-function hello() {
-  console.log("Hello from standalone notes!");
-}
-\`\`\`
-
-### List Example
-
-- Item 1
-- Item 2
-- Item 3
-
-This demonstrates the core functionality of the notes system without requiring a backend connection.`
-
-const { metadata, markdown, title } = parseMarkdownWithMetadata(mockMarkdownContent)
+const { metadata, markdown, title } = parseMarkdownWithMetadata("")
 
 const mockNoteData: NoteWrappedPayload = {
   data: {
@@ -513,7 +470,7 @@ const TocItem: React.FC<{
         'relative block w-full text-left text-xs py-1 px-2 rounded transition-colors duration-200',
         isActive
           ? 'text-blue-600 font-medium dark:text-white'
-          : 'text-gray-600 hover:text-gray-900 dark:text-white'
+          : 'text-gray-600 hover:text-gray-900 dark:hover:text-gray-400 dark:text-white'
       )}
       style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
       title={item.title}
@@ -746,7 +703,7 @@ const TableOfContents: React.FC = () => {
         {/* Animated left border indicator */}
         {activeIndex >= 0 && indicatorStyle.height > 0 && (
           <div
-            className="absolute left-0 w-[2px] bg-blue-600 rounded-r-full transition-all duration-300 ease-out pointer-events-none z-10"
+            className="absolute left-0 w-[2px] bg-blue-600 dark:bg-gray-400 rounded-r-full transition-all duration-300 ease-out pointer-events-none z-10"
             style={{
               top: `${indicatorStyle.top + 4}px`,
               height: `${indicatorStyle.height - 8}px`,
@@ -828,7 +785,7 @@ const ReadingProgress: React.FC = () => {
   }, [])
   
   // Circle parameters - smaller size
-  const size = 40
+  const size = 20
   const strokeWidth = 3
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
@@ -857,7 +814,7 @@ const ReadingProgress: React.FC = () => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#EF4444"
+            stroke="#155DFC"
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={circumference}
@@ -1000,7 +957,7 @@ const NoteRightSidebar: React.FC = () => {
 // Main component
 const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
   // Use provided markdown or fall back to mock data
-  const content = markdownContent || mockMarkdownContent
+  const content = markdownContent || ""
   const { metadata, markdown, title } = parseMarkdownWithMetadata(content)
   
   const noteData: NoteWrappedPayload = {
@@ -1071,12 +1028,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
   // Show loading state if no markdown content yet
   if (!markdownContent && !markdown) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading article...</p>
-        </div>
-      </div>
+      <FullPageLoading/>
     )
   }
 

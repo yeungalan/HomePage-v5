@@ -165,8 +165,8 @@ function FlightCalculator() {
         <span>Flight Distance</span>
       </h2>
 
-      {/* Airport Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+      {/* Input Fields */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             From (IATA Code)
@@ -330,6 +330,49 @@ export default function Timeline() {
 
         {/* Flight Calculator */}
         <FlightCalculator />
+
+        {/* 2025 Goals */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
+            <Icon icon="mage:goals" className="text-3xl sm:text-4xl" />
+            <span>2025 Goals</span>
+          </h2>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:check-circle" className="text-2xl sm:text-3xl text-green-500 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Diving</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Completed</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Motorcycle</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Stay Healthy</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Find a Person I Care Of</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-yellow-400">In progress</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
       </div>
     </div>

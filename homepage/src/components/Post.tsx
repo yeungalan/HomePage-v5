@@ -55,39 +55,8 @@ This is a demonstration of the extracted notes functionality without backend dep
 ## Sample Content
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 ### Code Example
-
-dasdasdasdas
-asdasdasdas
-dasdasdasdas
-
 
 \`\`\`javascript
 function hello() {
@@ -100,15 +69,6 @@ function hello() {
 - Item 1
 - Item 2
 - Item 3
-
-## dadasdasdas
-dadasdadasdasdasdas
-
-### dasdasdasdadas
-asdasdasdasdas
-
-### dasdasdasda
-dasdasdasdasd
 
 This demonstrates the core functionality of the notes system without requiring a backend connection.`,
     created: new Date().toISOString(),
@@ -349,24 +309,23 @@ const TocItem: React.FC<{
   onClick: (anchorId: string) => void
 }> = ({ item, isActive, rootDepth, onClick }) => {
   const baseIndent = (item.depth - rootDepth) * 0.75
-  const paddingLeft = isActive ? `${baseIndent + 0.75}rem` : `${baseIndent}rem`
   
   return (
     <button
       onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'relative block w-full text-left text-sm py-1.5 px-2 rounded transition-all',
+        'relative block w-full text-left text-sm py-2 px-3 rounded-md transition-all duration-200',
         isActive
-          ? 'bg-blue-50 text-blue-700 font-medium'
-          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+          ? 'text-blue-600 font-medium bg-blue-50/50'
+          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
       )}
-      style={{ paddingLeft }}
+      style={{ paddingLeft: `${baseIndent + 0.75}rem` }}
       title={item.title}
     >
       {isActive && (
-        <span className="absolute inset-y-[3px] left-0 w-[2px] rounded-sm bg-blue-500" />
+        <span className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-blue-600" />
       )}
-      <span>{item.title}</span>
+      <span className="block truncate">{item.title}</span>
     </button>
   )
 }
@@ -384,6 +343,8 @@ const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ child
 const TableOfContents: React.FC = () => {
   const [headings, setHeadings] = useState<TocItem[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
+  const isManualClickRef = useRef(false)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   useEffect(() => {
     // Find all headings with data-markdown-heading attribute
@@ -409,6 +370,9 @@ const TableOfContents: React.FC = () => {
     if (headings.length === 0) return
     
     const updateActiveHeading = () => {
+      // Skip updates if user manually clicked a TOC item
+      if (isManualClickRef.current) return
+      
       // Calculate current scroll percentage
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
@@ -446,16 +410,36 @@ const TableOfContents: React.FC = () => {
       setActiveId(newActiveId)
     }
     
+    const handleScroll = () => {
+      // Clear any existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+      
+      // If manual click is active, wait for user to finish scrolling before resuming auto-update
+      if (isManualClickRef.current) {
+        scrollTimeoutRef.current = setTimeout(() => {
+          isManualClickRef.current = false
+          updateActiveHeading()
+        }, 150) // Resume after 150ms of no scrolling
+      } else {
+        updateActiveHeading()
+      }
+    }
+    
     // Set initial active heading
     updateActiveHeading()
     
     // Add scroll and resize listeners
-    window.addEventListener('scroll', updateActiveHeading, { passive: true })
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', updateActiveHeading)
     
     return () => {
-      window.removeEventListener('scroll', updateActiveHeading)
+      window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', updateActiveHeading)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
     }
   }, [headings])
   
@@ -464,19 +448,31 @@ const TableOfContents: React.FC = () => {
     : 1
   
   const scrollToHeading = (anchorId: string) => {
+    // Set flag to prevent automatic updates during manual scroll
+    isManualClickRef.current = true
+    
+    // Immediately set the clicked item as active
+    setActiveId(anchorId)
+    
+    // Scroll to the element with offset
     const element = document.getElementById(anchorId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      setActiveId(anchorId)
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+      const offsetPosition = elementPosition - 64 // 64px offset for fixed header
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
     }
   }
   
   if (headings.length === 0) return null
   
   return (
-    <div className="space-y-1">
-      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Table of Contents</h3>
-      <div className="max-h-[60vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded">
+    <div className="space-y-2">
+      <h3 className="font-semibold text-gray-900 mb-4 text-sm">Table of Contents</h3>
+      <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
         {headings.map((heading) => (
           <TocItem
             key={`${heading.anchorId}-${heading.index}`}

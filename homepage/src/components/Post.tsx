@@ -52,16 +52,19 @@ interface AutomateField {
 }
 
 // Function to parse markdown with automate fields
-const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; markdown: string } => {
-  const automateFieldRegex = /### AUTOMATE FIELD\n([\s\S]*?)\n### AUTOMATE FIELD END/
+const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; markdown: string; title: string } => {
+  // More flexible regex that handles different line endings and spacing
+  const automateFieldRegex = /###\s*AUTOMATE\s+FIELD[\s\S]*?###\s*AUTOMATE\s+FIELD\s+END/i
   const match = content.match(automateFieldRegex)
   
   const metadata: AutomateField = {}
   let markdown = content
   
   if (match) {
-    const metadataBlock = match[1]
-    const lines = metadataBlock.split('\n')
+    const metadataBlock = match[0]
+    // Extract just the content between the markers
+    const innerContent = metadataBlock.replace(/###\s*AUTOMATE\s+FIELD/gi, '').replace(/###\s*AUTOMATE\s+FIELD\s+END/gi, '')
+    const lines = innerContent.split(/\r?\n/).filter(line => line.trim())
     
     lines.forEach(line => {
       const [key, value] = line.split('=').map(s => s.trim())
@@ -95,23 +98,68 @@ const parseMarkdownWithMetadata = (content: string): { metadata: AutomateField; 
       }
     })
     
-    // Remove the metadata block from the markdown
+    // Remove the entire metadata block from the markdown (including surrounding whitespace)
     markdown = content.replace(automateFieldRegex, '').trim()
   }
   
-  return { metadata, markdown }
+  // Extract title from first h1 heading
+  const titleMatch = markdown.match(/^#\s+(.+)$/m)
+  const title = titleMatch ? titleMatch[1] : 'Untitled'
+  
+  return { metadata, markdown, title }
 }
 
 // Mock data with automate fields
-const mockMarkdownContent = `Internal Server Error.`
+const mockMarkdownContent = `### AUTOMATE FIELD
+Topic=Demo Topic
+ID=demo-note
+CREATED_DATE=2025-01-22T00:01:01Z
+EDITED_DATE=2025-01-22T12:30:00Z
+TAG=Demo, Tutorial, Standalone
+CATEGORY=Greeting
+CATEGORY_CAPTION=Welcome to our demo
+CATEGORY_AVATAR=https://via.placeholder.com/150
+### AUTOMATE FIELD END
 
-const { metadata, markdown } = parseMarkdownWithMetadata(mockMarkdownContent)
+# Welcome to the Standalone Notes Demo
+
+This is a demonstration of the extracted notes functionality without backend dependencies.
+
+## Features Included
+
+- **Note Layout**: Responsive grid layout with sidebar
+- **Note Display**: Title, date, and content rendering
+- **Markdown Support**: Basic markdown rendering
+- **Meta Information**: Creation and modification dates
+- **Responsive Design**: Mobile and desktop layouts
+
+## Sample Content
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+### Code Example
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello from standalone notes!");
+}
+\`\`\`
+
+### List Example
+
+- Item 1
+- Item 2
+- Item 3
+
+This demonstrates the core functionality of the notes system without requiring a backend connection.`
+
+const { metadata, markdown, title } = parseMarkdownWithMetadata(mockMarkdownContent)
 
 const mockNoteData: NoteWrappedPayload = {
   data: {
     id: metadata.id || '1',
     nid: metadata.id || 'demo-note',
-    title: 'Demo Note - Standalone Version',
+    title: title,
     text: markdown,
     created: metadata.createdDate || new Date().toISOString(),
     modified: metadata.editedDate || new Date().toISOString(),
@@ -190,19 +238,25 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
   const renderMarkdown = (text: string) => {
     let html = text
     let headingCounter = 0
+    let isFirstH1 = true
     
-    // Headers with IDs for TOC
-    html = html.replace(/^### (.*$)/gim, (match, title) => {
+    // Headers with IDs for TOC (skip first h1)
+    html = html.replace(/^# (.*$)/gim, (match, title) => {
+      if (isFirstH1) {
+        isFirstH1 = false
+        // Don't render the first h1 at all, it's shown in NoteTitle
+        return ''
+      }
       const id = `heading-${++headingCounter}`
-      return `<h3 id="${id}" data-markdown-heading="true">${title}</h3>`
+      return `<h1 id="${id}" data-markdown-heading="true">${title}</h1>`
     })
     html = html.replace(/^## (.*$)/gim, (match, title) => {
       const id = `heading-${++headingCounter}`
       return `<h2 id="${id}" data-markdown-heading="true">${title}</h2>`
     })
-    html = html.replace(/^# (.*$)/gim, (match, title) => {
+    html = html.replace(/^### (.*$)/gim, (match, title) => {
       const id = `heading-${++headingCounter}`
-      return `<h1 id="${id}" data-markdown-heading="true">${title}</h1>`
+      return `<h3 id="${id}" data-markdown-heading="true">${title}</h3>`
     })
     
     // Bold
@@ -222,6 +276,8 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
     html = '<p>' + html + '</p>'
     // Fix list items
     html = html.replace(/(<li>.*<\/li>)/gims, '<ul>$1</ul>')
+    // Clean up empty paragraphs
+    html = html.replace(/<p>\s*<\/p>/g, '')
     
     return html
   }
@@ -915,13 +971,13 @@ const NoteRightSidebar: React.FC = () => {
 const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
   // Use provided markdown or fall back to mock data
   const content = markdownContent || mockMarkdownContent
-  const { metadata, markdown } = parseMarkdownWithMetadata(content)
+  const { metadata, markdown, title } = parseMarkdownWithMetadata(content)
   
   const noteData: NoteWrappedPayload = {
     data: {
       id: metadata.id || '1',
       nid: metadata.id || 'demo-note',
-      title: 'Demo Note - Standalone Version',
+      title: title,
       text: markdown,
       created: metadata.createdDate || new Date().toISOString(),
       modified: metadata.editedDate || new Date().toISOString(),
@@ -943,8 +999,56 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
     }
   }
   
-  const [currentNote] = useState<NoteWrappedPayload>(noteData)
-  const [currentNid] = useState<string>(noteData.data.nid)
+  const [currentNote, setCurrentNote] = useState<NoteWrappedPayload>(noteData)
+  const [currentNid, setCurrentNid] = useState<string>(noteData.data.nid)
+  const [contentKey, setContentKey] = useState(0) // Key to force re-render
+
+  // Update note data when markdown content changes
+  useEffect(() => {
+    if (markdownContent) {
+      const { metadata, markdown, title } = parseMarkdownWithMetadata(markdownContent)
+      const updatedNoteData: NoteWrappedPayload = {
+        data: {
+          id: metadata.id || '1',
+          nid: metadata.id || 'demo-note',
+          title: title,
+          text: markdown,
+          created: metadata.createdDate || new Date().toISOString(),
+          modified: metadata.editedDate || new Date().toISOString(),
+          hide: false,
+          allowComment: true,
+          meta: {
+            cover: undefined
+          },
+          images: [],
+          topic: {
+            name: metadata.topic || 'Demo Topic',
+            tags: metadata.tags || []
+          },
+          category: metadata.category ? {
+            name: metadata.category,
+            caption: metadata.categoryCaption,
+            avatar: metadata.categoryAvatar
+          } : undefined
+        }
+      }
+      setCurrentNote(updatedNoteData)
+      setCurrentNid(updatedNoteData.data.nid)
+      setContentKey(prev => prev + 1) // Force re-render of child components
+    }
+  }, [markdownContent])
+
+  // Show loading state if no markdown content yet
+  if (!markdownContent && !markdown) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading article...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen">
@@ -958,7 +1062,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             'md:mt-24'
           )}>
             {/* Left Sidebar */}
-            <div className="relative hidden min-w-0 xl:block">
+            <div key={`left-${contentKey}`} className="relative hidden min-w-0 xl:block">
               <NoteLeftSidebar />
             </div>
 
@@ -992,7 +1096,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             </PaperWithMainContainer>
 
             {/* Right Sidebar */}
-            <div className="relative hidden min-w-0 xl:block">
+            <div key={`right-${contentKey}`} className="relative hidden min-w-0 xl:block">
               <NoteRightSidebar />
             </div>
           </div>

@@ -345,6 +345,8 @@ const TableOfContents: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(null)
   const isManualClickRef = useRef(false)
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const lastScrollTopRef = useRef(0)
+  const userScrolledRef = useRef(false)
   
   useEffect(() => {
     // Find all headings with data-markdown-heading attribute
@@ -384,7 +386,7 @@ const TableOfContents: React.FC = () => {
         if (!element) return null
         
         const rect = element.getBoundingClientRect()
-        const absoluteTop = rect.top + scrollTop
+        const absoluteTop = rect.top + scrollTop - 64 // Account for 64px header offset
         // Calculate what percentage of the page this heading is at
         const headingPercentage = docHeight > 0 
           ? (absoluteTop / (docHeight + window.innerHeight)) * 100 
@@ -411,19 +413,40 @@ const TableOfContents: React.FC = () => {
     }
     
     const handleScroll = () => {
+      const currentScrollTop = window.scrollY
+      
       // Clear any existing timeout
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)
       }
       
-      // If manual click is active, wait for user to finish scrolling before resuming auto-update
-      if (isManualClickRef.current) {
+      // If in manual click mode and user hasn't scrolled yet, stay in manual mode
+      if (isManualClickRef.current && !userScrolledRef.current) {
+        // Check if this is the end of programmatic smooth scroll
         scrollTimeoutRef.current = setTimeout(() => {
-          isManualClickRef.current = false
-          updateActiveHeading()
-        }, 150) // Resume after 150ms of no scrolling
-      } else {
+          lastScrollTopRef.current = currentScrollTop
+        }, 100)
+        return
+      }
+      
+      // If user scrolled, exit manual mode
+      if (userScrolledRef.current) {
+        isManualClickRef.current = false
+        userScrolledRef.current = false
+      }
+      
+      // Update active heading
+      if (!isManualClickRef.current) {
         updateActiveHeading()
+      }
+      
+      lastScrollTopRef.current = currentScrollTop
+    }
+    
+    // Detect user-initiated scrolling
+    const handleUserScroll = () => {
+      if (isManualClickRef.current) {
+        userScrolledRef.current = true
       }
     }
     
@@ -432,10 +455,14 @@ const TableOfContents: React.FC = () => {
     
     // Add scroll and resize listeners
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('wheel', handleUserScroll, { passive: true })
+    window.addEventListener('touchmove', handleUserScroll, { passive: true })
     window.addEventListener('resize', updateActiveHeading)
     
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleUserScroll)
+      window.removeEventListener('touchmove', handleUserScroll)
       window.removeEventListener('resize', updateActiveHeading)
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)
@@ -450,6 +477,7 @@ const TableOfContents: React.FC = () => {
   const scrollToHeading = (anchorId: string) => {
     // Set flag to prevent automatic updates during manual scroll
     isManualClickRef.current = true
+    userScrolledRef.current = false // Reset user scroll detection
     
     // Immediately set the clicked item as active
     setActiveId(anchorId)

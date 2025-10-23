@@ -55,6 +55,55 @@ This is a demonstration of the extracted notes functionality without backend dep
 ## Sample Content
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 ### Code Example
 
@@ -129,7 +178,7 @@ const FloatPopover: React.FC<{
         <TriggerComponent />
       </div>
       {isVisible && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded whitespace-nowrap z-10">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded whitespace-nowrap z-10">
           {children}
         </div>
       )}
@@ -180,7 +229,7 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
 
   return (
     <div 
-      className="prose max-w-none"
+      className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-gray-800 [&_pre]:text-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit"
       dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
     />
   )
@@ -194,7 +243,7 @@ const NoteDateMeta = () => {
   const dateFormat = dayjs(created).format('YYYY 年 M 月 D 日 dddd')
 
   return (
-    <span className="inline-flex items-center space-x-1">
+    <span className="inline-flex items-center gap-1">
       <MdiClockOutline />
       <time className="font-medium" suppressHydrationWarning>
         {dateFormat}
@@ -250,7 +299,7 @@ const NoteMetaBar = () => {
   const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
   
   return (
-    <div className="flex items-center space-x-2 text-sm text-gray-600">
+    <div className="flex items-center gap-2 text-sm text-gray-600">
       {topic && (
         <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
           {topic.name}
@@ -272,28 +321,21 @@ const NoteBanner: React.FC<{ type: string; message: string }> = ({ type, message
 
 const NoteLeftSidebar = () => {
   const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
-  const created = useCurrentNoteDataSelector((data) => data?.data.created)
+  const nid = useCurrentNoteNid()
   
   return (
-    <div className="sticky top-[120px] mt-[120px] min-h-[300px] hidden xl:block">
+    <div className="sticky top-[120px] mt-[120px] mr-4">
       <div className="space-y-4">
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-2">Topic</h3>
-          {topic ? (
-            <span className="text-sm text-gray-600">{topic.name}</span>
-          ) : (
-            <span className="text-sm text-gray-400">No topic</span>
-          )}
-        </div>
-        
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-2">Timeline</h3>
-          {created && (
+        <div className="rounded-lg border border-gray-200 p-4">
+          <h3 className="font-semibold text-gray-900 mb-2 text-sm">Note Info</h3>
+          {topic && (
             <div className="text-sm text-gray-600">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>{dayjs(created).format('YYYY-MM-DD')}</span>
-              </div>
+              <span className="font-medium">Topic:</span> {topic.name}
+            </div>
+          )}
+          {nid && (
+            <div className="text-sm text-gray-600 mt-1">
+              <span className="font-medium">ID:</span> {nid}
             </div>
           )}
         </div>
@@ -302,36 +344,6 @@ const NoteLeftSidebar = () => {
   )
 }
 
-const Paper: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
-  children, 
-  className 
-}) => {
-  return (
-    <div className={clsx('bg-white rounded-lg shadow-sm border', className)}>
-      {children}
-    </div>
-  )
-}
-
-const NoteMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <main className="min-w-0 p-6">
-      {children}
-    </main>
-  )
-}
-
-const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <Paper>
-      <NoteMainContainer>
-        {children}
-      </NoteMainContainer>
-    </Paper>
-  )
-}
-
-// TOC (Table of Contents) Components
 interface TocItem {
   depth: number
   title: string
@@ -345,30 +357,31 @@ const TocItem: React.FC<{
   rootDepth: number
   onClick: (anchorId: string) => void
 }> = ({ item, isActive, rootDepth, onClick }) => {
-  const renderDepth = item.depth - rootDepth
+  const paddingLeft = `${(item.depth - rootDepth) * 0.75}rem`
   
   return (
-    <a
-      href={`#${item.anchorId}`}
+    <button
+      onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'relative mb-[1.5px] inline-block min-w-0 max-w-full leading-normal text-gray-600',
-        'truncate text-left transition-all duration-500 hover:text-gray-800 cursor-pointer block',
-        isActive ? 'ml-2 text-gray-900 font-medium' : 'opacity-70 hover:opacity-100'
+        'block w-full text-left text-sm py-1.5 px-2 rounded transition-colors',
+        isActive
+          ? 'bg-blue-50 text-blue-700 font-medium'
+          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
       )}
-      style={{
-        paddingLeft: `${renderDepth * 0.6 + 0.5}rem`,
-      }}
-      onClick={(e) => {
-        e.preventDefault()
-        onClick(item.anchorId)
-      }}
-      title={item.title}
+      style={{ paddingLeft }}
     >
-      {isActive && (
-        <span className="absolute inset-y-[3px] left-0 w-[2px] rounded-sm bg-blue-500" />
-      )}
-      <span>{item.title}</span>
-    </a>
+      {item.title}
+    </button>
+  )
+}
+
+const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="relative w-full">
+      <div className="rounded-lg bg-white p-8 shadow-sm">
+        {children}
+      </div>
+    </div>
   )
 }
 
@@ -470,7 +483,7 @@ const TableOfContents: React.FC = () => {
   return (
     <div className="space-y-1">
       <h3 className="font-semibold text-gray-900 mb-3 text-sm">Table of Contents</h3>
-      <div className="max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+      <div className="max-h-[60vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded">
         {headings.map((heading) => (
           <TocItem
             key={`${heading.anchorId}-${heading.index}`}
@@ -494,7 +507,7 @@ const ActionButton: React.FC<{
 }> = ({ icon, label, onClick, count }) => {
   return (
     <button
-      className="relative flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
+      className="relative flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
       onClick={onClick}
       title={label}
     >
@@ -545,7 +558,7 @@ const NoteActionButtons: React.FC = () => {
   return (
     <div className="space-y-2">
       <h3 className="font-semibold text-gray-900 mb-3 text-sm">Actions</h3>
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col gap-2">
         <ActionButton
           icon={liked ? "❤️" : "🤍"}
           label="Like"
@@ -618,12 +631,12 @@ const Post: React.FC = () => {
                 </span>
 
                 {currentNote.data.hide && (
-                  <NoteBanner type="warning" message="这篇文章是非公开的，仅登录可见" />
+                  <NoteBanner type="warning" message="这篇文章是非公开的,仅登录可见" />
                 )}
               </div>
 
               <div className="mt-8">
-                <article className="prose max-w-none">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-gray-800 [&_pre]:text-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

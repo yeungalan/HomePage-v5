@@ -9,6 +9,7 @@ import { SteamIcon } from '@/components/icons/platform/SteamIcon'
 import { XIcon } from '@/components/icons/platform/XIcon'
 import { MotionButtonBase } from '@/components/MotionButtonBase'
 import { FloatPopover } from './FloatPopOver'
+import Link from 'next/link'
 
 interface SocialIconProps {
   type: string
@@ -134,14 +135,14 @@ export const SocialIcon = memo((props: SocialIconProps) => {
             background: iconBg,
           }}
         >
-          <a
+          <Link
             target="_blank"
             href={href}
             className="center flex"
             rel="noreferrer"
           >
             {IconComponent}
-          </a>
+          </Link>
         </MotionButtonBase>
       }
     >

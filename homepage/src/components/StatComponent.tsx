@@ -13,7 +13,8 @@ export default function StatsComponent() {
     
     // Style the stats panel
     stats.dom.style.position = 'fixed'
-    stats.dom.style.left = '0'
+    stats.dom.style.left = 'auto'      // Reset the default left property
+    stats.dom.style.right = '0'        // Position on right
     stats.dom.style.top = '0'
     stats.dom.style.zIndex = '9999'
     

@@ -165,10 +165,14 @@ function FlightCalculator() {
       transition={{ duration: 0.5, delay: 0.5 }}
       className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700"
     >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
-        <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
-        <span>Flight Distance</span>
-      </h2>
+    <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
+      <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
+      <span>Flight Distance</span>
+    </h2>
+    <p className="text-sm text-gray-500 dark:text-gray-400">
+      This widget calculates how far you can travel while staying on this page.
+    </p>
+    <br/>
 
       {/* Input Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -298,7 +302,7 @@ export default function Timeline() {
     <div className="min-h-screen text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-[50px] sm:pt-[60px]">
         <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:0.5}}>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 text-gray-900 dark:text-white">Timeline</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 text-gray-900 dark:text-white">{nextYear - 1} Goals</h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">{daysLeft} days left until {nextYear}</p>
         </motion.div>
 
@@ -373,7 +377,7 @@ export default function Timeline() {
               <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Find a Person I Care Of</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-yellow-400">In progress</p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
               </div>
             </div>
           </div>

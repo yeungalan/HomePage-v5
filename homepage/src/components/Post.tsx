@@ -197,7 +197,7 @@ const FloatPopover: React.FC<{
   )
 }
 
-// Simple markdown renderer with heading IDs
+// Simple markdown renderer with heading IDs - FIXED VERSION
 
 const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
   const h1CountRef = useRef(0);
@@ -212,12 +212,16 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
       className="
         dark:text-white
         dark:bg-black
-        prose prose-neutral dark:prose-invert max-w-none
+        prose prose-neutral dark:prose-invert
         prose-h1:mt-8 prose-h1:mb-4 prose-h1:font-semibold prose-h1:text-3xl
         prose-h2:mt-8 prose-h2:mb-4 prose-h2:font-semibold prose-h2:text-2xl
         prose-h3:mt-8 prose-h3:mb-4 prose-h3:font-semibold prose-h3:text-xl
-        prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
-        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+        prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:break-words
+        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:max-w-full
+        max-w-full
+        [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:break-words
+        [&_pre_code]:break-words [&_pre_code]:whitespace-pre-wrap [&_pre_code]:word-break-break-all
+        [&_code]:break-words [&_code]:max-w-full
       "
     >
       <ReactMarkdown
@@ -239,132 +243,54 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
                     "ml-1",
                     "no-underline",
                   ],
+                  ariaHidden: "true",
                 },
-                children: [{ type: "text", value: "" }],
+                children: [{ type: "text", value: "#" }],
               },
             },
           ],
         ]}
         components={{
-          h1({ node, ...props }) {
-            h1CountRef.current++;
-            // Skip the first h1 as it's already displayed in the title
-            if (h1CountRef.current === 1) {
-              return null;
-            }
-            const text = String(props.children);
+          h1: ({ node, children, ...props }) => {
+            h1CountRef.current += 1;
+            const shouldHide = h1CountRef.current === 1;
+            
             return (
-              <h1
+              <h1 
                 {...props}
-                id={text.toLowerCase().replace(/\s+/g, "-")}
-                data-markdown-heading="true"
-              />
+                style={shouldHide ? { display: 'none' } : undefined}
+              >
+                {children}
+              </h1>
             );
           },
-          h2({ node, ...props }) {
-            const text = String(props.children);
-            return (
-              <h2
-                {...props}
-                id={text.toLowerCase().replace(/\s+/g, "-")}
-                data-markdown-heading="true"
-              />
-            );
-          },
-          h3({ node, ...props }) {
-            const text = String(props.children);
-            return (
-              <h3
-                {...props}
-                id={text.toLowerCase().replace(/\s+/g, "-")}
-                data-markdown-heading="true"
-              />
-            );
-          },
-          code({ inline, className, children, ...props }) {
+          code: ({ node, inline, className, children, ...props }: any) => {
             const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
-              <SyntaxHighlighter
-                style={
-                  typeof window !== "undefined" &&
-                  window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? oneDark
-                    : oneLight
-                }
-                language={match[1]}
-                PreTag="div"
-                {...props}
-              >
-                {String(children).replace(/\n$/, "")}
-              </SyntaxHighlighter>
+              <div className="relative max-w-full overflow-x-auto">
+                <SyntaxHighlighter
+                  style={oneDark}
+                  language={match[1]}
+                  PreTag="div"
+                  className="max-w-full !bg-gray-900 !my-4"
+                  wrapLines={true}
+                  wrapLongLines={true}
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </div>
             ) : (
-              <code
-                className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
-                {...props}
-              >
+              <code className={`${className} break-words max-w-full`} {...props}>
                 {children}
               </code>
             );
           },
-          ul({ node, ...props }) {
-            return (
-              <ul
-                className="list-disc pl-8 my-4 space-y-2"
-                {...props}
-              />
-            );
-          },
-          ol({ node, ...props }) {
-            return (
-              <ol
-                className="list-decimal pl-8 my-4 space-y-2"
-                {...props}
-              />
-            );
-          },
-          li({ node, ...props }) {
-            return (
-              <li
-                className="mb-2"
-                {...props}
-              />
-            );
-          },
-          iframe({ node, ...props }) {
-            // Handle iframe elements with support for custom attributes
-            const { height, className, src, allowtransparency, sandbox, ...otherProps } = props as any;
-            
-            // If height is specified, use it; otherwise use responsive container
-            if (height) {
-              return (
-                <div className={`w-full my-4 ${className || ''}`}>
-                  <iframe
-                    src={src}
-                    height={height}
-                    className="w-full rounded-lg"
-                    allowFullScreen
-                    allowTransparency={allowtransparency}
-                    sandbox={sandbox}
-                    {...otherProps}
-                  />
-                </div>
-              );
-            }
-            
-            // Default responsive 16:9 container
-            return (
-              <div className="relative w-full my-4" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  src={src}
-                  className={`absolute top-0 left-0 w-full h-full rounded-lg ${className || ''}`}
-                  allowFullScreen
-                  allowTransparency={allowtransparency}
-                  sandbox={sandbox}
-                  {...otherProps}
-                />
-              </div>
-            );
-          },
+          pre: ({ children }: any) => (
+            <pre className="max-w-full overflow-x-auto my-4">
+              {children}
+            </pre>
+          ),
         }}
       >
         {content}
@@ -373,435 +299,199 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
   );
 };
 
-// Note components
-const NoteDateMeta = () => {
-  const created = useCurrentNoteDataSelector((data) => data?.data.created)
-
-  if (!created) return null
-  const dateFormat = dayjs(created).format('MMMM D, YYYY')
-
+// Banner Component
+const NoteBanner: React.FC<{ type: 'warning' | 'info'; message: string }> = ({ type, message }) => {
   return (
-    <span className="inline-flex items-center gap-1">
-      <MdiClockOutline />
-      <time className="font-medium" suppressHydrationWarning>
-        {dateFormat}
-      </time>
-    </span>
-  )
-}
-
-const NoteHeaderDate = () => {
-  const date = useCurrentNoteDataSelector((data) => ({
-    created: data?.data.created,
-    modified: data?.data.modified,
-  }))
-  
-  if (!date?.created) return null
-
-  const tips = `Created on ${parseDate(date.created, 'MMMM D, YYYY')}${
-    date.modified
-      ? `, modified on ${parseDate(date.modified, 'MMMM D, YYYY')}`
-      : ''
-  }`
-
-  return (
-    <FloatPopover TriggerComponent={NoteDateMeta}>
-      {tips}
-    </FloatPopover>
-  )
-}
-
-const NoteTitle = () => {
-  const title = useCurrentNoteDataSelector((data) => data?.data.title)
-
-  if (!title) return null
-  return (
-    <div className="relative">
-      <h1 className="my-8 text-balance text-left text-4xl font-bold leading-tight text-gray-900 dark:text-white">
-        {title}
-      </h1>
+    <div className={clsx(
+      'mt-4 p-4 rounded-lg border',
+      type === 'warning' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' : 'bg-blue-50 border-blue-200 text-blue-800'
+    )}>
+      {message}
     </div>
   )
 }
 
-const NoteMarkdown = () => {
-  const text = useCurrentNoteDataSelector((data) => data?.data.text)!
-  return (
-    <div className="mt-10">
-      <SimpleMarkdown content={text} />
-    </div>
-  )
-}
-
-const NoteMetaBar = () => {
-  const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
-  const tags = topic?.tags || []
-  
-  return (
-    <div className="flex items-center gap-2 text-sm text-gray-600 flex-wrap">
-      {topic && (
-        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
-          {topic.name}
-        </span>
-      )}
-      {tags.map((tag, index) => (
-        <span key={index} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-          Post{tag}
-        </span>
-      ))}
-    </div>
-  )
-}
-
-const NoteBanner: React.FC<{ type: string; message: string }> = ({ type, message }) => {
-  const bgColor = type === 'warning' ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'bg-blue-100 border-blue-400 text-blue-800'
-  
-  return (
-    <div className={`border-l-4 p-4 mb-4 ${bgColor}`}>
-      <p>{message}</p>
-    </div>
-  )
-}
-
-const NoteLeftSidebar = () => {
-  const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
-  const category = useCurrentNoteDataSelector((data) => data?.data.category)
-  const nid = useCurrentNoteNid()
-  const tags = topic?.tags || []
-  
-  return (
-    <div className="sticky top-[90px] mr-4">
-      <div className="space-y-4">
-        <div className="rounded-lg border border-gray-200 p-4">
-          <h3 className="font-semibold text-gray-900 mb-3 text-sm dark:text-white">Note Info</h3>
-          
-          {category && (
-            <div className="mb-3 pb-3 border-b border-gray-100">
-              <div className="text-xs text-gray-500 mb-1 dark:text-white">Category</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">{category.name}</div>
-              {category.caption && (
-                <div className="text-xs text-gray-600 mt-1 dark:text-white">{category.caption}</div>
-              )}
-            </div>
-          )}
-          
-          {topic && (
-            <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-1 dark:text-white">Topic</div>
-              <div className="text-sm text-gray-900 dark:text-white">{topic.name}</div>
-            </div>
-          )}
-          
-          {tags.length > 0 && (
-            <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-2 dark:text-white">Tags</div>
-              <div className="flex flex-wrap gap-1">
-                {tags.map((tag, index) => (
-                  <span key={index} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs dark:text-black">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {nid && (
-            <div className="text-xs text-gray-600 dark:text-white">
-              <span className="font-medium">ID:</span> {nid}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface TocItem {
-  depth: number
-  title: string
-  anchorId: string
-  index: number
-}
-
-const TocItem: React.FC<{
-  item: TocItem
-  isActive: boolean
-  rootDepth: number
-  onClick: (anchorId: string) => void
-  itemIndex: number
-  setRef: (el: HTMLButtonElement | null) => void
-}> = ({ item, isActive, rootDepth, onClick, itemIndex, setRef }) => {
-  const baseIndent = (item.depth - rootDepth) * 0.5
-  
-  return (
-    <button
-      ref={setRef}
-      onClick={() => onClick(item.anchorId)}
-      className={clsx(
-        'relative block w-full text-left text-xs py-1 px-2 rounded transition-colors duration-200',
-        isActive
-          ? 'text-blue-600 font-medium dark:text-white'
-          : 'text-gray-600 hover:text-gray-900 dark:hover:text-gray-400 dark:text-white'
-      )}
-      style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
-      title={item.title}
-    >
-      <span className="block truncate leading-tight">{item.title}</span>
-    </button>
-  )
-}
-
+// Paper container with shadow
 const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="relative w-full">
-      <div className="rounded-lg bg-white p-8 shadow-sm dark:bg-black">
+    <div className="relative min-w-0">
+      <div className="bg-white dark:bg-zinc-900 shadow-sm rounded-lg px-6 py-8 md:px-12 md:py-12">
         {children}
       </div>
     </div>
   )
 }
 
-const TableOfContents: React.FC = () => {
-  const [headings, setHeadings] = useState<TocItem[]>([])
-  const [activeId, setActiveId] = useState<string | null>(null)
-  const [activeIndex, setActiveIndex] = useState<number>(-1)
-  const [indicatorStyle, setIndicatorStyle] = useState<{ top: number; height: number }>({ top: 0, height: 0 })
-  const isManualClickRef = useRef(false)
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const lastScrollTopRef = useRef(0)
-  const userScrolledRef = useRef(false)
-  const itemRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
+// Note Title
+const NoteTitle: React.FC = () => {
+  const title = useCurrentNoteDataSelector((data) => data?.data.title || 'Untitled')
   
-  // Update active index when active ID changes
+  return (
+    <h1 className="text-4xl font-bold text-gray-900 mb-4 dark:text-white">
+      {title}
+    </h1>
+  )
+}
+
+// Note Date
+const NoteHeaderDate: React.FC = () => {
+  const created = useCurrentNoteDataSelector((data) => data?.data.created)
+  const modified = useCurrentNoteDataSelector((data) => data?.data.modified)
+  
+  if (!created) return null
+  
+  return (
+    <div className="flex items-center text-gray-600 dark:text-white">
+      <MdiClockOutline />
+      <span className="ml-1">
+        {parseDate(created, 'YYYY-MM-DD')}
+      </span>
+      {modified && modified !== created && (
+        <FloatPopover TriggerComponent={() => (
+          <span className="ml-2 text-gray-500">(edited)</span>
+        )}>
+          Last edited: {parseDate(modified, 'YYYY-MM-DD HH:mm')}
+        </FloatPopover>
+      )}
+    </div>
+  )
+}
+
+// Note Meta Bar (topic, tags)
+const NoteMetaBar: React.FC = () => {
+  const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
+  
+  if (!topic) return null
+  
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+        {topic.name}
+      </span>
+      {topic.tags?.map((tag, idx) => (
+        <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+          #{tag}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+// Note Markdown Content
+const NoteMarkdown: React.FC = () => {
+  const text = useCurrentNoteDataSelector((data) => data?.data.text || '')
+  
+  return <SimpleMarkdown content={text} />
+}
+
+// Reading Progress
+const ReadingProgress: React.FC = () => {
+  const [progress, setProgress] = useState(0)
+  
   useEffect(() => {
-    if (activeId) {
-      const index = headings.findIndex(h => h.anchorId === activeId)
-      setActiveIndex(index)
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight - windowHeight
+      const scrolled = window.scrollY
+      const progressValue = (scrolled / documentHeight) * 100
+      setProgress(Math.min(progressValue, 100))
     }
-  }, [activeId, headings])
-  
-  // Update indicator position based on actual element measurements
-  useEffect(() => {
-    if (activeIndex >= 0 && itemRefs.current.has(activeIndex)) {
-      const activeElement = itemRefs.current.get(activeIndex)
-      if (activeElement) {
-        const rect = activeElement.getBoundingClientRect()
-        const containerElement = activeElement.parentElement?.parentElement
-        if (containerElement) {
-          const containerRect = containerElement.getBoundingClientRect()
-          setIndicatorStyle({
-            top: activeElement.offsetTop,
-            height: rect.height
-          })
-        }
-      }
-    }
-  }, [activeIndex])
-  
-  const setItemRef = (index: number) => (el: HTMLButtonElement | null) => {
-    if (el) {
-      itemRefs.current.set(index, el)
-    } else {
-      itemRefs.current.delete(index)
-    }
-  }
-  
-  useEffect(() => {
-    // Find all headings with data-markdown-heading attribute
-    const headingElements = document.querySelectorAll('h1[data-markdown-heading], h2[data-markdown-heading], h3[data-markdown-heading], h4[data-markdown-heading], h5[data-markdown-heading], h6[data-markdown-heading]')
     
-    const tocItems: TocItem[] = Array.from(headingElements).map((el, idx) => {
-      const depth = parseInt(el.tagName.slice(1))
-      const title = el.textContent || ''
-      const anchorId = el.id
-      
-      return {
-        depth,
-        title,
-        anchorId,
-        index: idx
-      }
-    })
-    
-    setHeadings(tocItems)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
   
+  return (
+    <div className="space-y-2">
+      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Reading Progress</h3>
+      <div className="w-full bg-gray-200 rounded-full h-2">
+        <div 
+          className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <p className="text-xs text-gray-600">{Math.round(progress)}% complete</p>
+    </div>
+  )
+}
+
+// Table of Contents
+const TableOfContents: React.FC = () => {
+  const [headings, setHeadings] = useState<Array<{ id: string; text: string; level: number }>>([])
+  const [activeId, setActiveId] = useState<string>('')
+  
   useEffect(() => {
-    if (headings.length === 0) return
+    // Extract headings from the document
+    const articleElement = document.querySelector('article')
+    if (!articleElement) return
     
-    const updateActiveHeading = () => {
-      // Skip updates if user manually clicked a TOC item
-      if (isManualClickRef.current) return
-      
-      // Calculate current scroll percentage
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercentage = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
-      
-      // Get all heading elements with their scroll percentages
-      const headingPositions = headings.map(({ anchorId }) => {
-        const element = document.getElementById(anchorId)
-        if (!element) return null
-        
-        const rect = element.getBoundingClientRect()
-        const absoluteTop = rect.top + scrollTop - 64 // Account for 64px header offset
-        // Calculate what percentage of the page this heading is at
-        const headingPercentage = docHeight > 0 
-          ? (absoluteTop / (docHeight + window.innerHeight)) * 100 
-          : 0
-        
-        return {
-          id: anchorId,
-          percentage: headingPercentage
-        }
-      }).filter((h): h is { id: string; percentage: number } => h !== null)
-      
-      // Find the active heading - the last one whose position is <= current scroll percentage
-      let newActiveId: string | null = headingPositions[0]?.id || null
-      
-      for (const heading of headingPositions) {
-        if (scrollPercentage >= heading.percentage - 5) { // 5% threshold for better UX
-          newActiveId = heading.id
-        } else {
-          break
-        }
-      }
-      
-      setActiveId(newActiveId)
-    }
+    const headingElements = articleElement.querySelectorAll('h1, h2, h3')
+    const headingsData = Array.from(headingElements)
+      .filter((heading) => heading.id) // Only include headings with IDs
+      .map((heading) => ({
+        id: heading.id,
+        text: heading.textContent?.replace('#', '').trim() || '',
+        level: parseInt(heading.tagName.substring(1))
+      }))
     
-    const handleScroll = () => {
-      const currentScrollTop = window.scrollY
-      
-      // Clear any existing timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
-      }
-      
-      // If in manual click mode and user hasn't scrolled yet, stay in manual mode
-      if (isManualClickRef.current && !userScrolledRef.current) {
-        // Check if this is the end of programmatic smooth scroll
-        scrollTimeoutRef.current = setTimeout(() => {
-          lastScrollTopRef.current = currentScrollTop
-        }, 100)
-        return
-      }
-      
-      // If user scrolled, exit manual mode
-      if (userScrolledRef.current) {
-        isManualClickRef.current = false
-        userScrolledRef.current = false
-      }
-      
-      // Update active heading
-      if (!isManualClickRef.current) {
-        updateActiveHeading()
-      }
-      
-      lastScrollTopRef.current = currentScrollTop
-    }
+    setHeadings(headingsData)
     
-    // Detect user-initiated scrolling
-    const handleUserScroll = () => {
-      if (isManualClickRef.current) {
-        userScrolledRef.current = true
-      }
-    }
+    // Intersection Observer for active heading
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-80px 0px -80% 0px' }
+    )
     
-    // Set initial active heading
-    updateActiveHeading()
+    headingElements.forEach((heading) => observer.observe(heading))
     
-    // Add scroll and resize listeners
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('wheel', handleUserScroll, { passive: true })
-    window.addEventListener('touchmove', handleUserScroll, { passive: true })
-    window.addEventListener('resize', updateActiveHeading)
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('wheel', handleUserScroll)
-      window.removeEventListener('touchmove', handleUserScroll)
-      window.removeEventListener('resize', updateActiveHeading)
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
-      }
-    }
-  }, [headings])
-  
-  const rootDepth = headings.length > 0 
-    ? headings.reduce((min, item) => Math.min(min, item.depth), headings[0]?.depth || 1)
-    : 1
-  
-  const scrollToHeading = (anchorId: string) => {
-    // Set flag to prevent automatic updates during manual scroll
-    isManualClickRef.current = true
-    userScrolledRef.current = false // Reset user scroll detection
-    
-    // Immediately set the clicked item as active
-    setActiveId(anchorId)
-    
-    // Scroll to the element with offset
-    const element = document.getElementById(anchorId)
-    if (element) {
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY
-      const offsetPosition = elementPosition - 64 // 64px offset for fixed header
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
-  }
+    return () => observer.disconnect()
+  }, [])
   
   if (headings.length === 0) return null
   
   return (
-    <div className="space-y-2 max-w-[200px]">
-      <h3 className="font-semibold text-gray-900 mb-3 text-xs dark:text-white">Table of Contents</h3>
-      <div className="relative space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-        {/* Animated background indicator */}
-        {activeIndex >= 0 && indicatorStyle.height > 0 && (
-          <div
-            className="absolute left-0 w-full bg-blue-50/50 rounded transition-all duration-300 ease-out pointer-events-none z-0"
-            style={{
-              top: `${indicatorStyle.top}px`,
-              height: `${indicatorStyle.height}px`,
-              transform: 'translateZ(0)',
-            }}
-          />
-        )}
-        
-        {/* Animated left border indicator */}
-        {activeIndex >= 0 && indicatorStyle.height > 0 && (
-          <div
-            className="absolute left-0 w-[2px] bg-blue-600 dark:bg-gray-400 rounded-r-full transition-all duration-300 ease-out pointer-events-none z-10"
-            style={{
-              top: `${indicatorStyle.top + 4}px`,
-              height: `${indicatorStyle.height - 8}px`,
-              transform: 'translateZ(0)',
-            }}
-          />
-        )}
-        
-        <div className="relative z-20">
-          {headings.map((heading, index) => (
-            <TocItem
-              key={`${heading.anchorId}-${heading.index}`}
-              item={heading}
-              isActive={heading.anchorId === activeId}
-              rootDepth={rootDepth}
-              onClick={scrollToHeading}
-              itemIndex={index}
-              setRef={setItemRef(index)}
-            />
-          ))}
-        </div>
+    <nav className="space-y-2">
+      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Table of Contents</h3>
+      <ul className="space-y-2 text-sm">
+        {headings.map((heading) => (
+          <li 
+            key={heading.id}
+            style={{ paddingLeft: `${(heading.level - 1) * 0.75}rem` }}
+          >
+            <a
+              href={`#${heading.id}`}
+              className={clsx(
+                'block hover:text-blue-500 transition-colors',
+                activeId === heading.id ? 'text-blue-500 font-medium' : 'text-gray-600'
+              )}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+// Left Sidebar
+const NoteLeftSidebar: React.FC = () => {
+  return (
+    <div className="sticky top-[90px] min-h-[300px] hidden xl:block">
+      <div className="mr-4 space-y-8">
+        <NoteActions />
       </div>
     </div>
   )
 }
 
-// Action buttons for right sidebar
+// Action Button Component
 const ActionButton: React.FC<{
   icon: string
   label: string
@@ -810,115 +500,32 @@ const ActionButton: React.FC<{
 }> = ({ icon, label, onClick, count }) => {
   return (
     <button
-      className="relative flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
       onClick={onClick}
-      title={label}
+      className="flex items-center space-x-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
     >
-      <div className={clsx('text-xl', icon)} />
+      <span className="text-xl">{icon}</span>
+      <span className="text-sm text-gray-700">{label}</span>
       {count !== undefined && (
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-          {count}
-        </span>
+        <span className="ml-auto text-sm text-gray-500">{count}</span>
       )}
     </button>
   )
 }
 
-const ReadingProgress: React.FC = () => {
-  const [progress, setProgress] = useState(0)
-  
-  useEffect(() => {
-    const calculateProgress = () => {
-      const windowHeight = window.innerHeight
-      const documentHeight = document.documentElement.scrollHeight
-      const scrollTop = window.scrollY
-      
-      // Calculate how much of the document has been scrolled
-      const scrollableHeight = documentHeight - windowHeight
-      const scrollPercentage = scrollableHeight > 0 
-        ? Math.min(Math.round((scrollTop / scrollableHeight) * 100), 100)
-        : 0
-      
-      setProgress(scrollPercentage)
-    }
-    
-    // Calculate on mount
-    calculateProgress()
-    
-    // Add scroll listener
-    window.addEventListener('scroll', calculateProgress)
-    window.addEventListener('resize', calculateProgress)
-    
-    return () => {
-      window.removeEventListener('scroll', calculateProgress)
-      window.removeEventListener('resize', calculateProgress)
-    }
-  }, [])
-  
-  // Circle parameters - smaller size
-  const size = 20
-  const strokeWidth = 3
-  const radius = (size - strokeWidth) / 2
-  const circumference = 2 * Math.PI * radius
-  const offset = circumference - (progress / 100) * circumference
-  
-  return (
-    <div className="flex items-center gap-3">
-      {/* SVG Circle Progress */}
-      <div className="relative inline-flex items-center justify-center flex-shrink-0">
-        <svg 
-          width={size} 
-          height={size}
-          className="transform -rotate-90"
-        >
-          {/* Background circle */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#E5E7EB"
-            strokeWidth={strokeWidth}
-            fill="none"
-          />
-          {/* Progress circle */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#155DFC"
-            strokeWidth={strokeWidth}
-            fill="none"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            className="transition-all duration-300 ease-out"
-          />
-        </svg>
-      </div>
-      
-      {/* Percentage text */}
-      <div className="text-sm font-medium text-gray-700 dark:text-white">
-        {progress}%
-      </div>
-    </div>
-  )
-}
-
-const NoteActionButtons: React.FC = () => {
+// Note Actions (Like, Share, etc.)
+const NoteActions: React.FC = () => {
   const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(12)
+  const [likeCount, setLikeCount] = useState(42)
   
   const handleLike = () => {
-    if (!liked) {
-      setLiked(true)
-      setLikeCount(prev => prev + 1)
-    }
+    setLiked(!liked)
+    setLikeCount(prev => liked ? prev - 1 : prev + 1)
   }
   
-  const handleShare = () => {
+  const handleShare = async () => {
     if (navigator.share) {
-      navigator.share({
-        title: 'Demo Note - Standalone Version',
+      await navigator.share({
+        title: 'Check out this note!',
         text: 'Check out this demo note!',
         url: window.location.href,
       })
@@ -1136,7 +743,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               </div>
 
               <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

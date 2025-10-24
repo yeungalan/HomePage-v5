@@ -246,19 +246,17 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
           ],
         ]}
         components={{
-          h1({ node, ...props }) {
-            h1CountRef.current++;
-            // Skip the first h1 as it's already displayed in the title
-            if (h1CountRef.current === 1) {
-              return null;
-            }
-            const text = String(props.children);
+          h1: ({ node, children, ...props }) => {
+            h1CountRef.current += 1;
+            const shouldHide = h1CountRef.current === 1;
+            
             return (
-              <h1
+              <h1 
                 {...props}
-                id={text.toLowerCase().replace(/\s+/g, "-")}
-                data-markdown-heading="true"
-              />
+                style={shouldHide ? { display: 'none' } : undefined}
+              >
+                {children}
+              </h1>
             );
           },
           h2({ node, ...props }) {
@@ -281,31 +279,33 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
               />
             );
           },
-          code({ inline, className, children, ...props }) {
+          code: ({ node, inline, className, children, ...props }: any) => {
             const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
-              <SyntaxHighlighter
-                style={
-                  typeof window !== "undefined" &&
-                  window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? oneDark
-                    : oneLight
-                }
-                language={match[1]}
-                PreTag="div"
-                {...props}
-              >
-                {String(children).replace(/\n$/, "")}
-              </SyntaxHighlighter>
+              <div className="relative max-w-full overflow-x-auto">
+                <SyntaxHighlighter
+                  style={oneDark}
+                  language={match[1]}
+                  PreTag="div"
+                  className="max-w-full !bg-gray-900 !my-4"
+                  wrapLines={true}
+                  wrapLongLines={true}
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </div>
             ) : (
-              <code
-                className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
-                {...props}
-              >
+              <code className={`${className} break-words max-w-full`} {...props}>
                 {children}
               </code>
             );
           },
+          pre: ({ children }: any) => (
+            <pre className="max-w-full overflow-x-auto my-4">
+              {children}
+            </pre>
+          ),
           ul({ node, ...props }) {
             return (
               <ul

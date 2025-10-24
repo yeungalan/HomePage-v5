@@ -1,6 +1,7 @@
 import { clsxm } from '@/lib/helper'
 import { FunctionComponent, ReactNode, SVGProps } from 'react'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import Link from 'next/link'
 
 type Component<P = {}> = FunctionComponent<{
   className?: string
@@ -97,14 +98,15 @@ const StyledLink = (
   const { external, children, ...rest } = props
 
   return (
-    <a
+    <Link
+      href={rest.href ?? "#"}
       className="link-hover link"
-      target={external ? '_blank' : props.target}
-      rel={external ? 'noopener noreferrer' : undefined}
+      target={external ? "_blank" : rest.target}
+      rel={external ? "noopener noreferrer" : undefined}
       {...rest}
     >
       {children}
-    </a>
+    </Link>
   )
 }
 
@@ -130,21 +132,13 @@ const FooterBottom = () => {
     <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
       <div>
         <span>© {date.replace('{{now}}', currentYear)} </span>
-        <a href="/">Alan Yeung & alanyeung.co and its affiliates</a>
+        <span>Alan Yeung & alanyeung.co and its affiliates</span>
         <span>.</span>
         <span>
-          <Divider />
-          <a href="/feed" target="_blank" rel="noreferrer">
-            RSS
-          </a>
-          <Divider />
-          <a href="/sitemap.xml" target="_blank" rel="noreferrer">
-            Sitemap
-          </a>
           <Divider className="inline" />
         </span>
         <span className="mt-3 block md:mt-0 md:inline">
-          R. 2025 Oct 21 Release Candiate
+          Rev. 2025 Oct 23 Release Candiate
         </span>
       </div>
       <div>

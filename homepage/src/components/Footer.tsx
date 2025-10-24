@@ -4,6 +4,7 @@ import { createElement } from "react"
 import { IcTwotoneSignpost, FaSolidFeatherAlt, FaSolidHistory, FaSolidUserFriends, MdiLightbulbOn20, MdiFlask, FaSolidComments, RMixPlanet } from "./icons/menu-collection"
 import { StyledButton } from "./StyledButton"
 import { NumberSmoothTransition } from "./NumberSmoothTransition"
+import Link from "next/link"
 
 const windsock = [
   {
@@ -61,13 +62,13 @@ export const Footer = () => {
                 key={index}
                 className="flex items-center justify-between text-sm"
               >
-                <a
+                <Link
                   href={item.path}
                   className="flex items-center gap-4 text-neutral-800 duration-200 hover:!text-[#33A6B8] dark:text-neutral-200"
                 >
                   {createElement(item.icon, { className: 'w-6 h-6' })}
                   <span>{item.title}</span>
-                </a>
+                </Link>
 
                 {index != windsock.length - 1 && (
                   <span className="mx-4 hidden select-none lg:inline"> · </span>

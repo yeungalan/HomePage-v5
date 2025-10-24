@@ -212,12 +212,16 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
       className="
         dark:text-white
         dark:bg-black
-        prose prose-neutral dark:prose-invert max-w-none
+        prose prose-neutral dark:prose-invert
         prose-h1:mt-8 prose-h1:mb-4 prose-h1:font-semibold prose-h1:text-3xl
         prose-h2:mt-8 prose-h2:mb-4 prose-h2:font-semibold prose-h2:text-2xl
         prose-h3:mt-8 prose-h3:mb-4 prose-h3:font-semibold prose-h3:text-xl
-        prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
-        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+        prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:break-words
+        prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:max-w-full
+        max-w-full
+        [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:break-words
+        [&_pre_code]:break-words [&_pre_code]:whitespace-pre-wrap [&_pre_code]:word-break-break-all
+        [&_code]:break-words [&_code]:max-w-full 
       "
     >
       <ReactMarkdown
@@ -553,8 +557,8 @@ const TocItem: React.FC<{
 
 const PaperWithMainContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="relative w-full">
-      <div className="rounded-lg bg-white p-8 shadow-sm dark:bg-black">
+    <div className="relative min-w-0">
+      <div className="bg-white dark:bg-zinc-900 shadow-sm rounded-lg px-6 py-8 md:px-12 md:py-12">
         {children}
       </div>
     </div>
@@ -1136,7 +1140,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               </div>
 
               <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

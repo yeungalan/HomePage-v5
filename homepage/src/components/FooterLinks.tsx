@@ -14,7 +14,7 @@ const footerConfig = {
     {
       name: 'About',
       links: [
-        { name: 'This site', href: '/about', external: false },
+        { name: 'This site', href: '/posts/aboutme', external: false },
         { name: 'Status mointor', href: 'https://stats.uptimerobot.com/JKvyVhBqBO', external: true },
       ],
     },

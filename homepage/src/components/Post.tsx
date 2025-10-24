@@ -212,7 +212,7 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
     <div
       className="
         dark:text-white
-        dark:bg-black
+        dark:bg-zinc-900
         prose prose-neutral dark:prose-invert
         prose-h1:mt-8 prose-h1:mb-4 prose-h1:font-semibold prose-h1:text-3xl
         prose-h2:mt-8 prose-h2:mb-4 prose-h2:font-semibold prose-h2:text-2xl
@@ -253,14 +253,15 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
         components={{
           h1: ({ node, children, ...props }) => {
             h1CountRef.current += 1;
-            const shouldHide = h1CountRef.current === 1;
-            
+            const shouldHide = h1CountRef.current <= 2;
+            console.log(shouldHide + " " + children);
             return (
               <h1 
                 {...props}
                 style={shouldHide ? { display: 'none' } : undefined}
+                data-markdown-heading="true"
               >
-                {children}
+                {children} 
               </h1>
             );
           },
@@ -292,7 +293,7 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
                   style={oneDark}
                   language={match[1]}
                   PreTag="div"
-                  className="max-w-full !bg-gray-900 !my-4"
+                  className="max-w-full !my-4"
                   wrapLines={true}
                   wrapLongLines={true}
                   {...props}
@@ -1154,7 +1155,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               </div>
 
               <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#101828] [&_pre]:text-white [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#282c34] [&_pre]:text-white [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

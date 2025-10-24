@@ -11,6 +11,7 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeRaw from "rehype-raw";
 import { FullPageLoading } from './Loading';
+import { Avatar } from './Avatar';
 
 // Mock data types (extracted from @mx-space/api-client)
 interface NoteModel {
@@ -981,11 +982,16 @@ const AuthorIntroduction: React.FC = () => {
         {/* Author/Category Image */}
         <div className="flex-shrink-0">
           {category?.avatar ? (
-            <img 
-              src={category.avatar} 
-              alt={category.name}
-              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
-            />
+              <Avatar
+                color={""}
+                imageUrl={category.avatar}
+                lazy
+                radius={8}
+                text={category.name}
+                alt={`Avatar of ${category.name}`}
+                size={64}
+                className="ring-2 ring-gray-400/30 dark:ring-zinc-50"
+              />
           ) : (
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
               {/* Placeholder avatar */}

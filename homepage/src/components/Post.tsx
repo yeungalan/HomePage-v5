@@ -199,6 +199,13 @@ const FloatPopover: React.FC<{
 // Simple markdown renderer with heading IDs
 
 const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
+  const h1CountRef = useRef(0);
+
+  useEffect(() => {
+    // Reset counter when content changes
+    h1CountRef.current = 0;
+  }, [content]);
+
   return (
     <div
       className="
@@ -238,9 +245,12 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
         ]}
         components={{
           h1({ node, ...props }) {
+            h1CountRef.current++;
+            // Skip the first h1 as it's already displayed in the title
+            if (h1CountRef.current === 1) {
+              return null;
+            }
             const text = String(props.children);
-            // skip first h1
-            if (text === content.match(/^<Post\s+(.+)$/m)?.[1]) return null;
             return (
               <h1
                 {...props}
@@ -292,6 +302,42 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
               >
                 {children}
               </code>
+            );
+          },
+          ul({ node, ...props }) {
+            return (
+              <ul
+                className="list-disc pl-8 my-4 space-y-2"
+                {...props}
+              />
+            );
+          },
+          ol({ node, ...props }) {
+            return (
+              <ol
+                className="list-decimal pl-8 my-4 space-y-2"
+                {...props}
+              />
+            );
+          },
+          li({ node, ...props }) {
+            return (
+              <li
+                className="mb-2"
+                {...props}
+              />
+            );
+          },
+          iframe({ node, ...props }) {
+            // Handle iframe elements
+            return (
+              <div className="relative w-full my-4" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  {...props}
+                  allowFullScreen
+                />
+              </div>
             );
           },
         }}

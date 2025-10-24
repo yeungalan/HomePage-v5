@@ -1125,9 +1125,12 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             'md:mt-24'
           )}>
             {/* Left Sidebar */}
-            <div key={`left-${contentKey}`} className="relative hidden min-w-0 xl:block">
-              <NoteLeftSidebar />
-            </div>
+          <div
+            key={`left-${contentKey}`}
+            className="relative hidden min-w-0 xl:flex xl:flex-col xl:w-60"
+          >
+            <NoteLeftSidebar />
+          </div>
 
             {/* Main Content */}
             <PaperWithMainContainer>
@@ -1164,9 +1167,9 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             </PaperWithMainContainer>
 
             {/* Right Sidebar */}
-            <div key={`right-${contentKey}`} className="relative hidden min-w-0 xl:block size-fit">
-              <NoteRightSidebar />
-            </div>
+<div className="relative min-w-0 hidden xl:flex xl:flex-col xl:w-60">
+  <NoteRightSidebar />
+</div>
           </div>
         </CurrentNoteDataContext.Provider>
       </CurrentNoteNidContext.Provider>

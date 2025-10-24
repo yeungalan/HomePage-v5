@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standalone Notes Demo</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/clsx@2.0.0/dist/clsx.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.10/locale/zh-cn.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .prose {
+            color: #374151;
+            max-width: none;
+        }
+        .prose h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 2rem;
+        }
+        .prose h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 2.25rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .prose h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose p {
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.75;
+        }
+        .prose ul {
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            padding-left: 1.625rem;
+        }
+        .prose li {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .prose strong {
+            font-weight: 600;
+        }
+        .prose em {
+            font-style: italic;
+        }
+        .prose code {
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        .prose pre {
+            background-color: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .prose pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, createContext, useContext, useRef } = React;
+
+        // Mock data types
+        const mockNoteData = {
+          data: {
+            id: '1',
+            nid: 'demo-note',
+            title: 'Demo Note - Standalone Version',
+            text: `# Welcome to the Standalone Notes Demo
+
+This is a demonstration of the extracted notes functionality without backend dependencies.
+
+## Features Included
+
+- **Note Layout**: Responsive grid layout with sidebar
+- **Note Display**: Title, date, and content rendering
+- **Markdown Support**: Basic markdown rendering
+- **Meta Information**: Creation and modification dates
+- **Responsive Design**: Mobile and desktop layouts
+
+## Sample Content
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+The relevant section of Cicero as printed in the source is reproduced below with fragments used in Lorem ipsum highlighted. Letters in brackets were added to Lorem ipsum and were not present in the source text:
+
+[32] Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? [D]Quis autem vel eum i[r]ure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?
+
+[33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem reru[d]um facilis est e[r]t expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellend[a]us. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+
+What follows is H. Rackham's translation, as printed in the 1914 Loeb edition, with words at least partially represented in Lorem ipsum highlighted:[7]
+
+[32] But I must explain to you how all this mistaken idea of reprobating pleasure and extolling pain arose. To do so, I will give you a complete account of the system and expound the teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter extremely painful consequences. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?
+
+[33] On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammeled and nothing prevents us from being what we like best, every pleasure is welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures must be repudiated and annoyances accepted. The wise man, therefore, always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.
+
+### Code Example
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello from standalone notes!");
+}
+\`\`\`
+
+### List Example
+
+- Item 1
+- Item 2
+- Item 3
+
+This demonstrates the core functionality of the notes system without requiring a backend connection.`,
+            created: new Date().toISOString(),
+            modified: new Date().toISOString(),
+            hide: false,
+            allowComment: true,
+            meta: {
+              cover: undefined
+            },
+            images: [],
+            topic: {
+              name: 'Demo Topic'
+            }
+          }
+        };
+
+        // Context for note data
+        const CurrentNoteDataContext = createContext(null);
+        const CurrentNoteNidContext = createContext(null);
+
+        // Custom hooks
+        const useCurrentNoteDataSelector = (selector) => {
+          const data = useContext(CurrentNoteDataContext);
+          return selector(data);
+        };
+
+        const useCurrentNoteNid = () => {
+          return useContext(CurrentNoteNidContext);
+        };
+
+        // Utility functions
+        const parseDate = (date, format) => {
+          return dayjs(date).format(format);
+        };
+
+        // Clock icon component
+        const MdiClockOutline = () => (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z" />
+          </svg>
+        );
+
+        // Simple tooltip component
+        const FloatPopover = ({ children, TriggerComponent }) => {
+          const [isVisible, setIsVisible] = useState(false);
+          
+          return (
+            <div className="relative inline-block">
+              <div
+                onMouseEnter={() => setIsVisible(true)}
+                onMouseLeave={() => setIsVisible(false)}
+              >
+                <TriggerComponent />
+              </div>
+              {isVisible && (
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded whitespace-nowrap z-10">
+                  {children}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Simple markdown renderer with heading IDs
+        const SimpleMarkdown = ({ content }) => {
+          const renderMarkdown = (text) => {
+            let html = text;
+            let headingCounter = 0;
+            
+            // Headers with IDs for TOC
+            html = html.replace(/^### (.*$)/gim, (match, title) => {
+              const id = `heading-${++headingCounter}`;
+              return `<h3 id="${id}" data-markdown-heading="true">${title}</h3>`;
+            });
+            html = html.replace(/^## (.*$)/gim, (match, title) => {
+              const id = `heading-${++headingCounter}`;
+              return `<h2 id="${id}" data-markdown-heading="true">${title}</h2>`;
+            });
+            html = html.replace(/^# (.*$)/gim, (match, title) => {
+              const id = `heading-${++headingCounter}`;
+              return `<h1 id="${id}" data-markdown-heading="true">${title}</h1>`;
+            });
+            
+            // Bold
+            html = html.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
+            // Italic
+            html = html.replace(/\*(.*)\*/gim, '<em>$1</em>');
+            // Code blocks
+            html = html.replace(/```(\w+)?\n([\s\S]*?)```/gim, '<pre><code>$2</code></pre>');
+            // Inline code
+            html = html.replace(/`([^`]+)`/gim, '<code>$1</code>');
+            // Lists
+            html = html.replace(/^\- (.*$)/gim, '<li>$1</li>');
+            // Paragraphs
+            html = html.replace(/\n\n/gim, '</p><p>');
+            
+            // Wrap in paragraph tags
+            html = '<p>' + html + '</p>';
+            // Fix list items
+            html = html.replace(/(<li>.*<\/li>)/gims, '<ul>$1</ul>');
+            
+            return html;
+          };
+
+          return (
+            <div 
+              className="prose max-w-none"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+            />
+          );
+        };
+
+        // Note components
+        const NoteDateMeta = () => {
+          const created = useCurrentNoteDataSelector((data) => data?.data.created);
+
+          if (!created) return null;
+          const dateFormat = dayjs(created).format('YYYY 年 M 月 D 日 dddd');
+
+          return (
+            <span className="inline-flex items-center space-x-1">
+              <MdiClockOutline />
+              <time className="font-medium" suppressHydrationWarning>
+                {dateFormat}
+              </time>
+            </span>
+          );
+        };
+
+        const NoteHeaderDate = () => {
+          const date = useCurrentNoteDataSelector((data) => ({
+            created: data?.data.created,
+            modified: data?.data.modified,
+          }));
+          
+          if (!date?.created) return null;
+
+          const tips = `创建于 ${parseDate(date.created, 'YYYY 年 M 月 D 日 dddd')}${
+            date.modified
+              ? `，修改于 ${parseDate(date.modified, 'YYYY 年 M 月 D 日 dddd')}`
+              : ''
+          }`;
+
+          return (
+            <FloatPopover TriggerComponent={NoteDateMeta}>
+              {tips}
+            </FloatPopover>
+          );
+        };
+
+        const NoteTitle = () => {
+          const title = useCurrentNoteDataSelector((data) => data?.data.title);
+
+          if (!title) return null;
+          return (
+            <div className="relative">
+              <h1 className="my-8 text-balance text-left text-4xl font-bold leading-tight text-gray-900">
+                {title}
+              </h1>
+            </div>
+          );
+        };
+
+        const NoteMarkdown = () => {
+          const text = useCurrentNoteDataSelector((data) => data?.data.text);
+          return (
+            <div className="mt-10">
+              <SimpleMarkdown content={text} />
+            </div>
+          );
+        };
+
+        const NoteMetaBar = () => {
+          const topic = useCurrentNoteDataSelector((data) => data?.data.topic);
+          
+          return (
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              {topic && (
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  {topic.name}
+                </span>
+              )}
+            </div>
+          );
+        };
+
+        const NoteBanner = ({ type, message }) => {
+          const bgColor = type === 'warning' ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'bg-blue-100 border-blue-400 text-blue-800';
+          
+          return (
+            <div className={`border-l-4 p-4 mb-4 ${bgColor}`}>
+              <p>{message}</p>
+            </div>
+          );
+        };
+
+        const NoteLeftSidebar = () => {
+          const topic = useCurrentNoteDataSelector((data) => data?.data.topic);
+          const created = useCurrentNoteDataSelector((data) => data?.data.created);
+          
+          return (
+            <div className="sticky top-[120px] mt-[120px] min-h-[300px] hidden xl:block">
+              <div className="space-y-4">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Topic</h3>
+                  {topic ? (
+                    <span className="text-sm text-gray-600">{topic.name}</span>
+                  ) : (
+                    <span className="text-sm text-gray-400">No topic</span>
+                  )}
+                </div>
+                
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Timeline</h3>
+                  {created && (
+                    <div className="text-sm text-gray-600">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span>{dayjs(created).format('YYYY-MM-DD')}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        const Paper = ({ children, className }) => {
+          return (
+            <div className={clsx('bg-white rounded-lg shadow-sm border', className)}>
+              {children}
+            </div>
+          );
+        };
+
+        const NoteMainContainer = ({ children }) => {
+          return (
+            <main className="min-w-0 p-6">
+              {children}
+            </main>
+          );
+        };
+
+        const PaperWithMainContainer = ({ children }) => {
+          return (
+            <Paper>
+              <NoteMainContainer>
+                {children}
+              </NoteMainContainer>
+            </Paper>
+          );
+        };
+
+        // TOC Components
+        const TocItem = ({ item, isActive, rootDepth, onClick }) => {
+          const renderDepth = item.depth - rootDepth;
+          
+          return (
+            <a
+              href={`#${item.anchorId}`}
+              className={clsx(
+                'relative mb-[1.5px] inline-block min-w-0 max-w-full leading-normal text-gray-600',
+                'truncate text-left transition-all duration-500 hover:text-gray-800 cursor-pointer block',
+                isActive ? 'ml-2 text-gray-900 font-medium' : 'opacity-70 hover:opacity-100'
+              )}
+              style={{
+                paddingLeft: `${renderDepth * 0.6 + 0.5}rem`,
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                onClick(item.anchorId);
+              }}
+              title={item.title}
+            >
+              {isActive && (
+                <span className="absolute inset-y-[3px] left-0 w-[2px] rounded-sm bg-blue-500" />
+              )}
+              <span>{item.title}</span>
+            </a>
+          );
+        };
+
+        const TableOfContents = () => {
+          const [headings, setHeadings] = useState([]);
+          const [activeId, setActiveId] = useState(null);
+          
+          useEffect(() => {
+            // Find all headings with data-markdown-heading attribute
+            const headingElements = document.querySelectorAll('h1[data-markdown-heading], h2[data-markdown-heading], h3[data-markdown-heading], h4[data-markdown-heading], h5[data-markdown-heading], h6[data-markdown-heading]');
+            
+            const tocItems = Array.from(headingElements).map((el, idx) => {
+              const depth = parseInt(el.tagName.slice(1));
+              const title = el.textContent || '';
+              const anchorId = el.id;
+              
+              return {
+                depth,
+                title,
+                anchorId,
+                index: idx
+              };
+            });
+            
+            setHeadings(tocItems);
+            
+            // Set up intersection observer for active heading
+            const observer = new IntersectionObserver(
+              (entries) => {
+                // Find the entry that's most visible
+                let mostVisible = null;
+                let maxRatio = 0;
+                
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                    maxRatio = entry.intersectionRatio;
+                    mostVisible = entry;
+                  }
+                });
+                
+                if (mostVisible) {
+                  setActiveId(mostVisible.target.id);
+                }
+              },
+              { 
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: [0, 0.25, 0.5, 0.75, 1]
+              }
+            );
+            
+            headingElements.forEach((heading) => {
+              observer.observe(heading);
+            });
+            
+            // Also set up a scroll listener as backup
+            const handleScroll = () => {
+              const headingElements = document.querySelectorAll('h1[data-markdown-heading], h2[data-markdown-heading], h3[data-markdown-heading], h4[data-markdown-heading], h5[data-markdown-heading], h6[data-markdown-heading]');
+              const scrollPosition = window.scrollY + 200;
+              
+              let currentActiveId = null;
+              
+              headingElements.forEach((heading) => {
+                const rect = heading.getBoundingClientRect();
+                const elementTop = rect.top + window.scrollY;
+                
+                if (elementTop <= scrollPosition) {
+                  currentActiveId = heading.id;
+                }
+              });
+              
+              if (currentActiveId && currentActiveId !== activeId) {
+                setActiveId(currentActiveId);
+              }
+            };
+            
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Set initial active heading
+            
+            return () => {
+              observer.disconnect();
+              window.removeEventListener('scroll', handleScroll);
+            };
+          }, [activeId]);
+          
+          const rootDepth = headings.length > 0 
+            ? headings.reduce((min, item) => Math.min(min, item.depth), headings[0]?.depth || 1)
+            : 1;
+          
+          const scrollToHeading = (anchorId) => {
+            const element = document.getElementById(anchorId);
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              setActiveId(anchorId);
+            }
+          };
+          
+          if (headings.length === 0) return null;
+          
+          return (
+            <div className="space-y-1">
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Table of Contents</h3>
+              <div className="max-h-[60vh] overflow-y-auto">
+                {headings.map((heading) => (
+                  <TocItem
+                    key={`${heading.anchorId}-${heading.index}`}
+                    item={heading}
+                    isActive={heading.anchorId === activeId}
+                    rootDepth={rootDepth}
+                    onClick={scrollToHeading}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        };
+
+        // Action buttons for right sidebar
+        const ActionButton = ({ icon, label, onClick, count }) => {
+          return (
+            <button
+              className="relative flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-gray-100 transition-colors group"
+              onClick={onClick}
+              title={label}
+            >
+              <div className="text-xl">{icon}</div>
+              {count !== undefined && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </button>
+          );
+        };
+
+        const NoteActionButtons = () => {
+          const [liked, setLiked] = useState(false);
+          const [likeCount, setLikeCount] = useState(12);
+          
+          const handleLike = () => {
+            if (!liked) {
+              setLiked(true);
+              setLikeCount(prev => prev + 1);
+            }
+          };
+          
+          const handleShare = () => {
+            if (navigator.share) {
+              navigator.share({
+                title: 'Demo Note - Standalone Version',
+                text: 'Check out this demo note!',
+                url: window.location.href,
+              });
+            } else {
+              // Fallback: copy to clipboard
+              navigator.clipboard.writeText(window.location.href);
+              alert('Link copied to clipboard!');
+            }
+          };
+          
+          const handleComment = () => {
+            alert('Comments feature would be here!');
+          };
+          
+          const handleSubscribe = () => {
+            alert('Subscribe feature would be here!');
+          };
+          
+          return (
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Actions</h3>
+              <div className="flex flex-col space-y-2">
+                <ActionButton
+                  icon={liked ? "❤️" : "🤍"}
+                  label="Like"
+                  onClick={handleLike}
+                  count={likeCount}
+                />
+                <ActionButton
+                  icon="📤"
+                  label="Share"
+                  onClick={handleShare}
+                />
+                <ActionButton
+                  icon="💬"
+                  label="Comments"
+                  onClick={handleComment}
+                />
+                <ActionButton
+                  icon="🔔"
+                  label="Subscribe"
+                  onClick={handleSubscribe}
+                />
+              </div>
+            </div>
+          );
+        };
+
+        const NoteRightSidebar = () => {
+          return (
+            <div className="sticky top-[120px] mt-[120px] min-h-[300px] hidden xl:block">
+              <div className="ml-4 space-y-8">
+                <TableOfContents />
+                <div className="border-t pt-6">
+                  <NoteActionButtons />
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        // Main component
+        const StandaloneNotesDemo = () => {
+          const [currentNote] = useState(mockNoteData);
+          const [currentNid] = useState(mockNoteData.data.nid);
+
+          return (
+            <div className="min-h-screen bg-gray-50">
+              <CurrentNoteNidContext.Provider value={currentNid}>
+                <CurrentNoteDataContext.Provider value={currentNote}>
+                  {/* Layout */}
+                  <div className={clsx(
+                    'relative mx-auto grid min-h-[calc(100vh-6.5rem-10rem)] max-w-[60rem]',
+                    'gap-4 md:grid-cols-1 xl:max-w-[calc(60rem+400px)] xl:grid-cols-[1fr_minmax(auto,60rem)_1fr]',
+                    'mt-12',
+                    'md:mt-24'
+                  )}>
+                    {/* Left Sidebar */}
+                    <div className="relative hidden min-w-0 xl:block">
+                      <NoteLeftSidebar />
+                    </div>
+
+                    {/* Main Content */}
+                    <PaperWithMainContainer>
+                      <div>
+                        <NoteTitle />
+                        <span className="flex flex-wrap items-center text-sm text-gray-600">
+                          <NoteHeaderDate />
+                          <div className="ml-4">
+                            <NoteMetaBar />
+                          </div>
+                        </span>
+
+                        {currentNote.data.hide && (
+                          <NoteBanner type="warning" message="这篇文章是非公开的，仅登录可见" />
+                        )}
+                      </div>
+
+                      <div className="mt-8">
+                        <article className="prose max-w-none">
+                          <header className="sr-only">
+                            <NoteTitle />
+                          </header>
+                          <NoteMarkdown />
+                        </article>
+                      </div>
+                    </PaperWithMainContainer>
+
+                    {/* Right Sidebar */}
+                    <div className="relative hidden min-w-0 xl:block">
+                      <NoteRightSidebar />
+                    </div>
+                  </div>
+                </CurrentNoteDataContext.Provider>
+              </CurrentNoteNidContext.Provider>
+            </div>
+          );
+        };
+
+        // Render the app
+        ReactDOM.render(<StandaloneNotesDemo />, document.getElementById('root'));
+    </script>
+</body>
+</html>

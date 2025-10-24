@@ -535,22 +535,22 @@ const TocItem: React.FC<{
   itemIndex: number
   setRef: (el: HTMLButtonElement | null) => void
 }> = ({ item, isActive, rootDepth, onClick, itemIndex, setRef }) => {
-  const baseIndent = (item.depth - rootDepth) * 0.5
+  const baseIndent = (item.depth - rootDepth + (isActive ? 1 : 0)) * 0.5
   
   return (
     <button
       ref={setRef}
       onClick={() => onClick(item.anchorId)}
       className={clsx(
-        'relative block w-full text-left text-xs py-1 px-2 rounded transition-colors duration-200',
+        'relative block w-full text-left text-xs py-1 px-2 rounded transition-all duration-500',
         isActive
           ? 'text-blue-600 font-medium dark:text-white'
-          : 'text-gray-600 hover:text-gray-900 dark:hover:text-gray-400 dark:text-white'
+          : 'text-gray-600 hover:text-gray-900 hover:opacity-100 dark:hover:text-gray-400 dark:text-white'
       )}
       style={{ paddingLeft: `${baseIndent + 0.5}rem` }}
       title={item.title}
     >
-      <span className="block truncate leading-tight">{item.title}</span>
+<span className="block truncate leading-normal">{item.title}</span>
     </button>
   )
 }
@@ -1158,7 +1158,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
             </PaperWithMainContainer>
 
             {/* Right Sidebar */}
-            <div key={`right-${contentKey}`} className="relative hidden min-w-0 xl:block">
+            <div key={`right-${contentKey}`} className="relative hidden min-w-0 xl:block size-fit">
               <NoteRightSidebar />
             </div>
           </div>

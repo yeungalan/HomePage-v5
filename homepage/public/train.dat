@@ -1,0 +1,306 @@
+[
+        {
+        "coords": [
+            [
+                22.5749333,120.3445795
+            ],
+            [
+                24.2197483,120.6262319
+            ]
+        ],
+        "properties": {
+            "name": "Taichung↔Kaohsiung",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+        {
+        "coords": [
+            [
+                24.2197483,120.6262319
+            ],
+            [
+                24.7884725,120.9178546
+            ]
+        ],
+        "properties": {
+            "name": "Taichung↔Hsinchu",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+        {
+        "coords": [
+            [
+                24.7884725,120.9178546
+            ],
+            [
+                25.0853247,121.4056109
+            ]
+        ],
+        "properties": {
+            "name": "HsinChu↔Taipei",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+        {
+        "coords": [
+            [
+                22.5749333,120.3445795
+            ],
+            [
+                22.338846,120.360965
+            ]
+        ],
+        "properties": {
+            "name": "Kaohsiung↔Liuqiu",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                22.313969,113.9187348
+            ],
+            [
+                22.5550763,113.8890707
+            ]
+        ],
+        "properties": {
+            "name": "HongKong↔Shenzhen",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                22.313969,113.9187348
+            ],
+            [
+                22.1618268,113.5289531
+            ]
+        ],
+        "properties": {
+            "name": "HongKong↔Macau",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                22.313969,113.9187348
+            ],
+            [
+                23.1252552,112.8982012
+            ]
+        ],
+        "properties": {
+            "name": "HongKong↔Guangzhou",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                22.313969,113.9187348
+            ],
+            [
+                22.3107968,112.1962518
+            ]
+        ],
+        "properties": {
+            "name": "HongKong↔Kaiping",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                31.143400192260742,121.80500030517578
+            ],
+            [
+                30.2610212,119.86007
+            ]
+        ],
+        "properties": {
+            "name": "Shanghai↔Hangzhou",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                33.5922645,130.4353742
+            ],
+            [
+                32.8199534,130.5354289
+            ]
+        ],
+        "properties": {
+            "name": "Fukuoka↔Kumamoto",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                32.7584943,129.6025689
+            ],
+            [
+                32.8199534,130.5354289
+            ]
+        ],
+        "properties": {
+            "name": "Fukuoka↔Kumamoto",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                34.4426693,135.233234
+            ],
+            [
+                34.4141383,132.8614937
+            ]
+        ],
+        "properties": {
+            "name": "Osaka↔Onomichi",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                34.4141383,132.8614937
+            ],
+            [
+                34.4558274,132.2724965
+            ]
+        ],
+        "properties": {
+            "name": "Hiroshima↔Hiroshima",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+    {
+        "coords": [
+            [
+                35.6678417,139.4290527
+            ],
+            [
+                37.8004704,140.2355477
+            ]
+        ],
+        "properties": {
+            "name": "Tokyo↔Fukushima",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+        {
+        "coords": [
+            [
+                34.4426693,135.233234
+            ],
+            [
+                35.097797,135.4070539
+            ]
+        ],
+        "properties": {
+            "name": "Osaka↔Kyoto",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    },
+        {
+        "coords": [
+            [
+                35.6678417,139.4290527
+            ],
+            [
+                35.097797,135.4070539
+            ]
+        ],
+        "properties": {
+            "name": "Kyoto↔Tokyo",
+            "color": "#ffffffff",
+            "feature_id": "1",
+            "coordinates": [
+                120.50661472537635,
+                21.13202484164439
+            ]
+        }
+    }
+]

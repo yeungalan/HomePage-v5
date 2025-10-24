@@ -112,6 +112,7 @@ export default function WorldMap() {
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isAnimating, setIsAnimating] = useState(true);
+  const [altitude, setAltitude] = useState(0);
 
   // Animate time based on mode
   useEffect(() => {
@@ -210,7 +211,8 @@ export default function WorldMap() {
       }
       
       globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
-      
+      //globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 1);
+
       // Enable rotation after animation completes
       setTimeout(() => {
         setIsAnimating(false);
@@ -218,6 +220,7 @@ export default function WorldMap() {
           globeEl.current.controls().enableRotate = true;
         }
       }, 6000);
+      //}, 1);
     }
   }, [globeMaterial]);
 
@@ -289,6 +292,9 @@ export default function WorldMap() {
       // Enforce altitude limits
       if (globeEl.current && altitude !== undefined) {
         const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
+        //const clampedAltitude = Math.max(0.01, Math.min(40, altitude));
+        setAltitude(clampedAltitude);
+
         if (altitude !== clampedAltitude) {
           const currentPOV = globeEl.current.pointOfView();
           globeEl.current.pointOfView({
@@ -317,6 +323,26 @@ export default function WorldMap() {
     return positions[timeMode];
   };
 
+      const [cablePaths, setCablePaths] = useState([]);
+
+    useEffect(() => {
+      // from https://www.submarinecablemap.com
+      fetch('./train.dat')
+        .then(r => r.json())
+        .then(cablesGeo => {
+          /*
+          let cablePaths = [];
+          cablesGeo.features.forEach(({ geometry, properties }) => {
+            geometry.coordinates.forEach(coords => cablePaths.push({ coords, properties }));
+          });
+
+          cablePaths = cablePaths.slice(0, 10);
+          */
+          console.log(cablesGeo);
+          setCablePaths(cablesGeo);
+        });
+    }, []);
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Globe Container - Always Centered */}
@@ -337,6 +363,7 @@ export default function WorldMap() {
               globeMaterial={globeMaterial}
               backgroundImageUrl="sky.png"
               onZoom={handleZoom}
+              
               arcsData={routes}
               arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
               arcStartLat={(d) => +d.srcAirport.lat}
@@ -351,11 +378,24 @@ export default function WorldMap() {
               pointsData={airports}
               pointLabel={(d) => `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`}
               pointColor={() => "orange"}
-              pointAltitude={0}
-              pointRadius={0.5}
+              pointAltitude={0.001}
+              pointRadius={altitude > 2 ? 1 : 0.3}
+              pointsTransitionDuration={0}
               pointsMerge={false}
+              
               width={dimensions.width}
               height={dimensions.height}
+            
+                    pathsData={cablePaths}
+      pathPoints="coords"
+      pathPointLat={p => p[0]}
+      pathPointLng={p => p[1]}
+      pathColor={path => path.properties.color}
+      pathLabel={path => path.properties.name}
+      pathStroke={1.5}
+      pathDashLength={1}
+      pathDashGap={0}
+      pathTransitionDuration={0}
             />
           </motion.div>
         ) : (

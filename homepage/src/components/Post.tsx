@@ -1128,9 +1128,14 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               <div>
                 <NoteTitle />
                 <span className="flex flex-wrap items-center text-sm text-gray-600 dark:text-white">
-                  <NoteHeaderDate />
-                  <div className="ml-4">
-                    <NoteMetaBar />
+                  <div className="flex flex-col lg:flex-row items-start">
+                    <div className="flex-1">
+                    <NoteHeaderDate/>
+                    </div>
+
+                    <div className="ml-4 max-lg:mt-3">
+                      <NoteMetaBar />
+                    </div>
                   </div>
                 </span>
 
@@ -1140,7 +1145,7 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
               </div>
 
               <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#fafafa] [&_pre]:text-black [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
+                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#101828] [&_pre]:text-white [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
                   <header className="sr-only">
                     <NoteTitle />
                   </header>

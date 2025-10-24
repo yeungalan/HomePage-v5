@@ -9,6 +9,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeRaw from "rehype-raw";
 import { FullPageLoading } from './Loading';
 
 // Mock data types (extracted from @mx-space/api-client)
@@ -222,6 +223,7 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
+          rehypeRaw,
           rehypeSlug,
           [
             rehypeAutolinkHeadings,
@@ -329,13 +331,36 @@ const SimpleMarkdown: React.FC<{ content: string }> = ({ content }) => {
             );
           },
           iframe({ node, ...props }) {
-            // Handle iframe elements
+            // Handle iframe elements with support for custom attributes
+            const { height, className, src, allowtransparency, sandbox, ...otherProps } = props as any;
+            
+            // If height is specified, use it; otherwise use responsive container
+            if (height) {
+              return (
+                <div className={`w-full my-4 ${className || ''}`}>
+                  <iframe
+                    src={src}
+                    height={height}
+                    className="w-full rounded-lg"
+                    allowFullScreen
+                    allowTransparency={allowtransparency}
+                    sandbox={sandbox}
+                    {...otherProps}
+                  />
+                </div>
+              );
+            }
+            
+            // Default responsive 16:9 container
             return (
               <div className="relative w-full my-4" style={{ paddingBottom: '56.25%' }}>
                 <iframe
-                  className="absolute top-0 left-0 w-full h-full rounded-lg"
-                  {...props}
+                  src={src}
+                  className={`absolute top-0 left-0 w-full h-full rounded-lg ${className || ''}`}
                   allowFullScreen
+                  allowTransparency={allowtransparency}
+                  sandbox={sandbox}
+                  {...otherProps}
                 />
               </div>
             );

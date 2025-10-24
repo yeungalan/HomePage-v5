@@ -11,7 +11,7 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 
 # 關於我
 
-## 嗨，你好，我是 Yeung Ho Lun 👋
+## 嗨，你好，我是 Alan Yeung 👋
 
 來自 **香港**，2019 年搬到美國。很高興你造訪我的小天地！  
 如果想找我聊聊科技、旅行或潛水，也可以透過 [LinkedIn](https://www.linkedin.com/in/ho-yeung/) 聯絡我～  
@@ -20,11 +20,22 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 
 ## 職涯與工作
 
-我目前在 **AWS 的 Technology AI 團隊** 擔任軟體工程師，專注於 **身份平台（Identity Platform）**。簡單說，我的工作就是讓 AWS 裡的各個系統登入和認證變得更簡單、更一致、更順暢。我會用 **GraphQL**、**Serverless 架構** 以及 **OAuth** 來打造這個統一的身份體驗。
+我目前在 **AWS 的 Technology AI and Analytics 團隊** 擔任軟體工程師，專注於 **身份平台（Identity Platform）**。簡單說，我的工作就是讓 AWS 裡的各個系統登入和認證變得更簡單、更一致、更順暢。我會用 **GraphQL**、**Serverless 架構** 以及 **OAuth** 來打造這個統一的身份體驗。
 
 在 AWS 工作的過程中，我學到如何設計 **高效、穩定、具自動故障切換的系統**，同時支援數百萬使用者同時上線。除此之外，我也有接觸 **資訊安全**，像是 SOC2、滲透測試等，這些經驗讓我對系統安全和可靠性有更深的理解。
 
 畢業於 **華盛頓大學（University of Washington）** 2021 年，畢業後一開始擔任 **雲端工程師**，專注於安全與身份相關的系統，後來轉成 **軟體工程師**，仍然專注於安全與身份，但更多投入開發與優化身份平台。這段歷程讓我同時累積了雲端架構與程式開發的實務經驗。
+
+### 技術能力與工具
+
+在工作與專案經驗中，我熟悉使用多種技術與工具，包括：  
+
+- **雲端與自動化**: AWS、Jenkins、Docker  
+- **程式語言**: Golang、Java  
+- **行銷與內容平台**: Marketo、Adobe Experience Manager、Salesforce  
+- **系統安全與身份知識**: OAuth、SAML、各種認證策略（Authentication Strategy）、授權（Authorization）  
+
+這些工具和技術讓我能更靈活地處理不同系統整合、開發自動化流程，以及管理大規模使用者系統的需求。
 
 ---
 

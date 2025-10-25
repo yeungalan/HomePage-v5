@@ -42,21 +42,27 @@ export const relativeTimeFromNow = (
 
   const elapsed = +current - +time
 
- if (elapsed < msPerMinute) {
+  if (elapsed < msPerMinute) {
     const gap = Math.ceil(elapsed / 1000)
-    return gap <= 0 ? 'Just now' : `${gap} second(s) ago`
+    return gap <= 0 ? 'Just now' : `${gap} second${gap === 1 ? '' : 's'} ago`
   } else if (elapsed < msPerHour) {
-    return `${Math.round(elapsed / msPerMinute)} minute(s) ago`
+    const minutes = Math.round(elapsed / msPerMinute)
+    return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
   } else if (elapsed < msPerDay) {
-    return `${Math.round(elapsed / msPerHour)} hour(s) ago`
+    const hours = Math.round(elapsed / msPerHour)
+    return `${hours} hour${hours === 1 ? '' : 's'} ago`
   } else if (elapsed < msPerMonth) {
-    return `${Math.round(elapsed / msPerDay)} day(s) ago`
+    const days = Math.round(elapsed / msPerDay)
+    return `${days} day${days === 1 ? '' : 's'} ago`
   } else if (elapsed < msPerYear) {
-    return `${Math.round(elapsed / msPerMonth)} months ago`
+    const months = Math.round(elapsed / msPerMonth)
+    return `${months} month${months === 1 ? '' : 's'} ago`
   } else {
-    return `${Math.round(elapsed / msPerYear)} years ago`
+    const years = Math.round(elapsed / msPerYear)
+    return `${years} year${years === 1 ? '' : 's'} ago`
   }
 }
+
 export const dayOfYear = () => {
   const now = new Date()
   const start = new Date(now.getFullYear(), 0, 0)
@@ -81,6 +87,7 @@ export const secondOfDay = () => {
 }
 
 export const secondOfDays = 86400
+
 export function isValidDate(d: any) {
   return d instanceof Date && !Number.isNaN(+d)
 }
@@ -93,9 +100,9 @@ export function formatSeconds(seconds: number) {
   const mins = Math.floor(seconds / 60)
 
   let formatted = ''
-  if (days > 0) formatted += `${days} day(s) `
-  if (hrs > 0) formatted += `${hrs} hour(s) `
-  if (mins > 0) formatted += `${mins} minute(s)`
+  if (days > 0) formatted += `${days} day${days === 1 ? '' : 's'} `
+  if (hrs > 0) formatted += `${hrs} hour${hrs === 1 ? '' : 's'} `
+  if (mins > 0) formatted += `${mins} minute${mins === 1 ? '' : 's'}`
 
   return formatted.trim()
 }

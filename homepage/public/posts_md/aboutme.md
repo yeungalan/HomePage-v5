@@ -31,7 +31,7 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 在工作與專案經驗中，我熟悉使用多種技術與工具，包括：  
 
 - **雲端與自動化**: AWS、Jenkins、Docker  
-- **程式語言**: Golang、Java  
+- **程式語言**: Golang、Java、Typescript、Tailwind、React、Next.js
 - **行銷與內容平台**: Marketo、Adobe Experience Manager、Salesforce  
 - **系統安全與身份知識**: OAuth、SAML、各種認證策略（Authentication Strategy）、授權（Authorization）  
 

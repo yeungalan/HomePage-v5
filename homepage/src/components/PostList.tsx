@@ -55,15 +55,14 @@ export const PostsList = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-hidden">
       <AnimatePresence mode="wait">
-        {!isLoading ? (
+        {isLoading ? (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="max-h-25"
           >
             <FullPageLoading />
           </motion.div>
@@ -73,11 +72,16 @@ export const PostsList = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="w-full"
           >
             <NormalContainer>
-              <header className="mb-10">
-                <h1 className="text-4xl font-bold mb-4 dark:text-white">Posts</h1>
-                <h3 className="text-xl text-gray-600 dark:text-gray-300">Post Links</h3>
+              <header className="mb-6 sm:mb-8 md:mb-10">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 dark:text-white">
+                  Posts
+                </h1>
+                <h3 className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">
+                  Post Links
+                </h3>
               </header>
               
               <motion.ul 
@@ -88,35 +92,22 @@ export const PostsList = () => {
               >
                 {posts.map((post, index) => {
                   return (
-                    <motion.li 
-                      key={post.id} 
-                      className="flex min-w-0 justify-between"
-                      variants={item}
-                      whileHover={{ 
-                        x: 8,
-                        transition: { duration: 0.2, ease: "easeOut" } 
-                      }}
-                    >
-                      <Link
-                        prefetch
-                        className="min-w-0 shrink truncate dark:text-white transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-400"
-                        href={`/posts/${post.slug}`}
-                      >
-                        {post.title}
-                      </Link>
+                    <li key={post.id} className="flex min-w-0 justify-between">
+              <Link
+                prefetch
+                className="min-w-0 shrink truncate dark:text-white"
+                 href={`/posts/${post.slug}`}
+              >
+                {post.title}
+              </Link>
 
-                      <motion.span 
-                        className="ml-2 shrink-0 self-end text-xs opacity-70 dark:text-white"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.7 }}
-                        transition={{ delay: index * 0.08 + 0.3 }}
-                      >
-                        <RelativeTime
-                          date={post.created}
-                          displayAbsoluteTimeAfterDay={180}
-                        />
-                      </motion.span>
-                    </motion.li>
+              <span className="ml-2 shrink-0 self-end text-xs opacity-70 dark:text-white">
+                <RelativeTime
+                  date={post.created}
+                  displayAbsoluteTimeAfterDay={180}
+                />
+              </span>
+            </li>
                   )
                 })}
               </motion.ul>

@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=Getting Started with React 101
+Topic=Getting Started with React 202
 ID=react-getting-started
 CREATED_DATE=2025-01-20T10:00:00Z
 EDITED_DATE=2025-01-22T15:30:00Z
@@ -16,9 +16,6 @@ Welcome to this comprehensive guide on React! In this tutorial, we'll explore th
 ## What is React?
 
 React is a powerful JavaScript library for building user interfaces. It was developed by Facebook and has become one of the most popular tools for frontend development.
-
-
-# 303
 
 dsdasdsa
 

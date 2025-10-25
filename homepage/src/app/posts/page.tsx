@@ -1,12 +1,12 @@
 "use client"
 
 import { RealFooter } from "@/components/FooterLinks"
+import { PostsList } from "@/components/PostList"
 
 export default function Page() {
   return (
     <div>
-      1234
-      <RealFooter/>
+      <PostsList/>
     </div>
   )
 }

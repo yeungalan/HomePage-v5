@@ -6,7 +6,7 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(LocalizedFormat)
-dayjs.locale('zh-cn')
+dayjs.locale('en-US')
 
 export enum DateFormat {
   'MMM DD YYYY',
@@ -18,7 +18,7 @@ export enum DateFormat {
   'YYYY-MM-DD ddd',
   'MM-DD ddd',
 
-  'YYYY 年 M 月 D 日 dddd',
+  'YYYY / M / D dddd',
 }
 
 export const parseDate = (
@@ -93,9 +93,9 @@ export function formatSeconds(seconds: number) {
   const mins = Math.floor(seconds / 60)
 
   let formatted = ''
-  if (days > 0) formatted += `${days} 天 `
-  if (hrs > 0) formatted += `${hrs} 小时 `
-  if (mins > 0) formatted += `${mins} 分钟`
+  if (days > 0) formatted += `${days} day(s) `
+  if (hrs > 0) formatted += `${hrs} hour(s) `
+  if (mins > 0) formatted += `${mins} minute(s)`
 
   return formatted.trim()
 }

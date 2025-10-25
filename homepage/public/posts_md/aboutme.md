@@ -20,7 +20,7 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 
 ## 職涯與工作
 
-我目前在 **AWS 的 Technology AI and Analytics 團隊** 擔任軟體工程師，專注於 **身份平台（Identity Platform）**。簡單說，我的工作就是讓 AWS 裡的各個系統登入和認證變得更簡單、更一致、更順暢。我會用 **GraphQL**、**Serverless 架構** 以及 **OAuth** 來打造這個統一的身份體驗。
+我目前在 **AWS 的 Marketing - Technology AI and Analytics 團隊** 擔任軟體工程師，專注於 **身份平台（Identity Platform）**。簡單說，我的工作就是讓 AWS 裡的各個系統登入和認證變得更簡單、更一致、更順暢。我會用 **GraphQL**、**Serverless 架構** 以及 **OAuth** 來打造這個統一的身份體驗。
 
 在 AWS 工作的過程中，我學到如何設計 **高效、穩定、具自動故障切換的系統**，同時支援數百萬使用者同時上線。除此之外，我也有接觸 **資訊安全**，像是 SOC2、滲透測試等，這些經驗讓我對系統安全和可靠性有更深的理解。
 
@@ -45,7 +45,7 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 
 我也很喜歡 **拍照**。喜歡捕捉那些稍縱即逝的瞬間——日落下的海岸線、街角的日常生活、或是旅途中遇到的人和故事。我喜歡把這些畫面整理、分享給大家，讓更多人透過我的視角感受到世界的美好。對我而言，拍照不只是記錄，更是一種 **和世界對話的方式**。
 
-到目前為止，我已經走過 **歐洲、美洲和亞洲**。我的目標是 **踏遍所有大洲，體驗各地不同文化**。如果你想看我的照片，可以到 [photos.alanyeung.co](https://photos.alanyeung.co) 看看，我目前主要使用 **Sony a6700**，雖然還在學怎麼完全發揮它，但已經非常享受捕捉瞬間的過程。
+到目前為止，我已經走過 **歐洲、美洲和亞洲**。我的目標是 **踏遍所有大洲，體驗各地不同文化**。如果你想看我的照片，可以到 [photos.alanyeung.co](https://photos.alanyeung.co) 看看，我目前主要使用 **Sony α6700**，雖然還在學怎麼完全發揮它，但已經非常享受捕捉瞬間的過程。
 
 ---
 

@@ -557,10 +557,11 @@ export default function WorldMap() {
 
   const getIndicatorPosition = () => {
     const positions = {
-      stopped: 4, // 4th button position
-      paused: 36,
-      realtime: 68,
-      animated: 100,
+      //stopped: 4, // 4th button position
+      paused: 4,
+      realtime: 36,
+      animated: 68,
+      // 100
     };
     return positions[timeMode];
   };
@@ -753,6 +754,7 @@ export default function WorldMap() {
 
           {/* Button Group - 4 buttons */}
           <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
+            {/*
                         <button
               aria-label="Toggle daylight cycle"
               type="button"
@@ -764,6 +766,7 @@ export default function WorldMap() {
             >
               <Icon icon="mdi:stop" className="text-[18px]" onClick={() => handleModeChange('stopped')}/>
             </button>
+            */}
             <button
               aria-label="Pause time"
               type="button"

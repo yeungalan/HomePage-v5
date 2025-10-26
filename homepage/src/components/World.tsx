@@ -40,10 +40,10 @@ const routeParse = ([srcIata, dstIata]) => ({ srcIata, dstIata });
 // --- SHADER ---
 const dayNightShader = {
   vertexShader: `
-    varying vec3 vNormal;
+    varying vec3 vWorldPosition;
     varying vec2 vUv;
     void main() {
-      vNormal = normalize(normalMatrix * normal);
+      vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
@@ -53,8 +53,8 @@ const dayNightShader = {
     uniform sampler2D dayTexture;
     uniform sampler2D nightTexture;
     uniform vec2 sunPosition;
-    uniform vec2 globeRotation;
-    varying vec3 vNormal;
+    
+    varying vec3 vWorldPosition;
     varying vec2 vUv;
 
     float toRad(in float a) {
@@ -72,20 +72,15 @@ const dayNightShader = {
     }
 
     void main() {
-      float invLon = toRad(globeRotation.x);
-      float invLat = -toRad(globeRotation.y);
-      mat3 rotX = mat3(
-        1, 0, 0,
-        0, cos(invLat), -sin(invLat),
-        0, sin(invLat), cos(invLat)
-      );
-      mat3 rotY = mat3(
-        cos(invLon), 0, sin(invLon),
-        0, 1, 0,
-        -sin(invLon), 0, cos(invLon)
-      );
-      vec3 rotatedSunDirection = rotX * rotY * Polar2Cartesian(sunPosition);
-      float intensity = dot(normalize(vNormal), normalize(rotatedSunDirection));
+      // Calculate world-space normal from world position
+      vec3 worldNormal = normalize(vWorldPosition);
+      
+      // Get sun direction directly in world space (no rotation needed)
+      vec3 sunDirection = Polar2Cartesian(sunPosition);
+      
+      // Calculate lighting intensity
+      float intensity = dot(worldNormal, normalize(sunDirection));
+      
       vec4 dayColor = texture2D(dayTexture, vUv);
       vec4 nightColor = texture2D(nightTexture, vUv);
       float blendFactor = smoothstep(-0.1, 0.1, intensity);
@@ -416,7 +411,6 @@ export default function WorldMap() {
           dayTexture: { value: dayTexture },
           nightTexture: { value: nightTexture },
           sunPosition: { value: new Vector2() },
-          globeRotation: { value: new Vector2(0, 0) },
         },
         vertexShader: dayNightShader.vertexShader,
         fragmentShader: dayNightShader.fragmentShader,
@@ -430,14 +424,6 @@ export default function WorldMap() {
       // Disable rotation controls during animation
       globeEl.current.controls().enableRotate = false;
       
-      // Initialize globe rotation uniform immediately
-      const initialPOV = globeEl.current.pointOfView();
-      if (globeMaterial?.uniforms?.globeRotation?.value && initialPOV) {
-        globeMaterial.uniforms.globeRotation.value.set(
-          initialPOV.lng || -98.5, 
-          initialPOV.lat || 39.6
-        );
-      }
       
       globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
 
@@ -465,14 +451,6 @@ export default function WorldMap() {
         globeMaterial.uniforms.sunPosition.value.set(0, 0);
       }
 
-      const scene = globeEl.current.scene();
-      const globeMesh = scene?.children?.find((obj) => obj.type === "Mesh");
-      if (globeMesh) {
-        const rot = globeMesh.rotation;
-        const rotLng = (rot.y * 180) / Math.PI;
-        const rotLat = (rot.x * 180) / Math.PI;
-        globeMaterial.uniforms.globeRotation.value.set(rotLng, rotLat);
-      }
     };
 
     updateShader();

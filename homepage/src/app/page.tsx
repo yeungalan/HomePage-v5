@@ -107,9 +107,10 @@ const handleRefreshQuote = () => {
 
           <ul className="center mx-[60px] mt-8 flex flex-wrap gap-6 lg:mx-auto lg:mt-28 lg:justify-start lg:gap-4">
             {Object.entries({
-  twitter: "yeungbluecat123",
   github: "yeungalan",
   linkedin: "ho-yeung",
+  instagram: "ay.pixels",
+  twitter: "yeungbluecat123",
 }).map(
               ([type, id]: any, index) => {
                 console.log(type, id, index);

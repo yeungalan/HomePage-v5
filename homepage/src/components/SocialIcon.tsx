@@ -45,6 +45,12 @@ const iconSet: Record<
     '#0088cc',
     (id) => `https://linkedin.com/in/${id}`,
   ],
+  instagram: [
+    'Instagram',
+    'mingcute:instagram-line',
+    '#f00075',
+    (id) => `https://instagram.com/${id}`,
+  ],
   mail: [
     'Email',
     'mingcute:mail-line',

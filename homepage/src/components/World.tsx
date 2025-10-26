@@ -1,6 +1,6 @@
 "use client"
 import Globe from "react-globe.gl";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { csvParseRows } from "d3-dsv";
 import indexBy from "index-array-by";
 import {
@@ -206,20 +206,42 @@ export default function WorldMap() {
         const stationMap = new Map();
         
         trainData.forEach(route => {
-          route.coords.forEach(([lat, lng]) => {
+          const routeName = route.properties.name || '';
+          const coords = route.coords;
+          
+          // Map each coordinate to its corresponding city name
+          coords.forEach((coord) => {
+            // Handle both object format {lat, lng, city} and array format [lat, lng]
+            let lat, lng, cityName;
+            
+            if (Array.isArray(coord)) {
+              // Old format: [lat, lng]
+              [lat, lng] = coord;
+              // Fallback: extract from route name
+              const cities = routeName.split('↔').map(s => s.trim());
+              const index = coords.indexOf(coord);
+              cityName = index < cities.length ? cities[index] : cities[cities.length - 1];
+            } else {
+              // New format: {lat, lng, city}
+              lat = coord.lat;
+              lng = coord.lng;
+              cityName = coord.city || 'Unknown Station';
+            }
+            
             const key = `${lat},${lng}`;
+            
             if (!stationMap.has(key)) {
-              // Find the station name from the route name
-              const routeName = route.properties.name || '';
-              const stations = routeName.split('↔').map(s => s.trim());
-              
               stationMap.set(key, {
                 lat,
                 lng,
-                name: stationMap.size < stations.length ? stations[stationMap.size] : `Station ${stationMap.size + 1}`,
-                type: 'train'
+                name: cityName,
+                type: 'train',
+                routes: []
               });
             }
+            
+            // Track which routes pass through this station
+            stationMap.get(key).routes.push(routeName);
           });
         });
 
@@ -235,9 +257,9 @@ export default function WorldMap() {
       });
   }, []);
 
-  // Detect overlapping coordinates and mark them
-  useEffect(() => {
-    if (airports.length === 0 || trainStations.length === 0) return;
+  // Detect overlapping coordinates and mark them using useMemo
+  const allPoints = useMemo(() => {
+    if (airports.length === 0 && trainStations.length === 0) return [];
 
     // Create a coordinate key for comparison (rounded to avoid floating point issues)
     const coordKey = (lat, lng) => {
@@ -246,36 +268,47 @@ export default function WorldMap() {
       return `${roundedLat},${roundedLng}`;
     };
 
-    // Build a set of airport coordinates
-    const airportCoords = new Set(
-      airports.map(a => coordKey(a.lat, a.lng))
-    );
-
-    // Check each train station for overlap and mark accordingly
-    const updatedTrainStations = trainStations.map(station => {
-      const key = coordKey(station.lat, station.lng);
-      if (airportCoords.has(key)) {
-        return { ...station, type: 'overlap' };
-      }
-      return station;
+    // Build maps of coordinates
+    const airportMap = new Map();
+    airports.forEach(airport => {
+      const key = coordKey(airport.lat, airport.lng);
+      airportMap.set(key, airport);
     });
 
-    // Also mark airports that overlap with train stations
-    const trainCoords = new Set(
-      trainStations.map(s => coordKey(s.lat, s.lng))
-    );
+    const trainMap = new Map();
+    trainStations.forEach(station => {
+      const key = coordKey(station.lat, station.lng);
+      trainMap.set(key, station);
+    });
 
-    const updatedAirports = airports.map(airport => {
+    // Find overlapping coordinates
+    const overlappingKeys = new Set();
+    airportMap.forEach((airport, key) => {
+      if (trainMap.has(key)) {
+        overlappingKeys.add(key);
+      }
+    });
+
+    // Process airports with overlap marking
+    const processedAirports = airports.map(airport => {
       const key = coordKey(airport.lat, airport.lng);
-      if (trainCoords.has(key)) {
+      if (overlappingKeys.has(key)) {
         return { ...airport, type: 'overlap' };
       }
       return airport;
     });
 
-    setTrainStations(updatedTrainStations);
-    setAirports(updatedAirports);
-  }, [airports.length, trainStations.length]);
+    // Process train stations with overlap marking
+    const processedTrainStations = trainStations.map(station => {
+      const key = coordKey(station.lat, station.lng);
+      if (overlappingKeys.has(key)) {
+        return { ...station, type: 'overlap' };
+      }
+      return station;
+    });
+
+    return [...processedAirports, ...processedTrainStations];
+  }, [airports, trainStations]);
 
   // Set initial globe view and enable zoom after animation
   useEffect(() => {
@@ -292,9 +325,7 @@ export default function WorldMap() {
         );
       }
       
-      //globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 1);
-      globeEl.current.pointOfView({ lat: 22.35, lng: 114.13, altitude: 2 }, 1);
-
+      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 1);
 
       // Enable rotation after animation completes
       setTimeout(() => {
@@ -302,7 +333,7 @@ export default function WorldMap() {
         if (globeEl.current) {
           globeEl.current.controls().enableRotate = true;
         }
-      }, 1);
+      }, 6000);
     }
   }, [globeMaterial]);
 
@@ -374,7 +405,6 @@ export default function WorldMap() {
       // Enforce altitude limits
       if (globeEl.current && altitude !== undefined) {
         const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
-        //const clampedAltitude = Math.max(0, Math.min(99, altitude));
         setAltitude(clampedAltitude);
 
         if (altitude !== clampedAltitude) {
@@ -404,9 +434,6 @@ export default function WorldMap() {
     };
     return positions[timeMode];
   };
-
-  // Combine airports and train stations for pointsData
-  const allPoints = [...airports, ...trainStations];
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -446,10 +473,14 @@ export default function WorldMap() {
               pointsData={allPoints}
               pointLabel={(d) => {
                 if (d.type === 'overlap') {
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station</div>`;
+                  const stationInfo = d.routes ? `<br/><small>${d.routes.length} train route(s)</small>` : '';
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${stationInfo}</div>`;
                 }
                 if (d.type === 'train') {
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name}<br/>Train Station</div>`;
+                  const routeInfo = d.routes && d.routes.length > 0 
+                    ? `<br/><small>${d.routes.length} route(s): ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
+                    : '';
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded"><strong>${d.name}</strong><br/>Train Station${routeInfo}</div>`;
                 }
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`;
               }}
@@ -460,9 +491,9 @@ export default function WorldMap() {
               }}
               pointAltitude={0.001}
               pointRadius={(d) => {
-                const baseRadius = altitude > 1 ? 0.5 : 0.15;
+                 const baseRadius = altitude > 1 ? 0.5 : 0.15;
                 // Make overlap points slightly larger to stand out
-                return baseRadius;
+                return baseRadius
               }}
               pointsTransitionDuration={0}
               pointsMerge={false}
@@ -470,9 +501,9 @@ export default function WorldMap() {
               // Train routes as paths
               pathsData={trainPaths}
               pathPoints="coords"
-              pathPointLat={p => p[0]}
-              pathPointLng={p => p[1]}
-              pathColor={path => '#00ff88'}
+              pathPointLat={p => Array.isArray(p) ? p[0] : p.lat}
+              pathPointLng={p => Array.isArray(p) ? p[1] : p.lng}
+              pathColor={path => path.properties.color || '#00ff88'}
               pathLabel={path => path.properties.name}
               pathStroke={2}
               pathDashLength={1}

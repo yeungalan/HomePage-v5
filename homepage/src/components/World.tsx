@@ -707,7 +707,7 @@ export default function WorldMap() {
 
       {/* Time Display - Fixed to Bottom Left */}
       <motion.div 
-        className="fixed left-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        className="fixed left-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
         style={{ 
           bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
           left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
@@ -806,10 +806,10 @@ export default function WorldMap() {
 
       {/* Legend */}
       <motion.div
-        className="fixed left-4 top-4 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        className="fixed left-4 top-20 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
         style={{ 
-          top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
-          left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
+          //top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
+          //left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : -20 }}
@@ -819,7 +819,7 @@ export default function WorldMap() {
           ease: "easeOut"
         }}
       >
-        <div className="flex flex-col gap-1 pt-15">
+        <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
             <span>Airports</span>
@@ -849,10 +849,10 @@ export default function WorldMap() {
 
       {/* Zoom Level Indicator */}
       <motion.div
-        className="fixed right-4 top-4 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        className="fixed right-4 top-20 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
         style={{ 
-          top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
-          right: 'max(1rem, calc(env(safe-area-inset-right) + 1rem))'
+          //top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
+          //right: 'max(1rem, calc(env(safe-area-inset-right) + 1rem))'
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : -20 }}
@@ -862,7 +862,7 @@ export default function WorldMap() {
           ease: "easeOut"
         }}
       >
-        <div className="flex flex-col gap-2 pt-15">
+        <div className="flex flex-col gap-2">
           <div>Altitude: {altitude.toFixed(2)}</div>
           <div className="text-xs text-gray-400">
             {altitude < 1.5 ? 'Individual points' : 

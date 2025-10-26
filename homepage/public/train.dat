@@ -416,5 +416,24 @@
             "color": "#ffffffff",
             "feature_id": "1"
         }
+    },
+    {
+        "coords": [
+            {
+                "lat": 51.4706,
+                "lng": -0.461941,
+                "city": "London"
+            },
+            {
+                "lat": 51.8849983215,
+                "lng": 0.234999999404,
+                "city": "London"
+            }
+        ],
+        "properties": {
+            "name": "Los Angeles↔San Diego",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
     }
 ]

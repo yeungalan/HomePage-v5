@@ -56,6 +56,25 @@
             "feature_id": "1"
         }
     },
+        {
+        "coords": [
+            {
+                "lat": 25.069400787353516,
+                "lng": 121.552001953125,
+                "city": "Taipei"
+            },
+            {
+                "lat": 25.0777,
+                "lng": 121.233002,
+                "city": "Taipei"
+            }
+        ],
+        "properties": {
+            "name": "Taipei↔Taipei",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
     {
         "coords": [
             {
@@ -318,6 +337,44 @@
         ],
         "properties": {
             "name": "Seattle↔Vancouver",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
+                "lat": 47.449001,
+                "lng": -122.308998,
+                "city": "Seattle"
+            },
+            {
+                "lat": 47.90629959,
+                "lng": -122.2819977,
+                "city": "Everett"
+            }
+        ],
+        "properties": {
+            "name": "Seattle↔Everett",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
+                "lat": 47.449001,
+                "lng": -122.308998,
+                "city": "Seattle"
+            },
+            {
+                "lat": 45.58869934,
+                "lng": -122.5979996,
+                "city": "Portland"
+            }
+        ],
+        "properties": {
+            "name": "Seattle↔Portland",
             "color": "#ffffffff",
             "feature_id": "1"
         }

@@ -580,7 +580,7 @@ export default function WorldMap() {
                     ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train route(s)</div>`
+                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} ground route(s)</div>`
                     : '';
                   
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
@@ -599,7 +599,7 @@ export default function WorldMap() {
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
                     ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
                     : '';
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${flightInfo}${trainInfo}</div>`;
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Ground Stop${flightInfo}${trainInfo}</div>`;
                 }
                 if (d.type === 'train') {
                   const routeInfo = d.routes && d.routes.length > 0 
@@ -643,7 +643,7 @@ export default function WorldMap() {
               pathPoints="coords"
               pathPointLat={p => Array.isArray(p) ? p[0] : p.lat}
               pathPointLng={p => Array.isArray(p) ? p[1] : p.lng}
-              pathColor={path => path.properties.color || '#00ff88'}
+              pathColor={path => '#00ff88'}
               pathLabel={path => path.properties.name}
               pathStroke={2}
               pathDashLength={1}

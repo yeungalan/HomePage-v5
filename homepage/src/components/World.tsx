@@ -425,6 +425,33 @@ export default function WorldMap() {
     });
   }, []);
 
+    useEffect(() => {
+    if (globeEl.current) {
+      // Disable rotation controls during animation
+      globeEl.current.controls().enableRotate = false;
+      
+      // Initialize globe rotation uniform immediately
+      const initialPOV = globeEl.current.pointOfView();
+      if (globeMaterial?.uniforms?.globeRotation?.value && initialPOV) {
+        globeMaterial.uniforms.globeRotation.value.set(
+          initialPOV.lng || -98.5, 
+          initialPOV.lat || 39.6
+        );
+      }
+      
+      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
+
+      // Enable rotation after animation completes
+      setTimeout(() => {
+        setIsAnimating(false);
+        if (globeEl.current) {
+          globeEl.current.controls().enableRotate = true;
+        }
+      }, 6000);
+    }
+  }, [globeMaterial]);
+
+
   // Update sun position & globe rotation in shader
   useEffect(() => {
     if (!globeMaterial || !globeEl.current) return;
@@ -457,9 +484,31 @@ export default function WorldMap() {
     setTimeMode(newMode);
   };
 
-  const handleZoom = useCallback((pov) => {
-    setAltitude(pov.altitude);
-  }, []);
+  const handleZoom = useCallback(
+    ({ lng, lat, altitude }) => {
+      // Block zoom during animation
+      if (isAnimating) return;
+      
+      if (globeMaterial?.uniforms?.globeRotation?.value) {
+        globeMaterial.uniforms.globeRotation.value.set(lng, lat);
+      }
+      
+      // Enforce altitude limits
+      if (globeEl.current && altitude !== undefined) {
+        const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
+        setAltitude(clampedAltitude);
+
+        if (altitude !== clampedAltitude) {
+          const currentPOV = globeEl.current.pointOfView();
+          globeEl.current.pointOfView({
+            ...currentPOV,
+            altitude: clampedAltitude
+          }, 0);
+        }
+      }
+    },
+    [globeMaterial, isAnimating]
+  );
 
   // Combine airports and train stations, detecting overlaps
   const allPoints = useMemo(() => {

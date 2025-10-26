@@ -230,9 +230,9 @@
     {
         "coords": [
             {
-                "lat": 34.42729949951172,
-                "lng": 135.24400329589844,
-                "city": "Osaka"
+                "lat": 34.4144234,
+                "lng": 133.0085033,
+                "city": "Onomichi"
             },
             {
                 "lat": 34.4558274,
@@ -241,7 +241,7 @@
             }
         ],
         "properties": {
-            "name": "Osaka↔Hiroshima",
+            "name": "Onomichi↔Hiroshima",
             "color": "#ffffffff",
             "feature_id": "1"
         }
@@ -299,6 +299,25 @@
         ],
         "properties": {
             "name": "Tokyo↔Kyoto",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
+                "lat": 47.449001,
+                "lng": -122.308998,
+                "city": "Seattle"
+            },
+            {
+                "lat": 49.193901062,
+                "lng": -123.183998108,
+                "city": "Vancouver"
+            }
+        ],
+        "properties": {
+            "name": "Seattle↔Vancouver",
             "color": "#ffffffff",
             "feature_id": "1"
         }

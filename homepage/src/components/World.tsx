@@ -201,6 +201,22 @@ const clusterPoints = (points: any[], altitude: number) => {
         .filter((v, i, a) => a.indexOf(v) === i) // unique
         .slice(0, 5); // limit to first 5
 
+      // Aggregate flight routes from all airports in cluster
+      const allFlightRoutes = new Set();
+      airports.forEach(airport => {
+        if (airport.flightRoutes) {
+          airport.flightRoutes.forEach(route => allFlightRoutes.add(route));
+        }
+      });
+
+      // Aggregate train routes from all train stations in cluster
+      const allTrainRoutes = new Set();
+      trainStations.forEach(station => {
+        if (station.routes) {
+          station.routes.forEach(route => allTrainRoutes.add(route));
+        }
+      });
+
       clustered.push({
         lat: avgLat.toString(),
         lng: avgLng.toString(),
@@ -210,6 +226,8 @@ const clusterPoints = (points: any[], altitude: number) => {
         trainCount,
         names,
         originalPoints: cluster,
+        flightRoutes: Array.from(allFlightRoutes),
+        trainRoutes: Array.from(allTrainRoutes),
       });
     }
   });
@@ -432,7 +450,27 @@ export default function WorldMap() {
 
   // Combine airports and train stations, detecting overlaps
   const allPoints = useMemo(() => {
-    const airportPoints = airports.map(a => ({ ...a, type: 'airport' }));
+    // Build a map of flight routes for each airport IATA code
+    const flightRoutesByIata = new Map();
+    routes.forEach(route => {
+      // Add to source airport
+      if (!flightRoutesByIata.has(route.srcIata)) {
+        flightRoutesByIata.set(route.srcIata, []);
+      }
+      flightRoutesByIata.get(route.srcIata).push(route.dstIata);
+      
+      // Add to destination airport (bidirectional)
+      if (!flightRoutesByIata.has(route.dstIata)) {
+        flightRoutesByIata.set(route.dstIata, []);
+      }
+      flightRoutesByIata.get(route.dstIata).push(route.srcIata);
+    });
+    
+    const airportPoints = airports.map(a => ({ 
+      ...a, 
+      type: 'airport',
+      flightRoutes: flightRoutesByIata.get(a.iata) || []
+    }));
     const trainPoints = trainStations.map(t => ({ ...t, type: 'train' }));
     
     // Detect overlaps (same location = airport & train station)
@@ -453,7 +491,8 @@ export default function WorldMap() {
           mergedPoints.push({
             ...airport,
             type: 'overlap',
-            trainRoutes: train.routes || []
+            trainRoutes: train.routes || [],
+            flightRoutes: airport.flightRoutes || []
           });
           usedTrainIndices.add(idx);
           foundOverlap = true;
@@ -474,7 +513,7 @@ export default function WorldMap() {
 
     // Apply clustering based on altitude
     return clusterPoints(mergedPoints, altitude);
-  }, [airports, trainStations, altitude]);
+  }, [airports, trainStations, routes, altitude]);
 
   const getIndicatorPosition = () => {
     const positions = {
@@ -536,25 +575,43 @@ export default function WorldMap() {
                     typeText = `${d.trainCount} Train Station(s)`;
                   }
                   
+                  // Show routes info
+                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0 
+                    ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
+                    : '';
+                  const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
+                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train route(s)</div>`
+                    : '';
+                  
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
                     <div class="font-bold text-yellow-300">📍 ${d.clusterSize} Locations</div>
                     <div class="text-sm mt-1">${typeText}</div>
                     <div class="text-xs mt-1 text-gray-300">${locations}${moreText}</div>
+                    ${flightInfo}${trainInfo}
                   </div>`;
                 }
                 
                 // Regular point labels
                 if (d.type === 'overlap') {
-                  const stationInfo = d.trainRoutes ? `<br/><small>${d.trainRoutes.length} train route(s)</small>` : '';
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${stationInfo}</div>`;
+                  const trainInfo = d.trainRoutes && d.trainRoutes.length > 0 
+                    ? `<br/><small>🚂 ${d.trainRoutes.length} train route(s)</small>` 
+                    : '';
+                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
+                    ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
+                    : '';
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${flightInfo}${trainInfo}</div>`;
                 }
                 if (d.type === 'train') {
                   const routeInfo = d.routes && d.routes.length > 0 
-                    ? `<br/><small>${d.routes.length} route(s): ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
+                    ? `<br/><small>🚂 ${d.routes.length} route(s): ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
                     : '';
                   return `<div class="text-white bg-black/80 px-2 py-1 rounded"><strong>${d.name}</strong><br/>Train Station${routeInfo}</div>`;
                 }
-                return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`;
+                // Airport
+                const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
+                  ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
+                  : '';
+                return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}${flightInfo}</div>`;
               }}
               pointColor={(d) => {
                 // Cluster colors

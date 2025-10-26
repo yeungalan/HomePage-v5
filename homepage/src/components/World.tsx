@@ -685,7 +685,7 @@ export default function WorldMap() {
               pathPoints="coords"
               pathPointLat={p => Array.isArray(p) ? p[0] : p.lat}
               pathPointLng={p => Array.isArray(p) ? p[1] : p.lng}
-              pathColor={path => path.properties.color || '#00ff88'}
+              pathColor={path => '#00ff88'}
               pathLabel={path => path.properties.name}
               pathStroke={2}
               pathDashLength={1}

@@ -7,6 +7,7 @@ import {
   TextureLoader,
   ShaderMaterial,
   Vector2,
+  Vector3,
 } from "three";
 import * as solar from "solar-calculator";
 import { motion } from "framer-motion";
@@ -101,6 +102,121 @@ const sunPosAt = (dt) => {
   return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
 };
 
+// --- CLUSTERING UTILITIES ---
+/**
+ * Calculate great circle distance between two lat/lng points in kilometers
+ */
+const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+  const R = 6371; // Earth radius in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
+
+/**
+ * Cluster points based on altitude (zoom level)
+ * Returns merged points when zoomed out
+ */
+const clusterPoints = (points: any[], altitude: number) => {
+  // Adjust clustering threshold based on altitude
+  // Higher altitude = more zoomed out = larger clustering distance
+  let clusterThresholdKm = 0;
+  
+  if (altitude < 1.5) {
+    // Very zoomed in - no clustering
+    return points;
+  } else if (altitude < 2) {
+    clusterThresholdKm = 50; // 50km
+  } else if (altitude < 2.5) {
+    clusterThresholdKm = 100; // 100km
+  } else if (altitude < 3) {
+    clusterThresholdKm = 200; // 200km
+  } else {
+    clusterThresholdKm = 300; // 300km+
+  }
+
+  const clustered: any[] = [];
+  const used = new Set<number>();
+
+  points.forEach((point, i) => {
+    if (used.has(i)) return;
+
+    const cluster = [point];
+    used.add(i);
+
+    // Find all nearby points
+    for (let j = i + 1; j < points.length; j++) {
+      if (used.has(j)) continue;
+
+      const other = points[j];
+      const distance = haversineDistance(
+        parseFloat(point.lat), 
+        parseFloat(point.lng),
+        parseFloat(other.lat), 
+        parseFloat(other.lng)
+      );
+
+      if (distance <= clusterThresholdKm) {
+        cluster.push(other);
+        used.add(j);
+      }
+    }
+
+    if (cluster.length === 1) {
+      // No clustering needed
+      clustered.push(point);
+    } else {
+      // Merge multiple points
+      const avgLat = cluster.reduce((sum, p) => sum + parseFloat(p.lat), 0) / cluster.length;
+      const avgLng = cluster.reduce((sum, p) => sum + parseFloat(p.lng), 0) / cluster.length;
+
+      // Separate by type
+      const airports = cluster.filter(p => p.type === 'airport' || p.type === 'overlap');
+      const trainStations = cluster.filter(p => p.type === 'train' || p.type === 'overlap');
+
+      // Count unique items
+      const airportCount = airports.length;
+      const trainCount = trainStations.length;
+      const hasAirports = airportCount > 0;
+      const hasTrains = trainCount > 0;
+
+      // Determine type
+      let mergedType = 'cluster';
+      if (hasAirports && hasTrains) {
+        mergedType = 'cluster-both';
+      } else if (hasAirports) {
+        mergedType = 'cluster-airport';
+      } else if (hasTrains) {
+        mergedType = 'cluster-train';
+      }
+
+      // Gather names
+      const names = cluster
+        .map(p => p.name || p.city)
+        .filter((v, i, a) => a.indexOf(v) === i) // unique
+        .slice(0, 5); // limit to first 5
+
+      clustered.push({
+        lat: avgLat.toString(),
+        lng: avgLng.toString(),
+        type: mergedType,
+        clusterSize: cluster.length,
+        airportCount,
+        trainCount,
+        names,
+        originalPoints: cluster,
+      });
+    }
+  });
+
+  return clustered;
+};
+
 type TimeMode = 'paused' | 'realtime' | 'animated';
 
 export default function WorldMap() {
@@ -114,7 +230,7 @@ export default function WorldMap() {
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isAnimating, setIsAnimating] = useState(true);
-  const [altitude, setAltitude] = useState(0);
+  const [altitude, setAltitude] = useState(2.5);
 
   // Animate time based on mode
   useEffect(() => {
@@ -225,206 +341,140 @@ export default function WorldMap() {
               // New format: {lat, lng, city}
               lat = coord.lat;
               lng = coord.lng;
-              cityName = coord.city || 'Unknown Station';
+              cityName = coord.city || '';
             }
             
-            const key = `${lat},${lng}`;
+            const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
             
             if (!stationMap.has(key)) {
               stationMap.set(key, {
-                lat,
-                lng,
+                lat: lat,
+                lng: lng,
                 name: cityName,
-                type: 'train',
                 routes: []
               });
             }
             
-            // Track which routes pass through this station
-            stationMap.get(key).routes.push(routeName);
+            // Add route name to this station
+            const station = stationMap.get(key);
+            if (routeName && !station.routes.includes(routeName)) {
+              station.routes.push(routeName);
+            }
           });
         });
-
-        // Convert map to array of unique stations
-        const uniqueStations = Array.from(stationMap.values());
         
-        setTrainStations(uniqueStations);
+        const stations = Array.from(stationMap.values()).map(station => ({
+          ...station,
+          type: 'train'
+        }));
+        
+        setTrainStations(stations);
         setTrainPaths(trainData);
       })
-      .catch(() => {
+      .catch(err => {
+        console.log('No train data available');
         setTrainStations([]);
         setTrainPaths([]);
       });
   }, []);
 
-  // Detect overlapping coordinates and mark them using useMemo
-  const allPoints = useMemo(() => {
-    if (airports.length === 0 && trainStations.length === 0) return [];
-
-    // Create a coordinate key for comparison (rounded to avoid floating point issues)
-    const coordKey = (lat, lng) => {
-      const roundedLat = Math.round(parseFloat(lat) * 10000) / 10000;
-      const roundedLng = Math.round(parseFloat(lng) * 10000) / 10000;
-      return `${roundedLat},${roundedLng}`;
-    };
-
-    // Build maps of coordinates
-    const airportMap = new Map();
-    airports.forEach(airport => {
-      const key = coordKey(airport.lat, airport.lng);
-      airportMap.set(key, airport);
-    });
-
-    const trainMap = new Map();
-    trainStations.forEach(station => {
-      const key = coordKey(station.lat, station.lng);
-      trainMap.set(key, station);
-    });
-
-    // Find overlapping coordinates
-    const overlappingKeys = new Set();
-    airportMap.forEach((airport, key) => {
-      if (trainMap.has(key)) {
-        overlappingKeys.add(key);
-      }
-    });
-
-    // Process airports with overlap marking
-    const processedAirports = airports.map(airport => {
-      const key = coordKey(airport.lat, airport.lng);
-      if (overlappingKeys.has(key)) {
-        return { ...airport, type: 'overlap' };
-      }
-      return airport;
-    });
-
-    // Process train stations with overlap marking
-    const processedTrainStations = trainStations.map(station => {
-      const key = coordKey(station.lat, station.lng);
-      if (overlappingKeys.has(key)) {
-        return { ...station, type: 'overlap' };
-      }
-      return station;
-    });
-
-    return [...processedAirports, ...processedTrainStations];
-  }, [airports, trainStations]);
-
-  // Set initial globe view and enable zoom after animation
+  // Setup globe material with day/night shader
   useEffect(() => {
-    if (globeEl.current) {
-      // Disable rotation controls during animation
-      globeEl.current.controls().enableRotate = false;
-      
-      // Initialize globe rotation uniform immediately
-      const initialPOV = globeEl.current.pointOfView();
-      if (globeMaterial?.uniforms?.globeRotation?.value && initialPOV) {
-        globeMaterial.uniforms.globeRotation.value.set(
-          initialPOV.lng || -98.5, 
-          initialPOV.lat || 39.6
-        );
-      }
-      
-      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 1);
-
-      // Enable rotation after animation completes
-      setTimeout(() => {
-        setIsAnimating(false);
-        if (globeEl.current) {
-          globeEl.current.controls().enableRotate = true;
-        }
-      }, 6000);
-    }
-  }, [globeMaterial]);
-
-  // Continuously update globe rotation to sync shader with camera
-  useEffect(() => {
-    if (!globeEl.current || !globeMaterial) return;
-    
-    let animationFrame;
-    const updateRotation = () => {
-      if (globeEl.current && globeMaterial?.uniforms?.globeRotation?.value) {
-        const pov = globeEl.current.pointOfView();
-        if (pov && pov.lng !== undefined && pov.lat !== undefined) {
-          globeMaterial.uniforms.globeRotation.value.set(pov.lng, pov.lat);
-        }
-      }
-      animationFrame = requestAnimationFrame(updateRotation);
-    };
-    
-    updateRotation();
-    
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
-  }, [globeMaterial]);
-
-  // Load globe shader (day/night)
-  useEffect(() => {
+    const loader = new TextureLoader();
     Promise.all([
-      new TextureLoader().loadAsync(
-        "./day.jpg"
-      ),
-      new TextureLoader().loadAsync(
-        "./night.jpg"
-      ),
+      loader.loadAsync("day.jpg"),
+      loader.loadAsync("night.jpg"),
     ]).then(([dayTexture, nightTexture]) => {
-      setGlobeMaterial(
-        new ShaderMaterial({
-          uniforms: {
-            dayTexture: { value: dayTexture },
-            nightTexture: { value: nightTexture },
-            sunPosition: { value: new Vector2() },
-            globeRotation: { value: new Vector2() },
-          },
-          vertexShader: dayNightShader.vertexShader,
-          fragmentShader: dayNightShader.fragmentShader,
-        })
-      );
+      const material = new ShaderMaterial({
+        uniforms: {
+          dayTexture: { value: dayTexture },
+          nightTexture: { value: nightTexture },
+          sunPosition: { value: new Vector2() },
+          globeRotation: { value: new Vector2(0, 0) },
+        },
+        vertexShader: dayNightShader.vertexShader,
+        fragmentShader: dayNightShader.fragmentShader,
+      });
+      setGlobeMaterial(material);
     });
   }, []);
 
-  // Update sun position
+  // Update sun position & globe rotation in shader
   useEffect(() => {
-    if (globeMaterial?.uniforms?.sunPosition?.value) {
-      globeMaterial.uniforms.sunPosition.value.set(...sunPosAt(dt));
-    }
-  }, [dt, globeMaterial]);
+    if (!globeMaterial || !globeEl.current) return;
 
-  const handleZoom = useCallback(
-    ({ lng, lat, altitude }) => {
-      // Block zoom during animation
-      if (isAnimating) return;
-      
-      if (globeMaterial?.uniforms?.globeRotation?.value) {
-        globeMaterial.uniforms.globeRotation.value.set(lng, lat);
+    const updateShader = () => {
+      const [lng, lat] = sunPosAt(dt);
+      globeMaterial.uniforms.sunPosition.value.set(lng, lat);
+
+      const scene = globeEl.current.scene();
+      const globeMesh = scene?.children?.find((obj) => obj.type === "Mesh");
+      if (globeMesh) {
+        const rot = globeMesh.rotation;
+        const rotLng = (rot.y * 180) / Math.PI;
+        const rotLat = (rot.x * 180) / Math.PI;
+        globeMaterial.uniforms.globeRotation.value.set(rotLng, rotLat);
       }
-      
-      // Enforce altitude limits
-      if (globeEl.current && altitude !== undefined) {
-        const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
-        setAltitude(clampedAltitude);
+    };
 
-        if (altitude !== clampedAltitude) {
-          const currentPOV = globeEl.current.pointOfView();
-          globeEl.current.pointOfView({
-            ...currentPOV,
-            altitude: clampedAltitude
-          }, 0);
-        }
-      }
-    },
-    [globeMaterial, isAnimating]
-  );
+    updateShader();
+    const interval = setInterval(updateShader, 100);
+    return () => clearInterval(interval);
+  }, [globeMaterial, dt]);
 
-  const handleModeChange = (mode: TimeMode) => {
-    setTimeMode(mode);
-    if (mode === 'realtime') {
-      setDt(+new Date());
-    }
+  const handleModeChange = (newMode: TimeMode) => {
+    setTimeMode(newMode);
   };
+
+  const handleZoom = useCallback((pov) => {
+    setAltitude(pov.altitude);
+  }, []);
+
+  // Combine airports and train stations, detecting overlaps
+  const allPoints = useMemo(() => {
+    const airportPoints = airports.map(a => ({ ...a, type: 'airport' }));
+    const trainPoints = trainStations.map(t => ({ ...t, type: 'train' }));
+    
+    // Detect overlaps (same location = airport & train station)
+    const overlapThreshold = 0.01; // degrees (~1km)
+    const mergedPoints = [];
+    const usedTrainIndices = new Set();
+
+    airportPoints.forEach(airport => {
+      let foundOverlap = false;
+      trainPoints.forEach((train, idx) => {
+        if (usedTrainIndices.has(idx)) return;
+        
+        const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(train.lat));
+        const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(train.lng));
+        
+        if (latDiff < overlapThreshold && lngDiff < overlapThreshold) {
+          // Found overlap
+          mergedPoints.push({
+            ...airport,
+            type: 'overlap',
+            trainRoutes: train.routes || []
+          });
+          usedTrainIndices.add(idx);
+          foundOverlap = true;
+        }
+      });
+      
+      if (!foundOverlap) {
+        mergedPoints.push(airport);
+      }
+    });
+
+    // Add remaining train stations that didn't overlap
+    trainPoints.forEach((train, idx) => {
+      if (!usedTrainIndices.has(idx)) {
+        mergedPoints.push(train);
+      }
+    });
+
+    // Apply clustering based on altitude
+    return clusterPoints(mergedPoints, altitude);
+  }, [airports, trainStations, altitude]);
 
   const getIndicatorPosition = () => {
     const positions = {
@@ -469,11 +519,33 @@ export default function WorldMap() {
               ]}
               arcsTransitionDuration={0}
               
-              // All points (airports + train stations)
+              // All points (airports + train stations + clusters)
               pointsData={allPoints}
               pointLabel={(d) => {
+                // Cluster labels
+                if (d.type?.startsWith('cluster')) {
+                  const locations = d.names.join(', ');
+                  const moreText = d.clusterSize > d.names.length ? ` +${d.clusterSize - d.names.length} more` : '';
+                  let typeText = '';
+                  
+                  if (d.type === 'cluster-both') {
+                    typeText = `${d.airportCount} Airport(s) & ${d.trainCount} Train Station(s)`;
+                  } else if (d.type === 'cluster-airport') {
+                    typeText = `${d.airportCount} Airport(s)`;
+                  } else if (d.type === 'cluster-train') {
+                    typeText = `${d.trainCount} Train Station(s)`;
+                  }
+                  
+                  return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
+                    <div class="font-bold text-yellow-300">📍 ${d.clusterSize} Locations</div>
+                    <div class="text-sm mt-1">${typeText}</div>
+                    <div class="text-xs mt-1 text-gray-300">${locations}${moreText}</div>
+                  </div>`;
+                }
+                
+                // Regular point labels
                 if (d.type === 'overlap') {
-                  const stationInfo = d.routes ? `<br/><small>${d.routes.length} train route(s)</small>` : '';
+                  const stationInfo = d.trainRoutes ? `<br/><small>${d.trainRoutes.length} train route(s)</small>` : '';
                   return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${stationInfo}</div>`;
                 }
                 if (d.type === 'train') {
@@ -485,17 +557,28 @@ export default function WorldMap() {
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}</div>`;
               }}
               pointColor={(d) => {
+                // Cluster colors
+                if (d.type === 'cluster-both') return '#FFD700'; // Gold
+                if (d.type === 'cluster-airport') return '#FFA500'; // Orange
+                if (d.type === 'cluster-train') return '#00ff88'; // Green
+                
+                // Regular colors
                 if (d.type === 'overlap') return '#8B4513'; // Brown for overlap
                 if (d.type === 'train') return '#00ff88'; // Green for train
                 return 'orange'; // Orange for airport
               }}
               pointAltitude={0.001}
               pointRadius={(d) => {
-                 const baseRadius = altitude > 1 ? 0.5 : 0.15;
-                // Make overlap points slightly larger to stand out
-                return baseRadius
+                const baseRadius = altitude > 1 ? 0.5 : 0.15;
+                
+                // Make clusters larger based on size
+                if (d.type?.startsWith('cluster')) {
+                  return baseRadius * (1 + Math.log10(d.clusterSize) * 0.5);
+                }
+                
+                return baseRadius;
               }}
-              pointsTransitionDuration={0}
+              pointsTransitionDuration={300}
               pointsMerge={false}
               
               // Train routes as paths
@@ -638,12 +721,43 @@ export default function WorldMap() {
             <span>Both (Airport & Train)</span>
           </div>
           <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
+            <span>Clustered Locations</span>
+          </div>
+          <div className="flex items-center gap-2">
             <div className="w-8 h-0.5 bg-white"></div>
             <span>Flight Routes</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-0.5" style={{ backgroundColor: '#00ff88' }}></div>
             <span>Train Routes</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Zoom Level Indicator */}
+      <motion.div
+        className="fixed right-4 top-4 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        style={{ 
+          top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
+          right: 'max(1rem, calc(env(safe-area-inset-right) + 1rem))'
+        }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : -20 }}
+        transition={{ 
+          duration: 0.8,
+          delay: 0.7,
+          ease: "easeOut"
+        }}
+      >
+        <div className="flex flex-col gap-1">
+          <div>Altitude: {altitude.toFixed(2)}</div>
+          <div className="text-xs text-gray-400">
+            {altitude < 1.5 ? 'Individual points' : 
+             altitude < 2 ? 'Light clustering (50km)' :
+             altitude < 2.5 ? 'Medium clustering (100km)' :
+             altitude < 3 ? 'Heavy clustering (200km)' :
+             'Max clustering (300km+)'}
           </div>
         </div>
       </motion.div>

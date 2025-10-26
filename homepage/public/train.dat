@@ -273,13 +273,32 @@
                 "city": "Tokyo"
             },
             {
-                "lat": 37.8004704,
-                "lng": 140.2355477,
-                "city": "Fukushima"
+                "lat": 37.4468791,
+                "lng": 140.9665001,
+                "city": "Fukushima (Futaba)"
             }
         ],
         "properties": {
-            "name": "Tokyo↔Fukushima",
+            "name": "Tokyo↔Fukushima (Futaba)",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
+                "lat": 35.552299,
+                "lng": 139.779999,
+                "city": "Tokyo"
+            },
+            {
+                "lat": 35.7647018433,
+                "lng": 140.386001587,
+                "city": "Tokyo"
+            }
+        ],
+        "properties": {
+            "name": "Tokyo↔Tokyo",
             "color": "#ffffffff",
             "feature_id": "1"
         }
@@ -375,6 +394,25 @@
         ],
         "properties": {
             "name": "Seattle↔Portland",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
+                "lat": 33.94250107,
+                "lng": -118.4079971,
+                "city": "Los Angeles"
+            },
+            {
+                "lat": 32.7336006165,
+                "lng": -117.190002441,
+                "city": "San Diego"
+            }
+        ],
+        "properties": {
+            "name": "Los Angeles↔San Diego",
             "color": "#ffffffff",
             "feature_id": "1"
         }

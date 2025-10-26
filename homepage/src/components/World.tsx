@@ -235,7 +235,7 @@ const clusterPoints = (points: any[], altitude: number) => {
   return clustered;
 };
 
-type TimeMode = 'paused' | 'realtime' | 'animated';
+type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped';
 
 export default function WorldMap() {
   const globeEl = useRef();
@@ -249,9 +249,17 @@ export default function WorldMap() {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isAnimating, setIsAnimating] = useState(true);
   const [altitude, setAltitude] = useState(2.5);
+  const [showFlightRoutes, setShowFlightRoutes] = useState(true);
+  const [showTrainRoutes, setShowTrainRoutes] = useState(true);
+  const [enableDaylight, setEnableDaylight] = useState(true);
 
   // Animate time based on mode
   useEffect(() => {
+    if(timeMode === 'stopped') {
+      setEnableDaylight(false);
+    }else{
+      setEnableDaylight(true);
+    }
     if (timeMode === 'paused') return;
     
     let animationId;
@@ -422,8 +430,13 @@ export default function WorldMap() {
     if (!globeMaterial || !globeEl.current) return;
 
     const updateShader = () => {
-      const [lng, lat] = sunPosAt(dt);
-      globeMaterial.uniforms.sunPosition.value.set(lng, lat);
+      if (enableDaylight) {
+        const [lng, lat] = sunPosAt(dt);
+        globeMaterial.uniforms.sunPosition.value.set(lng, lat);
+      } else {
+        // Set sun position to create constant daylight (sun directly overhead at equator)
+        globeMaterial.uniforms.sunPosition.value.set(0, 0);
+      }
 
       const scene = globeEl.current.scene();
       const globeMesh = scene?.children?.find((obj) => obj.type === "Mesh");
@@ -438,7 +451,7 @@ export default function WorldMap() {
     updateShader();
     const interval = setInterval(updateShader, 100);
     return () => clearInterval(interval);
-  }, [globeMaterial, dt]);
+  }, [globeMaterial, dt, enableDaylight]);
 
   const handleModeChange = (newMode: TimeMode) => {
     setTimeMode(newMode);
@@ -517,9 +530,10 @@ export default function WorldMap() {
 
   const getIndicatorPosition = () => {
     const positions = {
-      paused: 4,
-      realtime: 36,
-      animated: 68,
+      stopped: 4, // 4th button position
+      paused: 36,
+      realtime: 68,
+      animated: 100,
     };
     return positions[timeMode];
   };
@@ -545,8 +559,8 @@ export default function WorldMap() {
               backgroundImageUrl="sky.png"
               onZoom={handleZoom}
               
-              // Flight routes as arcs
-              arcsData={routes}
+              // Flight routes as arcs - conditionally shown
+              arcsData={showFlightRoutes ? routes : []}
               arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
               arcStartLat={(d) => +d.srcAirport.lat}
               arcStartLng={(d) => +d.srcAirport.lng}
@@ -580,7 +594,7 @@ export default function WorldMap() {
                     ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} ground route(s)</div>`
+                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train route(s)</div>`
                     : '';
                   
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
@@ -599,7 +613,7 @@ export default function WorldMap() {
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
                     ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
                     : '';
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Ground Stop${flightInfo}${trainInfo}</div>`;
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${flightInfo}${trainInfo}</div>`;
                 }
                 if (d.type === 'train') {
                   const routeInfo = d.routes && d.routes.length > 0 
@@ -638,12 +652,12 @@ export default function WorldMap() {
               pointsTransitionDuration={300}
               pointsMerge={false}
               
-              // Train routes as paths
-              pathsData={trainPaths}
+              // Train routes as paths - conditionally shown
+              pathsData={showTrainRoutes ? trainPaths : []}
               pathPoints="coords"
               pathPointLat={p => Array.isArray(p) ? p[0] : p.lat}
               pathPointLng={p => Array.isArray(p) ? p[1] : p.lng}
-              pathColor={path => '#00ff88'}
+              pathColor={path => path.properties.color || '#00ff88'}
               pathLabel={path => path.properties.name}
               pathStroke={2}
               pathDashLength={1}
@@ -710,8 +724,19 @@ export default function WorldMap() {
             }}
           />
 
-          {/* Button Group */}
+          {/* Button Group - 4 buttons */}
           <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
+                        <button
+              aria-label="Toggle daylight cycle"
+              type="button"
+              onClick={() => handleModeChange('stopped')}
+              className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
+              style={{
+                color: !enableDaylight ? '#000' : '#fff',
+              }}
+            >
+              <Icon icon="mdi:stop" className="text-[18px]" onClick={() => handleModeChange('stopped')}/>
+            </button>
             <button
               aria-label="Pause time"
               type="button"
@@ -721,7 +746,7 @@ export default function WorldMap() {
                 color: timeMode === 'paused' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:pause" className="text-[18px]" />
+              <Icon icon="mdi:pause" className="text-[18px]" onClick={() => handleModeChange('paused')}/>
             </button>
             <button
               aria-label="Real time"
@@ -732,7 +757,7 @@ export default function WorldMap() {
                 color: timeMode === 'realtime' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:clock-outline" className="text-[18px]" />
+              <Icon icon="mdi:clock-outline" className="text-[18px]" onClick={() => handleModeChange('realtime')}/>
             </button>
             <button
               aria-label="Animated time"
@@ -743,7 +768,7 @@ export default function WorldMap() {
                 color: timeMode === 'animated' ? '#000' : '#fff',
               }}
             >
-              <Icon icon="mdi:fast-forward" className="text-[18px]" />
+              <Icon icon="mdi:fast-forward" className="text-[18px]" onClick={() => handleModeChange('animated')}/>
             </button>
           </div>
         </div>
@@ -764,7 +789,7 @@ export default function WorldMap() {
           ease: "easeOut"
         }}
       >
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 pt-15">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
             <span>Airports</span>
@@ -807,7 +832,7 @@ export default function WorldMap() {
           ease: "easeOut"
         }}
       >
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2 pt-15">
           <div>Altitude: {altitude.toFixed(2)}</div>
           <div className="text-xs text-gray-400">
             {altitude < 1.5 ? 'Individual points' : 
@@ -815,6 +840,39 @@ export default function WorldMap() {
              altitude < 2.5 ? 'Medium clustering (100km)' :
              altitude < 3 ? 'Heavy clustering (200km)' :
              'Max clustering (300km+)'}
+          </div>
+          
+          {/* Route Toggle Controls */}
+          <div className="border-t border-gray-600 pt-2 mt-1 flex flex-col gap-2 ">
+            <button
+              onClick={() => setShowFlightRoutes(!showFlightRoutes)}
+              className="flex items-center gap-2 px-2 py-1 rounded transition-colors hover:bg-white/10"
+              style={{ 
+                backgroundColor: showFlightRoutes ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                opacity: showFlightRoutes ? 1 : 0.5
+              }}
+            >
+              <Icon 
+                icon={showFlightRoutes ? "mdi:airplane" : "mdi:airplane-off"} 
+                className="text-base" 
+              />
+              <span className="text-xs">Flight Routes</span>
+            </button>
+            
+            <button
+              onClick={() => setShowTrainRoutes(!showTrainRoutes)}
+              className="flex items-center gap-2 px-2 py-1 rounded transition-colors hover:bg-white/10"
+              style={{ 
+                backgroundColor: showTrainRoutes ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                opacity: showTrainRoutes ? 1 : 0.5
+              }}
+            >
+              <Icon 
+                icon={showTrainRoutes ? "mdi:train" : "mdi:train-off"} 
+                className="text-base" 
+              />
+              <span className="text-xs">Train Routes</span>
+            </button>
           </div>
         </div>
       </motion.div>

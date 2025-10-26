@@ -135,7 +135,7 @@ const handleRefreshQuote = () => {
           <Image
             height={300}
             width={300}
-            src={"https://avatar.iran.liara.run/public/1"}
+            src={"/profilePic.png"}
             alt="Site Owner Avatar"
             className={clsxm(
               'aspect-square rounded-full border border-slate-200 dark:border-neutral-800',

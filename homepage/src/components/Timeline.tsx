@@ -24,7 +24,7 @@ const experiences: Experience[] = [
     id: '1',
     type: 'work',
     title: 'Software Engineer I',
-    organization: 'AWS',
+    organization: 'Amazon Web Services',
     startDate: 'Sept 2024',
     endDate: 'Present',
     icon: 'mdi:aws',
@@ -34,7 +34,7 @@ const experiences: Experience[] = [
     id: '2',
     type: 'work',
     title: 'Cloud Engineer I',
-    organization: 'AWS',
+    organization: 'Amazon Web Services',
     startDate: 'Sept 2023',
     endDate: 'Sept 2024',
     icon: 'mdi:aws'
@@ -43,7 +43,7 @@ const experiences: Experience[] = [
     id: '3',
     type: 'education',
     title: 'Computer Engineering (GPA 3.75/4.00)',
-    organization: 'University of Washington Seattle Campus',
+    organization: 'University of Washington - Seattle Campus',
     startDate: 'June 2021',
     endDate: 'June 2023',
     icon: 'mdi:school'

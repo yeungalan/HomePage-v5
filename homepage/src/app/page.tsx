@@ -84,7 +84,10 @@ const quotes = [
   'Stay hungry, Stay foolish. — Steve Jobs',
   'You know who walks with you when the road gets rough',
   'In the infinite river of time, life is but a spark that vanishes in an instant.',
-  'Only those who dare to fail greatly can ever achieve greatly — Robert F. Kennedy'
+  'Only those who dare to fail greatly can ever achieve greatly — Robert F. Kennedy',
+  'I am on my way to you, chasing after your name — Radwimps',
+  'We are time fliers Scaling the walls of time, climber Tired of playing hide and seek with time and Always coming just short — Radwimps',
+  'When you believe you can, the whole world conspires to help you — The Alchemist'
 ];
 
 const [quoteIndex, setQuoteIndex] = useState(Math.floor(Math.random() * quotes.length));

@@ -77,18 +77,14 @@ const Hero = () => {
     
 
 const quotes = [
-  'When the first satellite flew beyond the atmosphere, we thought we would one day conquer the universe.',
-  'We gaze up at the stars, only to find the stars are gazing back at us.',
+  'No one can move on without losing something.',
+  'I think, therefore I am. — René Descartes',
+  'Practice is the sole criterion for testing truth. — Deng Xiaoping',
+  'Everything has two sides. — Vladimir Ilyich Lenin',
+  'Stay hungry, Stay foolish. — Steve Jobs',
+  'You know who walks with you when the road gets rough',
   'In the infinite river of time, life is but a spark that vanishes in an instant.',
-  'The end of technology is not conquest, but understanding and harmony.',
-  'The universe owes us no explanation, yet we owe the universe our reverence.',
-  'Civilization is like a drifting bottle, seeking echoes in the dark universe.',
-  'Every civilization is a lonely singer in the cosmos, singing melodies only they can understand.',
-  'Time is the gentlest blade, silently cutting through all existence.',
-  'We explore the unknown not to conquer the darkness, but to light more candles.',
-  'Before the scale of the universe, both arrogance and humility lose their meaning.',
-  'True wisdom lies not in knowing the answers, but in knowing how to ask the right questions.',
-  'When we finally understand the universe, perhaps the universe will understand us too.',
+  'Only those who dare to fail greatly can ever achieve greatly — Robert F. Kennedy'
 ];
 
 const [quoteIndex, setQuoteIndex] = useState(Math.floor(Math.random() * quotes.length));
@@ -171,7 +167,7 @@ const handleRefreshQuote = () => {
     <button
       onClick={handleRefreshQuote}
       className="shrink-0 rounded-full p-1.5 transition-colors hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50"
-      aria-label="换一句"
+      aria-label="Change a new sentence"
     >
       <Icon icon="mingcute:refresh-1-line" className="text-xs" />
     </button>

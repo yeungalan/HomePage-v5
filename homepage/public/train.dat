@@ -420,6 +420,25 @@
     {
         "coords": [
             {
+                "lat": 33.94250107,
+                "lng": -118.4079971,
+                "city": "Los Angeles"
+            },
+            {
+                "lat": 36.08010101,
+                "lng": -115.1520004,
+                "city": "Las Vegas"
+            }
+        ],
+        "properties": {
+            "name": "Los Angeles↔Las Vegas",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
+    },
+    {
+        "coords": [
+            {
                 "lat": 51.4706,
                 "lng": -0.461941,
                 "city": "London"

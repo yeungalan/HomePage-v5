@@ -830,7 +830,7 @@ export default function WorldMap() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#8B4513' }}></div>
-            <span>Both (Airport & Train)</span>
+            <span>Both (Airport & Train/Car)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
@@ -842,7 +842,7 @@ export default function WorldMap() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-0.5" style={{ backgroundColor: '#00ff88' }}></div>
-            <span>Train Routes</span>
+            <span>Train/Car Routes</span>
           </div>
         </div>
       </motion.div>
@@ -901,7 +901,7 @@ export default function WorldMap() {
                 icon={showTrainRoutes ? "mdi:train" : "mdi:train-off"} 
                 className="text-base" 
               />
-              <span className="text-xs">Train Routes</span>
+              <span className="text-xs">Train/Car Routes</span>
             </button>
           </div>
         </div>

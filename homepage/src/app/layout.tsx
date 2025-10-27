@@ -6,6 +6,7 @@ import 'mingcute_icon/font/Mingcute.css'
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
 import StatsComponent from "@/components/StatComponent";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,7 @@ const notoSansTC = Noto_Sans_TC({
 
 export const metadata: Metadata = {
   title: "Alan Yeung @ Seattle, WA",
-  description: "Home Page v5 2026",
+  description: "alanyeung.co Home Page | Project Atlas: Global Infrastructure Modernization Initiative 2025",
 };
 
 export default function RootLayout({
@@ -37,9 +38,10 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >

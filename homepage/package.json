@@ -17,6 +17,7 @@
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
+    "@xyflow/react": "^12.9.0",
     "d3-dsv": "^3.0.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.18",

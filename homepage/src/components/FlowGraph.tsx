@@ -7,9 +7,75 @@ import {
   useEdgesState,
   Handle,
   Position,
+  getSmoothStepPath,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
+
+// Custom Edge Component with smoothstep routing
+function CustomEdgeComponent({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+  style,
+  label,
+  labelStyle,
+}) {
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+    borderRadius: 8,
+  });
+
+  return (
+    <>
+      <path
+        id={id}
+        className="react-flow__edge-path"
+        d={edgePath}
+        strokeWidth={style?.strokeWidth || 2}
+        stroke={style?.stroke || '#94a3b8'}
+        strokeDasharray={style?.strokeDasharray || '8,8'}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {label && label !== '-' && (
+        <g>
+          <rect
+            x={labelX - 20}
+            y={labelY - 10}
+            width={40}
+            height={20}
+            fill="white"
+            fillOpacity={0.9}
+            rx={4}
+          />
+          <text
+            x={labelX}
+            y={labelY + 4}
+            style={{ 
+              fontSize: labelStyle?.fontSize || 11,
+              fontWeight: labelStyle?.fontWeight || 600,
+              fill: labelStyle?.fill || '#475569',
+            }}
+            textAnchor="middle"
+          >
+            {label}
+          </text>
+        </g>
+      )}
+    </>
+  );
+}
 
 // Custom Node Component
 function CustomNode({ data }) {
@@ -31,6 +97,7 @@ function CustomNode({ data }) {
       minWidth: '180px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
       position: 'relative',
+      zIndex: 10, // Ensure nodes are above edges
     }}>
       {/* Health Status Indicator */}
       <div style={{
@@ -151,6 +218,10 @@ const nodeTypes = {
   tierLabel: TierLabel,
 };
 
+const edgeTypes = {
+  custom: CustomEdgeComponent,
+};
+
 // Default service type configurations
 const serviceTypeDefaults = {
   web: { icon: 'mdi:web', iconBg: '#dbeafe', iconColor: '#2563eb', tier: 'presentation' },
@@ -236,6 +307,7 @@ function configToFlow(config) {
           health: service.status || 'healthy',
         },
         position: { x: xPos, y: yPos },
+        style: { zIndex: 10 }, // Ensure nodes are above edges
       });
     });
   });
@@ -253,18 +325,21 @@ function configToFlow(config) {
       id: `e${index}-${source}-${target}`,
       source,
       target,
+      type: 'smart', // Use smart edge for pathfinding
       label: conn[2] || '1-5ms', // Optional latency label
-      type: 'default', // Use default for smooth curves
-      animated: true, // Always animate
+      animated: true,
+      data: { nodes }, // Pass nodes for pathfinding
       style: {
         stroke: isDatabaseReplication ? '#a78bfa' : '#94a3b8',
-        strokeWidth: 2.5,
-        strokeDasharray: '8,8', // All lines are dashed
+        strokeWidth: 2, // Slightly thinner for tidier appearance
+        strokeDasharray: '8,8',
+        zIndex: 0,
       },
       labelStyle: {
         fill: isDatabaseReplication ? '#7c3aed' : '#475569',
         fontWeight: 600,
         fontSize: 11,
+        zIndex: 5,
       },
       labelBgPadding: [8, 4],
       labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
@@ -355,6 +430,16 @@ export default function ThreeTierInfrastructure({ config }) {
 
   return (
     <div style={{ width: '100vw', height: '100vh', background: '#f9fafb' }}>
+      <style>{`
+        @keyframes dashdraw {
+          to {
+            stroke-dashoffset: -16;
+          }
+        }
+        .react-flow__edge-path {
+          animation: dashdraw 0.5s linear infinite;
+        }
+      `}</style>
       <div style={{ 
         position: 'absolute', 
         top: 20, 
@@ -469,10 +554,11 @@ export default function ThreeTierInfrastructure({ config }) {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
         attributionPosition="bottom-left"
         defaultEdgeOptions={{
-          type: 'default',
+          type: 'smart',
           animated: true,
         }}
       >

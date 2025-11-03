@@ -15,7 +15,8 @@ const footerConfig = {
     {
       name: 'About',
       links: [
-        { name: 'Me', href: '/posts/aboutme', external: false },
+        { name: 'Me', href: '/posts/aboutme_en', external: false },
+        { name: '我', href: '/posts/aboutme', external: false },
       ],
     },
     {

@@ -610,11 +610,11 @@ export default function WorldMap() {
                   let typeText = '';
                   
                   if (d.type === 'cluster-both') {
-                    typeText = `${d.airportCount} Airport(s) & ${d.trainCount} Train Station(s)`;
+                    typeText = `${d.airportCount} Airport(s) & ${d.trainCount} Train/Car Stop(s)`;
                   } else if (d.type === 'cluster-airport') {
                     typeText = `${d.airportCount} Airport(s)`;
                   } else if (d.type === 'cluster-train') {
-                    typeText = `${d.trainCount} Train Station(s)`;
+                    typeText = `${d.trainCount} Train/Car Stop(s)`;
                   }
                   
                   // Show routes info
@@ -622,7 +622,7 @@ export default function WorldMap() {
                     ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train route(s)</div>`
+                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train/car route(s)</div>`
                     : '';
                   
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">

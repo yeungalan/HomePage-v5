@@ -454,5 +454,24 @@
             "color": "#ffffffff",
             "feature_id": "1"
         }
+    },
+    {
+        "coords": [
+            {
+                "lat": -33.94609832763672,
+                "lng": 151.177001953125,
+                "city": "Sydney"
+            },
+            {
+                "lat": -35.3135878,
+                "lng": 148.9649754,
+                "city": "Canberra"
+            }
+        ],
+        "properties": {
+            "name": "Sydney↔Canberra",
+            "color": "#ffffffff",
+            "feature_id": "1"
+        }
     }
 ]

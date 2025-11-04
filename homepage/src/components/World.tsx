@@ -403,8 +403,8 @@ export default function WorldMap() {
   useEffect(() => {
     const loader = new TextureLoader();
     Promise.all([
-      loader.loadAsync("day.jpg"),
-      loader.loadAsync("night.jpg"),
+      loader.loadAsync("/assets/images/day.jpg"),
+      loader.loadAsync("/assets/images/night.jpg"),
     ]).then(([dayTexture, nightTexture]) => {
       const material = new ShaderMaterial({
         uniforms: {
@@ -584,7 +584,7 @@ export default function WorldMap() {
             <Globe
               ref={globeEl}
               globeMaterial={globeMaterial}
-              backgroundImageUrl="sky.png"
+              backgroundImageUrl="/assets/images/sky.png"
               onZoom={handleZoom}
               
               // Flight routes as arcs - conditionally shown

@@ -14,7 +14,7 @@ const FRIENDS_DATA = [
     id: '1',
     name: 'imuslab',
     url: 'https://imuslab.com',
-    avatar: './imuslab.png',
+    avatar: '/assets/images/imuslab.png',
     description: 'Toby\'s Homebrew Tech Research',
   }
 ]

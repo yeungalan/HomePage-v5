@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { RealFooter } from '@/components/FooterLinks';
 import { getDayOfYear, differenceInDays, endOfYear, startOfYear } from 'date-fns';
+import { GOALS_2025, GOAL_STATUS_CONFIG, GOAL_STATUS_LABELS, getGoalsTitle } from '@/data/goals';
 
 interface Airport {
   name: string;
@@ -340,7 +341,7 @@ export default function Timeline() {
         {/* Flight Calculator */}
         <FlightCalculator />
 
-        {/* 2025 Goals */}
+        {/* Dynamic Goals List */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -349,37 +350,41 @@ export default function Timeline() {
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
             <Icon icon="mage:goals" className="text-3xl sm:text-4xl" />
-            <span>2025 Goals</span>
+            <span>{getGoalsTitle()}</span>
           </h2>
           <div className="space-y-3 sm:space-y-4">
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Icon icon="mdi:check-circle" className="text-2xl sm:text-3xl text-green-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Diving</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Completed</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Motorcycle</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Stay Healthy</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Icon icon="mdi:progress-clock" className="text-2xl sm:text-3xl text-yellow-500 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">Find a Person I Care Of</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">In progress</p>
-              </div>
-            </div>
+            {GOALS_2025.map((goal, index) => {
+              const statusConfig = GOAL_STATUS_CONFIG[goal.status];
+              const statusLabel = GOAL_STATUS_LABELS[goal.status];
+
+              return (
+                <motion.div
+                  key={goal.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.9 + index * 0.1 }}
+                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-[#fafafa] dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700"
+                >
+                  <Icon
+                    icon={statusConfig.icon}
+                    className={`text-2xl sm:text-3xl ${statusConfig.color} flex-shrink-0 mt-1`}
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-base sm:text-lg mb-1 text-gray-900 dark:text-white">
+                      {goal.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                      {statusLabel}
+                    </p>
+                    {goal.description && (
+                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mt-1">
+                        {goal.description}
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
 

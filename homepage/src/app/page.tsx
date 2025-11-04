@@ -117,7 +117,7 @@ const Hero = () => {
           <Image
             height={300}
             width={300}
-            src={"/profilePic.png"}
+            src={"/assets/images/profilePic.png"}
             alt="Site Owner Avatar"
             className={clsxm(
               'aspect-square rounded-full border border-slate-200 dark:border-neutral-800',

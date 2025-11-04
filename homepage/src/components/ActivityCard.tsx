@@ -3,9 +3,12 @@
 import clsx from 'clsx'
 import { Icon } from '@iconify/react'
 import { useMemo } from 'react'
+import { BRAND_COLORS } from '@/constants/colors'
 
-export const iconClassName =
-  'rounded-full border shrink-0 border-[#33A6B8] dark:border-[#33A6B8] text-base center inline-flex size-[32px] text-[#33A6B8] dark:text-[#33A6B8] bg-white dark:bg-zinc-900'
+// Using a function to generate the className with the brand color
+const getIconClassName = () => {
+  return `rounded-full border shrink-0 text-base center inline-flex size-[32px] bg-white dark:bg-zinc-900`
+}
 
 interface ActivityCardProps {
   type: 'work' | 'education' | 'milestone'
@@ -39,10 +42,16 @@ export const ActivityCard = ({
   const Content = useMemo(() => {
     return (
       <div className="flex gap-4 items-start w-full">
-        <div className={clsx(iconClassName, 'flex-shrink-0')}>
+        <div
+          className={clsx(getIconClassName(), 'flex-shrink-0')}
+          style={{
+            borderColor: BRAND_COLORS.primary,
+            color: BRAND_COLORS.primary,
+          }}
+        >
           <Icon icon={icon} />
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <div className="text-base text-zinc-800 space-y-1 dark:text-white">
             <div className="font-medium">{title}</div>

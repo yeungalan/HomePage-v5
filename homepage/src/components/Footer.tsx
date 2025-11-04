@@ -1,30 +1,10 @@
 import { microReboundPreset } from "@/constants/spring"
-import { m, motion } from "motion/react"
+import { motion } from "motion/react"
 import { createElement } from "react"
-import { IcTwotoneSignpost, FaSolidFeatherAlt, FaSolidHistory, FaSolidUserFriends, MdiLightbulbOn20, MdiFlask, FaSolidComments, RMixPlanet } from "./icons/menu-collection"
-import { StyledButton } from "./StyledButton"
-import { NumberSmoothTransition } from "./NumberSmoothTransition"
 import Link from "next/link"
-
-const windsock = [
-  {
-    title: 'Post',
-    path: '/posts',
-    type: 'Post',
-    subMenu: [],
-    icon: IcTwotoneSignpost,
-  },
-  {
-    title: 'Friends link',
-    icon: FaSolidUserFriends,
-    path: '/friends',
-  },
-  {
-    title: 'arozos',
-    icon: RMixPlanet,
-    path: 'https://s01.aroz.alanyeung.co',
-  },
-]
+import { FOOTER_LINKS } from "@/data/navigation"
+import { BRAND_COLORS } from "@/constants/colors"
+import { ANIMATION_DELAYS, calculateStaggerDelay } from "@/constants/timing"
 
 export const Footer = () => {
   return (
@@ -33,7 +13,7 @@ export const Footer = () => {
         <div className="my-5 text-2xl font-medium text-black dark:text-white">Quick links</div>
         <div className="mb-15 opacity-90">Want to go somewhere else?</div>
         <ul className="flex flex-col flex-wrap gap-2 gap-y-8 opacity-80 lg:flex-row">
-          {windsock.map((item, index) => {
+          {FOOTER_LINKS.map((item, index) => {
             return (
               <motion.li
                 initial={{ opacity: 0.0001, y: 10 }}
@@ -46,17 +26,17 @@ export const Footer = () => {
                     damping: 23,
                     mass: 3.9,
                     type: 'spring',
-                    delay: index * 0.05,
+                    delay: calculateStaggerDelay(index, ANIMATION_DELAYS.STAGGER_SMALL),
                   },
                 }}
                 transition={{
-                  delay: 0.001,
+                  delay: ANIMATION_DELAYS.MICRO,
                 }}
                 whileHover={{
                   y: -10,
                   transition: {
                     ...microReboundPreset,
-                    delay: 0.001,
+                    delay: ANIMATION_DELAYS.MICRO,
                   },
                 }}
                 key={index}
@@ -64,13 +44,22 @@ export const Footer = () => {
               >
                 <Link
                   href={item.path}
-                  className="flex items-center gap-4 text-neutral-800 duration-200 hover:!text-[#33A6B8] dark:text-neutral-200"
+                  className="flex items-center gap-4 text-neutral-800 duration-200 dark:text-neutral-200"
+                  style={{
+                    ['--hover-color' as any]: BRAND_COLORS.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = BRAND_COLORS.primary
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = ''
+                  }}
                 >
                   {createElement(item.icon, { className: 'w-6 h-6' })}
                   <span>{item.title}</span>
                 </Link>
 
-                {index != windsock.length - 1 && (
+                {index !== FOOTER_LINKS.length - 1 && (
                   <span className="mx-4 hidden select-none lg:inline"> · </span>
                 )}
               </motion.li>

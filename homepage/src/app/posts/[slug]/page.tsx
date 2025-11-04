@@ -1,8 +1,9 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { RealFooter } from '@/components/FooterLinks';
 import Post from '@/components/Post';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { getPostBySlug, parseSlugLanguage, getPreferredLanguage } from '@/lib/posts';
+import { headers } from 'next/headers';
 
 // Force dynamic rendering (SSR)
 export const dynamic = 'force-dynamic';
@@ -13,31 +14,53 @@ interface PageProps {
   };
 }
 
-async function getMarkdownContent(slug: string): Promise<string | null> {
-  try {
-    const filePath = path.join(process.cwd(), 'public', 'posts_md', `${slug}.md`);
-    const content = await fs.readFile(filePath, 'utf8');
-    return content;
-  } catch (error) {
-    console.error(`Error loading markdown for slug "${slug}":`, error);
-    return null;
-  }
-}
-
 export default async function PostPage({ params }: PageProps) {
   const { slug } = params;
 
-  // Fetch markdown content on the server
-  const markdownContent = await getMarkdownContent(slug);
+  // Fetch post with metadata and available languages
+  const post = await getPostBySlug(slug);
 
-  // If markdown file doesn't exist, return 404
-  if (!markdownContent) {
+  // If post doesn't exist, return 404
+  if (!post) {
     notFound();
+  }
+
+  // Get browser language preferences from headers
+  const headersList = headers();
+  const acceptLanguage = headersList.get('accept-language') || '';
+  const browserLanguages = acceptLanguage
+    .split(',')
+    .map((lang) => lang.split(';')[0].trim());
+
+  // Check if we should redirect to a preferred language version
+  const { baseSlug, language: currentLanguage } = parseSlugLanguage(slug);
+  const preferredLanguage = getPreferredLanguage(post.availableLanguages, browserLanguages);
+
+  // Only redirect if:
+  // 1. Multiple languages are available
+  // 2. User is on the default version
+  // 3. Preferred language is different from current
+  // 4. Preferred language is not 'default'
+  if (
+    post.availableLanguages.length > 1 &&
+    currentLanguage === 'default' &&
+    preferredLanguage !== 'default' &&
+    preferredLanguage !== currentLanguage
+  ) {
+    const preferredSlug = `${baseSlug}_${preferredLanguage}`;
+    redirect(`/posts/${preferredSlug}`);
   }
 
   return (
     <div className="relative">
-      <Post markdownContent={markdownContent} />
+      {/* Language switcher - only shown if multiple languages available */}
+      <LanguageSwitcher
+        baseSlug={baseSlug}
+        currentLanguage={currentLanguage}
+        availableLanguages={post.availableLanguages}
+      />
+
+      <Post markdownContent={post.content} />
       <RealFooter />
     </div>
   );

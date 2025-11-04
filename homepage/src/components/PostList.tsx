@@ -12,11 +12,40 @@ interface Post {
   title: string;
   slug: string;
   created: string;
+  availableLanguages: string[];
+  allTitles: Record<string, string>;
 }
 
 interface PostsListProps {
   posts: Post[];
 }
+
+// Helper function to format combined titles
+const getCombinedTitle = (post: Post): string => {
+  const { allTitles, availableLanguages } = post;
+
+  // If only one language, just return the title
+  if (availableLanguages.length === 1) {
+    return post.title;
+  }
+
+  // Build combined title with all language versions
+  const titles: string[] = [];
+
+  // Add default language title first if it exists
+  if (allTitles.default) {
+    titles.push(allTitles.default);
+  }
+
+  // Add other language titles
+  for (const lang of availableLanguages) {
+    if (lang !== 'default' && allTitles[lang]) {
+      titles.push(allTitles[lang]);
+    }
+  }
+
+  return titles.join(' / ');
+};
 
 export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
   const container = {
@@ -57,7 +86,7 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
                     className="min-w-0 shrink truncate dark:text-white"
                     href={`/posts/${post.slug}`}
                   >
-                    {post.title}
+                    {getCombinedTitle(post)}
                   </Link>
 
                   <span className="ml-2 shrink-0 self-end text-xs opacity-70 dark:text-white">

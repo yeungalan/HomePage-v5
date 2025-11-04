@@ -12,6 +12,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeRaw from "rehype-raw";
 import { FullPageLoading } from './Loading';
 import { Avatar } from './Avatar';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 // Mock data types (extracted from @mx-space/api-client)
 interface NoteModel {
@@ -150,6 +151,14 @@ const mockNoteData: NoteWrappedPayload = {
 const CurrentNoteDataContext = createContext<NoteWrappedPayload | null>(null)
 const CurrentNoteNidContext = createContext<string | null>(null)
 
+// Context for language data
+interface LanguageData {
+  baseSlug: string
+  currentLanguage: string
+  availableLanguages: string[]
+}
+const LanguageContext = createContext<LanguageData | null>(null)
+
 // Custom hooks
 const useCurrentNoteDataSelector = <T,>(selector: (data: NoteWrappedPayload | null) => T): T => {
   const data = useContext(CurrentNoteDataContext)
@@ -158,6 +167,10 @@ const useCurrentNoteDataSelector = <T,>(selector: (data: NoteWrappedPayload | nu
 
 const useCurrentNoteNid = () => {
   return useContext(CurrentNoteNidContext)
+}
+
+const useLanguageData = () => {
+  return useContext(LanguageContext)
 }
 
 // Utility functions
@@ -473,34 +486,35 @@ const NoteLeftSidebar = () => {
   const topic = useCurrentNoteDataSelector((data) => data?.data.topic)
   const category = useCurrentNoteDataSelector((data) => data?.data.category)
   const nid = useCurrentNoteNid()
+  const languageData = useLanguageData()
   const tags = topic?.tags || []
-  
+
   return (
     <div className="sticky top-[90px] mr-4">
       <div className="space-y-4">
-        <div className="rounded-lg border border-gray-200 p-4">
+        <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-semibold text-gray-900 mb-3 text-sm dark:text-white">Note Info</h3>
-          
+
           {category && (
-            <div className="mb-3 pb-3 border-b border-gray-100">
-              <div className="text-xs text-gray-500 mb-1 dark:text-white">Category</div>
+            <div className="mb-3 pb-3 border-b border-gray-100 dark:border-gray-700">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Category</div>
               <div className="text-sm font-medium text-gray-900 dark:text-white">{category.name}</div>
               {category.caption && (
-                <div className="text-xs text-gray-600 mt-1 dark:text-white">{category.caption}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{category.caption}</div>
               )}
             </div>
           )}
-          
+
           {topic && (
             <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-1 dark:text-white">Topic</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Topic</div>
               <div className="text-sm text-gray-900 dark:text-white">{topic.name}</div>
             </div>
           )}
-          
+
           {tags.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs text-gray-500 mb-2 dark:text-white">Tags</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">Tags</div>
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag, index) => (
                   <span key={index} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs dark:text-black">
@@ -510,11 +524,20 @@ const NoteLeftSidebar = () => {
               </div>
             </div>
           )}
-          
+
           {nid && (
-            <div className="text-xs text-gray-600 dark:text-white">
+            <div className="mb-3 text-xs text-gray-600 dark:text-gray-400">
               <span className="font-medium">ID:</span> {nid}
             </div>
+          )}
+
+          {/* Language Switcher */}
+          {languageData && (
+            <LanguageSwitcher
+              baseSlug={languageData.baseSlug}
+              currentLanguage={languageData.currentLanguage}
+              availableLanguages={languageData.availableLanguages}
+            />
           )}
         </div>
       </div>
@@ -1037,7 +1060,19 @@ const NoteRightSidebar: React.FC = () => {
 }
 
 // Main component
-const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
+interface PostProps {
+  markdownContent?: string
+  baseSlug?: string
+  currentLanguage?: string
+  availableLanguages?: string[]
+}
+
+const Post: React.FC<PostProps> = ({
+  markdownContent,
+  baseSlug = '',
+  currentLanguage = 'default',
+  availableLanguages = []
+}) => {
   // Use provided markdown or fall back to mock data
   const content = markdownContent || ""
   const { metadata, markdown, title } = parseMarkdownWithMetadata(content)
@@ -1114,66 +1149,74 @@ const Post: React.FC<{ markdownContent?: string }> = ({ markdownContent }) => {
     )
   }
 
+  const languageData: LanguageData = {
+    baseSlug,
+    currentLanguage,
+    availableLanguages
+  }
+
   return (
     <div className="min-h-screen">
-      <CurrentNoteNidContext.Provider value={currentNid}>
-        <CurrentNoteDataContext.Provider value={currentNote}>
-          {/* Layout */}
-          <div className={clsx(
-            'relative mx-auto grid min-h-[calc(100vh-6.5rem-10rem)] max-w-[60rem]',
-            'gap-4 md:grid-cols-1 xl:max-w-[calc(60rem+400px)] xl:grid-cols-[1fr_minmax(auto,60rem)_1fr]',
-            'mt-12',
-            'md:mt-24'
-          )}>
-            {/* Left Sidebar */}
-          <div
-            key={`left-${contentKey}`}
-            className="relative hidden min-w-0 xl:flex xl:flex-col xl:w-60"
-          >
-            <NoteLeftSidebar />
-          </div>
+      <LanguageContext.Provider value={languageData}>
+        <CurrentNoteNidContext.Provider value={currentNid}>
+          <CurrentNoteDataContext.Provider value={currentNote}>
+            {/* Layout */}
+            <div className={clsx(
+              'relative mx-auto grid min-h-[calc(100vh-6.5rem-10rem)] max-w-[60rem]',
+              'gap-4 md:grid-cols-1 xl:max-w-[calc(60rem+400px)] xl:grid-cols-[1fr_minmax(auto,60rem)_1fr]',
+              'mt-12',
+              'md:mt-24'
+            )}>
+              {/* Left Sidebar */}
+            <div
+              key={`left-${contentKey}`}
+              className="relative hidden min-w-0 xl:flex xl:flex-col xl:w-60"
+            >
+              <NoteLeftSidebar />
+            </div>
 
-            {/* Main Content */}
-            <PaperWithMainContainer>
-              <div>
-                <NoteTitle />
-                <span className="flex flex-wrap items-center text-sm text-gray-600 dark:text-white">
-                  <div className="flex flex-col lg:flex-row items-start">
-                    <div className="flex-1">
-                    <NoteHeaderDate/>
+              {/* Main Content */}
+              <PaperWithMainContainer>
+                <div>
+                  <NoteTitle />
+                  <span className="flex flex-wrap items-center text-sm text-gray-600 dark:text-white">
+                    <div className="flex flex-col lg:flex-row items-start">
+                      <div className="flex-1">
+                      <NoteHeaderDate/>
+                      </div>
+
+                      <div className="ml-4 max-lg:mt-3">
+                        <NoteMetaBar />
+                      </div>
                     </div>
+                  </span>
 
-                    <div className="ml-4 max-lg:mt-3">
-                      <NoteMetaBar />
-                    </div>
-                  </div>
-                </span>
+                  {currentNote.data.hide && (
+                    <NoteBanner type="warning" message="This article is private, only visible when logged in" />
+                  )}
+                </div>
 
-                {currentNote.data.hide && (
-                  <NoteBanner type="warning" message="This article is private, only visible when logged in" />
-                )}
-              </div>
+                <div className="mt-8">
+                  <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#282c34] [&_pre]:text-white [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
+                    <header className="sr-only">
+                      <NoteTitle />
+                    </header>
+                    <NoteMarkdown />
+                  </article>
 
-              <div className="mt-8">
-                <article className="max-w-none [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:font-semibold [&_h1]:text-[2rem] [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-semibold [&_h2]:text-[1.5rem] [&_h3]:mt-8 [&_h3]:mb-4 [&_h3]:font-semibold [&_h3]:text-[1.25rem] [&_p]:mb-4 [&_ul]:my-4 [&_ul]:pl-8 [&_li]:mb-2 [&_code]:bg-gray-100 [&_code]:text-black [&_code]:px-2 [&_code]:py-1 [&_code]:rounded [&_code]:text-[0.875rem] [&_code]:break-words [&_pre]:bg-[#282c34] [&_pre]:text-white [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4 [&_pre]:max-w-full [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_pre_code]:break-words">
-                  <header className="sr-only">
-                    <NoteTitle />
-                  </header>
-                  <NoteMarkdown />
-                </article>
-                
-                {/* Author Introduction */}
-                <AuthorIntroduction />
-              </div>
-            </PaperWithMainContainer>
+                  {/* Author Introduction */}
+                  <AuthorIntroduction />
+                </div>
+              </PaperWithMainContainer>
 
-            {/* Right Sidebar */}
-<div className="relative min-w-0 hidden xl:flex xl:flex-col xl:w-60">
-  <NoteRightSidebar />
-</div>
-          </div>
-        </CurrentNoteDataContext.Provider>
-      </CurrentNoteNidContext.Provider>
+              {/* Right Sidebar */}
+  <div className="relative min-w-0 hidden xl:flex xl:flex-col xl:w-60">
+    <NoteRightSidebar />
+  </div>
+            </div>
+          </CurrentNoteDataContext.Provider>
+        </CurrentNoteNidContext.Provider>
+      </LanguageContext.Provider>
     </div>
   )
 }

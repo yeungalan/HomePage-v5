@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { RealFooter } from '@/components/FooterLinks';
 import Post from '@/components/Post';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { getPostBySlug, parseSlugLanguage, getPreferredLanguage } from '@/lib/posts';
 import { headers } from 'next/headers';
 
@@ -53,14 +52,12 @@ export default async function PostPage({ params }: PageProps) {
 
   return (
     <div className="relative">
-      {/* Language switcher - only shown if multiple languages available */}
-      <LanguageSwitcher
+      <Post
+        markdownContent={post.content}
         baseSlug={baseSlug}
         currentLanguage={currentLanguage}
         availableLanguages={post.availableLanguages}
       />
-
-      <Post markdownContent={post.content} />
       <RealFooter />
     </div>
   );

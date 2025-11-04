@@ -1,8 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 
 interface LanguageSwitcherProps {
   baseSlug: string;
@@ -37,61 +36,47 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   currentLanguage,
   availableLanguages,
 }) => {
-  const router = useRouter();
-
   // Don't show switcher if only one language is available
   if (availableLanguages.length <= 1) {
     return null;
   }
 
-  const handleLanguageChange = (language: string) => {
-    const newSlug = language === 'default' ? baseSlug : `${baseSlug}_${language}`;
-    router.push(`/posts/${newSlug}`);
-  };
-
   return (
-    <div className="fixed top-20 right-4 z-50 md:top-24 md:right-8">
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3 }}
-        className="flex flex-col gap-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-2"
-      >
-        <div className="flex items-center gap-2 px-2 py-1 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-          <Icon icon="mdi:translate" className="text-sm" />
-          <span>Language</span>
-        </div>
-
+    <div className="mb-3 pb-3 border-b border-gray-100 dark:border-gray-700">
+      <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
+        <Icon icon="mdi:translate" className="text-sm" />
+        <span>Language</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
         {availableLanguages.map((lang) => {
           const isActive = lang === currentLanguage;
           const label = LANGUAGE_LABELS[lang] || lang.toUpperCase();
           const flag = LANGUAGE_FLAGS[lang] || '🌐';
+          const href = lang === 'default' ? `/posts/${baseSlug}` : `/posts/${baseSlug}_${lang}`;
 
           return (
-            <motion.button
+            <Link
               key={lang}
-              onClick={() => handleLanguageChange(lang)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              href={href}
               className={`
-                flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium
-                transition-colors duration-200
+                inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+                transition-all duration-200
                 ${
                   isActive
-                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 ring-1 ring-blue-200 dark:ring-blue-800'
+                    : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }
               `}
             >
-              <span className="text-lg">{flag}</span>
+              <span className="text-sm">{flag}</span>
               <span>{label}</span>
               {isActive && (
-                <Icon icon="mdi:check" className="ml-auto text-blue-700 dark:text-blue-300" />
+                <Icon icon="mdi:check" className="text-xs" />
               )}
-            </motion.button>
+            </Link>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 };

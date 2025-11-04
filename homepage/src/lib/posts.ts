@@ -9,6 +9,7 @@ export interface Post {
   baseSlug: string;
   language: string;
   availableLanguages: string[];
+  allTitles: Record<string, string>; // Map of language -> title
 }
 
 export interface PostWithContent extends Post {
@@ -76,6 +77,7 @@ export async function getPosts(): Promise<Post[]> {
         baseSlug,
         language,
         availableLanguages: [] as string[],
+        allTitles: {} as Record<string, string>,
       };
     });
 
@@ -87,11 +89,19 @@ export async function getPosts(): Promise<Post[]> {
     postsByBase.set(post.baseSlug, existing);
   }
 
-  // Add available languages to each post
+  // Add available languages and all titles to each post
   for (const posts of postsByBase.values()) {
     const languages = posts.map((p) => p.language);
+    const allTitles: Record<string, string> = {};
+
+    // Collect all titles from different language versions
+    for (const post of posts) {
+      allTitles[post.language] = post.title;
+    }
+
     for (const post of posts) {
       post.availableLanguages = languages;
+      post.allTitles = allTitles;
     }
   }
 
@@ -141,6 +151,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
     const postsDirectory = path.join(process.cwd(), 'public/posts_md');
     const filenames = fs.readdirSync(postsDirectory);
     const availableLanguages: string[] = [];
+    const allTitles: Record<string, string> = {};
 
     for (const filename of filenames) {
       if (!filename.endsWith('.md')) continue;
@@ -148,6 +159,22 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       const { baseSlug: fileBase, language: fileLang } = parseSlugLanguage(fileSlug);
       if (fileBase === baseSlug) {
         availableLanguages.push(fileLang);
+
+        // Extract title for this language version
+        const langFilePath = path.join(postsDirectory, filename);
+        const langContent = fs.readFileSync(langFilePath, 'utf8');
+        const langAutomateMatch = langContent.match(
+          /###\s*AUTOMATE FIELD\s*([\s\S]*?)###\s*AUTOMATE FIELD END/
+        );
+        let langTitle = fileSlug;
+        if (langAutomateMatch) {
+          const langSection = langAutomateMatch[1];
+          const langTopicMatch = langSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
+          if (langTopicMatch) {
+            langTitle = langTopicMatch[1].trim();
+          }
+        }
+        allTitles[fileLang] = langTitle;
       }
     }
 
@@ -159,6 +186,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       baseSlug,
       language,
       availableLanguages,
+      allTitles,
       content,
     };
   } catch (error) {

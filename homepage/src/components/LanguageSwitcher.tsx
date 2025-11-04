@@ -20,17 +20,6 @@ const LANGUAGE_LABELS: Record<string, string> = {
   es: 'Español',
 };
 
-const LANGUAGE_FLAGS: Record<string, string> = {
-  default: '🇨🇳',
-  en: '🇺🇸',
-  zh: '🇨🇳',
-  ja: '🇯🇵',
-  ko: '🇰🇷',
-  fr: '🇫🇷',
-  de: '🇩🇪',
-  es: '🇪🇸',
-};
-
 export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   baseSlug,
   currentLanguage,
@@ -51,7 +40,6 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         {availableLanguages.map((lang) => {
           const isActive = lang === currentLanguage;
           const label = LANGUAGE_LABELS[lang] || lang.toUpperCase();
-          const flag = LANGUAGE_FLAGS[lang] || '🌐';
           const href = lang === 'default' ? `/posts/${baseSlug}` : `/posts/${baseSlug}_${lang}`;
 
           return (
@@ -59,7 +47,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               key={lang}
               href={href}
               className={`
-                inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+                inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
                 transition-all duration-200
                 ${
                   isActive
@@ -68,7 +56,6 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                 }
               `}
             >
-              <span className="text-sm">{flag}</span>
               <span>{label}</span>
               {isActive && (
                 <Icon icon="mdi:check" className="text-xs" />

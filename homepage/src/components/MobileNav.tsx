@@ -5,30 +5,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-// Types
-interface MenuItem {
-  title: string;
-  path: string;
-  icon: string;
-  subMenu?: SubMenuItem[];
-  exclude?: string[];
-}
-
-interface SubMenuItem {
-  path: string;
-  title: string;
-  icon?: string;
-}
+import { clsxm } from "@/lib/helper";
+import { type MenuItem } from "@/data/navigation";
+import { Z_INDEX } from "@/constants/spacing";
 
 interface MobileNavProps {
   menuConfig: MenuItem[];
   forceDarkMode?: boolean;
 }
-
-// Utility
-const clsxm = (...classes: (string | boolean | undefined)[]) =>
-  classes.filter(Boolean).join(" ");
 
 export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false); // controls portal mount
@@ -63,9 +47,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
     }
   };
 
-  useEffect(() => {
-    console.log(dragY);
-  }, [dragY]);
+  // Removed debug console.log
 
   return (
     <>
@@ -95,7 +77,8 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100]"
+                    className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+                    style={{ zIndex: Z_INDEX.MOBILE_NAV }}
                     onClick={closeMenu} // overlay triggers slide-down
                   />
                 </Dialog.Overlay>
@@ -120,13 +103,14 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     onDrag={handleDrag}
                     onDragEnd={handleDragEnd}
                     className={clsxm(
-                      "fixed left-0 right-0 z-[101] rounded-t-2xl shadow-2xl flex flex-col",
+                      "fixed left-0 right-0 rounded-t-2xl shadow-2xl flex flex-col",
                       forceDarkMode ? "bg-[#1d1d1f]" : "bg-white dark:bg-zinc-900"
                     )}
                     style={{
                       touchAction: "none",
                       bottom: 0,
                       maxHeight: "85vh",
+                      zIndex: Z_INDEX.TOOLTIP,
                     }}
                   >
                     {/* Drag Handle */}

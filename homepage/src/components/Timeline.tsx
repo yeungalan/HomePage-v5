@@ -7,81 +7,10 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 import { ActivityCard } from './ActivityCard'
 import { softBouncePreset } from '@/constants/spring'
-
-interface Experience {
-  id: string
-  type: 'work' | 'education' | 'milestone'
-  title: string
-  organization?: string
-  startDate: string
-  endDate: string
-  icon: string
-  isOngoing?: boolean
-}
-
-const experiences: Experience[] = [
-  {
-    id: '1',
-    type: 'work',
-    title: 'Software Engineer I',
-    organization: 'Amazon Web Services',
-    startDate: 'Sept 2024',
-    endDate: 'Present',
-    icon: 'mdi:aws',
-    isOngoing: true
-  },
-  {
-    id: '2',
-    type: 'work',
-    title: 'Cloud Engineer I',
-    organization: 'Amazon Web Services',
-    startDate: 'Sept 2023',
-    endDate: 'Sept 2024',
-    icon: 'mdi:aws'
-  },
-  {
-    id: '3',
-    type: 'education',
-    title: 'Computer Engineering (GPA 3.75/4.00)',
-    organization: 'University of Washington - Seattle Campus',
-    startDate: 'June 2021',
-    endDate: 'June 2023',
-    icon: 'mdi:school'
-  },
-    {
-    id: '4',
-    type: 'education',
-    title: 'Engineering',
-    organization: 'The Chinese University of Hong Kong',
-    startDate: 'Sept 2019',
-    endDate: 'July 2020',
-    icon: 'mdi:school'
-  },
-    {
-    id: '5',
-    type: 'milestone',
-    title: 'Moved to America',
-    startDate: '2019',
-    endDate: '2019',
-    icon: 'mdi:airplane'
-  },
-  {
-    id: '6',
-    type: 'work',
-    title: 'imuslab',
-    startDate: '2018',
-    endDate: '2023',
-    icon: 'mdi:office-building'
-  },
-  {
-    id: '7',
-    type: 'education',
-    title: 'High school graduation',
-    startDate: '2018',
-    endDate: '2018',
-    icon: 'mdi:school-outline'
-  }
-]
+import { EXPERIENCES, sortExperiencesByDate } from '@/data/experiences'
+import { BRAND_COLORS } from '@/constants/colors'
+import { ANIMATION_DELAYS, calculateStaggerDelay } from '@/constants/timing'
+import { COMPONENT_HEIGHTS, Z_INDEX } from '@/constants/spacing'
 
 const isLoading = false
 
@@ -93,30 +22,7 @@ export default function Timeline() {
   const [isAtBottom, setIsAtBottom] = useState(false)
   const [canScroll, setCanScroll] = useState(false)
 
-  const flatData = useMemo(() => {
-    return [...experiences].sort((a, b) => {
-      // Convert date strings to comparable format
-      const parseDate = (dateStr: string) => {
-        if (dateStr === 'Present') return '9999-12'
-        // Handle formats like "Sept 2024", "June 2021", or just "2019"
-        const monthMap: { [key: string]: string } = {
-          'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
-          'May': '05', 'June': '06', 'Jul': '07', 'Aug': '08',
-          'Sept': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
-        }
-        const parts = dateStr.split(' ')
-        if (parts.length === 2) {
-          const [month, year] = parts
-          return `${year}-${monthMap[month] || '01'}`
-        }
-        return `${dateStr}-01` // For year-only dates
-      }
-
-      const dateA = parseDate(a.startDate)
-      const dateB = parseDate(b.startDate)
-      return dateB.localeCompare(dateA) // Most recent first
-    })
-  }, [])
+  const flatData = useMemo(() => sortExperiencesByDate(EXPERIENCES), [])
 
   useEffect(() => {
     const updateHeight = () => {
@@ -143,7 +49,6 @@ export default function Timeline() {
     }
   }, [])
 
-  // Handle scroll detection for gradient effects
   // Handle scroll detection for gradient effects
   useEffect(() => {
     const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
@@ -217,26 +122,31 @@ export default function Timeline() {
         <ScrollArea.Root ref={scrollAreaRef} className="relative overflow-hidden" style={{ height: leftSideHeight > 0 ? `${leftSideHeight}px` : 'auto' }}>
           {canScroll && !isAtTop && (
             <div
-              className="absolute top-0 left-0 right-0 z-10 pointer-events-none h-[60px]
+              className="absolute top-0 left-0 right-0 pointer-events-none
                         bg-[linear-gradient(to_bottom,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
                         dark:bg-[linear-gradient(to_bottom,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
+              style={{ zIndex: Z_INDEX.NODES, height: `${COMPONENT_HEIGHTS.GRADIENT_HEIGHT}px` }}
             />
           )}
 
           {canScroll && !isAtBottom && (
             <div
-              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none h-[60px]
+              className="absolute bottom-0 left-0 right-0 pointer-events-none
                         bg-[linear-gradient(to_top,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
                         dark:bg-[linear-gradient(to_top,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
+              style={{ zIndex: Z_INDEX.NODES, height: `${COMPONENT_HEIGHTS.GRADIENT_HEIGHT}px` }}
             />
           )}
 
           <ScrollArea.Viewport className="w-full h-full">
             <div className="relative">
               {/* Timeline line - positioned to go through the center of the icons */}
-              <div 
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px] bg-gradient-to-b from-[#33A6B8] via-[#33A6B8] to-[#33A6B8] dark:from-[#33A6B8] dark:via-[#33A6B8] dark:to-p[#33A6B8]" 
-                style={{ height: 'calc(100% - 45px)' }}
+              <div
+                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
+                style={{
+                  height: 'calc(100% - 45px)',
+                  background: `linear-gradient(to bottom, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary})`,
+                }}
               />
               <div
                 className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
@@ -244,8 +154,8 @@ export default function Timeline() {
                   backgroundImage: `
                     repeating-linear-gradient(
                       to bottom,
-                      #33A6B8, 
-                      #33A6B8 4px,
+                      ${BRAND_COLORS.primary},
+                      ${BRAND_COLORS.primary} 4px,
                       ${typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(24,24,27,0.8)' : 'transparent'} 4px,
                       transparent 8px
                     )
@@ -261,7 +171,7 @@ export default function Timeline() {
                       key={`${activity.type}-${activity.id}`}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1, ...softBouncePreset }}
+                      transition={{ delay: calculateStaggerDelay(index, ANIMATION_DELAYS.STAGGER_MEDIUM), ...softBouncePreset }}
                       viewport={{ once: true }}
                       className="flex min-w-0 relative"
                     >

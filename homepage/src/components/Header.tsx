@@ -5,65 +5,14 @@ import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
-
-// Types
-interface MenuItem {
-  title: string;
-  path: string;
-  icon: string;
-  subMenu?: SubMenuItem[];
-  exclude?: string[];
-}
-
-interface SubMenuItem {
-  path: string;
-  title: string;
-  icon?: string;
-}
+import { clsxm } from '@/lib/helper';
+import { HEADER_MENU_CONFIG, type MenuItem, type SubMenuItem } from '@/data/navigation';
+import { ANIMATION_DELAYS, ANIMATION_DURATIONS } from '@/constants/timing';
+import { Z_INDEX } from '@/constants/spacing';
 
 interface HeaderProps {
   forceDarkMode?: boolean;
 }
-
-// Mock data
-const mockHeaderMenuConfig: MenuItem[] = [
-  {
-    title: 'Home',
-    path: '/',
-    icon: 'cbi:target',
-  },
-  {
-    title: 'Places I visited',
-    path: '/world',
-    icon: 'mdi:world',
-  },
-  {
-    title: 'Goals',
-    path: '/goals',
-    icon: 'mage:goals',
-    exclude: ['/notes/topics'],
-  },
-  {
-    title: 'Posts',
-    path: '/posts',
-    icon: 'mage:edit-pen',
-    exclude: ['/posts'],
-  },
-  {
-    title: 'More',
-    icon: 'mingcute:settings-3-line',
-    path: '#',
-    subMenu: [
-      { title: 'Projects', icon: 'mingcute:flask-line', path: '/projects' },
-      { title: 'Friends Link', icon: 'mingcute:earth-line', path: '/friends' },
-    ],
-  },
-];
-
-// Utility function
-const clsxm = (...classes: (string | boolean | undefined)[]) => {
-  return classes.filter(Boolean).join(' ');
-};
 
 // Animation variants
 const popoverVariants = {
@@ -83,13 +32,13 @@ const popoverVariants = {
       mass: 0.8
     }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     y: -10,
     scale: 0.95,
-    transition: { 
-      type: 'tween', 
-      duration: 0.15 
+    transition: {
+      type: 'tween',
+      duration: ANIMATION_DURATIONS.QUICK
     }
   }
 };
@@ -100,7 +49,7 @@ const itemVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      delay: index * 0.05,
+      delay: index * ANIMATION_DELAYS.STAGGER_SMALL,
       type: 'spring',
       stiffness: 400,
       damping: 25
@@ -139,13 +88,14 @@ const MenuPopover = ({
             animate="animate"
             exit="exit"
             className={clsxm(
-              'absolute top-full left-0 mt-2 py-2 min-w-[200px] z-[99]',
+              'absolute top-full left-0 mt-2 py-2 min-w-[200px]',
               'rounded-xl backdrop-blur-md',
               'border shadow-lg focus-visible:ring-0 outline-none',
               forceDarkMode
                 ? 'bg-[#1d1d1f]/90 border-zinc-100/10 shadow-zinc-950/50'
                 : 'bg-white/80 dark:bg-neutral-900/80 border-zinc-900/5 shadow-zinc-800/5 dark:border-zinc-100/10'
             )}
+            style={{ zIndex: Z_INDEX.HEADER }}
           >
             {subMenu.map((item, index) => (
               <motion.div
@@ -296,7 +246,7 @@ const DesktopNav = ({
           ? 'text-zinc-200'
           : 'text-zinc-800 dark:text-zinc-200'
       )}>
-        {mockHeaderMenuConfig.map((section) => {
+        {HEADER_MENU_CONFIG.map((section) => {
           const subItemActive = section.subMenu?.find(item => 
             item.path === pathname || pathname.slice(1) === item.path
           );
@@ -327,7 +277,7 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
   const pathname = usePathname();
 
   // Check if "Places I visited" tab is active
-  const placesSection = mockHeaderMenuConfig.find(item => item.path === '/world');
+  const placesSection = HEADER_MENU_CONFIG.find(item => item.path === '/world');
   const isPlacesActive = pathname === '/world' || 
     pathname.startsWith('/world/') ||
     placesSection?.subMenu?.some(item => 
@@ -349,7 +299,7 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
 
   return (
     <div className={clsxm(
-      'fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-200',
+      'fixed top-0 left-0 right-0 h-16 transition-all duration-200',
       'backdrop-blur-md',
       forceDarkMode
         ? 'bg-[#1d1d1f]/60'
@@ -358,7 +308,9 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
       forceDarkMode
         ? 'border-zinc-100/10'
         : 'border-zinc-900/5 dark:border-zinc-100/10'
-    )}>      
+    )}
+    style={{ zIndex: Z_INDEX.POPOVER }}
+    >
       <div className="relative mx-auto flex items-center justify-between h-full max-w-7xl px-4 sm:px-8">
         {/* Desktop Navigation - hidden on mobile */}
         <div className="hidden md:flex flex-1 items-center justify-center">
@@ -368,8 +320,8 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
         {/* Mobile Navigation - visible on mobile */}
         <div className="flex md:hidden items-center justify-between w-full">
           {/* Mobile Menu Button - Left Side */}
-          <MobileNav 
-            menuConfig={mockHeaderMenuConfig} 
+          <MobileNav
+            menuConfig={HEADER_MENU_CONFIG}
             forceDarkMode={forceDarkMode}
           />
 

@@ -1,9 +1,6 @@
-"use client"
 import dynamic from 'next/dynamic';
 
-
 const WorldMap = dynamic(() => import('@/components/World'), {
-  ssr: false,
   loading: () => <div>Loading map...</div> // Optional loading component
 });
 

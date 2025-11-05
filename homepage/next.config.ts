@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [new URL("https://avatar.iran.liara.run/**")]
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: false,

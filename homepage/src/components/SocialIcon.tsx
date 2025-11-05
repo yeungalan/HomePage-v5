@@ -126,9 +126,9 @@ export const SocialIcon = memo((props: SocialIconProps) => {
 
   if (!name) return null
   const href = hrefFn(id)
-  
-  const IconComponent = typeof iconData === 'string' 
-    ? <Icon icon={iconData} /> 
+
+  const IconComponent = typeof iconData === 'string'
+    ? <Icon icon={iconData} />
     : iconData()
 
   return (

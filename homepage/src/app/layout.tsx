@@ -6,6 +6,7 @@ import 'mingcute_icon/font/Mingcute.css'
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
 import StatsComponent from "@/components/StatComponent";
+import { IconifyConfig } from "@/components/IconifyConfig";
 import Head from "next/head";
 
 const geistSans = Geist({
@@ -50,7 +51,8 @@ export default function RootLayout({
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >
-<NextThemeProvider
+        <IconifyConfig />
+        <NextThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem

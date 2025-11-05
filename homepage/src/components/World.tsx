@@ -6,7 +6,7 @@ import indexBy from "index-array-by";
 import { TextureLoader, ShaderMaterial, Vector2 } from "three";
 import { motion } from "framer-motion";
 import { FullPageLoading } from "./Loading";
-import { TimeControl, Legend, ZoomIndicator, TimeDisplay, type TimeMode } from "./World";
+import { TimeControl, Legend, ZoomIndicator, TimeDisplay, type TimeMode } from "./World/index";
 import { airportParse, routeParse, extractTrainStations, type Airport, type Route, type TrainPath } from "@/utils/worldDataParsers";
 import { dayNightShader, sunPosAt } from "@/utils/worldShaders";
 import { clusterPoints, type ClusteredPoint } from "@/utils/worldClustering";

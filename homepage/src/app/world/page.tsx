@@ -1,6 +1,9 @@
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
-const WorldMap = dynamic(() => import('@/components/World'), {
+// Disable static generation for this page to enable SSR
+export const dynamic = 'force-dynamic';
+
+const WorldMap = dynamicImport(() => import('@/components/World'), {
   loading: () => <div>Loading map...</div> // Optional loading component
 });
 

@@ -1,4 +1,5 @@
-import { getSmoothStepPath } from '@xyflow/react';
+import { getSmoothStepPath, Position, type EdgeProps } from '@xyflow/react';
+import type { CSSProperties } from 'react';
 
 interface CustomEdgeProps {
   id: string;
@@ -6,19 +7,11 @@ interface CustomEdgeProps {
   sourceY: number;
   targetX: number;
   targetY: number;
-  sourcePosition: any;
-  targetPosition: any;
-  style?: {
-    strokeWidth?: number;
-    stroke?: string;
-    strokeDasharray?: string;
-  };
+  sourcePosition: Position;
+  targetPosition: Position;
+  style?: CSSProperties;
   label?: string;
-  labelStyle?: {
-    fontSize?: number;
-    fontWeight?: number;
-    fill?: string;
-  };
+  labelStyle?: CSSProperties;
 }
 
 /**
@@ -46,15 +39,19 @@ export const CustomEdge: React.FC<CustomEdgeProps> = ({
     borderRadius: 8,
   });
 
+  const strokeWidth = typeof style?.strokeWidth === 'number' ? style.strokeWidth : 2;
+  const stroke = typeof style?.stroke === 'string' ? style.stroke : '#94a3b8';
+  const strokeDasharray = typeof style?.strokeDasharray === 'string' ? style.strokeDasharray : '8,8';
+
   return (
     <>
       <path
         id={id}
         className="react-flow__edge-path"
         d={edgePath}
-        strokeWidth={style?.strokeWidth || 2}
-        stroke={style?.stroke || '#94a3b8'}
-        strokeDasharray={style?.strokeDasharray || '8,8'}
+        strokeWidth={strokeWidth}
+        stroke={stroke}
+        strokeDasharray={strokeDasharray}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -74,9 +71,10 @@ export const CustomEdge: React.FC<CustomEdgeProps> = ({
             x={labelX}
             y={labelY + 4}
             style={{
-              fontSize: labelStyle?.fontSize || 11,
-              fontWeight: labelStyle?.fontWeight || 600,
-              fill: labelStyle?.fill || '#475569',
+              fontSize: 11,
+              fontWeight: 600,
+              fill: '#475569',
+              ...labelStyle,
             }}
             textAnchor="middle"
           >

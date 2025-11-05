@@ -2,7 +2,7 @@ import { clsxm } from '@/lib/helper'
 
 import { FunctionComponent, ReactNode } from 'react';
 
-type Component<P = {}> = FunctionComponent<{
+type Component<P = Record<string, unknown>> = FunctionComponent<{
     className?: string;
 } & {
     children?: ReactNode | undefined;

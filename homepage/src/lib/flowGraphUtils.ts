@@ -2,6 +2,8 @@
  * Utility functions for FlowGraph component
  */
 
+import type { Node } from '@xyflow/react';
+
 interface Service {
   serviceId: string;
   serviceName: string;
@@ -75,7 +77,7 @@ export function configToFlow(config: FlowGraphConfig) {
   });
 
   // Calculate positions based on number of tiers
-  const nodes: any[] = [];
+  const nodes: Node[] = [];
   const startX = 100;
   const tierSpacing = 400;
 
@@ -156,7 +158,7 @@ export function configToFlow(config: FlowGraphConfig) {
         fontSize: 11,
         zIndex: 5,
       },
-      labelBgPadding: [8, 4],
+      labelBgPadding: [8, 4] as [number, number],
       labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
     };
   });

@@ -27,7 +27,7 @@ export interface MenuItem {
 export interface FooterLink {
   title: string;
   path: string;
-  icon: any; // React component type
+  icon: React.ComponentType; // React component type
 }
 
 /**

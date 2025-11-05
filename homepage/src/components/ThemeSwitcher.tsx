@@ -95,7 +95,7 @@ const ThemeIndicator = () => {
   const isClient = useIsClient()
   if (!isClient || !theme) return null
 
-  const leftMap = { light: 4, system: 36, dark: 68 }
+  const leftMap: Record<string, number> = { light: 4, system: 36, dark: 68 }
 
   return (
     <motion.div

@@ -80,7 +80,7 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
         }
 
         // Simple sheet component for mobile (replaces PresentSheet)
-        const PresentSheet = ({ content, children }) => {
+        const PresentSheet = ({ content, children }: { content: React.ReactNode; children: React.ReactNode }) => {
           const [open, setOpen] = useState(false)
           
           return (
@@ -99,7 +99,7 @@ const { useState, useEffect, useRef, useCallback, useMemo, createContext, useCon
           )
         }
 
-        const PopoverActionContext = createContext(null)
+        const PopoverActionContext = createContext<{ close: () => void } | null>(null)
 
         const usePopoverAction = () => useContext(PopoverActionContext)
 

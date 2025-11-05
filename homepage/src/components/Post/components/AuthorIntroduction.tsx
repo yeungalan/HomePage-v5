@@ -42,11 +42,11 @@ export const AuthorIntroduction: React.FC = () => {
           </h3>
           <p className="text-base text-gray-600 mb-3 leading-relaxed dark:text-white">
             {category?.caption ||
-              "Hi! I'm a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey."}
+              "Hi! I&apos;m a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey."}
           </p>
           {!category?.caption && (
             <p className="text-base text-gray-600 mb-4 leading-relaxed">
-              When I'm not coding, you can find me reading, experimenting with new
+              When I&apos;m not coding, you can find me reading, experimenting with new
               ideas, or contributing to open-source projects. Feel free to connect
               with me!
             </p>

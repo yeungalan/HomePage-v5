@@ -158,7 +158,7 @@ export function configToFlow(config: FlowGraphConfig) {
         fontSize: 11,
         zIndex: 5,
       },
-      labelBgPadding: [8, 4],
+      labelBgPadding: [8, 4] as [number, number],
       labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
     };
   });

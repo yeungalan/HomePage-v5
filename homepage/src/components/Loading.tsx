@@ -9,7 +9,7 @@ export type LoadingProps = {
   useDefaultLoadingText?: boolean
 }
 
-type Component<P = {}> = React.FunctionComponent<{
+type Component<P = Record<string, never>> = React.FunctionComponent<{
     className?: string;
 } & {
     children?: React.ReactNode | undefined;

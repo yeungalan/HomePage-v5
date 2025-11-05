@@ -1,4 +1,4 @@
-import { getSmoothStepPath } from '@xyflow/react';
+import { getSmoothStepPath, Position } from '@xyflow/react';
 
 interface CustomEdgeProps {
   id: string;
@@ -6,8 +6,8 @@ interface CustomEdgeProps {
   sourceY: number;
   targetX: number;
   targetY: number;
-  sourcePosition: any;
-  targetPosition: any;
+  sourcePosition: Position;
+  targetPosition: Position;
   style?: {
     strokeWidth?: number;
     stroke?: string;

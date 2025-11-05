@@ -4,8 +4,7 @@ import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView"
 import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { LotteryText } from "@/components/LotteryText";
 import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
-import { FullPageLoading } from "../Loading";
+import { createElement } from 'react'
 
 const softBouncePreset = {
   type: "spring" as const,
@@ -14,13 +13,13 @@ const softBouncePreset = {
 }
 
 const htmlElements = [
-  <span className="font-bold text-purple-600 dark:text-cyan-400">Traveller</span>,
-  <span className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 hover:dark:bg-gray-700 transition-colors duration-200">
+  <span key="traveller" className="font-bold text-purple-600 dark:text-cyan-400">Traveller</span>,
+  <span key="engineer" className="font-medium mx-2 text-3xl rounded p-1 bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 hover:dark:bg-gray-700 transition-colors duration-200">
     &lt;Software Engineer&nbsp;/&gt;<span className="inline-block w-0.5 h-[0.9em] bg-current ml-1 align-middle animate-[blink_1s_ease-in-out_infinite]"></span>
   </span>,
-  <span className="font-bold text-green-600 dark:text-teal-400">Photographer</span>,
-  <span className="font-bold text-orange-600 dark:text-blue-400">Adventurer</span>,
-  <span className="font-bold text-blue-600 dark:text-indigo-400">Security Researcher</span>,
+  <span key="photographer" className="font-bold text-green-600 dark:text-teal-400">Photographer</span>,
+  <span key="adventurer" className="font-bold text-orange-600 dark:text-blue-400">Adventurer</span>,
+  <span key="security" className="font-bold text-blue-600 dark:text-indigo-400">Security Researcher</span>,
 ];
 
 const greetings = {
@@ -80,14 +79,6 @@ const titleAnimateD =
   }, 0) * 50;
 
 export default function GiantGreetText() {
-  const [mounted, setMounted] = useState(false)
-  
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  //if (!mounted) return <FullPageLoading/>
-
   return (
     <div className="px-4 sm:px-6 lg:px-0">
       <motion.div

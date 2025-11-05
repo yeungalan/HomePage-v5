@@ -5,6 +5,97 @@ import { useEffect, useState } from 'react'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
 import type { Container, ISourceOptions } from '@tsparticles/engine'
+import {
+  PARTICLE_COLORS,
+  PARTICLE_LINK_OPACITY,
+  PARTICLE_CONFIG,
+} from '@/constants/particles'
+
+/**
+ * Creates particle configuration options
+ */
+const createParticleOptions = (
+  particleColor: string,
+  linkOpacity: number
+): ISourceOptions => ({
+  fullScreen: {
+    enable: false
+  },
+  background: {
+    color: {
+      value: 'transparent'
+    }
+  },
+  fpsLimit: PARTICLE_CONFIG.FPS_LIMIT,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: false
+      },
+      onHover: {
+        enable: true,
+        mode: 'repulse'
+      }
+    },
+    modes: {
+      repulse: {
+        distance: PARTICLE_CONFIG.REPULSE_DISTANCE,
+        duration: PARTICLE_CONFIG.REPULSE_DURATION,
+        speed: PARTICLE_CONFIG.REPULSE_SPEED,
+        easing: 'ease-out-quad'
+      }
+    }
+  },
+  particles: {
+    color: {
+      value: particleColor
+    },
+    links: {
+      color: particleColor,
+      distance: PARTICLE_CONFIG.LINK_DISTANCE,
+      enable: true,
+      opacity: linkOpacity,
+      width: PARTICLE_CONFIG.LINK_WIDTH
+    },
+    move: {
+      direction: 'none',
+      enable: true,
+      outModes: {
+        default: 'bounce'
+      },
+      random: true,
+      speed: PARTICLE_CONFIG.MOVE_SPEED,
+      straight: false
+    },
+    number: {
+      density: {
+        enable: true
+      },
+      value: PARTICLE_CONFIG.PARTICLE_COUNT
+    },
+    opacity: {
+      value: {
+        min: PARTICLE_CONFIG.OPACITY_MIN,
+        max: PARTICLE_CONFIG.OPACITY_MAX
+      },
+      animation: {
+        enable: true,
+        speed: PARTICLE_CONFIG.OPACITY_ANIMATION_SPEED,
+        sync: false
+      }
+    },
+    shape: {
+      type: 'circle'
+    },
+    size: {
+      value: {
+        min: PARTICLE_CONFIG.SIZE_MIN,
+        max: PARTICLE_CONFIG.SIZE_MAX
+      }
+    }
+  },
+  detectRetina: true
+})
 
 export function ParticlesBackground() {
   const [init, setInit] = useState(false)
@@ -21,14 +112,14 @@ export function ParticlesBackground() {
     const checkTheme = () => {
       setIsDark(document.documentElement.classList.contains('dark'))
     }
-    
+
     checkTheme()
 
     // Watch for theme changes
     const observer = new MutationObserver(checkTheme)
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class']
     })
 
     return () => observer.disconnect()
@@ -42,8 +133,11 @@ export function ParticlesBackground() {
     return null
   }
 
-  const particleColor = isDark ? '#64748b' : '#94a3b8'
-  const linkOpacity = isDark ? 0.2 : 0.15
+  const particleColor = isDark ? PARTICLE_COLORS.DARK : PARTICLE_COLORS.LIGHT
+  const linkOpacity = isDark
+    ? PARTICLE_LINK_OPACITY.DARK
+    : PARTICLE_LINK_OPACITY.LIGHT
+  const particleOptions = createParticleOptions(particleColor, linkOpacity)
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10">
@@ -53,79 +147,7 @@ export function ParticlesBackground() {
           id="tsparticles-top"
           className="h-full w-full"
           particlesLoaded={particlesLoaded}
-          options={{
-            fullScreen: {
-              enable: false,
-            },
-            background: {
-              color: {
-                value: 'transparent',
-              },
-            },
-            fpsLimit: 60,
-            interactivity: {
-              events: {
-                onClick: {
-                  enable: false,
-                },
-                onHover: {
-                  enable: true,
-                  mode: 'repulse',
-                },
-              },
-              modes: {
-                repulse: {
-                  distance: 120,
-                  duration: 1.5,
-                  speed: 0.3,
-                  easing: 'ease-out-quad',
-                },
-              },
-            },
-            particles: {
-              color: {
-                value: particleColor,
-              },
-              links: {
-                color: particleColor,
-                distance: 150,
-                enable: true,
-                opacity: linkOpacity,
-                width: 1,
-              },
-              move: {
-                direction: 'none',
-                enable: true,
-                outModes: {
-                  default: 'bounce',
-                },
-                random: true,
-                speed: 0.3,
-                straight: false,
-              },
-              number: {
-                density: {
-                  enable: true,
-                },
-                value: 20,
-              },
-              opacity: {
-                value: { min: 0.3, max: 0.5 },
-                animation: {
-                  enable: true,
-                  speed: 0.5,
-                  sync: false,
-                },
-              },
-              shape: {
-                type: 'circle',
-              },
-              size: {
-                value: { min: 2, max: 3 },
-              },
-            },
-            detectRetina: true,
-          } as ISourceOptions}
+          options={particleOptions}
         />
       </div>
 
@@ -134,79 +156,7 @@ export function ParticlesBackground() {
         <Particles
           id="tsparticles-bottom"
           className="h-full w-full"
-          options={{
-            fullScreen: {
-              enable: false,
-            },
-            background: {
-              color: {
-                value: 'transparent',
-              },
-            },
-            fpsLimit: 60,
-            interactivity: {
-              events: {
-                onClick: {
-                  enable: false,
-                },
-                onHover: {
-                  enable: true,
-                  mode: 'repulse',
-                },
-              },
-              modes: {
-                repulse: {
-                  distance: 120,
-                  duration: 1.5,
-                  speed: 0.3,
-                  easing: 'ease-out-quad',
-                },
-              },
-            },
-            particles: {
-              color: {
-                value: particleColor,
-              },
-              links: {
-                color: particleColor,
-                distance: 150,
-                enable: true,
-                opacity: linkOpacity,
-                width: 1,
-              },
-              move: {
-                direction: 'none',
-                enable: true,
-                outModes: {
-                  default: 'bounce',
-                },
-                random: true,
-                speed: 0.3,
-                straight: false,
-              },
-              number: {
-                density: {
-                  enable: true,
-                },
-                value: 20,
-              },
-              opacity: {
-                value: { min: 0.3, max: 0.5 },
-                animation: {
-                  enable: true,
-                  speed: 0.5,
-                  sync: false,
-                },
-              },
-              shape: {
-                type: 'circle',
-              },
-              size: {
-                value: { min: 2, max: 3 },
-              },
-            },
-            detectRetina: true,
-          } as ISourceOptions}
+          options={particleOptions}
         />
       </div>
 
@@ -215,79 +165,7 @@ export function ParticlesBackground() {
         <Particles
           id="tsparticles-left"
           className="h-full w-full"
-          options={{
-            fullScreen: {
-              enable: false,
-            },
-            background: {
-              color: {
-                value: 'transparent',
-              },
-            },
-            fpsLimit: 60,
-            interactivity: {
-              events: {
-                onClick: {
-                  enable: false,
-                },
-                onHover: {
-                  enable: true,
-                  mode: 'repulse',
-                },
-              },
-              modes: {
-                repulse: {
-                  distance: 120,
-                  duration: 1.5,
-                  speed: 0.3,
-                  easing: 'ease-out-quad',
-                },
-              },
-            },
-            particles: {
-              color: {
-                value: particleColor,
-              },
-              links: {
-                color: particleColor,
-                distance: 150,
-                enable: true,
-                opacity: linkOpacity,
-                width: 1,
-              },
-              move: {
-                direction: 'none',
-                enable: true,
-                outModes: {
-                  default: 'bounce',
-                },
-                random: true,
-                speed: 0.3,
-                straight: false,
-              },
-              number: {
-                density: {
-                  enable: true,
-                },
-                value: 20,
-              },
-              opacity: {
-                value: { min: 0.3, max: 0.5 },
-                animation: {
-                  enable: true,
-                  speed: 0.5,
-                  sync: false,
-                },
-              },
-              shape: {
-                type: 'circle',
-              },
-              size: {
-                value: { min: 2, max: 3 },
-              },
-            },
-            detectRetina: true,
-          } as ISourceOptions}
+          options={particleOptions}
         />
       </div>
 
@@ -296,79 +174,7 @@ export function ParticlesBackground() {
         <Particles
           id="tsparticles-right"
           className="h-full w-full"
-          options={{
-            fullScreen: {
-              enable: false,
-            },
-            background: {
-              color: {
-                value: 'transparent',
-              },
-            },
-            fpsLimit: 60,
-            interactivity: {
-              events: {
-                onClick: {
-                  enable: false,
-                },
-                onHover: {
-                  enable: true,
-                  mode: 'repulse',
-                },
-              },
-              modes: {
-                repulse: {
-                  distance: 120,
-                  duration: 1.5,
-                  speed: 0.3,
-                  easing: 'ease-out-quad',
-                },
-              },
-            },
-            particles: {
-              color: {
-                value: particleColor,
-              },
-              links: {
-                color: particleColor,
-                distance: 150,
-                enable: true,
-                opacity: linkOpacity,
-                width: 1,
-              },
-              move: {
-                direction: 'none',
-                enable: true,
-                outModes: {
-                  default: 'bounce',
-                },
-                random: true,
-                speed: 0.3,
-                straight: false,
-              },
-              number: {
-                density: {
-                  enable: true,
-                },
-                value: 20,
-              },
-              opacity: {
-                value: { min: 0.3, max: 0.5 },
-                animation: {
-                  enable: true,
-                  speed: 0.5,
-                  sync: false,
-                },
-              },
-              shape: {
-                type: 'circle',
-              },
-              size: {
-                value: { min: 2, max: 3 },
-              },
-            },
-            detectRetina: true,
-          } as ISourceOptions}
+          options={particleOptions}
         />
       </div>
     </div>

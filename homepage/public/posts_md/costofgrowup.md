@@ -34,3 +34,7 @@ So let's make the most of the remaining days and create more memories together.
 If you're reading this, don't forget about me :)
 
 I know moving isn't easy, and adapting to a new environment takes time. But I really hope you'll find more happiness in your new place by trying new things and embracing new experiences. I hope everything goes well for you and that you find what you're looking for on your journey ahead. If I get the chance, I'll definitely come visit! Good luck!
+
+さよーならまたいつか！
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5DNqESedFMk?si=qqrDHs6glcFHybja" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

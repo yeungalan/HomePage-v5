@@ -31,7 +31,7 @@ So let's make the most of the remaining days and create more memories together.
 
 ---
 
-# To my friends:
+## To my friends:
 
 If you're reading this, don't forget about me :)
 

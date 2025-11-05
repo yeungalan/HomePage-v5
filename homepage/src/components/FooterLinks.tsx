@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode, SVGProps } from 'react'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import Link from 'next/link'
 
-type Component<P = Record<string, never>> = FunctionComponent<{
+type Component<P = Record<string, unknown>> = FunctionComponent<{
   className?: string
 } & {
   children?: ReactNode | undefined

@@ -186,7 +186,7 @@ const FooterBottom = () => {
             }
           }}
         >
-          Rev. 2025 Oct 23 Release Candiate
+          Rev. 2025 Oct 23 Production
         </span>
       </div>
       <div>

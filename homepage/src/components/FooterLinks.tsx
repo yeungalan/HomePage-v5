@@ -1,5 +1,7 @@
+'use client'
+
 import { clsxm } from '@/lib/helper'
-import { FunctionComponent, ReactNode, SVGProps } from 'react'
+import { FunctionComponent, ReactNode, SVGProps, useState, useRef } from 'react'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import Link from 'next/link'
 
@@ -129,6 +131,41 @@ const FooterBottom = () => {
   const currentYear = new Date().getFullYear().toString()
   const { date = currentYear, icp } = otherInfo || {}
 
+  const [tapCount, setTapCount] = useState(0)
+  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const handleRevisionTap = () => {
+    // Clear existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current)
+    }
+
+    const newTapCount = tapCount + 1
+
+    if (newTapCount >= 5) {
+      // Toggle FPS monitor
+      const currentState = localStorage.getItem('fps-monitor-enabled') === 'true'
+      const newState = !currentState
+      localStorage.setItem('fps-monitor-enabled', String(newState))
+
+      // Dispatch custom event to notify StatComponent
+      window.dispatchEvent(new CustomEvent('fps-monitor-toggle', { detail: { enabled: newState } }))
+
+      // Show feedback
+      alert(newState ? 'FPS Monitor Enabled! 🎮' : 'FPS Monitor Disabled')
+
+      // Reset tap count
+      setTapCount(0)
+    } else {
+      setTapCount(newTapCount)
+
+      // Reset tap count after 2 seconds of no tapping
+      tapTimeoutRef.current = setTimeout(() => {
+        setTapCount(0)
+      }, 2000)
+    }
+  }
+
   return (
     <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
       <div>
@@ -138,7 +175,17 @@ const FooterBottom = () => {
         <span>
           <Divider className="inline" />
         </span>
-        <span className="mt-3 block md:mt-0 md:inline">
+        <span
+          className="mt-3 block md:mt-0 md:inline cursor-pointer select-none hover:opacity-80 transition-opacity"
+          onClick={handleRevisionTap}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleRevisionTap()
+            }
+          }}
+        >
           Rev. 2025 Oct 23 Release Candiate
         </span>
       </div>

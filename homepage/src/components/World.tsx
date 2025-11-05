@@ -18,7 +18,7 @@ const COUNTRY = "United States";
 const OPACITY = 1;
 const VELOCITY = 1; // minutes per frame
 
-const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]) => ({
+const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]: string[]) => ({
   airportId,
   name,
   city,

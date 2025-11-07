@@ -3,6 +3,7 @@
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
+import { Footer } from "@/components/Footer";
 
 // Example 3: Custom tiers/layers definition
 const infrastructureConfig = {
@@ -226,54 +227,7 @@ export default function Page() {
               <ThreeTierInfrastructure config={infrastructureConfig} />
             </BottomToUpTransitionView>
           </motion.div>
-
-          <footer className="bg-white dark:bg-neutral-900 border-t border-gray-200 dark:border-neutral-800 py-12 px-6">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                {/* About Section */}
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3">About</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Me我</p>
-                </div>
-
-                {/* Socials Section */}
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Socials</h3>
-                  <div className="flex gap-4">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                      GitHub
-                    </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                      Twitter
-                    </a>
-                  </div>
-                </div>
-
-                {/* More Section */}
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3">More</h3>
-                  <div className="flex gap-4">
-                    <a href="/friends" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                      Friends
-                    </a>
-                    <a href="/projects" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                      Projects
-                    </a>
-                    <a href="/status" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                      Status mointor
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Copyright and Info */}
-              <div className="border-t border-gray-200 dark:border-neutral-800 pt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-                <p className="mb-2">© 2016-2025 Alan Yeung & alanyeung.co and its affiliates.</p>
-                <p className="mb-2">Powered by Vercel and Next.js.</p>
-                <p>Project Atlas: Global Infrastructure Modernization Initiative 2025</p>
-              </div>
-            </div>
-          </footer>
+          <Footer />
         </>
     )
 }

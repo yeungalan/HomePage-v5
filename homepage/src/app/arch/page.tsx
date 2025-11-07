@@ -3,6 +3,7 @@
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
+import { Footer } from "@/components/Footer";
 
 // Example 3: Custom tiers/layers definition
 const infrastructureConfig = {
@@ -215,15 +216,18 @@ const infrastructureConfig = {
 export default function Page() {
 
     return (
-        <motion.div
-            className="min-w-screen bg-green"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <BottomToUpTransitionView duration={80}>
-            <ThreeTierInfrastructure config={infrastructureConfig} />
-          </BottomToUpTransitionView>
-        </motion.div>
+        <>
+          <motion.div
+              className="min-w-screen overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <BottomToUpTransitionView duration={80}>
+              <ThreeTierInfrastructure config={infrastructureConfig} />
+            </BottomToUpTransitionView>
+          </motion.div>
+          <Footer />
+        </>
     )
 }

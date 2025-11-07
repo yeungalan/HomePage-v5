@@ -3,7 +3,7 @@
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
-import { Footer } from "@/components/Footer";
+import { RealFooter } from "@/components/FooterLinks";
 
 // Example 3: Custom tiers/layers definition
 const infrastructureConfig = {
@@ -227,7 +227,7 @@ export default function Page() {
               <ThreeTierInfrastructure config={infrastructureConfig} />
             </BottomToUpTransitionView>
           </motion.div>
-          <Footer />
+          <RealFooter />
         </>
     )
 }

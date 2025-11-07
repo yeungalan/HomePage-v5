@@ -104,6 +104,15 @@ export function configToFlow(config: FlowGraphConfig) {
   // Convert dagre nodes to ReactFlow nodes
   const nodes: any[] = [];
 
+  // Calculate which nodes have incoming and outgoing connections
+  const hasIncoming = new Set<string>();
+  const hasOutgoing = new Set<string>();
+
+  connections.forEach(([source, target]) => {
+    hasOutgoing.add(source);
+    hasIncoming.add(target);
+  });
+
   // Add service nodes with dagre-calculated positions
   enrichedServices.forEach((service) => {
     const nodeData = dagreGraph.node(service.serviceId);
@@ -119,6 +128,8 @@ export function configToFlow(config: FlowGraphConfig) {
         iconBg: service.iconBg,
         iconColor: service.iconColor,
         health: service.status || 'healthy',
+        hasIncomingEdge: hasIncoming.has(service.serviceId),
+        hasOutgoingEdge: hasOutgoing.has(service.serviceId),
       },
       position: {
         x: nodeData.x - nodeWidth / 2,

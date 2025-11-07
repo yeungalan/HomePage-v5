@@ -32,7 +32,9 @@ const infrastructureConfig = {
       serviceName: "CloudFlare",
       serviceDescription: "CDN/DNS",
       tier: "Cloud Plane",
-      serviceType: "loadbalancer",
+      icon: "mdi:cloud-outline",
+      iconBg: "#fff7ed",
+      iconColor: "#f97316",
       status: "unknown"
     },
     {
@@ -61,9 +63,9 @@ const infrastructureConfig = {
       serviceDescription: "Cold Storage",
       tier: "Cloud Plane",
       serviceType: "database",
-      icon: "mdi:glacier",
-      iconBg: "#fff7ed",
-      iconColor: "#ea580c",
+      icon: "mdi:snowflake",
+      iconBg: "#dbeafe",
+      iconColor: "#0ea5e9",
       status: "unknown"
     },  
     // Home Infrastructure - Servers

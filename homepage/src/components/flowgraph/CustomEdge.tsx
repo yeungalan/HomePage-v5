@@ -1,88 +1,95 @@
-import { getSmoothStepPath } from '@xyflow/react';
-
-interface CustomEdgeProps {
-  id: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: any;
-  targetPosition: any;
-  style?: {
-    strokeWidth?: number;
-    stroke?: string;
-    strokeDasharray?: string;
-  };
-  label?: string;
-  labelStyle?: {
-    fontSize?: number;
-    fontWeight?: number;
-    fill?: string;
-  };
-}
+import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, Node } from '@xyflow/react';
+import { getSmartEdge } from '@tisoap/react-flow-smart-edge';
 
 /**
- * Custom Edge Component with smoothstep routing
+ * Custom Edge Component with smart routing that avoids nodes
  */
-export const CustomEdge: React.FC<CustomEdgeProps> = ({
-  id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
-  style,
-  label,
-  labelStyle,
-}) => {
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
+export const CustomEdge: React.FC<EdgeProps> = (props) => {
+  const {
+    id,
     sourceX,
     sourceY,
-    sourcePosition,
     targetX,
     targetY,
+    sourcePosition,
     targetPosition,
-    borderRadius: 8,
+    style,
+    label,
+    labelStyle,
+    labelBgStyle,
+    labelBgPadding,
+    data,
+  } = props;
+
+  // Try to get smart edge path that avoids nodes
+  const smartEdgeResult = getSmartEdge({
+    sourcePosition,
+    targetPosition,
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    nodes: (data?.nodes as Node[]) || [],
   });
+
+  // Fallback to bezier path if smart edge fails
+  let edgePath, labelX, labelY;
+
+  if (smartEdgeResult && 'svgPathString' in smartEdgeResult) {
+    edgePath = smartEdgeResult.svgPathString;
+    labelX = (sourceX + targetX) / 2;
+    labelY = (sourceY + targetY) / 2;
+  } else {
+    [edgePath, labelX, labelY] = getBezierPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+  }
 
   return (
     <>
-      <path
+      <BaseEdge
         id={id}
-        className="react-flow__edge-path"
-        d={edgePath}
-        strokeWidth={style?.strokeWidth || 2}
-        stroke={style?.stroke || '#94a3b8'}
-        strokeDasharray={style?.strokeDasharray || '8,8'}
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        path={edgePath}
+        style={{
+          strokeWidth: style?.strokeWidth || 2,
+          stroke: style?.stroke || '#94a3b8',
+          strokeDasharray: style?.strokeDasharray || '8,8',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          ...style,
+        }}
       />
       {label && label !== '-' && (
-        <g>
-          <rect
-            x={labelX - 20}
-            y={labelY - 10}
-            width={40}
-            height={20}
-            fill="white"
-            fillOpacity={0.9}
-            rx={4}
-          />
-          <text
-            x={labelX}
-            y={labelY + 4}
+        <EdgeLabelRenderer>
+          <div
             style={{
+              position: 'absolute',
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
               fontSize: labelStyle?.fontSize || 11,
               fontWeight: labelStyle?.fontWeight || 600,
-              fill: labelStyle?.fill || '#475569',
+              pointerEvents: 'all',
+              zIndex: 1000,
             }}
-            textAnchor="middle"
+            className="nodrag nopan"
           >
-            {label}
-          </text>
-        </g>
+            <div
+              style={{
+                background: labelBgStyle?.fill || 'white',
+                opacity: labelBgStyle?.fillOpacity || 0.9,
+                padding: '4px 8px',
+                borderRadius: '4px',
+                color: labelStyle?.fill || '#475569',
+              }}
+            >
+              {label}
+            </div>
+          </div>
+        </EdgeLabelRenderer>
       )}
     </>
   );

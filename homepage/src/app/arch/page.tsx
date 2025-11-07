@@ -1,13 +1,7 @@
 "use client"
 
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
-import { TextUpTransitionView } from "@/components/TextUpTransitionView";
-import WorldMap from "@/components/World";
 import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
-import {LotteryText} from "@/components/LotteryText";
-import Header from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import ThreeTierInfrastructure from "@/components/FlowGraph";
 
 // Example 3: Custom tiers/layers definition
@@ -221,8 +215,15 @@ const infrastructureConfig = {
 export default function Page() {
 
     return (
-        <div className="min-w-screen bg-green">
-          <ThreeTierInfrastructure config={infrastructureConfig} />
-        </div>
+        <motion.div
+            className="min-w-screen bg-green"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <BottomToUpTransitionView duration={80}>
+            <ThreeTierInfrastructure config={infrastructureConfig} />
+          </BottomToUpTransitionView>
+        </motion.div>
     )
 }

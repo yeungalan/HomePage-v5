@@ -99,12 +99,6 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  // Update edges with current nodes data for smart routing
-  const edgesWithNodes = useMemo(
-    () => edges.map((edge) => ({ ...edge, data: { ...edge.data, nodes } })),
-    [edges, nodes]
-  );
-
   return (
     <div style={{ width: '100vw', height: '100vh', background: '#f9fafb' }}>
       <style>{`
@@ -241,7 +235,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
 
       <ReactFlow
         nodes={nodes}
-        edges={edgesWithNodes}
+        edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}

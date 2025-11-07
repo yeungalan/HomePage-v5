@@ -1,8 +1,7 @@
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, Node } from '@xyflow/react';
-import { getSmartEdge } from '@tisoap/react-flow-smart-edge';
+import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from '@xyflow/react';
 
 /**
- * Custom Edge Component with smart routing that avoids nodes
+ * Custom Edge Component with L-shaped routing
  */
 export const CustomEdge: React.FC<EdgeProps> = (props) => {
   const {
@@ -21,34 +20,16 @@ export const CustomEdge: React.FC<EdgeProps> = (props) => {
     data,
   } = props;
 
-  // Try to get smart edge path that avoids nodes
-  const smartEdgeResult = getSmartEdge({
-    sourcePosition,
-    targetPosition,
+  // Use smooth step path for L-shaped lines
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
+    sourcePosition,
     targetX,
     targetY,
-    nodes: (data?.nodes as Node[]) || [],
+    targetPosition,
+    borderRadius: 8,
   });
-
-  // Fallback to bezier path if smart edge fails
-  let edgePath, labelX, labelY;
-
-  if (smartEdgeResult && 'svgPathString' in smartEdgeResult) {
-    edgePath = smartEdgeResult.svgPathString;
-    labelX = (sourceX + targetX) / 2;
-    labelY = (sourceY + targetY) / 2;
-  } else {
-    [edgePath, labelX, labelY] = getBezierPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-    });
-  }
 
   return (
     <>

@@ -52,9 +52,9 @@ const infrastructureConfig = {
       serviceName: "Vercel",
       serviceDescription: "Vercel Homepage",
       tier: "Cloud Plane",
-      icon: "mdi:cloud",
-      iconBg: "#dbeafe",
-      iconColor: "#2563eb",
+      icon: "mdi:triangle",
+      iconBg: "#0a0a0a",
+      iconColor: "#ffffff",
       status: "unknown"
     },
     {

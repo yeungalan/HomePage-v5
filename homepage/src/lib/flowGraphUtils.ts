@@ -104,34 +104,9 @@ export function configToFlow(config: FlowGraphConfig) {
   // Convert dagre nodes to ReactFlow nodes
   const nodes: any[] = [];
 
-  // Get all unique tiers and their positions
-  const tierPositions: Record<string, number[]> = {};
-
-  enrichedServices.forEach((service) => {
-    const nodeData = dagreGraph.node(service.serviceId);
-    const tier = service.tier;
-
-    if (!tierPositions[tier]) {
-      tierPositions[tier] = [];
-    }
-    tierPositions[tier].push(nodeData.x);
-  });
-
-  // Calculate average X position for each tier (for tier labels)
-  const tierLabelPositions: Record<string, { x: number; minY: number }> = {};
-  Object.entries(tierPositions).forEach(([tier, xPositions]) => {
-    const avgX = xPositions.reduce((a, b) => a + b, 0) / xPositions.length;
-    tierLabelPositions[tier] = { x: avgX - nodeWidth / 2 - 100, minY: Infinity };
-  });
-
   // Add service nodes with dagre-calculated positions
   enrichedServices.forEach((service) => {
     const nodeData = dagreGraph.node(service.serviceId);
-
-    // Track minimum Y position for tier labels
-    if (nodeData.y < tierLabelPositions[service.tier].minY) {
-      tierLabelPositions[service.tier].minY = nodeData.y;
-    }
 
     nodes.push({
       id: service.serviceId,
@@ -150,18 +125,6 @@ export function configToFlow(config: FlowGraphConfig) {
         y: nodeData.y - nodeHeight / 2,
       },
       style: { zIndex: 10 },
-    });
-  });
-
-  // Add tier labels
-  Object.entries(tierLabelPositions).forEach(([tier, pos]) => {
-    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    nodes.push({
-      id: `tier-${tier}`,
-      type: 'tierLabel',
-      data: { label: tierName },
-      position: { x: pos.x, y: pos.minY - nodeHeight / 2 - 30 },
-      draggable: false,
     });
   });
 

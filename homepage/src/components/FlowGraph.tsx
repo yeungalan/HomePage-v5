@@ -242,6 +242,9 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         edgeTypes={edgeTypes}
         fitView
         attributionPosition="bottom-left"
+        nodesConnectable={false}
+        nodesDraggable={true}
+        elementsSelectable={true}
         defaultEdgeOptions={{
           type: 'custom',
           animated: true,

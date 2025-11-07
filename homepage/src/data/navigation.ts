@@ -63,6 +63,7 @@ export const HEADER_MENU_CONFIG: MenuItem[] = [
     subMenu: [
       { title: 'Projects', icon: 'mingcute:flask-line', path: '/projects' },
       { title: 'Friends Link', icon: 'mingcute:earth-line', path: '/friends' },
+      { title: 'Architecture', icon: 'mdi:sitemap', path: '/arch' },
     ],
   },
 ];

@@ -1,14 +1,9 @@
 "use client"
 
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
-import { TextUpTransitionView } from "@/components/TextUpTransitionView";
-import WorldMap from "@/components/World";
 import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
-import {LotteryText} from "@/components/LotteryText";
-import Header from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import ThreeTierInfrastructure from "@/components/FlowGraph";
+import { RealFooter } from "@/components/FooterLinks";
 
 // Example 3: Custom tiers/layers definition
 const infrastructureConfig = {
@@ -25,7 +20,7 @@ const infrastructureConfig = {
       iconColor: "#4f46e5",
       status: "unknown"
     },
-    
+
     // Cloud Services Layer
     {
       serviceId: "cloudflare",
@@ -67,7 +62,7 @@ const infrastructureConfig = {
       iconBg: "#dbeafe",
       iconColor: "#0ea5e9",
       status: "unknown"
-    },  
+    },
     // Home Infrastructure - Servers
     {
       serviceId: "lb",
@@ -86,7 +81,7 @@ const infrastructureConfig = {
       serviceType: "server",
       serviceLabel: "s01",
       status: "unknown"
-    },   
+    },
     // Home Services - s01 group
     {
       serviceId: "core-data-storage",
@@ -126,7 +121,7 @@ const infrastructureConfig = {
       iconColor: "#9333ea",
       status: "unknown"
     },
-    
+
     // Home Services - s02 group
     {
       serviceId: "jenkins",
@@ -158,7 +153,7 @@ const infrastructureConfig = {
       iconColor: "#f59e0b",
       status: "unknown"
     },
-    
+
     // Home Services - s03 group
     {
       serviceId: "gogs",
@@ -194,14 +189,14 @@ const infrastructureConfig = {
   connections: [
     // User to CloudFlare
     ["user", "cloudflare", "-"],
-    
+
     // CloudFlare to iCloud
     ["user", "icloud", "-"],
 
         ["user", "vercel", "-"],
     ["user", "amazon-glacier", "-"],
 
-    
+
     // CloudFlare to home servers
     ["cloudflare", "lb", "15ms"],
     ["lb", "arozos-1", "-"],
@@ -221,8 +216,18 @@ const infrastructureConfig = {
 export default function Page() {
 
     return (
-        <div className="min-w-screen bg-green">
-          <ThreeTierInfrastructure config={infrastructureConfig} />
-        </div>
+        <>
+          <motion.div
+              className="min-w-screen overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <BottomToUpTransitionView duration={80}>
+              <ThreeTierInfrastructure config={infrastructureConfig} />
+            </BottomToUpTransitionView>
+          </motion.div>
+          <RealFooter />
+        </>
     )
 }

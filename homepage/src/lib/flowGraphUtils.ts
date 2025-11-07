@@ -2,6 +2,8 @@
  * Utility functions for FlowGraph component
  */
 
+import * as dagre from 'dagre';
+
 interface Service {
   serviceId: string;
   serviceName: string;
@@ -46,7 +48,7 @@ export const serviceTypeDefaults: Record<string, ServiceTypeDefaults> = {
 };
 
 /**
- * Convert config to ReactFlow nodes and edges
+ * Convert config to ReactFlow nodes and edges using dagre layout
  */
 export function configToFlow(config: FlowGraphConfig) {
   const { services = [], connections = [], tiers = null } = config;
@@ -55,82 +57,93 @@ export function configToFlow(config: FlowGraphConfig) {
   const defaultTiers = ['presentation', 'application', 'data'];
   const tierList = tiers || defaultTiers;
 
-  // Group services by tier
-  const tierGroups: Record<string, Service[]> = {};
-  tierList.forEach((tier) => {
-    tierGroups[tier] = [];
-  });
-
-  services.forEach((service) => {
+  // Group services by tier and apply defaults
+  const enrichedServices = services.map((service) => {
     const serviceType = service.serviceType || 'server';
     const defaults = serviceTypeDefaults[serviceType] || serviceTypeDefaults.server;
     const tier = service.tier || defaults.tier;
-
-    // If tier doesn't exist in tierGroups, add it
-    if (!tierGroups[tier]) {
-      tierGroups[tier] = [];
-    }
-
-    tierGroups[tier].push({ ...service, ...defaults, tier });
+    return { ...defaults, ...service, tier };
   });
 
-  // Calculate positions based on number of tiers
-  const nodes: any[] = [];
-  const startX = 100;
-  const tierSpacing = 400;
+  // Create a dagre graph for automatic layout
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-  const tierXPositions: Record<string, number> = {};
-  const tierLabels: Record<string, number> = {};
-
-  tierList.forEach((tier, index) => {
-    tierXPositions[tier] = startX + index * tierSpacing;
-    tierLabels[tier] = startX + index * tierSpacing - 80;
+  // Configure the graph layout
+  dagreGraph.setGraph({
+    rankdir: 'LR', // Left to right layout
+    nodesep: 80,   // Horizontal spacing between nodes in the same rank
+    ranksep: 250,  // Vertical spacing between ranks (tiers)
+    edgesep: 50,   // Spacing between edges
+    marginx: 50,
+    marginy: 50,
   });
 
-  const yStart = 150;
-  const ySpacing = 200;
+  // Node dimensions (must match the actual rendered size)
+  const nodeWidth = 240;
+  const nodeHeight = 100;
 
-  // Add tier labels
-  Object.entries(tierLabels).forEach(([tier, x]) => {
-    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    nodes.push({
-      id: `tier-${tier}`,
-      type: 'tierLabel',
-      data: { label: `${tierName}` },
-      position: { x, y: 50 },
-      draggable: false,
+  // Add nodes to dagre graph
+  enrichedServices.forEach((service) => {
+    dagreGraph.setNode(service.serviceId, {
+      width: nodeWidth,
+      height: nodeHeight,
+      tier: service.tier,
     });
   });
 
-  // Add service nodes
-  Object.entries(tierGroups).forEach(([tier, tierServices]) => {
-    tierServices.forEach((service, index) => {
-      const xPos = tierXPositions[tier];
-      const yPos = yStart + index * ySpacing;
+  // Add edges to dagre graph
+  connections.forEach((conn) => {
+    const [source, target] = conn;
+    dagreGraph.setEdge(source, target);
+  });
 
-      nodes.push({
-        id: service.serviceId,
-        type: 'custom',
-        data: {
-          label: service.serviceLabel || service.serviceId,
-          title: service.serviceName,
-          subtitle: service.serviceDescription,
-          icon: service.icon,
-          iconBg: service.iconBg,
-          iconColor: service.iconColor,
-          health: service.status || 'healthy',
-        },
-        position: { x: xPos, y: yPos },
-        style: { zIndex: 10 },
-      });
+  // Let dagre calculate the layout
+  dagre.layout(dagreGraph);
+
+  // Convert dagre nodes to ReactFlow nodes
+  const nodes: any[] = [];
+
+  // Calculate which nodes have incoming and outgoing connections
+  const hasIncoming = new Set<string>();
+  const hasOutgoing = new Set<string>();
+
+  connections.forEach(([source, target]) => {
+    hasOutgoing.add(source);
+    hasIncoming.add(target);
+  });
+
+  // Add service nodes with dagre-calculated positions
+  enrichedServices.forEach((service) => {
+    const nodeData = dagreGraph.node(service.serviceId);
+
+    nodes.push({
+      id: service.serviceId,
+      type: 'custom',
+      data: {
+        label: service.serviceLabel || service.serviceId,
+        title: service.serviceName,
+        subtitle: service.serviceDescription,
+        icon: service.icon,
+        iconBg: service.iconBg,
+        iconColor: service.iconColor,
+        health: service.status || 'healthy',
+        hasIncomingEdge: hasIncoming.has(service.serviceId),
+        hasOutgoingEdge: hasOutgoing.has(service.serviceId),
+      },
+      position: {
+        x: nodeData.x - nodeWidth / 2,
+        y: nodeData.y - nodeHeight / 2,
+      },
+      style: { zIndex: 10 },
     });
   });
 
   // Create edges from connections
   const edges = connections.map((conn, index) => {
     const [source, target] = conn;
-    const sourceNode = services.find((s) => s.serviceId === source);
-    const targetNode = services.find((s) => s.serviceId === target);
+    const sourceNode = enrichedServices.find((s) => s.serviceId === source);
+    const targetNode = enrichedServices.find((s) => s.serviceId === target);
 
     // Determine if this is a special connection (like replication)
     const isDatabaseReplication =
@@ -140,10 +153,9 @@ export function configToFlow(config: FlowGraphConfig) {
       id: `e${index}-${source}-${target}`,
       source,
       target,
-      type: 'smart',
+      type: 'custom',
       label: conn[2] || '1-5ms',
       animated: true,
-      data: { nodes },
       style: {
         stroke: isDatabaseReplication ? '#a78bfa' : '#94a3b8',
         strokeWidth: 2,
@@ -156,7 +168,7 @@ export function configToFlow(config: FlowGraphConfig) {
         fontSize: 11,
         zIndex: 5,
       },
-      labelBgPadding: [8, 4],
+      labelBgPadding: [8, 4] as [number, number],
       labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
     };
   });

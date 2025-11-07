@@ -10,6 +10,8 @@ interface CustomNodeData {
   iconBg?: string;
   iconColor?: string;
   health?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
+  hasIncomingEdge?: boolean;
+  hasOutgoingEdge?: boolean;
 }
 
 interface CustomNodeProps {
@@ -62,17 +64,19 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         </span>
       </div>
 
-      <Handle
-        type="target"
-        position={Position.Left}
-        style={{
-          background: '#6b7280',
-          width: '8px',
-          height: '8px',
-          border: '2px solid white',
-          left: '-5px',
-        }}
-      />
+      {data.hasIncomingEdge && (
+        <Handle
+          type="target"
+          position={Position.Left}
+          style={{
+            background: '#6b7280',
+            width: '8px',
+            height: '8px',
+            border: '2px solid white',
+            left: '-5px',
+          }}
+        />
+      )}
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {data.icon && (
@@ -128,17 +132,19 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         </div>
       </div>
 
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={{
-          background: '#6b7280',
-          width: '8px',
-          height: '8px',
-          border: '2px solid white',
-          right: '-5px',
-        }}
-      />
+      {data.hasOutgoingEdge && (
+        <Handle
+          type="source"
+          position={Position.Right}
+          style={{
+            background: '#6b7280',
+            width: '8px',
+            height: '8px',
+            border: '2px solid white',
+            right: '-5px',
+          }}
+        />
+      )}
     </div>
   );
 };

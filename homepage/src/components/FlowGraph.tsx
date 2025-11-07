@@ -114,7 +114,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
       <div
         style={{
           position: 'absolute',
-          top: 20,
+          top: 80,
           right: 20,
           zIndex: 4,
           background: 'white',
@@ -125,28 +125,8 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
           border: '1px solid #e5e7eb',
         }}
       >
-        <h2 style={{ margin: '0 0 12px 0', fontSize: '18px', fontWeight: 700, color: '#1f2937' }}>
-          3-Tier Infrastructure
-        </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#2563eb' }}></div>
-            <span style={{ fontSize: '13px', color: '#6b7280' }}>Presentation: Client interfaces</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#ea580c' }}></div>
-            <span style={{ fontSize: '13px', color: '#6b7280' }}>Application: Business logic</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#9333ea' }}></div>
-            <span style={{ fontSize: '13px', color: '#6b7280' }}>Data: Storage layer</span>
-          </div>
-        </div>
-
         <div
           style={{
-            paddingTop: '12px',
-            borderTop: '1px solid #e5e7eb',
             marginBottom: '12px',
           }}
         >

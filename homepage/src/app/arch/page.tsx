@@ -216,7 +216,7 @@ const infrastructureConfig = {
 export default function Page() {
 
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
           <div className="flex-1">
             <div className="pt-5">
               <main className="mt-10 flex w-full flex-col">
@@ -235,7 +235,7 @@ export default function Page() {
             </div>
           </div>
           <RealFooter />
-        </>
+        </div>
     )
 }
 

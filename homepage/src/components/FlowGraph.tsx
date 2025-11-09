@@ -100,7 +100,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   return (
-    <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '80vh' }}>
+    <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '60vh', minHeight: '500px' }}>
       <style>{`
         @keyframes dashdraw {
           to {

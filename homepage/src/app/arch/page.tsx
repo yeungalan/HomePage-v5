@@ -216,18 +216,40 @@ const infrastructureConfig = {
 export default function Page() {
 
     return (
-        <>
-          <motion.div
-              className="min-w-screen overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <BottomToUpTransitionView duration={80}>
-              <ThreeTierInfrastructure config={infrastructureConfig} />
-            </BottomToUpTransitionView>
-          </motion.div>
+        <div className="flex flex-col min-h-screen">
+          <div className="flex-1">
+            <div className="pt-5">
+              <main className="mt-10 flex w-full flex-col">
+                <div className="relative w-full overflow-hidden">
+                  <div className="w-full">
+                    <div className="mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl">
+                      <header className="mb-6 sm:mb-8 md:mb-10">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 dark:text-white">Architecture</h1>
+                        <h3 className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">Infrastructure Overview</h3>
+                      </header>
+                      <ArchitectureSection config={infrastructureConfig} />
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
           <RealFooter />
-        </>
+        </div>
     )
+}
+
+const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
+  return (
+    <BottomToUpTransitionView duration={80}>
+      <motion.div
+        className="border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm overflow-hidden bg-white dark:bg-neutral-900"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <ThreeTierInfrastructure config={config} />
+      </motion.div>
+    </BottomToUpTransitionView>
+  )
 }

@@ -100,7 +100,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#f9fafb' }}>
+    <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '80vh' }}>
       <style>{`
         @keyframes dashdraw {
           to {
@@ -112,104 +112,38 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         }
       `}</style>
       <div
-        style={{
-          position: 'absolute',
-          top: 80,
-          right: 20,
-          zIndex: 4,
-          background: 'white',
-          padding: '20px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-          maxWidth: '320px',
-          border: '1px solid #e5e7eb',
-        }}
+        className="absolute top-20 right-5 z-[4] bg-white dark:bg-neutral-800 p-5 rounded-xl shadow-lg max-w-[320px] border border-gray-200 dark:border-neutral-700"
       >
-        <div
-          style={{
-            marginBottom: '12px',
-          }}
-        >
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#1f2937', marginBottom: '8px' }}>
+        <div className="mb-3">
+          <div className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
             Health Status
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: '#16a34a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-green-600 flex items-center justify-center">
                 <Icon icon="mdi:check" width="12" height="12" style={{ color: 'white' }} />
               </div>
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>Healthy - Operating normally</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Healthy - Operating normally</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: '#f59e0b',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center">
                 <Icon icon="mdi:alert" width="12" height="12" style={{ color: 'white' }} />
               </div>
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>Warning - Degraded performance</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Warning - Degraded performance</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: '#dc2626',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-red-600 flex items-center justify-center">
                 <Icon icon="mdi:close" width="12" height="12" style={{ color: 'white' }} />
               </div>
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>Unhealthy - Service down</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Unhealthy - Service down</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: '#6b7280',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-gray-500 flex items-center justify-center">
                 <Icon icon="mdi:help" width="12" height="12" style={{ color: 'white' }} />
               </div>
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>Unknown - Status unavailable</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Unknown - Status unavailable</span>
             </div>
           </div>
-        </div>
-
-        <div
-          style={{
-            paddingTop: '12px',
-            borderTop: '1px solid #e5e7eb',
-            fontSize: '12px',
-            color: '#9ca3af',
-          }}
-        >
-          Latency values for same-region deployment
         </div>
       </div>
 

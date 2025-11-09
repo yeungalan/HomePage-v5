@@ -234,15 +234,17 @@ export default function Page() {
 
 const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
   return (
-    <motion.div
-      className="overflow-hidden"
+    <motion.section
+      className="w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <BottomToUpTransitionView duration={80}>
-        <ThreeTierInfrastructure config={config} />
+        <div className="border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm overflow-hidden bg-white dark:bg-neutral-900">
+          <ThreeTierInfrastructure config={config} />
+        </div>
       </BottomToUpTransitionView>
-    </motion.div>
+    </motion.section>
   )
 }

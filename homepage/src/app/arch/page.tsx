@@ -217,17 +217,32 @@ export default function Page() {
 
     return (
         <>
-          <motion.div
-              className="min-w-screen overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <BottomToUpTransitionView duration={80}>
-              <ThreeTierInfrastructure config={infrastructureConfig} />
-            </BottomToUpTransitionView>
-          </motion.div>
+          <div className="pt-5">
+            <header className="mb-10">
+              <h1 className="text-4xl font-bold mb-4 dark:text-white">Architecture</h1>
+              <h3 className="text-xl text-gray-600 dark:text-gray-300">Infrastructure Overview</h3>
+            </header>
+
+            <main className="mt-10 flex w-full flex-col">
+              <ArchitectureSection config={infrastructureConfig} />
+            </main>
+          </div>
           <RealFooter />
         </>
     )
+}
+
+const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
+  return (
+    <motion.div
+      className="overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <BottomToUpTransitionView duration={80}>
+        <ThreeTierInfrastructure config={config} />
+      </BottomToUpTransitionView>
+    </motion.div>
+  )
 }

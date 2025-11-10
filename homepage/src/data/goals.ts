@@ -52,7 +52,7 @@ export const GOALS_2025: Goal[] = [
   {
     id: 'motorcycle',
     title: 'Motorcycle',
-    status: 'in_progress',
+    status: 'completed',
     description: 'Get motorcycle license',
   },
   {

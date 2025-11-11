@@ -18,9 +18,10 @@ const edgeTypes = {
 
 interface FlowGraphProps {
   config?: any;
+  onNodeClick?: (nodeId: string, nodeData: any) => void;
 }
 
-export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
+export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGraphProps) {
   // Default configuration if none provided
   const defaultConfig = {
     services: [
@@ -99,6 +100,14 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  const handleNodeClick = (_event: React.MouseEvent, node: any) => {
+    if (onNodeClick && node.type === 'custom') {
+      // Find the original service data from the config
+      const serviceData = activeConfig.services.find((s: any) => s.serviceId === node.id);
+      onNodeClick(node.id, serviceData);
+    }
+  };
+
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '65vh', minHeight: '500px', maxHeight: '700px' }}>
       <style>{`
@@ -152,6 +161,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeClick={handleNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
@@ -177,7 +187,12 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
             },
           }}
         />
-        <Background variant={BackgroundVariant.Dots} gap={16} size={1} color="#e5e7eb" />
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={16}
+          size={1}
+          className="bg-gray-50 dark:bg-neutral-950"
+        />
       </ReactFlow>
     </div>
   );

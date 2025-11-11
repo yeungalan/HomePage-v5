@@ -26,9 +26,8 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
 
   return (
     <div
+      className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 cursor-pointer hover:shadow-lg transition-shadow"
       style={{
-        background: 'white',
-        border: '1px solid #e5e7eb',
         borderRadius: '12px',
         padding: '16px 20px',
         minWidth: '180px',
@@ -110,19 +109,19 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
             </div>
           )}
           <div
+            className="text-gray-900 dark:text-gray-100"
             style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: '#1f2937',
             }}
           >
             {data.title}
           </div>
           {data.subtitle && (
             <div
+              className="text-gray-400 dark:text-gray-500"
               style={{
                 fontSize: '12px',
-                color: '#9ca3af',
                 marginTop: '2px',
               }}
             >

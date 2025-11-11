@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { ReactFlow, Controls, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
+import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
@@ -195,11 +195,6 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
           animated: true,
         }}
       >
-        <Controls
-          showInteractive={false}
-          className="[&_button]:dark:bg-black [&_button]:bg-white [&_button]:border [&_button]:border-gray-200 [&_button]:dark:border-gray-700 [&_button]:rounded-lg [&_button]:dark:text-white [&_button]:text-black [&_button_svg]:dark:fill-white [&_button_svg]:fill-black"
-          style={{ bottom: '20px' }}
-        />
         <Background
           variant={BackgroundVariant.Dots}
           gap={16}

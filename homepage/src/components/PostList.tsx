@@ -64,10 +64,10 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full">
         <NormalContainer>
           <header className="mb-6 sm:mb-8 md:mb-10">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 dark:text-white">
+            <h1 className="text-3xl font-bold mb-2 sm:mb-4 dark:text-white">
               Posts
             </h1>
-            <h3 className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">
+            <h3 className="text-xl text-gray-600 dark:text-gray-300">
               Post Links
             </h3>
           </header>

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ReactFlow, Controls, Background, useNodesState, useEdgesState } from '@xyflow/react';
+import { ReactFlow, Controls, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
@@ -112,7 +112,7 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         }
       `}</style>
       <div
-        className="absolute top-20 right-5 z-[4] bg-white dark:bg-neutral-800 p-5 rounded-xl shadow-lg max-w-[320px] border border-gray-200 dark:border-neutral-700"
+        className="absolute top-5 right-5 z-[4] bg-white dark:bg-neutral-800 p-5 rounded-xl shadow-lg max-w-[320px] border border-gray-200 dark:border-neutral-700"
       >
         <div className="mb-3">
           <div className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
@@ -155,12 +155,12 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        defaultViewport={{ x: 0, y: 0, zoom: 1.5 }}
-        minZoom={0.5}
-        maxZoom={2.5}
+        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+        //minZoom={0.5}
+        //maxZoom={2.5}
         attributionPosition="bottom-left"
         nodesConnectable={false}
-        nodesDraggable={true}
+        nodesDraggable={false}
         elementsSelectable={true}
         defaultEdgeOptions={{
           type: 'custom',
@@ -168,15 +168,16 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         }}
       >
         <Controls
+          showInteractive={false}
           style={{
             button: {
-              background: 'white',
+              background: 'black',
               border: '1px solid #e5e7eb',
               borderRadius: '8px',
             },
           }}
         />
-        <Background variant="dots" gap={16} size={1} color="#e5e7eb" />
+        <Background variant={BackgroundVariant.Dots} gap={16} size={1} color="#e5e7eb" />
       </ReactFlow>
     </div>
   );

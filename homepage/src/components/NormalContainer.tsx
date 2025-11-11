@@ -14,7 +14,7 @@ export const NormalContainer: Component = (props) => {
   return (
     <div
       className={clsxm(
-        'mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl',
+        'mx-auto max-w-3xl px-4 pt-[50px] sm:pt-[60px] lg:px-0 2xl:max-w-4xl',
         '[&_header]:mb-20',
         className,
       )}

@@ -224,7 +224,7 @@ export default function Page() {
               <main className="mt-10 flex w-full flex-col">
                 <div className="relative w-full overflow-hidden">
                   <div className="w-full">
-                    <div className="mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl">
+                    <div className="mx-auto max-w-3xl px-4 pt-[50px] sm:pt-[60px] lg:px-0 2xl:max-w-4xl">
                       <header className="mb-6 sm:mb-8 md:mb-10">
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 dark:text-white">Architecture</h1>
                         <h3 className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">Infrastructure Overview</h3>

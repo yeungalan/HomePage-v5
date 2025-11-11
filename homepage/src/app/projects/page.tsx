@@ -63,10 +63,10 @@ const PROJECT_DATA = [
 
 export default function Page() {
   return (
-    <div className={"pt-5"}>
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold mb-4 dark:text-white">Projects</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-300">Project Links</h3>
+    <div className="px-4 sm:px-6 md:px-8 pt-[50px] sm:pt-[60px]">
+      <header className="mb-6 sm:mb-8 md:mb-10">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 dark:text-white">Projects</h1>
+        <h3 className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300">Project Links</h3>
       </header>
 
       <main className="mt-10 flex w-full flex-col">

@@ -12,6 +12,7 @@ interface CustomNodeData {
   health?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
   hasIncomingEdge?: boolean;
   hasOutgoingEdge?: boolean;
+  isSelected?: boolean;
 }
 
 interface CustomNodeProps {
@@ -23,15 +24,20 @@ interface CustomNodeProps {
  */
 export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
   const health = HEALTH_STATUS_COLORS[data.health || 'healthy'];
+  const isSelected = data.isSelected || false;
 
   return (
     <div
-      className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 cursor-pointer hover:shadow-lg transition-shadow"
+      className={`cursor-pointer transition-all ${
+        isSelected
+          ? 'bg-blue-50 dark:bg-blue-950 border-2 border-blue-500 dark:border-blue-400 shadow-lg shadow-blue-200 dark:shadow-blue-900'
+          : 'bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:shadow-lg'
+      }`}
       style={{
         borderRadius: '12px',
         padding: '16px 20px',
         minWidth: '180px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        boxShadow: isSelected ? undefined : '0 2px 8px rgba(0,0,0,0.08)',
         position: 'relative',
         zIndex: 10,
       }}

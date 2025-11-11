@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ReactFlow, Controls, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
@@ -22,6 +22,8 @@ interface FlowGraphProps {
 }
 
 export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGraphProps) {
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
   // Default configuration if none provided
   const defaultConfig = {
     services: [
@@ -101,12 +103,28 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const handleNodeClick = (_event: React.MouseEvent, node: any) => {
-    if (onNodeClick && node.type === 'custom') {
-      // Find the original service data from the config
-      const serviceData = activeConfig.services.find((s: any) => s.serviceId === node.id);
-      onNodeClick(node.id, serviceData);
+    if (node.type === 'custom') {
+      setSelectedNodeId(node.id);
+      if (onNodeClick) {
+        // Find the original service data from the config
+        const serviceData = activeConfig.services.find((s: any) => s.serviceId === node.id);
+        onNodeClick(node.id, serviceData);
+      }
     }
   };
+
+  // Update nodes when selectedNodeId changes
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          isSelected: node.id === selectedNodeId,
+        },
+      }))
+    );
+  }, [selectedNodeId, setNodes]);
 
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '65vh', minHeight: '500px', maxHeight: '700px' }}>
@@ -179,13 +197,7 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
       >
         <Controls
           showInteractive={false}
-          style={{
-            button: {
-              background: 'black',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-            },
-          }}
+          className="[&_button]:dark:bg-black [&_button]:bg-white [&_button]:border [&_button]:border-gray-200 [&_button]:dark:border-gray-700 [&_button]:rounded-lg"
         />
         <Background
           variant={BackgroundVariant.Dots}

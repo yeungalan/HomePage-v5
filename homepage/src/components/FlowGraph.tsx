@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { ReactFlow, Controls, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
+import { useMemo, useState, useEffect } from 'react';
+import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
@@ -18,9 +18,12 @@ const edgeTypes = {
 
 interface FlowGraphProps {
   config?: any;
+  onNodeClick?: (nodeId: string, nodeData: any) => void;
 }
 
-export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
+export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGraphProps) {
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
   // Default configuration if none provided
   const defaultConfig = {
     services: [
@@ -99,6 +102,30 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  const handleNodeClick = (_event: React.MouseEvent, node: any) => {
+    if (node.type === 'custom') {
+      setSelectedNodeId(node.id);
+      if (onNodeClick) {
+        // Find the original service data from the config
+        const serviceData = activeConfig.services.find((s: any) => s.serviceId === node.id);
+        onNodeClick(node.id, serviceData);
+      }
+    }
+  };
+
+  // Update nodes when selectedNodeId changes
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          isSelected: node.id === selectedNodeId,
+        },
+      }))
+    );
+  }, [selectedNodeId, setNodes]);
+
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '65vh', minHeight: '500px', maxHeight: '700px' }}>
       <style>{`
@@ -152,10 +179,11 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeClick={handleNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+        defaultViewport={{ x: 0, y: 0, zoom: 1.3 }}
         //minZoom={0.5}
         //maxZoom={2.5}
         attributionPosition="bottom-left"
@@ -167,17 +195,12 @@ export default function ThreeTierInfrastructure({ config }: FlowGraphProps) {
           animated: true,
         }}
       >
-        <Controls
-          showInteractive={false}
-          style={{
-            button: {
-              background: 'black',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-            },
-          }}
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={16}
+          size={1}
+          className="bg-gray-50 dark:bg-neutral-950"
         />
-        <Background variant={BackgroundVariant.Dots} gap={16} size={1} color="#e5e7eb" />
       </ReactFlow>
     </div>
   );

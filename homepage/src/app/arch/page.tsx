@@ -1,9 +1,11 @@
 "use client"
 
+import { useState } from 'react';
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
 import { RealFooter } from "@/components/FooterLinks";
+import { Icon } from '@iconify/react';
 
 // Example 3: Custom tiers/layers definition
 const infrastructureConfig = {
@@ -240,6 +242,12 @@ export default function Page() {
 }
 
 const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
+  const [selectedNode, setSelectedNode] = useState<any>(null);
+
+  const handleNodeClick = (nodeId: string, nodeData: any) => {
+    setSelectedNode(nodeData);
+  };
+
   return (
     <BottomToUpTransitionView duration={80}>
       <motion.div
@@ -248,8 +256,94 @@ const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <ThreeTierInfrastructure config={config} />
+        <ThreeTierInfrastructure config={config} onNodeClick={handleNodeClick} />
       </motion.div>
+
+      {selectedNode && (
+        <motion.div
+          className="mt-6 border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm bg-white dark:bg-neutral-900 p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              {selectedNode.icon && (
+                <div
+                  className="rounded-lg p-3 flex items-center justify-center"
+                  style={{
+                    backgroundColor: selectedNode.iconBg || '#f3f4f6',
+                  }}
+                >
+                  <Icon
+                    icon={selectedNode.icon}
+                    width="32"
+                    height="32"
+                    style={{ color: selectedNode.iconColor || '#6b7280' }}
+                  />
+                </div>
+              )}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  {selectedNode.serviceName}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {selectedNode.serviceId}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setSelectedNode(null)}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <Icon icon="mdi:close" width="24" height="24" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                Description
+              </h4>
+              <p className="text-gray-600 dark:text-gray-400">
+                {selectedNode.serviceDescription || 'No description available'}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                Details
+              </h4>
+              <div className="space-y-2">
+                {selectedNode.tier && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 dark:text-gray-500">Tier:</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {selectedNode.tier}
+                    </span>
+                  </div>
+                )}
+                {selectedNode.serviceType && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 dark:text-gray-500">Type:</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {selectedNode.serviceType}
+                    </span>
+                  </div>
+                )}
+                {selectedNode.status && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 dark:text-gray-500">Status:</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
+                      {selectedNode.status}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </BottomToUpTransitionView>
   )
 }

@@ -41,10 +41,13 @@ export default function GoalsPage() {
   return (
     <>
     <div className="min-h-screen text-gray-900 dark:text-gray-100 p-4 sm:p-6 md:p-8 pt-[50px] sm:pt-[60px] transition-colors duration-200">
-      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-[50px] sm:pt-[60px]">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-5 sm:pt-[60px]">
         <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:0.5}}>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 text-gray-900 dark:text-white">{nextYear - 1} Goals</h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">{daysLeft} days left until {nextYear}</p>
+                <header className="mb-10">
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{nextYear - 1} Goals</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">{daysLeft} days left until {nextYear}</h3>
+      </header>
+
         </motion.div>
 
         {/* Large Clock */}

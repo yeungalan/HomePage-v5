@@ -63,14 +63,10 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
     <div className="relative w-full overflow-hidden">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full">
         <NormalContainer>
-          <header className="mb-6 sm:mb-8 md:mb-10">
-            <h1 className="text-3xl font-bold mb-2 sm:mb-4 dark:text-white">
-              Posts
-            </h1>
-            <h3 className="text-xl text-gray-600 dark:text-gray-300">
-              Post Links
-            </h3>
-          </header>
+      <header className="pt-5 mb-10">
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">Posts</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">Post Links</h3>
+      </header>
 
           <motion.ul
             className="shiro-timeline mt-4"

@@ -12,8 +12,8 @@ export default async function PostsPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex-1">
-        <div className="pt-5">
-          <main className="mt-10 flex w-full flex-col">
+        <div className="">
+          <main className="flex w-full flex-col">
             <PostsList posts={posts} />
           </main>
         </div>

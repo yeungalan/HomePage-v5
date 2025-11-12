@@ -127,7 +127,7 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
   }, [selectedNodeId, setNodes]);
 
   return (
-    <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '65vh', minHeight: '500px', maxHeight: '700px' }}>
+    <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '75vh', minHeight: '500px', maxHeight: '900px' }}>
       <style>{`
         @keyframes dashdraw {
           to {
@@ -138,41 +138,6 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
           animation: dashdraw 0.5s linear infinite;
         }
       `}</style>
-      <div
-        className="absolute top-5 right-5 z-[4] bg-white dark:bg-neutral-800 p-5 rounded-xl shadow-lg max-w-[320px] border border-gray-200 dark:border-neutral-700"
-      >
-        <div className="mb-3">
-          <div className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-            Health Status
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-green-600 flex items-center justify-center">
-                <Icon icon="mdi:check" width="12" height="12" style={{ color: 'white' }} />
-              </div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Healthy - Operating normally</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center">
-                <Icon icon="mdi:alert" width="12" height="12" style={{ color: 'white' }} />
-              </div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Warning - Degraded performance</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-red-600 flex items-center justify-center">
-                <Icon icon="mdi:close" width="12" height="12" style={{ color: 'white' }} />
-              </div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Unhealthy - Service down</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-gray-500 flex items-center justify-center">
-                <Icon icon="mdi:help" width="12" height="12" style={{ color: 'white' }} />
-              </div>
-              <span className="text-xs text-gray-600 dark:text-gray-400">Unknown - Status unavailable</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <ReactFlow
         nodes={nodes}
@@ -183,9 +148,9 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        defaultViewport={{ x: 0, y: 0, zoom: 1.3 }}
-        //minZoom={0.5}
-        //maxZoom={2.5}
+        defaultViewport={{ x: -10, y: -5, zoom: 1.2 }}
+        minZoom={0.5}
+        maxZoom={2.5}
         attributionPosition="bottom-left"
         nodesConnectable={false}
         nodesDraggable={false}

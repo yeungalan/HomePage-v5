@@ -20,7 +20,7 @@ const infrastructureConfig = {
       icon: "mdi:account",
       iconBg: "#e0e7ff",
       iconColor: "#4f46e5",
-      status: "unknown"
+      status: "healthy"
     },
 
     // Cloud Services Layer
@@ -73,7 +73,10 @@ const infrastructureConfig = {
       tier: "Data Plane",
       serviceType: "server",
       serviceLabel: "s01",
-      status: "unknown"
+      status: "unknown",
+      icon: 'mdi:server', 
+      iconBg: '#fed7aa', 
+      iconColor: '#ea580c'
     },
     {
       serviceId: "serviceExit",
@@ -82,7 +85,10 @@ const infrastructureConfig = {
       tier: "Data Plane",
       serviceType: "server",
       serviceLabel: "s01",
-      status: "unknown"
+      status: "unknown",
+      icon: 'mdi:server', 
+      iconBg: '#fed7aa', 
+      iconColor: '#ea580c'
     },
     // Home Services - s01 group
     {
@@ -91,7 +97,10 @@ const infrastructureConfig = {
       serviceDescription: "Core Data Storage",
       tier: "Control Plane s01",
       serviceType: "database",
-      status: "unknown"
+      status: "unknown",
+      icon: 'mdi:database',
+      iconBg: '#e9d5ff', 
+      iconColor: '#9333ea'
     },
     {
       serviceId: "arozos-1",
@@ -215,8 +224,7 @@ const infrastructureConfig = {
   ]
 };
 
-export default function Page() {
-
+export default async function Page() {    
     return (
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">

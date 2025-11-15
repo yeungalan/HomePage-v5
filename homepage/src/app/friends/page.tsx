@@ -18,7 +18,7 @@ const FRIENDS_DATA = [
     description: 'Toby\'s Homebrew Tech Research',
   },
   {
-    id: '1',
+    id: '2',
     name: 'Hyper space',
     url: 'https://photo.tupolev.xyz/',
     avatar: '/assets/images/hyper.png',

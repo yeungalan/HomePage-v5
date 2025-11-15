@@ -16,6 +16,13 @@ const FRIENDS_DATA = [
     url: 'https://imuslab.com',
     avatar: '/assets/images/imuslab.png',
     description: 'Toby\'s Homebrew Tech Research',
+  },
+  {
+    id: '1',
+    name: 'Hyper space',
+    url: 'https://photo.tupolev.xyz/',
+    avatar: '/assets/images/hyper.png',
+    description: 'HyperXraft\'s Photobook',
   }
 ]
 

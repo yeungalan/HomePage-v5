@@ -6,12 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [new URL("https://avatar.iran.liara.run/**")]
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    // ⚠️ Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 };
 

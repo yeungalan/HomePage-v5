@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, memo } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,7 +15,7 @@ interface HeaderProps {
 }
 
 // Animation variants
-const popoverVariants = {
+const popoverVariants: Variants = {
   initial: { 
     opacity: 0, 
     y: -10,
@@ -43,7 +43,7 @@ const popoverVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   initial: { opacity: 0, x: -10 },
   animate: (index: number) => ({
     opacity: 1,

@@ -8,13 +8,13 @@ import type {
 } from 'motion/react'
 import { m, motion } from 'motion/react'
 import type { FC, PropsWithChildren } from 'react'
-import { memo, useState } from 'react'
+import { memo, useState, useRef } from 'react'
+import type * as React from 'react'
 
 import { isHydrationEnded } from '@/components/common/HydrationEndDetector'
 import { microReboundPreset } from '@/constants/spring'
 
 import type { BaseTransitionProps } from './typings'
-import { useRef } from 'react'
 
 interface TransitionViewParams {
   from: TargetAndTransition
@@ -45,8 +45,8 @@ export const createTransitionView = (params: TransitionViewParams) => {
 
     const { enter = delay, exit = delay } = timeout
 
-    const MotionComponent = m[as] as FC<
-      HTMLMotionProps<keyof JSX.IntrinsicElements> & { ref?: React.Ref<HTMLElement | null> }
+    const MotionComponent = m[as as keyof typeof m] as FC<
+      HTMLMotionProps<'div'> & { ref?: React.Ref<HTMLElement | null> }
     >
 
     const [stableIsHydrationEnded] = useState(isHydrationEnded)

@@ -175,7 +175,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
                     height={height}
                     className="w-full rounded-lg"
                     allowFullScreen
-                    allowTransparency={allowtransparency}
+                    allowTransparency={allowtransparency === 'true'}
                     sandbox={sandbox}
                     {...otherProps}
                   />
@@ -193,7 +193,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
                   src={src}
                   className={`absolute top-0 left-0 w-full h-full rounded-lg ${className || ''}`}
                   allowFullScreen
-                  allowTransparency={allowtransparency}
+                  allowTransparency={allowtransparency === 'true'}
                   sandbox={sandbox}
                   {...otherProps}
                 />

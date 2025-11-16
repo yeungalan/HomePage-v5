@@ -95,14 +95,14 @@ const ThemeIndicator = () => {
   const isClient = useIsClient()
   if (!isClient || !theme) return null
 
-  const leftMap = { light: 4, system: 36, dark: 68 }
+  const leftMap: Record<string, number> = { light: 4, system: 36, dark: 68 }
 
   return (
     <motion.div
       className="absolute top-[4px] z-[-1] h-[32px] w-[32px] rounded-full bg-base-100 shadow-[0_1px_2px_0_rgba(127.5,127.5,127.5,.2),_0_1px_3px_0_rgba(127.5,127.5,127.5,.1)]"
       layout
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-      style={{ left: leftMap[theme] }}
+      style={{ left: leftMap[theme] ?? 4 }}
     />
   )
 }

@@ -5,7 +5,7 @@
 import * as dagre from 'dagre';
 import type { Node, Edge } from '@xyflow/react';
 
-interface Service {
+export interface Service {
   serviceId: string;
   serviceName: string;
   serviceDescription?: string;
@@ -18,7 +18,7 @@ interface Service {
   iconColor?: string;
 }
 
-interface FlowGraphConfig {
+export interface FlowGraphConfig {
   services: Service[];
   connections: [string, string, string?][];
   tiers?: string[] | null;
@@ -42,6 +42,7 @@ interface FlowNodeData {
   hasIncomingEdge: boolean;
   hasOutgoingEdge: boolean;
   isSelected?: boolean;
+  [key: string]: unknown;
 }
 
 /**

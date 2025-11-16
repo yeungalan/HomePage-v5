@@ -5,27 +5,7 @@ import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
 import { CustomNode } from './flowgraph/CustomNode';
 import { TierLabel } from './flowgraph/TierLabel';
-import { configToFlow } from '@/lib/flowGraphUtils';
-
-// Type definitions
-type ServiceStatus = 'healthy' | 'warning' | 'unhealthy';
-type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
-
-interface Service {
-  serviceId: string;
-  serviceName: string;
-  serviceDescription: string;
-  serviceType: ServiceType;
-  serviceLabel?: string;
-  status: ServiceStatus;
-}
-
-type Connection = [string, string, string];
-
-interface FlowGraphConfig {
-  services: Service[];
-  connections: Connection[];
-}
+import { configToFlow, type FlowGraphConfig, type Service } from '@/lib/flowGraphUtils';
 
 interface FlowGraphProps {
   config?: FlowGraphConfig;

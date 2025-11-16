@@ -4,8 +4,18 @@ import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView"
 import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { LotteryText } from "@/components/LotteryText";
 import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
+import { createElement, useState, useEffect, ReactNode } from 'react'
 import { FullPageLoading } from "../Loading";
+
+interface LotteryTextProps {
+  elements: ReactNode[];
+  className?: string;
+}
+
+type TemplateItem =
+  | { type: string; text?: string; class?: string }
+  | { type: "LotteryText"; props: LotteryTextProps }
+  | { type: "br" };
 
 const softBouncePreset = {
   type: "spring" as const,
@@ -36,7 +46,7 @@ const getRandomGreeting = () => {
   return greetings[randomLang];
 };
 
-export const GiantGreetTextTemplate = [
+export const GiantGreetTextTemplate: TemplateItem[] = [
   {
     "type": "h1",
     "text": getRandomGreeting(),

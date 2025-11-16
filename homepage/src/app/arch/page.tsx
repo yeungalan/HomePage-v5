@@ -6,23 +6,10 @@ import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
 import { RealFooter } from "@/components/FooterLinks";
 import { Icon } from '@iconify/react';
-
-// Type definitions for infrastructure configuration
-interface ServiceNode {
-  serviceId: string;
-  serviceName: string;
-  serviceDescription: string;
-  tier?: string;
-  icon?: string;
-  iconBg?: string;
-  iconColor?: string;
-  status?: string;
-  serviceType?: string;
-  serviceLabel?: string;
-}
+import type { FlowGraphConfig, Service } from '@/lib/flowGraphUtils';
 
 // Example 3: Custom tiers/layers definition
-const infrastructureConfig = {
+const infrastructureConfig: FlowGraphConfig = {
   tiers: ['Client Plane', 'Cloud Plane', 'Data Plane', 'Control Plane s01', 'Control Plane s02', 'Control Plane s03'],
   services: [
     // Client Layer
@@ -263,10 +250,10 @@ export default async function Page() {
     )
 }
 
-const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
-  const [selectedNode, setSelectedNode] = useState<ServiceNode | null>(null);
+const ArchitectureSection: React.FC<{ config: FlowGraphConfig }> = ({ config }) => {
+  const [selectedNode, setSelectedNode] = useState<Service | null>(null);
 
-  const handleNodeClick = (nodeId: string, nodeData: ServiceNode): void => {
+  const handleNodeClick = (nodeId: string, nodeData: Service): void => {
     setSelectedNode(nodeData);
   };
 

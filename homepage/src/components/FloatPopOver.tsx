@@ -1,130 +1,179 @@
 import { microReboundPreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
-import { useFloating, autoUpdate, flip, offset, shift  } from '@floating-ui/react-dom';
+import { useFloating, autoUpdate, flip, offset, shift, Placement, Strategy, Middleware } from '@floating-ui/react-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import React from 'react';
+import React, { ReactNode, RefObject, ElementType } from 'react';
 import { createPortal } from 'react-dom';
-
 
 const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext, createElement } = React;
 
-        // Copy the FloatPopover component code here
-        // Simple mobile detection hook (replaces useIsMobile)
-        const useIsMobile = () => {
-          const [isMobile, setIsMobile] = useState(false)
-          
-          useEffect(() => {
-            const checkMobile = () => {
-              setIsMobile(window.innerWidth < 1024) // lg breakpoint
-            }
-            
-            checkMobile()
-            window.addEventListener('resize', checkMobile)
-            return () => window.removeEventListener('resize', checkMobile)
-          }, [])
-          
-          return isMobile
-        }
+// Type definitions
+type TriggerType = 'click' | 'hover' | 'both';
+type PopoverType = 'popover' | 'tooltip';
 
-        // Simple client-side check
-        const useIsClient = () => {
-          const [isClient, setIsClient] = useState(false)
-          useEffect(() => {
-            setIsClient(true)
-          }, [])
-          return isClient
-        }
+interface PresentSheetProps {
+  content: ReactNode;
+  children: ReactNode;
+}
 
-        // Extracted click away hook
-        const useClickAway = (ref: any, onClickAway: any, events = ['mousedown', 'touchstart']) => {
-          const savedCallback = useRef(onClickAway)
-          useEffect(() => {
-            savedCallback.current = onClickAway
-          }, [onClickAway])
-          
-          useEffect(() => {
-            const handler = (event: { target: any; }) => {
-              const { current: el } = ref
-              el &&
-                !el.contains(event.target) &&
-                savedCallback.current(event)
-            }
-            for (const eventName of events) {
-              document.addEventListener(eventName, handler)
-            }
-            return () => {
-              for (const eventName of events) {
-                document.removeEventListener(eventName, handler)
-              }
-            }
-          }, [events, ref])
-        }
+interface RootPortalProps {
+  children: ReactNode;
+  to?: HTMLElement | null;
+}
 
-        // Extracted event callback hook
-        const useEventCallback = (fn: any) => {
-          const ref = useRef(fn)
-          useEffect(() => {
-            ref.current = fn
-          }, [fn])
+interface PopoverActionContextValue {
+  close: () => void;
+}
 
-          return useCallback((...args: any) => ref.current(...args), [])
-        }
+interface FloatPopoverProps {
+  children?: ReactNode;
+  mobileAsSheet?: boolean;
+  sheet?: Record<string, unknown>;
+  triggerElement?: ReactNode;
+  TriggerComponent?: ElementType;
+  triggerComponentProps?: Record<string, unknown>;
+  headless?: boolean;
+  wrapperClassName?: string;
+  trigger?: TriggerType;
+  padding?: number;
+  offset?: number;
+  popoverWrapperClassNames?: string;
+  popoverClassNames?: string;
+  debug?: boolean;
+  animate?: boolean;
+  as?: ElementType;
+  type?: PopoverType;
+  isDisabled?: boolean;
+  onOpen?: () => void;
+  onClose?: () => void;
+  to?: HTMLElement | null;
+  asChild?: boolean;
+  placement?: Placement;
+  strategy?: Strategy;
+  middleware?: Middleware[];
+  whileElementsMounted?: (reference: Element, floating: HTMLElement, update: () => void) => () => void;
+}
 
-        // Simple portal component (replaces RootPortal)
-        const RootPortal = (props: { children: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; to: any; }) => {
-          const isClient = useIsClient()
-          if (!isClient) {
-            return null
-          }
-          return createPortal(props.children, props.to || document.body)
-        }
+// Simple mobile detection hook (replaces useIsMobile)
+const useIsMobile = (): boolean => {
+  const [isMobile, setIsMobile] = useState(false);
 
-        // Simple sheet component for mobile (replaces PresentSheet)
-        const PresentSheet = ({ content, children }) => {
-          const [open, setOpen] = useState(false)
-          
-          return (
-            <>
-              <div onClick={() => setOpen(true)}>
-                {children}
-              </div>
-              {open && (
-                <div className="fixed inset-0 z-50 bg-black/50" onClick={() => setOpen(false)}>
-                  <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4 max-h-[80vh] overflow-auto">
-                    {content}
-                  </div>
-                </div>
-              )}
-            </>
-          )
-        }
+  useEffect(() => {
+    const checkMobile = (): void => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
 
-        const PopoverActionContext = createContext(null)
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-        const usePopoverAction = () => useContext(PopoverActionContext)
+  return isMobile;
+};
 
-        // Main FloatPopover component
-        export const FloatPopover = (props: { mobileAsSheet?: any; children?: any; sheet?: any; triggerElement?: any; TriggerComponent?: any; triggerComponentProps?: any; }) => {
-          const isMobile = useIsMobile()
-          if (isMobile && props.mobileAsSheet) {
-            const { triggerElement, TriggerComponent, triggerComponentProps } = props
+// Simple client-side check
+const useIsClient = (): boolean => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient;
+};
 
-            const Child = triggerElement
-              ? triggerElement
-              : TriggerComponent
-                ? createElement(TriggerComponent, triggerComponentProps)
-                : null
+// Extracted click away hook
+const useClickAway = (
+  ref: RefObject<HTMLElement>,
+  onClickAway: (event: Event) => void,
+  events: string[] = ['mousedown', 'touchstart']
+): void => {
+  const savedCallback = useRef(onClickAway);
+  useEffect(() => {
+    savedCallback.current = onClickAway;
+  }, [onClickAway]);
 
-            return (
-              <PresentSheet content={props.children} {...props.sheet}>
-                {Child}
-              </PresentSheet>
-            )
-          }
-          return <RealFloatPopover {...props} />
-        }
+  useEffect(() => {
+    const handler = (event: Event): void => {
+      const { current: el } = ref;
+      if (el && event.target instanceof Node && !el.contains(event.target)) {
+        savedCallback.current(event);
+      }
+    };
+    for (const eventName of events) {
+      document.addEventListener(eventName, handler);
+    }
+    return () => {
+      for (const eventName of events) {
+        document.removeEventListener(eventName, handler);
+      }
+    };
+  }, [events, ref]);
+};
 
-        const RealFloatPopover = (props: { [x: string]: any; children?: any; headless?: any; wrapperClassName?: any; TriggerComponent?: any; triggerElement?: any; trigger?: any; padding?: any; offset?: any; popoverWrapperClassNames?: any; popoverClassNames?: any; debug?: any; animate?: any; as?: any; type?: any; triggerComponentProps?: any; isDisabled?: any; onOpen?: any; onClose?: any; to?: any; asChild?: any; }) => {
+// Extracted event callback hook
+const useEventCallback = <T extends (...args: unknown[]) => unknown>(fn: T): T => {
+  const ref = useRef(fn);
+  useEffect(() => {
+    ref.current = fn;
+  }, [fn]);
+
+  return useCallback((...args: unknown[]) => ref.current(...args), []) as T;
+};
+
+// Simple portal component (replaces RootPortal)
+const RootPortal: React.FC<RootPortalProps> = ({ children, to }) => {
+  const isClient = useIsClient();
+  if (!isClient) {
+    return null;
+  }
+  return createPortal(children, to || document.body);
+};
+
+// Simple sheet component for mobile (replaces PresentSheet)
+const PresentSheet: React.FC<PresentSheetProps> = ({ content, children }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <div onClick={() => setOpen(true)}>
+        {children}
+      </div>
+      {open && (
+        <div className="fixed inset-0 z-50 bg-black/50" onClick={() => setOpen(false)}>
+          <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4 max-h-[80vh] overflow-auto">
+            {content}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+const PopoverActionContext = createContext<PopoverActionContextValue | null>(null);
+
+export const usePopoverAction = (): PopoverActionContextValue | null => useContext(PopoverActionContext);
+
+// Main FloatPopover component
+export const FloatPopover: React.FC<FloatPopoverProps> = (props) => {
+  const isMobile = useIsMobile();
+  if (isMobile && props.mobileAsSheet) {
+    const { triggerElement, TriggerComponent, triggerComponentProps } = props;
+
+    const Child = triggerElement
+      ? triggerElement
+      : TriggerComponent
+        ? createElement(TriggerComponent, triggerComponentProps)
+        : null;
+
+    return (
+      <PresentSheet content={props.children} {...props.sheet}>
+        {Child}
+      </PresentSheet>
+    );
+  }
+  return <RealFloatPopover {...props} />;
+};
+
+const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
           const {
             headless = false,
             wrapperClassName: wrapperClassNames,

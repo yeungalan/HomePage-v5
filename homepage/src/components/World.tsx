@@ -14,11 +14,97 @@ import { motion } from "framer-motion";
 import { Icon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
 
+// Type definitions
+interface Airport {
+  airportId: string;
+  name: string;
+  city: string;
+  country: string;
+  iata: string;
+  icao: string;
+  lat: string;
+  lng: string;
+  alt: string;
+  timezone: string;
+  dst: string;
+  tz: string;
+  type: string;
+  source: string;
+}
+
+interface Route {
+  srcIata: string;
+  dstIata: string;
+  srcAirport?: Airport;
+  dstAirport?: Airport;
+}
+
+interface TrainStation {
+  lat: number;
+  lng: number;
+  name: string;
+  routes: string[];
+  type?: string;
+}
+
+interface TrainPath {
+  properties: {
+    name: string;
+  };
+  coords: Array<{lat: number; lng: number; city?: string} | [number, number]>;
+}
+
+interface PointData extends Partial<Airport>, Partial<TrainStation> {
+  type: 'airport' | 'train' | 'overlap' | 'cluster' | 'cluster-airport' | 'cluster-train' | 'cluster-both';
+  flightRoutes?: string[];
+  trainRoutes?: string[];
+  clusterSize?: number;
+  airportCount?: number;
+  trainCount?: number;
+  names?: string[];
+  originalPoints?: PointData[];
+}
+
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+// Configuration constants
 const COUNTRY = "United States";
 const OPACITY = 1;
 const VELOCITY = 1; // minutes per frame
 
-const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]) => ({
+// Clustering thresholds (in kilometers)
+const CLUSTER_THRESHOLDS = {
+  MIN_ALTITUDE_FOR_CLUSTERING: 1.5,
+  LIGHT_CLUSTERING_KM: 50,
+  MEDIUM_CLUSTERING_KM: 100,
+  HEAVY_CLUSTERING_KM: 200,
+  MAX_CLUSTERING_KM: 300,
+} as const;
+
+// Altitude levels for clustering
+const ALTITUDE_LEVELS = {
+  LIGHT: 2,
+  MEDIUM: 2.5,
+  HEAVY: 3,
+} as const;
+
+// Point detection threshold
+const OVERLAP_THRESHOLD_DEGREES = 0.01; // ~1km
+
+// Globe configuration
+const GLOBE_CONFIG = {
+  MIN_ALTITUDE: 0.5,
+  MAX_ALTITUDE: 4,
+  DEFAULT_ALTITUDE: 2.5,
+  INITIAL_LATITUDE: 39.6,
+  INITIAL_LONGITUDE: -98.5,
+  INITIAL_ANIMATION_DURATION: 6000,
+} as const;
+
+const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]: string[]): Airport => ({
   airportId,
   name,
   city,
@@ -35,7 +121,7 @@ const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt
   source,
 });
 
-const routeParse = ([srcIata, dstIata]) => ({ srcIata, dstIata });
+const routeParse = ([srcIata, dstIata]: string[]): Route => ({ srcIata, dstIata });
 
 // --- SHADER ---
 const dayNightShader = {
@@ -90,10 +176,10 @@ const dayNightShader = {
 };
 
 // --- UTIL: Get sun position for a given timestamp ---
-const sunPosAt = (dt) => {
+const sunPosAt = (dt: number | Date): [number, number] => {
   const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
   const t = solar.century(dt);
-  const longitude = ((day - dt) / 864e5) * 360 - 180;
+  const longitude = ((day - +dt) / 864e5) * 360 - 180;
   return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
 };
 
@@ -117,25 +203,25 @@ const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: numbe
  * Cluster points based on altitude (zoom level)
  * Returns merged points when zoomed out
  */
-const clusterPoints = (points: any[], altitude: number) => {
+const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
   // Adjust clustering threshold based on altitude
   // Higher altitude = more zoomed out = larger clustering distance
   let clusterThresholdKm = 0;
-  
-  if (altitude < 1.5) {
+
+  if (altitude < CLUSTER_THRESHOLDS.MIN_ALTITUDE_FOR_CLUSTERING) {
     // Very zoomed in - no clustering
     return points;
-  } else if (altitude < 2) {
-    clusterThresholdKm = 50; // 50km
-  } else if (altitude < 2.5) {
-    clusterThresholdKm = 100; // 100km
-  } else if (altitude < 3) {
-    clusterThresholdKm = 200; // 200km
+  } else if (altitude < ALTITUDE_LEVELS.LIGHT) {
+    clusterThresholdKm = CLUSTER_THRESHOLDS.LIGHT_CLUSTERING_KM;
+  } else if (altitude < ALTITUDE_LEVELS.MEDIUM) {
+    clusterThresholdKm = CLUSTER_THRESHOLDS.MEDIUM_CLUSTERING_KM;
+  } else if (altitude < ALTITUDE_LEVELS.HEAVY) {
+    clusterThresholdKm = CLUSTER_THRESHOLDS.HEAVY_CLUSTERING_KM;
   } else {
-    clusterThresholdKm = 300; // 300km+
+    clusterThresholdKm = CLUSTER_THRESHOLDS.MAX_CLUSTERING_KM;
   }
 
-  const clustered: any[] = [];
+  const clustered: PointData[] = [];
   const used = new Set<number>();
 
   points.forEach((point, i) => {
@@ -232,21 +318,21 @@ const clusterPoints = (points: any[], altitude: number) => {
 
 type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped';
 
-export default function WorldMap() {
-  const globeEl = useRef();
-  const [airports, setAirports] = useState([]);
-  const [routes, setRoutes] = useState([]);
-  const [trainStations, setTrainStations] = useState([]);
-  const [trainPaths, setTrainPaths] = useState([]);
-  const [dt, setDt] = useState(+new Date());
-  const [globeMaterial, setGlobeMaterial] = useState(null);
+export default function WorldMap(): JSX.Element {
+  const globeEl = useRef<any>(null);
+  const [airports, setAirports] = useState<Airport[]>([]);
+  const [routes, setRoutes] = useState<Route[]>([]);
+  const [trainStations, setTrainStations] = useState<TrainStation[]>([]);
+  const [trainPaths, setTrainPaths] = useState<TrainPath[]>([]);
+  const [dt, setDt] = useState<number>(+new Date());
+  const [globeMaterial, setGlobeMaterial] = useState<ShaderMaterial | null>(null);
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [isAnimating, setIsAnimating] = useState(true);
-  const [altitude, setAltitude] = useState(2.5);
-  const [showFlightRoutes, setShowFlightRoutes] = useState(true);
-  const [showTrainRoutes, setShowTrainRoutes] = useState(true);
-  const [enableDaylight, setEnableDaylight] = useState(true);
+  const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
+  const [isAnimating, setIsAnimating] = useState<boolean>(true);
+  const [altitude, setAltitude] = useState<number>(GLOBE_CONFIG.DEFAULT_ALTITUDE);
+  const [showFlightRoutes, setShowFlightRoutes] = useState<boolean>(true);
+  const [showTrainRoutes, setShowTrainRoutes] = useState<boolean>(true);
+  const [enableDaylight, setEnableDaylight] = useState<boolean>(true);
 
   // Animate time based on mode
   useEffect(() => {
@@ -256,9 +342,9 @@ export default function WorldMap() {
       setEnableDaylight(true);
     }
     if (timeMode === 'paused') return;
-    
-    let animationId;
-    (function iterateTime() {
+
+    let animationId: number;
+    (function iterateTime(): void {
       setDt((t) => {
         if (timeMode === 'realtime') {
           return +new Date();
@@ -425,7 +511,11 @@ export default function WorldMap() {
       globeEl.current.controls().enableRotate = false;
       
       
-      globeEl.current.pointOfView({ lat: 39.6, lng: -98.5, altitude: 2 }, 6000);
+      globeEl.current.pointOfView({
+        lat: GLOBE_CONFIG.INITIAL_LATITUDE,
+        lng: GLOBE_CONFIG.INITIAL_LONGITUDE,
+        altitude: ALTITUDE_LEVELS.LIGHT
+      }, GLOBE_CONFIG.INITIAL_ANIMATION_DURATION);
 
       // Enable rotation after animation completes
       setTimeout(() => {
@@ -433,7 +523,7 @@ export default function WorldMap() {
         if (globeEl.current) {
           globeEl.current.controls().enableRotate = true;
         }
-      }, 6000);
+      }, GLOBE_CONFIG.INITIAL_ANIMATION_DURATION);
     }
   }, [globeMaterial]);
 
@@ -458,12 +548,12 @@ export default function WorldMap() {
     return () => clearInterval(interval);
   }, [globeMaterial, dt, enableDaylight]);
 
-  const handleModeChange = (newMode: TimeMode) => {
+  const handleModeChange = (newMode: TimeMode): void => {
     setTimeMode(newMode);
   };
 
   const handleZoom = useCallback(
-    ({ lng, lat, altitude }) => {
+    ({ lng, lat, altitude }: { lng: number; lat: number; altitude: number }): void => {
       // Block zoom during animation
       if (isAnimating) return;
       
@@ -473,7 +563,10 @@ export default function WorldMap() {
       
       // Enforce altitude limits
       if (globeEl.current && altitude !== undefined) {
-        const clampedAltitude = Math.max(0.5, Math.min(4, altitude));
+        const clampedAltitude = Math.max(
+          GLOBE_CONFIG.MIN_ALTITUDE,
+          Math.min(GLOBE_CONFIG.MAX_ALTITUDE, altitude)
+        );
         setAltitude(clampedAltitude);
 
         if (altitude !== clampedAltitude) {
@@ -512,9 +605,8 @@ export default function WorldMap() {
       flightRoutes: flightRoutesByIata.get(a.iata) || []
     }));
     const trainPoints = trainStations.map(t => ({ ...t, type: 'train' }));
-    
+
     // Detect overlaps (same location = airport & train station)
-    const overlapThreshold = 0.01; // degrees (~1km)
     const mergedPoints = [];
     const usedTrainIndices = new Set();
 
@@ -525,8 +617,8 @@ export default function WorldMap() {
         
         const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(train.lat));
         const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(train.lng));
-        
-        if (latDiff < overlapThreshold && lngDiff < overlapThreshold) {
+
+        if (latDiff < OVERLAP_THRESHOLD_DEGREES && lngDiff < OVERLAP_THRESHOLD_DEGREES) {
           // Found overlap
           mergedPoints.push({
             ...airport,
@@ -555,13 +647,12 @@ export default function WorldMap() {
     return clusterPoints(mergedPoints, altitude);
   }, [airports, trainStations, routes, altitude]);
 
-  const getIndicatorPosition = () => {
-    const positions = {
-      //stopped: 4, // 4th button position
+  const getIndicatorPosition = (): number => {
+    const positions: Record<TimeMode, number> = {
+      stopped: 4,
       paused: 4,
       realtime: 36,
       animated: 68,
-      // 100
     };
     return positions[timeMode];
   };

@@ -14,6 +14,13 @@ interface MobileNavProps {
   forceDarkMode?: boolean;
 }
 
+// Animation and gesture constants
+const ANIMATION_CONFIG = {
+  EXIT_ANIMATION_DELAY: 250, // milliseconds
+  DRAG_CLOSE_THRESHOLD: 150, // pixels
+  VELOCITY_CLOSE_THRESHOLD: 500, // pixels per second
+} as const;
+
 export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false); // controls portal mount
   const [internalOpen, setInternalOpen] = useState(false); // controls animation
@@ -22,25 +29,28 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
   const pathname = usePathname();
 
   // Open menu
-  const openMenu = () => {
+  const openMenu = (): void => {
     setIsOpen(true);
     setInternalOpen(true);
   };
 
   // Close menu with animation
-  const closeMenu = () => {
+  const closeMenu = (): void => {
     setInternalOpen(false);
-    setTimeout(() => setIsOpen(false), 250); // wait for exit animation
+    setTimeout(() => setIsOpen(false), ANIMATION_CONFIG.EXIT_ANIMATION_DELAY);
   };
 
-  const handleDragEnd = (event: any, info: PanInfo) => {
-    if (info.offset.y > 150 || info.velocity.y > 500) {
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
+    if (
+      info.offset.y > ANIMATION_CONFIG.DRAG_CLOSE_THRESHOLD ||
+      info.velocity.y > ANIMATION_CONFIG.VELOCITY_CLOSE_THRESHOLD
+    ) {
       closeMenu();
     }
     setDragY(0);
   };
 
-  const handleDrag = (event: any, info: PanInfo) => {
+  const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
     // Only allow positive drag values (downward)
     if (info.offset.y > 0) {
       setDragY(info.offset.y);

@@ -1,11 +1,36 @@
 import { useMemo, useState, useEffect } from 'react';
-import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant } from '@xyflow/react';
+import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
 import { CustomNode } from './flowgraph/CustomNode';
 import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
+
+// Type definitions
+type ServiceStatus = 'healthy' | 'warning' | 'unhealthy';
+type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
+
+interface Service {
+  serviceId: string;
+  serviceName: string;
+  serviceDescription: string;
+  serviceType: ServiceType;
+  serviceLabel?: string;
+  status: ServiceStatus;
+}
+
+type Connection = [string, string, string];
+
+interface FlowGraphConfig {
+  services: Service[];
+  connections: Connection[];
+}
+
+interface FlowGraphProps {
+  config?: FlowGraphConfig;
+  onNodeClick?: (nodeId: string, nodeData: Service) => void;
+}
 
 const nodeTypes = {
   custom: CustomNode,
@@ -16,16 +41,11 @@ const edgeTypes = {
   custom: CustomEdge,
 };
 
-interface FlowGraphProps {
-  config?: any;
-  onNodeClick?: (nodeId: string, nodeData: any) => void;
-}
-
 export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGraphProps) {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   // Default configuration if none provided
-  const defaultConfig = {
+  const defaultConfig: FlowGraphConfig = {
     services: [
       {
         serviceId: 'web',
@@ -102,13 +122,15 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const handleNodeClick = (_event: React.MouseEvent, node: any) => {
+  const handleNodeClick = (_event: React.MouseEvent, node: Node): void => {
     if (node.type === 'custom') {
       setSelectedNodeId(node.id);
       if (onNodeClick) {
         // Find the original service data from the config
-        const serviceData = activeConfig.services.find((s: any) => s.serviceId === node.id);
-        onNodeClick(node.id, serviceData);
+        const serviceData = activeConfig.services.find((s) => s.serviceId === node.id);
+        if (serviceData) {
+          onNodeClick(node.id, serviceData);
+        }
       }
     }
   };

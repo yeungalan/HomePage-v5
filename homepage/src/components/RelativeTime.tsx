@@ -26,12 +26,12 @@ export const RelativeTime: FC<{
 
   useEffect(() => {
     setRelative(formatTime(props.date, displayAbsoluteTimeAfterDay))
-    let timer: any = setInterval(() => {
+    const timer: NodeJS.Timeout = setInterval(() => {
       setRelative(formatTime(props.date, displayAbsoluteTimeAfterDay))
     }, 1000)
 
     return () => {
-      timer = clearInterval(timer)
+      clearInterval(timer)
     }
   }, [props.date, displayAbsoluteTimeAfterDay])
 

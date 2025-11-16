@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef, useEffect, ReactNode } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -11,29 +11,6 @@ import rehypeRaw from 'rehype-raw'
 
 interface SimpleMarkdownProps {
   content: string
-}
-
-interface CodeProps {
-  node?: unknown;
-  inline?: boolean;
-  className?: string;
-  children?: ReactNode;
-  [key: string]: unknown;
-}
-
-interface PreProps {
-  children?: ReactNode;
-  [key: string]: unknown;
-}
-
-interface IframeProps {
-  node?: unknown;
-  src?: string;
-  height?: string | number;
-  className?: string;
-  allowtransparency?: string;
-  sandbox?: string;
-  [key: string]: unknown;
 }
 
 export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
@@ -121,7 +98,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               />
             )
           },
-          code: ({ node, inline, className, children, ...props }: CodeProps) => {
+          code: ({ node, inline, className, children, ...props }) => {
             const match = /language-(\w+)/.exec(className || '')
             return !inline && match ? (
               <div className="relative max-w-full overflow-x-auto">
@@ -143,7 +120,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               </code>
             )
           },
-          pre: ({ children, ...props }: PreProps) => (
+          pre: ({ children, ...props }) => (
             <pre className="max-w-full overflow-x-auto my-4" {...props}>{children}</pre>
           ),
           ul({ node, ...props }) {
@@ -155,7 +132,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           li({ node, ...props }) {
             return <li className="mb-2" {...props} />
           },
-          iframe({ node, ...props }: IframeProps) {
+          iframe({ node, ...props }) {
             // Handle iframe elements with support for custom attributes
             const {
               height,

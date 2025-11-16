@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import type { FC, PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
+import type { HTMLMotionProps } from 'motion/react'
 
 import { MotionButtonBase } from './MotionButton'
 
@@ -23,7 +24,7 @@ const variantStyles = tv({
     },
   },
 })
-type NativeButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type NativeButtonProps = Omit<HTMLMotionProps<'button'>, 'ref'> & {
   href?: string
 }
 type NativeLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>

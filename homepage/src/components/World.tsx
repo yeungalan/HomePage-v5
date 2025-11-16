@@ -54,8 +54,25 @@ interface TrainPath {
   coords: Array<{lat: number; lng: number; city?: string} | [number, number]>;
 }
 
-interface PointData extends Partial<Airport>, Partial<TrainStation> {
+interface PointData {
+  lat: number;
+  lng: number;
+  name?: string;
   type: 'airport' | 'train' | 'overlap' | 'cluster' | 'cluster-airport' | 'cluster-train' | 'cluster-both';
+  // Airport-specific properties
+  airportId?: string;
+  city?: string;
+  country?: string;
+  iata?: string;
+  icao?: string;
+  alt?: string;
+  timezone?: string;
+  dst?: string;
+  tz?: string;
+  source?: string;
+  // Train-specific properties
+  routes?: string[];
+  // Shared/calculated properties
   flightRoutes?: string[];
   trainRoutes?: string[];
   clusterSize?: number;
@@ -236,10 +253,10 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
 
       const other = points[j];
       const distance = haversineDistance(
-        parseFloat(point.lat), 
-        parseFloat(point.lng),
-        parseFloat(other.lat), 
-        parseFloat(other.lng)
+        point.lat,
+        point.lng,
+        other.lat,
+        other.lng
       );
 
       if (distance <= clusterThresholdKm) {
@@ -253,8 +270,8 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       clustered.push(point);
     } else {
       // Merge multiple points
-      const avgLat = cluster.reduce((sum, p) => sum + parseFloat(p.lat), 0) / cluster.length;
-      const avgLng = cluster.reduce((sum, p) => sum + parseFloat(p.lng), 0) / cluster.length;
+      const avgLat = cluster.reduce((sum, p) => sum + p.lat, 0) / cluster.length;
+      const avgLng = cluster.reduce((sum, p) => sum + p.lng, 0) / cluster.length;
 
       // Separate by type
       const airports = cluster.filter(p => p.type === 'airport' || p.type === 'overlap');
@@ -605,30 +622,32 @@ export default function WorldMap(): JSX.Element {
       flightRoutesByIata.get(route.dstIata).push(route.srcIata);
     });
     
-    const airportPoints = airports.map(a => ({ 
-      ...a, 
-      type: 'airport',
+    const airportPoints: PointData[] = airports.map(a => ({
+      ...a,
+      lat: parseFloat(a.lat),
+      lng: parseFloat(a.lng),
+      type: 'airport' as const,
       flightRoutes: flightRoutesByIata.get(a.iata) || []
     }));
-    const trainPoints = trainStations.map(t => ({ ...t, type: 'train' }));
+    const trainPoints: PointData[] = trainStations.map(t => ({ ...t, type: 'train' as const }));
 
     // Detect overlaps (same location = airport & train station)
-    const mergedPoints = [];
-    const usedTrainIndices = new Set();
+    const mergedPoints: PointData[] = [];
+    const usedTrainIndices = new Set<number>();
 
     airportPoints.forEach(airport => {
       let foundOverlap = false;
       trainPoints.forEach((train, idx) => {
         if (usedTrainIndices.has(idx)) return;
-        
-        const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(train.lat));
-        const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(train.lng));
+
+        const latDiff = Math.abs(airport.lat - train.lat);
+        const lngDiff = Math.abs(airport.lng - train.lng);
 
         if (latDiff < OVERLAP_THRESHOLD_DEGREES && lngDiff < OVERLAP_THRESHOLD_DEGREES) {
           // Found overlap
           mergedPoints.push({
             ...airport,
-            type: 'overlap',
+            type: 'overlap' as const,
             trainRoutes: train.routes || [],
             flightRoutes: airport.flightRoutes || []
           });

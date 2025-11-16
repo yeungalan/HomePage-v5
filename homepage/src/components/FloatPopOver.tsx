@@ -51,7 +51,7 @@ interface FloatPopoverProps {
   placement?: Placement;
   strategy?: Strategy;
   middleware?: Middleware[];
-  whileElementsMounted?: (reference: Element | { getBoundingClientRect: () => DOMRect }, floating: HTMLElement, update: () => void) => () => void;
+  whileElementsMounted?: (reference: ReferenceType, floating: HTMLElement, update: () => void) => () => void;
 }
 
 // Simple mobile detection hook (replaces useIsMobile)
@@ -217,7 +217,7 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
             }
           }, [open, elements, update])
 
-          const containerRef = useRef<HTMLElement>(null)
+          const containerRef = useRef<HTMLElement>(null as unknown as HTMLElement)
 
           useClickAway(containerRef, () => {
             if (trigger == 'click' || trigger == 'both') {

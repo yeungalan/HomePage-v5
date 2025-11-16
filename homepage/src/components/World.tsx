@@ -54,7 +54,13 @@ interface TrainPath {
   coords: Array<{lat: number; lng: number; city?: string} | [number, number]>;
 }
 
-interface PointData extends Partial<Airport>, Partial<TrainStation> {
+interface PointData {
+  lat: number;
+  lng: number;
+  iata?: string;
+  city?: string;
+  name?: string;
+  routes?: string[];
   type: 'airport' | 'train' | 'overlap' | 'cluster' | 'cluster-airport' | 'cluster-train' | 'cluster-both';
   flightRoutes?: string[];
   trainRoutes?: string[];

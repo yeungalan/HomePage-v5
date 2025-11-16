@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMemo, useState, useEffect } from 'react';
 import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Utility functions for FlowGraph component
  */
@@ -32,7 +31,7 @@ interface ServiceTypeDefaults {
   tier: string;
 }
 
-interface FlowNodeData {
+interface FlowNodeData extends Record<string, unknown> {
   label: string;
   title: string;
   subtitle?: string;

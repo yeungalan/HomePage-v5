@@ -30,8 +30,12 @@ export default function StatsComponent() {
     if (typeof window === 'undefined') return
     if (!isEnabled) return
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const Stats = require('stats.js')
+    const Stats = require('stats.js') as new () => {
+      showPanel: (panel: number) => void;
+      dom: HTMLElement;
+      begin: () => void;
+      end: () => void;
+    }
     const stats = new Stats()
     stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
 

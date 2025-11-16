@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -11,6 +11,29 @@ import rehypeRaw from 'rehype-raw'
 
 interface SimpleMarkdownProps {
   content: string
+}
+
+interface CodeProps {
+  node?: unknown;
+  inline?: boolean;
+  className?: string;
+  children?: ReactNode;
+  [key: string]: unknown;
+}
+
+interface PreProps {
+  children?: ReactNode;
+  [key: string]: unknown;
+}
+
+interface IframeProps {
+  node?: unknown;
+  src?: string;
+  height?: string | number;
+  className?: string;
+  allowtransparency?: string;
+  sandbox?: string;
+  [key: string]: unknown;
 }
 
 export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
@@ -98,7 +121,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               />
             )
           },
-          code: ({ node, inline, className, children, ...props }: any) => {
+          code: ({ node, inline, className, children, ...props }: CodeProps) => {
             const match = /language-(\w+)/.exec(className || '')
             return !inline && match ? (
               <div className="relative max-w-full overflow-x-auto">
@@ -120,8 +143,8 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               </code>
             )
           },
-          pre: ({ children }: any) => (
-            <pre className="max-w-full overflow-x-auto my-4">{children}</pre>
+          pre: ({ children, ...props }: PreProps) => (
+            <pre className="max-w-full overflow-x-auto my-4" {...props}>{children}</pre>
           ),
           ul({ node, ...props }) {
             return <ul className="list-disc pl-8 my-4 space-y-2" {...props} />
@@ -132,7 +155,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           li({ node, ...props }) {
             return <li className="mb-2" {...props} />
           },
-          iframe({ node, ...props }) {
+          iframe({ node, ...props }: IframeProps) {
             // Handle iframe elements with support for custom attributes
             const {
               height,
@@ -141,7 +164,7 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               allowtransparency,
               sandbox,
               ...otherProps
-            } = props as any
+            } = props
 
             // If height is specified, use it; otherwise use responsive container
             if (height) {

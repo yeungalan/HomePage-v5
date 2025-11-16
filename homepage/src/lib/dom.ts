@@ -1,11 +1,11 @@
 import type { ReactEventHandler, RefObject } from 'react'
 
-export const stopPropagation: ReactEventHandler<any> = (e) =>
+export const stopPropagation: ReactEventHandler<HTMLElement> = (e) =>
   e.stopPropagation()
 
-export const preventDefault: ReactEventHandler<any> = (e) => e.preventDefault()
+export const preventDefault: ReactEventHandler<HTMLElement> = (e) => e.preventDefault()
 
-export const transitionViewIfSupported = (updateCb: () => any) => {
+export const transitionViewIfSupported = (updateCb: () => void): void => {
   if (window.matchMedia(`(prefers-reduced-motion: reduce)`).matches) {
     updateCb()
     return

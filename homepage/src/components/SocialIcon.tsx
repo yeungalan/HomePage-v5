@@ -120,8 +120,8 @@ export const SocialIcon = memo((props: SocialIconProps) => {
   const { id, type } = props
 
   const [name, iconData, iconBg, hrefFn] = useMemo(() => {
-    const [name, iconData, iconBg, hrefFn] = (iconSet as any)[type as any] || []
-    return [name, iconData, iconBg, hrefFn]
+    const result = iconSet[type] || []
+    return result as [string, string | (() => ReactNode), string, (id: string) => string]
   }, [type])
 
   if (!name) return null

@@ -52,7 +52,7 @@ export const StyledButton: FC<ButtonProps> = ({
             variant,
             className,
           })}
-          {...(props as any)}
+          {...(props as NativeLinkProps)}
         />
       ) : (
         <MotionButtonBase
@@ -60,7 +60,7 @@ export const StyledButton: FC<ButtonProps> = ({
             variant,
             className,
           })}
-          {...(props as any)}
+          {...(props as NativeButtonProps)}
         />
       )}
     </Wrapper>

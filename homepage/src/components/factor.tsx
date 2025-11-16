@@ -46,7 +46,7 @@ export const createTransitionView = (params: TransitionViewParams) => {
     const { enter = delay, exit = delay } = timeout
 
     const MotionComponent = m[as] as FC<
-      HTMLMotionProps<any> & { ref?: React.Ref<HTMLElement | null> }
+      HTMLMotionProps<keyof JSX.IntrinsicElements> & { ref?: React.Ref<HTMLElement | null> }
     >
 
     const [stableIsHydrationEnded] = useState(isHydrationEnded)

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { createElement, useMemo, useRef, useState } from 'react'
 
 import { useIsDark } from '@/hooks/use-is-dark'
-import { getColorScheme, stringToHue } from '@/lib/color'
+import { getColorScheme, stringToHue, type ColorScheme } from '@/lib/color'
 import { clsxm } from '@/lib/helper'
 
 import { FlexText } from './FlexText'
@@ -48,11 +48,11 @@ export const Avatar: FC<
   const [loadError, setLoadError] = useState(false)
 
   const { className, ...restProps } = wrapperProps
-  const colors = useMemo(
+  const colors = useMemo<ColorScheme | false>(
     () =>
       (text || imageUrl) &&
       randomColor &&
-      (getColorScheme(stringToHue(text || imageUrl!)) as any),
+      getColorScheme(stringToHue(text || imageUrl!)),
     [text, imageUrl, randomColor],
   )
   const isDark = useIsDark()

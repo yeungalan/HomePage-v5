@@ -1,8 +1,18 @@
+interface ColorSet {
+  accent: string;
+  background: string;
+}
+
+export interface ColorScheme {
+  light: ColorSet;
+  dark: ColorSet;
+}
+
 const getRandomColor = (
   lightness: [number, number],
   saturation: [number, number],
   hue: number,
-) => {
+): ColorSet => {
   const satAccent = Math.floor(
     Math.random() * (saturation[1] - saturation[0] + 1) + saturation[0],
   )
@@ -29,7 +39,7 @@ export function stringToHue(str: string) {
   return hue < 0 ? hue + 360 : hue
 }
 
-export const getColorScheme = (hue?: number) => {
+export const getColorScheme = (hue?: number): ColorScheme => {
   const baseHue = hue ?? Math.floor(Math.random() * 361)
   const complementaryHue = (baseHue + 180) % 360
 

@@ -194,9 +194,10 @@ const dayNightShader = {
 
 // --- UTIL: Get sun position for a given timestamp ---
 const sunPosAt = (dt: number | Date): [number, number] => {
-  const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
-  const t = solar.century(dt);
-  const longitude = ((day - +dt) / 864e5) * 360 - 180;
+  const date = dt instanceof Date ? dt : new Date(dt);
+  const day = new Date(+date).setUTCHours(0, 0, 0, 0);
+  const t = solar.century(date);
+  const longitude = ((day - +date) / 864e5) * 360 - 180;
   return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
 };
 
@@ -284,7 +285,7 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       const hasTrains = trainCount > 0;
 
       // Determine type
-      let mergedType = 'cluster';
+      let mergedType: 'cluster' | 'cluster-both' | 'cluster-airport' | 'cluster-train' = 'cluster';
       if (hasAirports && hasTrains) {
         mergedType = 'cluster-both';
       } else if (hasAirports) {
@@ -296,11 +297,12 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       // Gather names
       const names = cluster
         .map(p => p.name || p.city)
+        .filter((v): v is string => v !== undefined)
         .filter((v, i, a) => a.indexOf(v) === i) // unique
         .slice(0, 5); // limit to first 5
 
       // Aggregate flight routes from all airports in cluster
-      const allFlightRoutes = new Set();
+      const allFlightRoutes = new Set<string>();
       airports.forEach(airport => {
         if (airport.flightRoutes) {
           airport.flightRoutes.forEach(route => allFlightRoutes.add(route));
@@ -308,7 +310,7 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       });
 
       // Aggregate train routes from all train stations in cluster
-      const allTrainRoutes = new Set();
+      const allTrainRoutes = new Set<string>();
       trainStations.forEach(station => {
         if (station.routes) {
           station.routes.forEach(route => allTrainRoutes.add(route));
@@ -316,8 +318,8 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       });
 
       clustered.push({
-        lat: avgLat.toString(),
-        lng: avgLng.toString(),
+        lat: avgLat,
+        lng: avgLng,
         type: mergedType,
         clusterSize: cluster.length,
         airportCount,
@@ -341,7 +343,7 @@ interface GlobeInstance {
   controls: () => { enableRotate: boolean };
 }
 
-export default function WorldMap(): JSX.Element {
+export default function WorldMap(): React.JSX.Element {
   const globeEl = useRef<GlobeInstance | null>(null);
   const [airports, setAirports] = useState<Airport[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -423,8 +425,8 @@ export default function WorldMap(): JSX.Element {
         )
         .map((d) =>
           Object.assign(d, {
-            srcAirport: byIata[d.srcIata],
-            dstAirport: byIata[d.dstIata],
+            srcAirport: byIata[d.srcIata] as Airport,
+            dstAirport: byIata[d.dstIata] as Airport,
           })
         );
 
@@ -447,16 +449,16 @@ export default function WorldMap(): JSX.Element {
   useEffect(() => {
     fetch('./train.dat')
       .then(r => r.json())
-      .then(trainData => {
+      .then((trainData: TrainPath[]) => {
         // Extract unique train stations from the route coordinates
-        const stationMap = new Map();
-        
-        trainData.forEach(route => {
+        const stationMap = new Map<string, TrainStation>();
+
+        trainData.forEach((route: TrainPath) => {
           const routeName = route.properties.name || '';
           const coords = route.coords;
-          
+
           // Map each coordinate to its corresponding city name
-          coords.forEach((coord) => {
+          coords.forEach((coord: {lat: number; lng: number; city?: string} | [number, number]) => {
             // Handle both object format {lat, lng, city} and array format [lat, lng]
             let lat, lng, cityName;
             
@@ -464,7 +466,7 @@ export default function WorldMap(): JSX.Element {
               // Old format: [lat, lng]
               [lat, lng] = coord;
               // Fallback: extract from route name
-              const cities = routeName.split('↔').map(s => s.trim());
+              const cities = routeName.split('↔').map((s: string) => s.trim());
               const index = coords.indexOf(coord);
               cityName = index < cities.length ? cities[index] : cities[cities.length - 1];
             } else {
@@ -705,36 +707,36 @@ export default function WorldMap(): JSX.Element {
               
               // Flight routes as arcs - conditionally shown
               arcsData={showFlightRoutes ? routes : []}
-              arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
-              arcStartLat={(d) => +d.srcAirport.lat}
-              arcStartLng={(d) => +d.srcAirport.lng}
-              arcEndLat={(d) => +d.dstAirport.lat}
-              arcEndLng={(d) => +d.dstAirport.lng}
-              arcColor={(d) => [
+              arcLabel={(d: Route) => `${d.srcIata} ↔ ${d.dstIata}`}
+              arcStartLat={(d: Route) => +d.srcAirport.lat}
+              arcStartLng={(d: Route) => +d.srcAirport.lng}
+              arcEndLat={(d: Route) => +d.dstAirport.lat}
+              arcEndLng={(d: Route) => +d.dstAirport.lng}
+              arcColor={(d: Route) => [
                 `rgba(255, 255, 255, ${OPACITY})`,
                 `rgba(255, 255, 255, ${OPACITY})`,
               ]}
               arcsTransitionDuration={0}
-              
+
               // All points (airports + train stations + clusters)
               pointsData={allPoints}
-              pointLabel={(d) => {
+              pointLabel={(d: PointData) => {
                 // Cluster labels
                 if (d.type?.startsWith('cluster')) {
-                  const locations = d.names.join(', ');
-                  const moreText = d.clusterSize > d.names.length ? ` +${d.clusterSize - d.names.length} more` : '';
+                  const locations = (d.names || []).join(', ');
+                  const moreText = (d.clusterSize && d.names && d.clusterSize > d.names.length) ? ` +${d.clusterSize - d.names.length} more` : '';
                   let typeText = '';
-                  
+
                   if (d.type === 'cluster-both') {
-                    typeText = `${d.airportCount} Airport(s) & ${d.trainCount} Train/Car Stop(s)`;
+                    typeText = `${d.airportCount || 0} Airport(s) & ${d.trainCount || 0} Train/Car Stop(s)`;
                   } else if (d.type === 'cluster-airport') {
-                    typeText = `${d.airportCount} Airport(s)`;
+                    typeText = `${d.airportCount || 0} Airport(s)`;
                   } else if (d.type === 'cluster-train') {
-                    typeText = `${d.trainCount} Train/Car Stop(s)`;
+                    typeText = `${d.trainCount || 0} Train/Car Stop(s)`;
                   }
-                  
+
                   // Show routes info
-                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0 
+                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
                     ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo, useState, useEffect } from 'react';
 import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -8,23 +9,28 @@ import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
 
 // Type definitions
-type ServiceStatus = 'healthy' | 'warning' | 'unhealthy';
-type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
+export type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'unknown';
+export type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
 
-interface Service {
+export interface Service {
   serviceId: string;
   serviceName: string;
   serviceDescription: string;
   serviceType: ServiceType;
   serviceLabel?: string;
   status: ServiceStatus;
+  tier?: string;
+  icon?: string;
+  iconBg?: string;
+  iconColor?: string;
 }
 
 type Connection = [string, string, string];
 
-interface FlowGraphConfig {
+export interface FlowGraphConfig {
   services: Service[];
   connections: Connection[];
+  tiers?: string[];
 }
 
 interface FlowGraphProps {

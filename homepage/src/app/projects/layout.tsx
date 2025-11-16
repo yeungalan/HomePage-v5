@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Friends',
 }
 
-export default async function (props: PropsWithChildren) {
+export default async function ProjectsLayout(props: PropsWithChildren) {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex-1">

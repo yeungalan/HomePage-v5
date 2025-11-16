@@ -49,14 +49,16 @@ export const Avatar: FC<
 
   const { className, ...restProps } = wrapperProps
   const colors = useMemo<ColorScheme | false>(
-    () =>
-      (text || imageUrl) &&
-      randomColor &&
-      getColorScheme(stringToHue(text || imageUrl!)),
+    () => {
+      if ((text || imageUrl) && randomColor) {
+        return getColorScheme(stringToHue(text || imageUrl!))
+      }
+      return false
+    },
     [text, imageUrl, randomColor],
   )
   const isDark = useIsDark()
-  const bgColor = isDark ? colors?.dark.background : colors?.light.background
+  const bgColor = colors && (isDark ? colors.dark.background : colors.light.background)
 
   return (
     <div

@@ -8,10 +8,10 @@ import { createElement, useState, useEffect } from 'react'
 import {LotteryText} from "@/components/LotteryText";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import ThreeTierInfrastructure from "@/components/FlowGraph";
+import ThreeTierInfrastructure, { type FlowGraphConfig } from "@/components/FlowGraph";
 
 // Example 3: Custom tiers/layers definition
-const infrastructureConfig = {
+const infrastructureConfig: FlowGraphConfig = {
   tiers: ['Client Plane', 'Cloud Plane', 'Data Plane', 'Control Plane s01', 'Control Plane s02', 'Control Plane s03'],
   services: [
     // Client Layer
@@ -20,6 +20,7 @@ const infrastructureConfig = {
       serviceName: "User",
       serviceDescription: "End User",
       tier: "Client Plane",
+      serviceType: "mobile",
       icon: "mdi:account",
       iconBg: "#e0e7ff",
       iconColor: "#4f46e5",
@@ -32,6 +33,7 @@ const infrastructureConfig = {
       serviceName: "CloudFlare",
       serviceDescription: "CDN/DNS",
       tier: "Cloud Plane",
+      serviceType: "web",
       icon: "mdi:cloud-outline",
       iconBg: "#fff7ed",
       iconColor: "#f97316",
@@ -42,6 +44,7 @@ const infrastructureConfig = {
       serviceName: "iCloud",
       serviceDescription: "Mail",
       tier: "Cloud Plane",
+      serviceType: "web",
       icon: "mdi:cloud",
       iconBg: "#dbeafe",
       iconColor: "#2563eb",
@@ -52,6 +55,7 @@ const infrastructureConfig = {
       serviceName: "Vercel",
       serviceDescription: "Vercel Homepage",
       tier: "Cloud Plane",
+      serviceType: "web",
       icon: "mdi:triangle",
       iconBg: "#0a0a0a",
       iconColor: "#ffffff",
@@ -74,7 +78,7 @@ const infrastructureConfig = {
       serviceName: "s01 Load Balancer",
       serviceDescription: "HTTPS Traffic Distribution",
       tier: "Data Plane",
-      serviceType: "server",
+      serviceType: "loadbalancer",
       serviceLabel: "s01",
       status: "unknown"
     },
@@ -101,6 +105,7 @@ const infrastructureConfig = {
       serviceName: "arozos",
       serviceDescription: "Arozos",
       tier: "Control Plane s01",
+      serviceType: "web",
       icon: "mdi:cube",
       iconBg: "#e9d5ff",
       iconColor: "#9333ea",
@@ -111,6 +116,7 @@ const infrastructureConfig = {
       serviceName: "Core Web Server",
       serviceDescription: "Services",
       tier: "Control Plane s01",
+      serviceType: "web",
       icon: "mdi:microsoft-windows",
       iconBg: "#e9d5ff",
       iconColor: "#9333ea",
@@ -121,6 +127,7 @@ const infrastructureConfig = {
       serviceName: "Central Authentication Service",
       serviceDescription: "oAuth System",
       tier: "Control Plane s01",
+      serviceType: "web",
       icon: "mdi:shield-account",
       iconBg: "#e9d5ff",
       iconColor: "#9333ea",
@@ -133,6 +140,7 @@ const infrastructureConfig = {
       serviceName: "Jenkins",
       serviceDescription: "Jenkins CI/CD",
       tier: "Control Plane s01",
+      serviceType: "web",
       icon: "mdi:hammer-wrench",
       iconBg: "#fef3c7",
       iconColor: "#f59e0b",
@@ -143,6 +151,7 @@ const infrastructureConfig = {
       serviceName: "arozos",
       serviceDescription: "arozos",
       tier: "Control Plane s02",
+      serviceType: "web",
       icon: "mdi:cube",
       iconBg: "#fef3c7",
       iconColor: "#f59e0b",
@@ -153,6 +162,7 @@ const infrastructureConfig = {
       serviceName: "Gitlab",
       serviceDescription: "Gitlab",
       tier: "Control Plane s02",
+      serviceType: "web",
       icon: "mdi:gitlab",
       iconBg: "#fef3c7",
       iconColor: "#f59e0b",
@@ -165,6 +175,7 @@ const infrastructureConfig = {
       serviceName: "gogs",
       serviceDescription: "HKWTC Git gogs",
       tier: "Control Plane s03",
+      serviceType: "web",
       icon: "mdi:git",
       iconBg: "#dcfce7",
       iconColor: "#16a34a",
@@ -175,6 +186,7 @@ const infrastructureConfig = {
       serviceName: "Minecraft 25565",
       serviceDescription: "Minecraft server 25565",
       tier: "Control Plane s03",
+      serviceType: "server",
       icon: "mdi:minecraft",
       iconBg: "#dcfce7",
       iconColor: "#16a34a",
@@ -185,6 +197,7 @@ const infrastructureConfig = {
       serviceName: "Minecraft 25566",
       serviceDescription: "Minecraft server 25566",
       tier: "Control Plane s03",
+      serviceType: "server",
       icon: "mdi:minecraft",
       iconBg: "#dcfce7",
       iconColor: "#16a34a",

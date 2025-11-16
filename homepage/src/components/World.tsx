@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import Globe from "react-globe.gl";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";

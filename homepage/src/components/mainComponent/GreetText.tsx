@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";

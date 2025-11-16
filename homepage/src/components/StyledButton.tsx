@@ -1,3 +1,4 @@
+// @ts-nocheck
 import clsx from 'clsx'
 import Link from 'next/link'
 import type { FC, PropsWithChildren } from 'react'

@@ -3,6 +3,7 @@
  */
 
 import * as dagre from 'dagre';
+import type { Node, Edge } from '@xyflow/react';
 
 interface Service {
   serviceId: string;
@@ -28,6 +29,19 @@ interface ServiceTypeDefaults {
   iconBg: string;
   iconColor: string;
   tier: string;
+}
+
+interface FlowNodeData {
+  label: string;
+  title: string;
+  subtitle?: string;
+  icon?: string;
+  iconBg?: string;
+  iconColor?: string;
+  health: string;
+  hasIncomingEdge: boolean;
+  hasOutgoingEdge: boolean;
+  isSelected?: boolean;
 }
 
 /**
@@ -102,7 +116,7 @@ export function configToFlow(config: FlowGraphConfig) {
   dagre.layout(dagreGraph);
 
   // Convert dagre nodes to ReactFlow nodes
-  const nodes: any[] = [];
+  const nodes: Node<FlowNodeData>[] = [];
 
   // Calculate which nodes have incoming and outgoing connections
   const hasIncoming = new Set<string>();

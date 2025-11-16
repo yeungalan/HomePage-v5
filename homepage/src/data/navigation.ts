@@ -2,6 +2,7 @@
  * Navigation configuration for header and footer
  */
 
+import type { ComponentType } from 'react';
 import {
   IcTwotoneSignpost,
   FaSolidUserFriends,
@@ -27,7 +28,7 @@ export interface MenuItem {
 export interface FooterLink {
   title: string;
   path: string;
-  icon: any; // React component type
+  icon: ComponentType<{ className?: string }>;
 }
 
 /**

@@ -46,8 +46,8 @@ export const Footer = () => {
                   href={item.path}
                   className="flex items-center gap-4 text-neutral-800 duration-200 dark:text-neutral-200"
                   style={{
-                    ['--hover-color' as any]: BRAND_COLORS.primary,
-                  }}
+                    '--hover-color': BRAND_COLORS.primary,
+                  } as React.CSSProperties}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = BRAND_COLORS.primary
                   }}

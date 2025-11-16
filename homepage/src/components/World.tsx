@@ -318,8 +318,14 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
 
 type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped';
 
+// Type for react-globe.gl instance
+interface GlobeInstance {
+  pointOfView: (pov?: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void | { lat: number; lng: number; altitude: number };
+  controls: () => { enableRotate: boolean };
+}
+
 export default function WorldMap(): JSX.Element {
-  const globeEl = useRef<any>(null);
+  const globeEl = useRef<GlobeInstance | null>(null);
   const [airports, setAirports] = useState<Airport[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [trainStations, setTrainStations] = useState<TrainStation[]>([]);

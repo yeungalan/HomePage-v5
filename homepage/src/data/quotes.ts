@@ -25,6 +25,7 @@ export const QUOTES = [
   'The best time to plant a tree was 20 years ago. The second best time is now',
   'In the middle of difficulty lies opportunity — Albert Einstein',
   'The future belongs to those who believe in the beauty of their dreams — Eleanor Roosevelt',
+  'Freedom has many difficulties and democracy is not perfect - John F. Kennedy',
 ] as const;
 
 /**

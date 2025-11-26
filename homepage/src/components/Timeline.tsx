@@ -144,7 +144,7 @@ export default function Timeline() {
               <div
                 className="absolute left-[15px] top-[16px] w-[2px]"
                 style={{
-                  height: 'calc(100% - 45px - 150px)',
+                  height: 'calc(100% - 211px)',
                   background: BRAND_COLORS.primary,
                 }}
               />

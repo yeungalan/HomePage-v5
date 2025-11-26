@@ -140,20 +140,20 @@ export default function Timeline() {
 
           <ScrollArea.Viewport className="w-full h-full">
             <div className="relative">
-              {/* Timeline line - solid for most of the line */}
+              {/* Timeline line - solid through all items */}
               <div
                 className="absolute left-[15px] top-[16px] w-[2px]"
                 style={{
-                  height: 'calc(100% - 211px)',
+                  height: 'calc(100% - 161px)',
                   background: BRAND_COLORS.primary,
                 }}
               />
-              {/* Dashed line at the bottom - after last item */}
+              {/* Dashed line below last item */}
               <div
                 className="absolute left-[15px] w-[2px]"
                 style={{
-                  top: 'calc(100% - 195px)',
-                  height: '150px',
+                  top: 'calc(100% - 145px)',
+                  height: '100px',
                   backgroundImage: `repeating-linear-gradient(to bottom, ${BRAND_COLORS.primary} 0px, ${BRAND_COLORS.primary} 4px, transparent 4px, transparent 8px)`,
                 }}
               />

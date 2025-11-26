@@ -170,8 +170,8 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        defaultViewport={{ x: -10, y: -5, zoom: 1.2 }}
-        minZoom={0.5}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
+        minZoom={0.3}
         maxZoom={2.5}
         attributionPosition="bottom-left"
         nodesConnectable={false}

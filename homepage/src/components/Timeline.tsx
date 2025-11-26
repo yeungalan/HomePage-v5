@@ -148,20 +148,6 @@ export default function Timeline() {
                   background: `linear-gradient(to bottom, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary})`,
                 }}
               />
-              <div
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
-                style={{
-                  backgroundImage: `
-                    repeating-linear-gradient(
-                      to bottom,
-                      ${BRAND_COLORS.primary},
-                      ${BRAND_COLORS.primary} 4px,
-                      ${typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(24,24,27,0.8)' : 'transparent'} 4px,
-                      transparent 8px
-                    )
-                  `,
-                }}
-              />
 
 
               <ul className="flex flex-col relative">

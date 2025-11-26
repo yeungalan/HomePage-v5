@@ -21,7 +21,7 @@ const FRIENDS_DATA = [
     id: '2',
     name: 'Hyper space',
     url: 'https://photo.tupolev.xyz/',
-    avatar: '/assets/images/hyper.png',
+    avatar: 'https://i.imgur.com/b2qK4Lx.jpeg',
     description: 'HyperXraft\'s Photobook',
   }
 ]

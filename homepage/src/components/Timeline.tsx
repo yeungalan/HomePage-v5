@@ -144,16 +144,16 @@ export default function Timeline() {
               <div
                 className="absolute left-[15px] top-[16px] w-[2px]"
                 style={{
-                  height: 'calc(100% - 45px - 80px)',
+                  height: 'calc(100% - 45px - 150px)',
                   background: BRAND_COLORS.primary,
                 }}
               />
-              {/* Dashed line at the bottom */}
+              {/* Dashed line at the bottom - after last item */}
               <div
                 className="absolute left-[15px] w-[2px]"
                 style={{
-                  top: 'calc(100% - 125px)',
-                  height: '80px',
+                  top: 'calc(100% - 195px)',
+                  height: '150px',
                   backgroundImage: `repeating-linear-gradient(to bottom, ${BRAND_COLORS.primary} 0px, ${BRAND_COLORS.primary} 4px, transparent 4px, transparent 8px)`,
                 }}
               />

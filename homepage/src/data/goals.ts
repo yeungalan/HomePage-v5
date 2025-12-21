@@ -58,7 +58,7 @@ export const GOALS_2025: Goal[] = [
   {
     id: 'stay-healthy',
     title: 'Stay Healthy',
-    status: 'in_progress',
+    status: 'completed',
     description: 'Maintain regular exercise and healthy habits',
   },
   {

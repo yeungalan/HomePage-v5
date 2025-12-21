@@ -9,6 +9,7 @@ import StatsComponent from "@/components/StatComponent";
 import { IconifyConfig } from "@/components/IconifyConfig";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,6 +65,7 @@ export default function RootLayout({
           {children}
         </NextThemeProvider>
         <Analytics />
+        <SpeedInsights/>
       </body>
     </html>
   );

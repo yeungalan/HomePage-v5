@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { RealFooter } from '@/components/FooterLinks';
 import { getDayOfYear, differenceInDays, endOfYear, startOfYear } from 'date-fns';
-import { GOALS_2025, GOAL_STATUS_CONFIG, GOAL_STATUS_LABELS, getGoalsTitle } from '@/data/goals';
+import { GOALS_2026, GOAL_STATUS_CONFIG, GOAL_STATUS_LABELS, getGoalsTitle } from '@/data/goals';
 import { FlightCalculator } from '@/components/goals/FlightCalculator';
 
 export default function GoalsPage() {
@@ -96,7 +96,7 @@ export default function GoalsPage() {
             <span>{getGoalsTitle()}</span>
           </h2>
           <div className="space-y-3 sm:space-y-4">
-            {GOALS_2025.map((goal, index) => {
+            {GOALS_2026.map((goal, index) => {
               const statusConfig = GOAL_STATUS_CONFIG[goal.status];
               const statusLabel = GOAL_STATUS_LABELS[goal.status];
 

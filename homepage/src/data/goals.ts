@@ -70,6 +70,49 @@ export const GOALS_2025: Goal[] = [
 ];
 
 /**
+ * 2026 Goals list
+ * Can be easily updated to add, remove, or modify goals
+ */
+export const GOALS_2026: Goal[] = [
+  {
+    id: 'move-to-japan',
+    title: 'Move to japan',
+    status: 'in_progress',
+    description: 'Complete visa process and relocate to Japan by April 2026',
+  },
+  {
+    id: 'learn-japanese',
+    title: 'Learn japanese',
+    status: 'in_progress',
+    description: 'Achieve JLPT N1 level proficiency in Japanese',
+  },
+  {
+    id: 'learn-cooking',
+    title: 'Learn cooking',
+    status: 'in_progress',
+    description: 'Build cooking skills and expand recipe repertoire',
+  },
+  {
+    id: 'better-mental-health',
+    title: 'Better mental health',
+    status: 'in_progress',
+    description: 'Improve overall mental wellbeing and emotional resilience',
+  },
+  {
+    id: 'target-weight',
+    title: '65-70kg weight',
+    status: 'in_progress',
+    description: 'Achieve and maintain healthy weight between 65-70kg',
+  },
+  {
+    id: 'find-person',
+    title: 'Find a Person I Care Of',
+    status: 'in_progress',
+    description: 'Build meaningful relationships and find a partner',
+  },
+];
+
+/**
  * Get the current year dynamically
  */
 export const getCurrentYear = (): number => {

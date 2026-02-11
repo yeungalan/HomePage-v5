@@ -238,7 +238,35 @@ const infrastructureConfig = {
   ]
 };
 
-export default async function Page() {    
+export default async function Page() {
+    // Fetch uptime status data
+    let statusMap: Record<string, any> = {};
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const response = await fetch(`${baseUrl}/api/uptime`, {
+        cache: 'no-store',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.statusMap) {
+          statusMap = data.statusMap;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch uptime data:', error);
+      // Continue with default 'unknown' statuses
+    }
+
+    // Update infrastructure config with fetched statuses
+    const updatedConfig = {
+      ...infrastructureConfig,
+      services: infrastructureConfig.services.map(service => ({
+        ...service,
+        status: statusMap[service.serviceId]?.status || service.status || 'unknown'
+      }))
+    };
+
     return (
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">
@@ -251,7 +279,7 @@ export default async function Page() {
                         <h1 className="text-3xl font-bold mb-4 dark:text-white">Architecture</h1>
                         <h3 className="text-xl text-gray-600 dark:text-gray-300">Infrastructure Overview</h3>
                       </header>
-                      <ArchitectureSection config={infrastructureConfig} />
+                      <ArchitectureSection config={updatedConfig} />
                     </div>
                   </div>
                 </div>

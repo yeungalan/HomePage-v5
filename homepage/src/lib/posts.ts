@@ -35,7 +35,7 @@ export function parseSlugLanguage(slug: string): { baseSlug: string; language: s
  * Groups posts by base slug and detects available languages
  * Sorts posts by creation date (newest first)
  */
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(): Promise<PostWithContent[]> {
   const postsDirectory = path.join(process.cwd(), 'public/posts_md');
   const filenames = fs.readdirSync(postsDirectory);
 
@@ -78,11 +78,12 @@ export async function getPosts(): Promise<Post[]> {
         language,
         availableLanguages: [] as string[],
         allTitles: {} as Record<string, string>,
+        content: fileContents,
       };
     });
 
   // Group posts by base slug to find available languages
-  const postsByBase = new Map<string, Post[]>();
+  const postsByBase = new Map<string, PostWithContent[]>();
   for (const post of allPosts) {
     const existing = postsByBase.get(post.baseSlug) || [];
     existing.push(post);

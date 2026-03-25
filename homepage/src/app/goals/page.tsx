@@ -85,15 +85,15 @@ export default function GoalsPage() {
         {/* Global Timezones */}
         <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.5,delay:0.6}} className="grid grid-cols-2 gap-4 sm:gap-6">
           {TIMEZONES.map(({ label, tz, lat, lng }) => {
-            const { emoji, gradient, textColor } = getDaylightInfo(time, lat, lng);
+            const { icon: daylightIcon, gradient, textColor } = getDaylightInfo(time, lat, lng);
             return (
               <div
                 key={tz}
                 className="rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 text-center transition-colors duration-500"
                 style={{ background: gradient }}
               >
-                <p className={`text-xs sm:text-sm mb-1 ${textColor} opacity-70`}>
-                  {emoji} {label}
+                <p className={`text-xs sm:text-sm mb-1 ${textColor} opacity-70 flex items-center justify-center gap-1`}>
+                  <Icon icon={daylightIcon} className="text-base" /> {label}
                 </p>
                 <p className={`text-lg sm:text-xl md:text-2xl font-bold font-mono ${textColor}`}>
                   {time.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })}

@@ -63,6 +63,21 @@ export default function GoalsPage() {
             <Icon icon="mdi:earth" className="text-lg sm:text-xl" />
             <span className="text-sm sm:text-base md:text-lg font-mono">UTC {utcHours}:{utcMinutes}:{utcSeconds}</span>
           </div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8">
+            {([
+              ['Hong Kong', 'Asia/Hong_Kong'],
+              ['Tokyo', 'Asia/Tokyo'],
+              ['Los Angeles', 'America/Los_Angeles'],
+              ['New York', 'America/New_York'],
+            ] as const).map(([label, tz]) => (
+              <div key={tz} className="bg-gray-50 dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700 text-center">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">{label}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold font-mono dark:text-white">
+                  {time.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })}
+                </p>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Timeline Stats */}

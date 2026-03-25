@@ -3,6 +3,9 @@ import Globe from "react-globe.gl";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { csvParseRows } from "d3-dsv";
 import indexBy from "index-array-by";
+import { AIRPORTS_RAW } from "@/data/airports";
+import { ROUTES_RAW } from "@/data/routes";
+import { TRAIN_DATA } from "@/data/train";
 import {
   TextureLoader,
   ShaderMaterial,
@@ -47,7 +50,7 @@ interface TrainStation {
   type?: string;
 }
 
-interface TrainPath {
+export interface TrainPath {
   properties: {
     name: string;
   };
@@ -388,107 +391,74 @@ export default function WorldMap(): JSX.Element {
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Load airports + routes
+  // Load airports + routes from constants
   useEffect(() => {
-    Promise.all([
-      fetch("./airports.dat")
-        .then((res) => res.text())
-        .then((d) => csvParseRows(d, airportParse)),
-      fetch("./routes.dat")
-        .then((res) => res.text())
-        .then((d) => csvParseRows(d, routeParse)),
-    ]).then(([airports, routes]) => {
-      const byIata = indexBy(airports, "iata", false);
+    const airports = csvParseRows(AIRPORTS_RAW, airportParse);
+    const routes = csvParseRows(ROUTES_RAW, routeParse);
+    const byIata = indexBy(airports, "iata", false);
 
-      const filteredRoutes = routes
-        .filter(
-          (d) => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)
-        )
-        .map((d) =>
-          Object.assign(d, {
-            srcAirport: byIata[d.srcIata],
-            dstAirport: byIata[d.dstIata],
-          })
-        );
-
-      const usedIatas = new Set(
-        filteredRoutes.flatMap((r) => [r.srcIata, r.dstIata])
+    const filteredRoutes = routes
+      .filter(
+        (d) => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)
+      )
+      .map((d) =>
+        Object.assign(d, {
+          srcAirport: byIata[d.srcIata],
+          dstAirport: byIata[d.dstIata],
+        })
       );
-      const filteredAirports = airports.filter((a) => usedIatas.has(a.iata));
-      
-      setAirports(filteredAirports);
-      setRoutes(filteredRoutes);
-    }).catch(() => {
-      // If data files don't exist, continue without them
-      setAirports([]);
-      setRoutes([]);
-    });
 
+    const usedIatas = new Set(
+      filteredRoutes.flatMap((r) => [r.srcIata, r.dstIata])
+    );
+    const filteredAirports = airports.filter((a) => usedIatas.has(a.iata));
+
+    setAirports(filteredAirports);
+    setRoutes(filteredRoutes);
   }, []);
 
-  // Load train data and extract stations as points
+  // Load train data from constants
   useEffect(() => {
-    fetch('./train.dat')
-      .then(r => r.json())
-      .then(trainData => {
-        // Extract unique train stations from the route coordinates
-        const stationMap = new Map();
-        
-        trainData.forEach(route => {
-          const routeName = route.properties.name || '';
-          const coords = route.coords;
-          
-          // Map each coordinate to its corresponding city name
-          coords.forEach((coord) => {
-            // Handle both object format {lat, lng, city} and array format [lat, lng]
-            let lat, lng, cityName;
-            
-            if (Array.isArray(coord)) {
-              // Old format: [lat, lng]
-              [lat, lng] = coord;
-              // Fallback: extract from route name
-              const cities = routeName.split('↔').map(s => s.trim());
-              const index = coords.indexOf(coord);
-              cityName = index < cities.length ? cities[index] : cities[cities.length - 1];
-            } else {
-              // New format: {lat, lng, city}
-              lat = coord.lat;
-              lng = coord.lng;
-              cityName = coord.city || '';
-            }
-            
-            const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
-            
-            if (!stationMap.has(key)) {
-              stationMap.set(key, {
-                lat: lat,
-                lng: lng,
-                name: cityName,
-                routes: []
-              });
-            }
-            
-            // Add route name to this station
-            const station = stationMap.get(key);
-            if (routeName && !station.routes.includes(routeName)) {
-              station.routes.push(routeName);
-            }
-          });
-        });
-        
-        const stations = Array.from(stationMap.values()).map(station => ({
-          ...station,
-          type: 'train'
-        }));
-        
-        setTrainStations(stations);
-        setTrainPaths(trainData);
-      })
-      .catch(err => {
-        console.log('No train data available');
-        setTrainStations([]);
-        setTrainPaths([]);
+    const stationMap = new Map();
+
+    TRAIN_DATA.forEach(route => {
+      const routeName = route.properties.name || '';
+      const coords = route.coords;
+
+      coords.forEach((coord) => {
+        let lat, lng, cityName;
+
+        if (Array.isArray(coord)) {
+          [lat, lng] = coord;
+          const cities = routeName.split('↔').map(s => s.trim());
+          const index = coords.indexOf(coord);
+          cityName = index < cities.length ? cities[index] : cities[cities.length - 1];
+        } else {
+          lat = coord.lat;
+          lng = coord.lng;
+          cityName = coord.city || '';
+        }
+
+        const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
+
+        if (!stationMap.has(key)) {
+          stationMap.set(key, { lat, lng, name: cityName, routes: [] });
+        }
+
+        const station = stationMap.get(key);
+        if (routeName && !station.routes.includes(routeName)) {
+          station.routes.push(routeName);
+        }
       });
+    });
+
+    const stations = Array.from(stationMap.values()).map(station => ({
+      ...station,
+      type: 'train'
+    }));
+
+    setTrainStations(stations);
+    setTrainPaths(TRAIN_DATA);
   }, []);
 
   // Setup globe material with day/night shader

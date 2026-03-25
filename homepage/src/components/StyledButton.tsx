@@ -3,7 +3,7 @@ import Link from 'next/link'
 import type { FC, PropsWithChildren } from 'react'
 import { tv } from 'tailwind-variants'
 
-import { MotionButtonBase } from './MotionButton'
+import { MotionButtonBase } from './MotionButtonBase'
 
 const variantStyles = tv({
   base: 'inline-flex select-none cursor-default items-center gap-2 justify-center rounded-lg py-2 px-3 text-sm outline-offset-2 transition active:transition-none',

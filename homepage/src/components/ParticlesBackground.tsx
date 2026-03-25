@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
-import type { Container, ISourceOptions } from '@tsparticles/engine'
+import type { ISourceOptions } from '@tsparticles/engine'
 import {
   PARTICLE_COLORS,
   PARTICLE_LINK_OPACITY,
@@ -125,8 +125,8 @@ export function ParticlesBackground() {
     return () => observer.disconnect()
   }, [])
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log('Particles loaded', container)
+  const particlesLoaded = async (): Promise<void> => {
+    // particles loaded
   }
 
   if (!init) {

@@ -1,9 +1,6 @@
 import * as ScrollAreaBase from '@radix-ui/react-scroll-area'
 import * as React from 'react'
-
-const clsxm = (...classes: (string | boolean | undefined)[]) => {
-  return classes.filter(Boolean).join(' ');
-};
+import { clsxm } from '@/lib/helper'
 
 const Corner = React.forwardRef<
   React.ElementRef<typeof ScrollAreaBase.Corner>,

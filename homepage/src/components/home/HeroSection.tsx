@@ -7,7 +7,7 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import { TwoColumnLayout } from '@/components/layouts/TwoColumnLayout';
 import { BottomToUpTransitionView } from '@/components/BottomToUpTransitionView';
-import GiantGreetText, { GiantGreetTextTemplate } from '@/components/mainComponent/GreetText';
+import GiantGreetText, { GiantGreetTextTemplate } from '@/components/greet-text/GreetText';
 import { isSupportIcon, SocialIcon } from '@/components/SocialIcon';
 import { softBouncePreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';

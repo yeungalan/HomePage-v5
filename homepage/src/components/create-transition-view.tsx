@@ -12,7 +12,7 @@ import { memo, useState } from 'react'
 import { isHydrationEnded } from '@/components/common/HydrationEndDetector'
 import { microReboundPreset } from '@/constants/spring'
 
-import type { BaseTransitionProps } from './typings'
+import type { BaseTransitionProps } from '@/types/transitions'
 import { useRef } from 'react'
 
 interface TransitionViewParams {

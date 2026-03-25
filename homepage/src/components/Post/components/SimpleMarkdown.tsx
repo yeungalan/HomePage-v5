@@ -84,7 +84,6 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
             const { children, ...props } = stripNode(allProps)
             h1CountRef.current += 1
             const shouldHide = h1CountRef.current <= 2
-            console.log(shouldHide + ' ' + children)
             return (
               <h1
                 {...props}

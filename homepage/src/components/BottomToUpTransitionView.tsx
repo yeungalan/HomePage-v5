@@ -2,7 +2,7 @@
 
 import { softBouncePreset, Spring } from '@/constants/spring'
 
-import { createTransitionView } from './factor'
+import { createTransitionView } from './create-transition-view'
 
 export const BottomToUpTransitionView = createTransitionView({
   from: {

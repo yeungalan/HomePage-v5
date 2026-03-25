@@ -326,7 +326,7 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
   return clustered;
 };
 
-type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped';
+type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped' | 'flat';
 
 // Type for react-globe.gl instance
 interface GlobeInstance {
@@ -353,12 +353,12 @@ export default function WorldMap(): React.JSX.Element {
 
   // Animate time based on mode
   useEffect(() => {
-    if(timeMode === 'stopped') {
+    if(timeMode === 'stopped' || timeMode === 'flat') {
       setEnableDaylight(false);
     }else{
       setEnableDaylight(true);
     }
-    if (timeMode === 'paused') return;
+    if (timeMode === 'paused' || timeMode === 'flat') return;
 
     let animationId: number;
     (function iterateTime(): void {
@@ -634,9 +634,10 @@ export default function WorldMap(): React.JSX.Element {
   const getIndicatorPosition = (): number => {
     const positions: Record<TimeMode, number> = {
       stopped: 4,
-      paused: 4,
-      realtime: 36,
-      animated: 68,
+      flat: 4,
+      paused: 36,
+      realtime: 68,
+      animated: 100,
     };
     return positions[timeMode];
   };
@@ -827,53 +828,43 @@ export default function WorldMap(): React.JSX.Element {
             }}
           />
 
-          {/* Button Group - 4 buttons */}
+          {/* Button Group */}
           <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
-            {/*
-                        <button
-              aria-label="Toggle daylight cycle"
+            <button
+              aria-label="No daylight"
               type="button"
-              onClick={() => handleModeChange('stopped')}
+              onClick={() => handleModeChange('flat')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
-              style={{
-                color: !enableDaylight ? '#000' : '#fff',
-              }}
+              style={{ color: timeMode === 'flat' ? '#000' : '#fff' }}
             >
-              <Icon icon="mdi:stop" className="text-[18px]" onClick={() => handleModeChange('stopped')}/>
+              <Icon icon="mdi:weather-sunny-off" className="text-[18px]" />
             </button>
-            */}
             <button
               aria-label="Pause time"
               type="button"
               onClick={() => handleModeChange('paused')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
-              style={{
-                color: timeMode === 'paused' ? '#000' : '#fff',
-              }}
+              style={{ color: timeMode === 'paused' ? '#000' : '#fff' }}
             >
-              <Icon icon="mdi:pause" className="text-[18px]" onClick={() => handleModeChange('paused')}/>
+              <Icon icon="mdi:pause" className="text-[18px]" />
             </button>
             <button
               aria-label="Real time"
               type="button"
               onClick={() => handleModeChange('realtime')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
-              style={{
-                color: timeMode === 'realtime' ? '#000' : '#fff',
-              }}
+              style={{ color: timeMode === 'realtime' ? '#000' : '#fff' }}
             >
-              <Icon icon="mdi:clock-outline" className="text-[18px]" onClick={() => handleModeChange('realtime')}/>
+              <Icon icon="mdi:clock-outline" className="text-[18px]" />
             </button>
             <button
               aria-label="Animated time"
               type="button"
               onClick={() => handleModeChange('animated')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
-              style={{
-                color: timeMode === 'animated' ? '#000' : '#fff',
-              }}
+              style={{ color: timeMode === 'animated' ? '#000' : '#fff' }}
             >
-              <Icon icon="mdi:fast-forward" className="text-[18px]" onClick={() => handleModeChange('animated')}/>
+              <Icon icon="mdi:fast-forward" className="text-[18px]" />
             </button>
           </div>
         </div>

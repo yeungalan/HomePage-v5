@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useMemo, useRef, useEffect, useState } from 'react'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 

@@ -12,7 +12,7 @@ import {
   Vector2,
 } from "three";
 import * as solar from "solar-calculator";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Icon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
 

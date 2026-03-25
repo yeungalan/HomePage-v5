@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes'
 import { flushSync } from 'react-dom'
 import { tv } from 'tailwind-variants'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 import { useIsClient } from '@/hooks/use-is-client'
 import { transitionViewIfSupported } from '@/lib/dom'

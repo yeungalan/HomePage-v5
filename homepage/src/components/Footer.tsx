@@ -1,3 +1,5 @@
+'use client'
+
 import { microReboundPreset } from "@/constants/spring"
 import { motion } from "motion/react"
 import { createElement } from "react"

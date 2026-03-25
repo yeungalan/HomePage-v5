@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { AnimatePresence, motion, useDragControls, PanInfo } from "framer-motion";
+import { AnimatePresence, motion, useDragControls, PanInfo } from "motion/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Icon } from "@iconify/react";
 import Link from "next/link";

@@ -5,7 +5,7 @@ import { NormalContainer } from '@/components/NormalContainer'
 import { RealFooter } from '@/components/FooterLinks'
 
 export const metadata: Metadata = {
-  title: 'Friends',
+  title: 'Projects',
 }
 
 export default async function ProjectsLayout(props: PropsWithChildren) {

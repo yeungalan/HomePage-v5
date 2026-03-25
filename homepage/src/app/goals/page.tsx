@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Icon } from '@iconify/react';
 import { RealFooter } from '@/components/FooterLinks';
 import { getDayOfYear, differenceInDays, endOfYear, startOfYear } from 'date-fns';

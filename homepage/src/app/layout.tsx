@@ -1,13 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
-//import "@/styles/style.css";
 import 'mingcute_icon/font/Mingcute.css'
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
 import StatsComponent from "@/components/StatComponent";
 import { IconifyConfig } from "@/components/IconifyConfig";
-import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -36,6 +34,12 @@ const notoSansTC = Noto_Sans_TC({
 export const metadata: Metadata = {
   title: "Alan Yeung @ Seattle, WA",
   description: "alanyeung.co Home Page | Project Atlas: Global Infrastructure Modernization Initiative 2025",
+  icons: { icon: "/favicon.ico" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -46,10 +50,6 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-      </Head>
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >

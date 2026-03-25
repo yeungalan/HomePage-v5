@@ -7,13 +7,13 @@ import { getPostBySlug, parseSlugLanguage } from '@/lib/posts';
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function PostPage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Fetch post with metadata and available languages
   const post = await getPostBySlug(slug);

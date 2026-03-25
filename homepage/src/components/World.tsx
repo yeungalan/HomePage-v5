@@ -148,6 +148,7 @@ const dayNightShader = {
     uniform sampler2D dayTexture;
     uniform sampler2D nightTexture;
     uniform vec2 sunPosition;
+    uniform float forceDaylight;
     
     varying vec3 vWorldPosition;
     varying vec2 vUv;
@@ -167,16 +168,14 @@ const dayNightShader = {
     }
 
     void main() {
-      // Calculate world-space normal from world position
-      vec3 worldNormal = normalize(vWorldPosition);
-      
-      // Get sun direction directly in world space (no rotation needed)
-      vec3 sunDirection = Polar2Cartesian(sunPosition);
-      
-      // Calculate lighting intensity
-      float intensity = dot(worldNormal, normalize(sunDirection));
-      
       vec4 dayColor = texture2D(dayTexture, vUv);
+      if (forceDaylight > 0.5) {
+        gl_FragColor = dayColor;
+        return;
+      }
+      vec3 worldNormal = normalize(vWorldPosition);
+      vec3 sunDirection = Polar2Cartesian(sunPosition);
+      float intensity = dot(worldNormal, normalize(sunDirection));
       vec4 nightColor = texture2D(nightTexture, vUv);
       float blendFactor = smoothstep(-0.1, 0.1, intensity);
       gl_FragColor = mix(nightColor, dayColor, blendFactor);
@@ -481,6 +480,7 @@ export default function WorldMap(): React.JSX.Element {
           dayTexture: { value: dayTexture },
           nightTexture: { value: nightTexture },
           sunPosition: { value: new Vector2() },
+          forceDaylight: { value: 0.0 },
         },
         vertexShader: dayNightShader.vertexShader,
         fragmentShader: dayNightShader.fragmentShader,
@@ -518,11 +518,11 @@ export default function WorldMap(): React.JSX.Element {
 
     const updateShader = () => {
       if (enableDaylight) {
+        globeMaterial.uniforms.forceDaylight.value = 0.0;
         const [lng, lat] = sunPosAt(dt);
         globeMaterial.uniforms.sunPosition.value.set(lng, lat);
       } else {
-        // Set sun position to create constant daylight (sun directly overhead at equator)
-        globeMaterial.uniforms.sunPosition.value.set(0, 0);
+        globeMaterial.uniforms.forceDaylight.value = 1.0;
       }
 
     };

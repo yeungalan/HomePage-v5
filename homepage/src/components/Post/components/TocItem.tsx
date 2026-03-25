@@ -7,7 +7,6 @@ interface TocItemProps {
   isActive: boolean
   rootDepth: number
   onClick: (anchorId: string) => void
-  itemIndex: number
   setRef: (el: HTMLButtonElement | null) => void
 }
 
@@ -16,7 +15,6 @@ export const TocItem: React.FC<TocItemProps> = ({
   isActive,
   rootDepth,
   onClick,
-  itemIndex,
   setRef
 }) => {
   const baseIndent = (item.depth - rootDepth + (isActive ? 1 : 0)) * 0.5

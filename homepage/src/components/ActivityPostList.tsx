@@ -1,6 +1,6 @@
 'use client'
 
-import { m, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import Link from 'next/link'
 import * as React from 'react'
 

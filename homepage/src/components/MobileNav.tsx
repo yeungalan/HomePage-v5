@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion, useDragControls, PanInfo } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Icon } from "@iconify/react";
@@ -22,9 +22,9 @@ const ANIMATION_CONFIG = {
 } as const;
 
 export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps) {
-  const [isOpen, setIsOpen] = useState(false); // controls portal mount
+  const [, setIsOpen] = useState(false); // controls portal mount
   const [internalOpen, setInternalOpen] = useState(false); // controls animation
-  const [dragY, setDragY] = useState(0);
+  const [, setDragY] = useState(0);
   const dragControls = useDragControls();
   const pathname = usePathname();
 

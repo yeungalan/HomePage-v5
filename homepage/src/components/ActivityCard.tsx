@@ -31,7 +31,6 @@ const formatDateRange = (start: string, end: string, isOngoing?: boolean) => {
 }
 
 export const ActivityCard = ({
-  type,
   title,
   organization,
   startDate,
@@ -73,7 +72,7 @@ export const ActivityCard = ({
         </div>
       </div>
     )
-  }, [type, title, organization, startDate, endDate, icon, isOngoing])
+  }, [title, organization, startDate, endDate, icon, isOngoing])
 
   return <div className="pb-8 text-base w-full">{Content}</div>
 }

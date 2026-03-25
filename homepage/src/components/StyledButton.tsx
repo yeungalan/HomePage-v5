@@ -23,7 +23,7 @@ const variantStyles = tv({
     },
   },
 })
-type NativeButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type NativeButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> & {
   href?: string
 }
 type NativeLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>

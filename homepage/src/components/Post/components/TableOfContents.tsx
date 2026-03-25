@@ -32,7 +32,6 @@ export const TableOfContents: React.FC = () => {
         const rect = activeElement.getBoundingClientRect()
         const containerElement = activeElement.parentElement?.parentElement
         if (containerElement) {
-          const containerRect = containerElement.getBoundingClientRect()
           setIndicatorStyle({
             top: activeElement.offsetTop,
             height: rect.height
@@ -244,7 +243,6 @@ export const TableOfContents: React.FC = () => {
               isActive={heading.anchorId === activeId}
               rootDepth={rootDepth}
               onClick={scrollToHeading}
-              itemIndex={index}
               setRef={setItemRef(index)}
             />
           ))}

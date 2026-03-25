@@ -46,7 +46,7 @@ export const AuthorIntroduction: React.FC = () => {
           </p>
           {!category?.caption && (
             <p className="text-base text-gray-600 mb-4 leading-relaxed">
-              When I'm not coding, you can find me reading, experimenting with new
+              When I&apos;m not coding, you can find me reading, experimenting with new
               ideas, or contributing to open-source projects. Feel free to connect
               with me!
             </p>

@@ -3,7 +3,7 @@
  */
 
 import * as dagre from 'dagre';
-import type { Node, Edge } from '@xyflow/react';
+import type { Node } from '@xyflow/react';
 
 interface Service {
   serviceId: string;
@@ -32,6 +32,7 @@ interface ServiceTypeDefaults {
 }
 
 interface FlowNodeData {
+  [key: string]: unknown;
   label: string;
   title: string;
   subtitle?: string;
@@ -65,11 +66,7 @@ export const serviceTypeDefaults: Record<string, ServiceTypeDefaults> = {
  * Convert config to ReactFlow nodes and edges using dagre layout
  */
 export function configToFlow(config: FlowGraphConfig) {
-  const { services = [], connections = [], tiers = null } = config;
-
-  // Use custom tiers if provided, otherwise use defaults
-  const defaultTiers = ['presentation', 'application', 'data'];
-  const tierList = tiers || defaultTiers;
+  const { services = [], connections = [] } = config;
 
   // Group services by tier and apply defaults
   const enrichedServices = services.map((service) => {

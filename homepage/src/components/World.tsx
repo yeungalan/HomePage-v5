@@ -10,7 +10,6 @@ import {
   TextureLoader,
   ShaderMaterial,
   Vector2,
-  Vector3,
 } from "three";
 import * as solar from "solar-calculator";
 import { motion } from "framer-motion";
@@ -53,12 +52,20 @@ interface TrainStation {
 export interface TrainPath {
   properties: {
     name: string;
+    [key: string]: unknown;
   };
   coords: Array<{lat: number; lng: number; city?: string} | [number, number]>;
 }
 
-interface PointData extends Partial<Airport>, Partial<TrainStation> {
-  type: 'airport' | 'train' | 'overlap' | 'cluster' | 'cluster-airport' | 'cluster-train' | 'cluster-both';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PointData = Record<string, any> & {
+  type: string;
+  lat?: string | number;
+  lng?: string | number;
+  name?: string;
+  city?: string;
+  iata?: string;
+  routes?: string[];
   flightRoutes?: string[];
   trainRoutes?: string[];
   clusterSize?: number;
@@ -74,7 +81,6 @@ interface Dimensions {
 }
 
 // Configuration constants
-const COUNTRY = "United States";
 const OPACITY = 1;
 const VELOCITY = 1; // minutes per frame
 
@@ -239,10 +245,10 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
 
       const other = points[j];
       const distance = haversineDistance(
-        parseFloat(point.lat), 
-        parseFloat(point.lng),
-        parseFloat(other.lat), 
-        parseFloat(other.lng)
+        parseFloat(String(point.lat)), 
+        parseFloat(String(point.lng)),
+        parseFloat(String(other.lat)), 
+        parseFloat(String(other.lng))
       );
 
       if (distance <= clusterThresholdKm) {
@@ -256,8 +262,8 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       clustered.push(point);
     } else {
       // Merge multiple points
-      const avgLat = cluster.reduce((sum, p) => sum + parseFloat(p.lat), 0) / cluster.length;
-      const avgLng = cluster.reduce((sum, p) => sum + parseFloat(p.lng), 0) / cluster.length;
+      const avgLat = cluster.reduce((sum, p) => sum + parseFloat(String(p.lat)), 0) / cluster.length;
+      const avgLng = cluster.reduce((sum, p) => sum + parseFloat(String(p.lng)), 0) / cluster.length;
 
       // Separate by type
       const airports = cluster.filter(p => p.type === 'airport' || p.type === 'overlap');
@@ -282,11 +288,12 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       // Gather names
       const names = cluster
         .map(p => p.name || p.city)
+        .filter((v): v is string => !!v)
         .filter((v, i, a) => a.indexOf(v) === i) // unique
         .slice(0, 5); // limit to first 5
 
       // Aggregate flight routes from all airports in cluster
-      const allFlightRoutes = new Set();
+      const allFlightRoutes = new Set<string>();
       airports.forEach(airport => {
         if (airport.flightRoutes) {
           airport.flightRoutes.forEach(route => allFlightRoutes.add(route));
@@ -294,7 +301,7 @@ const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
       });
 
       // Aggregate train routes from all train stations in cluster
-      const allTrainRoutes = new Set();
+      const allTrainRoutes = new Set<string>();
       trainStations.forEach(station => {
         if (station.routes) {
           station.routes.forEach(route => allTrainRoutes.add(route));
@@ -327,14 +334,15 @@ interface GlobeInstance {
   controls: () => { enableRotate: boolean };
 }
 
-export default function WorldMap(): JSX.Element {
+export default function WorldMap(): React.JSX.Element {
   const globeEl = useRef<GlobeInstance | null>(null);
   const [airports, setAirports] = useState<Airport[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [trainStations, setTrainStations] = useState<TrainStation[]>([]);
   const [trainPaths, setTrainPaths] = useState<TrainPath[]>([]);
   const [dt, setDt] = useState<number>(+new Date());
-  const [globeMaterial, setGlobeMaterial] = useState<ShaderMaterial | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [globeMaterial, setGlobeMaterial] = useState<any>(null);
   const [timeMode, setTimeMode] = useState<TimeMode>('animated');
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
   const [isAnimating, setIsAnimating] = useState<boolean>(true);
@@ -393,9 +401,9 @@ export default function WorldMap(): JSX.Element {
 
   // Load airports + routes from constants
   useEffect(() => {
-    const airports = csvParseRows(AIRPORTS_RAW, airportParse);
-    const routes = csvParseRows(ROUTES_RAW, routeParse);
-    const byIata = indexBy(airports, "iata", false);
+    const airports: Airport[] = csvParseRows(AIRPORTS_RAW, airportParse);
+    const routes: Route[] = csvParseRows(ROUTES_RAW, routeParse);
+    const byIata: Record<string, Airport> = indexBy(airports, "iata", false);
 
     const filteredRoutes = routes
       .filter(
@@ -583,7 +591,7 @@ export default function WorldMap(): JSX.Element {
     const trainPoints = trainStations.map(t => ({ ...t, type: 'train' }));
 
     // Detect overlaps (same location = airport & train station)
-    const mergedPoints = [];
+    const mergedPoints: PointData[] = [];
     const usedTrainIndices = new Set();
 
     airportPoints.forEach(airport => {
@@ -591,8 +599,8 @@ export default function WorldMap(): JSX.Element {
       trainPoints.forEach((train, idx) => {
         if (usedTrainIndices.has(idx)) return;
         
-        const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(train.lat));
-        const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(train.lng));
+        const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(String(train.lat)));
+        const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(String(train.lng)));
 
         if (latDiff < OVERLAP_THRESHOLD_DEGREES && lngDiff < OVERLAP_THRESHOLD_DEGREES) {
           // Found overlap
@@ -656,12 +664,12 @@ export default function WorldMap(): JSX.Element {
               
               // Flight routes as arcs - conditionally shown
               arcsData={showFlightRoutes ? routes : []}
-              arcLabel={(d) => `${d.srcIata} ↔ ${d.dstIata}`}
-              arcStartLat={(d) => +d.srcAirport.lat}
-              arcStartLng={(d) => +d.srcAirport.lng}
-              arcEndLat={(d) => +d.dstAirport.lat}
-              arcEndLng={(d) => +d.dstAirport.lng}
-              arcColor={(d) => [
+              arcLabel={(d: Route) => `${d.srcIata} ↔ ${d.dstIata}`}
+              arcStartLat={(d: Route) => +d.srcAirport!.lat}
+              arcStartLng={(d: Route) => +d.srcAirport!.lng}
+              arcEndLat={(d: Route) => +d.dstAirport!.lat}
+              arcEndLng={(d: Route) => +d.dstAirport!.lng}
+              arcColor={() => [
                 `rgba(255, 255, 255, ${OPACITY})`,
                 `rgba(255, 255, 255, ${OPACITY})`,
               ]}
@@ -669,11 +677,11 @@ export default function WorldMap(): JSX.Element {
               
               // All points (airports + train stations + clusters)
               pointsData={allPoints}
-              pointLabel={(d) => {
+              pointLabel={(d: PointData) => {
                 // Cluster labels
                 if (d.type?.startsWith('cluster')) {
-                  const locations = d.names.join(', ');
-                  const moreText = d.clusterSize > d.names.length ? ` +${d.clusterSize - d.names.length} more` : '';
+                  const locations = (d.names || []).join(', ');
+                  const moreText = d.clusterSize && d.names && d.clusterSize > d.names.length ? ` +${d.clusterSize - d.names.length} more` : '';
                   let typeText = '';
                   
                   if (d.type === 'cluster-both') {
@@ -722,7 +730,7 @@ export default function WorldMap(): JSX.Element {
                   : '';
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}${flightInfo}</div>`;
               }}
-              pointColor={(d) => {
+              pointColor={(d: PointData) => {
                 // Cluster colors
                 if (d.type === 'cluster-both') return '#FFD700'; // Gold
                 if (d.type === 'cluster-airport') return '#FFA500'; // Orange
@@ -734,12 +742,12 @@ export default function WorldMap(): JSX.Element {
                 return 'orange'; // Orange for airport
               }}
               pointAltitude={0.001}
-              pointRadius={(d) => {
+              pointRadius={(d: PointData) => {
                 const baseRadius = altitude > 1 ? 0.5 : 0.15;
                 
                 // Make clusters larger based on size
                 if (d.type?.startsWith('cluster')) {
-                  return baseRadius * (1 + Math.log10(d.clusterSize) * 0.5);
+                  return baseRadius * (1 + Math.log10(d.clusterSize || 1) * 0.5);
                 }
                 
                 return baseRadius;
@@ -750,10 +758,10 @@ export default function WorldMap(): JSX.Element {
               // Train routes as paths - conditionally shown
               pathsData={showTrainRoutes ? trainPaths : []}
               pathPoints="coords"
-              pathPointLat={p => Array.isArray(p) ? p[0] : p.lat}
-              pathPointLng={p => Array.isArray(p) ? p[1] : p.lng}
-              pathColor={path => '#00ff88'}
-              pathLabel={path => path.properties.name}
+              pathPointLat={(p: [number, number] | {lat: number; lng: number}) => Array.isArray(p) ? p[0] : p.lat}
+              pathPointLng={(p: [number, number] | {lat: number; lng: number}) => Array.isArray(p) ? p[1] : p.lng}
+              pathColor={() => '#00ff88'}
+              pathLabel={(path: TrainPath) => path.properties.name}
               pathStroke={2}
               pathDashLength={1}
               pathDashGap={0}

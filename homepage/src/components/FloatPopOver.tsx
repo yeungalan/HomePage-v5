@@ -1,6 +1,6 @@
 import { microReboundPreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
-import { useFloating, autoUpdate, flip, offset, shift, Placement, Strategy, Middleware } from '@floating-ui/react-dom';
+import { useFloating, autoUpdate, flip, offset, shift, Placement, Strategy, Middleware, ReferenceType } from '@floating-ui/react-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import React, { ReactNode, RefObject, ElementType } from 'react';
 import { createPortal } from 'react-dom';
@@ -51,7 +51,7 @@ interface FloatPopoverProps {
   placement?: Placement;
   strategy?: Strategy;
   middleware?: Middleware[];
-  whileElementsMounted?: (reference: Element, floating: HTMLElement, update: () => void) => () => void;
+  whileElementsMounted?: (reference: ReferenceType, floating: HTMLElement, update: () => void) => () => void;
 }
 
 // Simple mobile detection hook (replaces useIsMobile)
@@ -82,7 +82,7 @@ const useIsClient = (): boolean => {
 
 // Extracted click away hook
 const useClickAway = (
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   onClickAway: (event: Event) => void,
   events: string[] = ['mousedown', 'touchstart']
 ): void => {
@@ -185,7 +185,6 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
             popoverWrapperClassNames,
             popoverClassNames,
             debug,
-            animate = true,
             as: As = 'div',
             type = 'popover',
             triggerComponentProps,
@@ -217,7 +216,7 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
             }
           }, [open, elements, update])
 
-          const containerRef = useRef(null)
+          const containerRef = useRef<HTMLDivElement>(null)
 
           useClickAway(containerRef, () => {
             if (trigger == 'click' || trigger == 'both') {
@@ -283,11 +282,11 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
           
           const TriggerWrapper = asChild ? (
             React.cloneElement(
-              typeof Child === 'string' ? React.createElement('span', {}, Child) : Child,
+              typeof Child === 'string' ? React.createElement('span', {}, Child) : React.isValidElement(Child) ? Child : React.createElement('span', {}, Child),
               {
                 ...listener,
                 ref: refs.setReference,
-              },
+              } as Record<string, unknown>,
             )
           ) : (
             React.createElement(As, {
@@ -302,7 +301,7 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
             if (refs.floating.current && open && type === 'popover') {
               refs.floating.current.focus()
             }
-          }, [open])
+          }, [open, refs.floating, type])
 
           useEffect(() => {
             if (open) {
@@ -310,7 +309,7 @@ const RealFloatPopover: React.FC<FloatPopoverProps> = (props) => {
             } else {
               onClose?.()
             }
-          }, [open])
+          }, [open, onOpen, onClose])
           
           const actionCtxValue = useMemo(() => {
             return { close: doPopoverDisappear }

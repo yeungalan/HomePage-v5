@@ -1,13 +1,12 @@
 'use client'
 
 import type {
-  HTMLMotionProps,
   MotionProps,
   TargetAndTransition,
   Transition,
 } from 'motion/react'
-import { m, motion } from 'motion/react'
-import type { FC, PropsWithChildren } from 'react'
+import { motion } from 'motion/react'
+import type { PropsWithChildren } from 'react'
 import { memo, useState } from 'react'
 
 import { isHydrationEnded } from '@/components/common/HydrationEndDetector'
@@ -26,28 +25,24 @@ interface TransitionViewParams {
 export const createTransitionView = (params: TransitionViewParams) => {
   const { from, to, initial, preset } = params
 
-  const TransitionView = ({
-    ref,
-    ...props
-  }: PropsWithChildren<BaseTransitionProps> & {
+  const TransitionView = (allProps: PropsWithChildren<BaseTransitionProps> & {
     ref?: React.RefObject<HTMLElement | null>
   }) => {
+    const { ref, ...props } = allProps
+    void ref
     const {
       timeout = {},
       duration = 0.5,
 
       animation = {},
-      as = 'div',
+      as,
       delay = 0,
       lcpOptimization = false,
       ...rest
     } = props
+    void as
 
     const { enter = delay, exit = delay } = timeout
-
-    const MotionComponent = m[as] as FC<
-      HTMLMotionProps<keyof JSX.IntrinsicElements> & { ref?: React.Ref<HTMLElement | null> }
-    >
 
     const [stableIsHydrationEnded] = useState(isHydrationEnded)
 

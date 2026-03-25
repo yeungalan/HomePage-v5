@@ -30,33 +30,38 @@ export default function StatsComponent() {
     if (typeof window === 'undefined') return
     if (!isEnabled) return
 
-    const Stats = require('stats.js')
-    const stats = new Stats()
-    stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+    let animationId: number
+    let statsInstance: { dom: HTMLElement; showPanel: (n: number) => void; begin: () => void; end: () => void } | null = null
 
-    // Style the stats panel
-    stats.dom.style.position = 'fixed'
-    stats.dom.style.left = 'auto'      // Reset the default left property
-    stats.dom.style.right = '0'        // Position on right
-    stats.dom.style.top = '0'
-    stats.dom.style.zIndex = '9999'
+    import('stats.js').then((mod) => {
+      const Stats = mod.default
+      const stats = new Stats()
+      statsInstance = stats
+      stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    document.body.appendChild(stats.dom)
+      // Style the stats panel
+      stats.dom.style.position = 'fixed'
+      stats.dom.style.left = 'auto'      // Reset the default left property
+      stats.dom.style.right = '0'        // Position on right
+      stats.dom.style.top = '0'
+      stats.dom.style.zIndex = '9999'
 
-    function animate() {
-      stats.begin()
-      // Your rendering code here
-      stats.end()
-      requestAnimationFrame(animate)
-    }
+      document.body.appendChild(stats.dom)
 
-    const animationId = requestAnimationFrame(animate)
+      function animate() {
+        stats.begin()
+        stats.end()
+        animationId = requestAnimationFrame(animate)
+      }
+
+      animationId = requestAnimationFrame(animate)
+    })
 
     // Cleanup
     return () => {
-      cancelAnimationFrame(animationId)
-      if (stats.dom && stats.dom.parentElement) {
-        document.body.removeChild(stats.dom)
+      if (animationId) cancelAnimationFrame(animationId)
+      if (statsInstance?.dom?.parentElement) {
+        document.body.removeChild(statsInstance.dom)
       }
     }
   }, [isEnabled])

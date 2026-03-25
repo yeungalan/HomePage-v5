@@ -21,19 +21,12 @@ interface CodeProps {
   [key: string]: unknown;
 }
 
-interface PreProps {
-  children?: ReactNode;
-  [key: string]: unknown;
-}
-
-interface IframeProps {
-  node?: unknown;
-  src?: string;
-  height?: string | number;
-  className?: string;
-  allowtransparency?: string;
-  sandbox?: string;
-  [key: string]: unknown;
+// Helper to strip 'node' prop from react-markdown component props
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function stripNode<T extends Record<string, any>>(props: T & { node?: unknown }) {
+  const { node, ...rest } = props
+  void node
+  return rest
 }
 
 export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
@@ -87,7 +80,8 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           ]
         ]}
         components={{
-          h1: ({ node, children, ...props }) => {
+          h1: (allProps) => {
+            const { children, ...props } = stripNode(allProps)
             h1CountRef.current += 1
             const shouldHide = h1CountRef.current <= 2
             console.log(shouldHide + ' ' + children)
@@ -101,7 +95,8 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               </h1>
             )
           },
-          h2({ node, ...props }) {
+          h2(allProps) {
+            const props = stripNode(allProps)
             const text = String(props.children)
             return (
               <h2
@@ -111,7 +106,8 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               />
             )
           },
-          h3({ node, ...props }) {
+          h3(allProps) {
+            const props = stripNode(allProps)
             const text = String(props.children)
             return (
               <h3
@@ -121,7 +117,8 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               />
             )
           },
-          code: ({ node, inline, className, children, ...props }: CodeProps) => {
+          code: (allProps) => {
+            const { inline, className, children, ...props } = stripNode(allProps) as CodeProps
             const match = /language-(\w+)/.exec(className || '')
             return !inline && match ? (
               <div className="relative max-w-full overflow-x-auto">
@@ -143,28 +140,27 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
               </code>
             )
           },
-          pre: ({ children, ...props }: PreProps) => (
-            <pre className="max-w-full overflow-x-auto my-4" {...props}>{children}</pre>
-          ),
-          ul({ node, ...props }) {
+          pre: (allProps) => {
+            const { children, ...props } = stripNode(allProps)
+            return (
+              <pre className="max-w-full overflow-x-auto my-4" {...props}>{children}</pre>
+            )
+          },
+          ul(allProps) {
+            const props = stripNode(allProps)
             return <ul className="list-disc pl-8 my-4 space-y-2" {...props} />
           },
-          ol({ node, ...props }) {
+          ol(allProps) {
+            const props = stripNode(allProps)
             return <ol className="list-decimal pl-8 my-4 space-y-2" {...props} />
           },
-          li({ node, ...props }) {
+          li(allProps) {
+            const props = stripNode(allProps)
             return <li className="mb-2" {...props} />
           },
-          iframe({ node, ...props }: IframeProps) {
-            // Handle iframe elements with support for custom attributes
-            const {
-              height,
-              className,
-              src,
-              allowtransparency,
-              sandbox,
-              ...otherProps
-            } = props
+          iframe(allProps) {
+            const { height, className, src, sandbox, ...otherProps } = stripNode(allProps)
+            const allowtransparency = !!(allProps as Record<string, unknown>).allowtransparency
 
             // If height is specified, use it; otherwise use responsive container
             if (height) {

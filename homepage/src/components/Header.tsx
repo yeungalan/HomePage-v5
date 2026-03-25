@@ -26,7 +26,7 @@ const popoverVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 500,
       damping: 30,
       mass: 0.8
@@ -37,7 +37,7 @@ const popoverVariants = {
     y: -10,
     scale: 0.95,
     transition: {
-      type: 'tween',
+      type: 'tween' as const,
       duration: ANIMATION_DURATIONS.QUICK
     }
   }
@@ -50,7 +50,7 @@ const itemVariants = {
     x: 0,
     transition: {
       delay: index * ANIMATION_DELAYS.STAGGER_SMALL,
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 25
     }

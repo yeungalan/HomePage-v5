@@ -28,7 +28,6 @@ export const TextUpTransitionView: FC<
     //return <div>{children}</div>
 
   if (!appear) {
-    // @ts-ignore
     return <div {...rest}>{text ?? children}</div>
   }
 

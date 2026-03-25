@@ -29,7 +29,7 @@ export const FlexText: FC<{ text: string; scale: number }> = memo((props) => {
         observe.disconnect()
       }
     }
-  }, [props.scale])
+  }, [props.scale, props.text.length])
   return (
     <span ref={ref} className={done ? '' : 'invisible'}>
       {props.text}

@@ -1,17 +1,10 @@
 "use client"
 
-import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
-import { TextUpTransitionView } from "@/components/TextUpTransitionView";
-import WorldMap from "@/components/World";
-import { motion } from 'motion/react'
-import { createElement, useState, useEffect } from 'react'
-import {LotteryText} from "@/components/LotteryText";
-import Header from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import ThreeTierInfrastructure from "@/components/FlowGraph";
+import type { FlowGraphConfig } from "@/components/FlowGraph";
 
 // Example 3: Custom tiers/layers definition
-const infrastructureConfig = {
+const infrastructureConfig: FlowGraphConfig = {
   tiers: ['Client Plane', 'Cloud Plane', 'Data Plane', 'Control Plane s01', 'Control Plane s02', 'Control Plane s03'],
   services: [
     // Client Layer

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
+import type { FlowGraphConfig } from "@/components/FlowGraph";
 import { RealFooter } from "@/components/FooterLinks";
 import { Icon } from '@iconify/react';
 
@@ -11,18 +12,18 @@ import { Icon } from '@iconify/react';
 interface ServiceNode {
   serviceId: string;
   serviceName: string;
-  serviceDescription: string;
+  serviceDescription?: string;
   tier?: string;
   icon?: string;
   iconBg?: string;
   iconColor?: string;
-  status?: string;
+  status?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
   serviceType?: string;
   serviceLabel?: string;
 }
 
 // Example 3: Custom tiers/layers definition
-const infrastructureConfig = {
+const infrastructureConfig: FlowGraphConfig = {
   tiers: ['Client Plane', 'Cloud Plane', 'Data Plane', 'Control Plane s01', 'Control Plane s02', 'Control Plane s03'],
   services: [
     // Client Layer
@@ -238,7 +239,7 @@ const infrastructureConfig = {
   ]
 };
 
-export default async function Page() {    
+export default function Page() {    
     return (
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">

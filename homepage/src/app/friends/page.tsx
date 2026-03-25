@@ -6,7 +6,6 @@ import { memo, useState } from 'react'
 import { Avatar } from '@/components/Avatar'
 import { BottomToUpTransitionView } from '@/components/BottomToUpTransitionView'
 import { motion } from 'motion/react'
-import { useTheme } from 'next-themes'
 
 // Fake data array
 const FRIENDS_DATA = [

@@ -1,30 +1,34 @@
 import { useMemo, useState, useEffect } from 'react';
 import { ReactFlow, Background, useNodesState, useEdgesState, BackgroundVariant, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Icon } from '@iconify/react';
 import { CustomEdge } from './flowgraph/CustomEdge';
 import { CustomNode } from './flowgraph/CustomNode';
 import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
 
 // Type definitions
-type ServiceStatus = 'healthy' | 'warning' | 'unhealthy';
+type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'unknown';
 type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
 
 interface Service {
   serviceId: string;
   serviceName: string;
-  serviceDescription: string;
-  serviceType: ServiceType;
+  serviceDescription?: string;
+  serviceType?: ServiceType;
   serviceLabel?: string;
-  status: ServiceStatus;
+  status?: ServiceStatus;
+  tier?: string;
+  icon?: string;
+  iconBg?: string;
+  iconColor?: string;
 }
 
-type Connection = [string, string, string];
+type Connection = [string, string, string?];
 
-interface FlowGraphConfig {
+export interface FlowGraphConfig {
   services: Service[];
   connections: Connection[];
+  tiers?: string[];
 }
 
 interface FlowGraphProps {
@@ -120,7 +124,7 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
   const handleNodeClick = (_event: React.MouseEvent, node: Node): void => {
     if (node.type === 'custom') {

@@ -8,10 +8,9 @@ export const ActivitySection: React.FC = () => {
     <div className="mt-24 px-4 sm:px-6 lg:px-0">
       <ParticlesBackground />
       <TwoColumnLayout
-        // Override only this section to force top alignment
-        className="lg:items-start"
-        leftContainerClassName="[&>div]:w-full lg:pl-4"
-        rightContainerClassName="block lg:flex [&>div]:w-full pr-4"
+        className="lg:items-start lg:justify-center"
+        leftContainerClassName="[&>div]:w-full [&>div]:lg:max-w-xl lg:pl-4"
+        rightContainerClassName="block lg:flex [&>div]:w-full [&>div]:lg:max-w-xl pr-4"
       >
         <ActivityPostList />
         <Timeline />

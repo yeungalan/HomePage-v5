@@ -10,7 +10,7 @@ export const ActivitySection: React.FC = () => {
       <TwoColumnLayout
         // Override only this section to force top alignment
         className="lg:items-start"
-        leftContainerClassName="[&>div]:w-full"
+        leftContainerClassName="[&>div]:w-full lg:pl-4"
         rightContainerClassName="block lg:flex [&>div]:w-full pr-4"
       >
         <ActivityPostList />

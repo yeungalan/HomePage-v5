@@ -77,7 +77,7 @@ export const GOALS_2026: Goal[] = [
   {
     id: 'move-to-japan',
     title: 'Move to japan',
-    status: 'in_progress',
+    status: 'completed',
     description: 'Complete visa process and relocate to Japan by April 2026',
   },
   {
@@ -95,7 +95,7 @@ export const GOALS_2026: Goal[] = [
   {
     id: 'better-mental-health',
     title: 'Better mental health',
-    status: 'in_progress',
+    status: 'completed',
     description: 'Improve overall mental wellbeing and emotional resilience',
   },
   {

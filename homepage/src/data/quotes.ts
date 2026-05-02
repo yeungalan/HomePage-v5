@@ -9,6 +9,7 @@ export const QUOTES = [
   'Everything has two sides — Vladimir Ilyich Lenin',
   'Stay hungry, Stay foolish — Steve Jobs',
   'You know who walks with you when the road gets rough',
+  'Life is like the ocean; only those with a strong will can reach the other shore. — Karl Marx',
   'Til I reach the end, and then I will start again  — Zootopia',
   'In the infinite river of time, life is but a spark that vanishes in an instant',
   'The only impossible journey is the one you never begin — Tony Robbins',

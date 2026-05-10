@@ -10,6 +10,8 @@ export interface Post {
   language: string;
   availableLanguages: string[];
   allTitles: Record<string, string>; // Map of language -> title
+  tags: string[];
+  description: string;
 }
 
 export interface PostWithContent extends Post {
@@ -53,16 +55,27 @@ export async function getPosts(): Promise<Post[]> {
       let createdDate = '1900-01-01';
       let title = filename.replace(/\.md$/, '');
 
+      let tags: string[] = [];
+      let description = '';
+
       if (automateFieldMatch) {
         const automateSection = automateFieldMatch[1];
         const createdDateMatch = automateSection.match(/CREATED_DATE\s*=\s*(.+?)[\r\n]/);
         const topicMatch = automateSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
+        const tagMatch = automateSection.match(/TAG\s*=\s*(.+?)[\r\n]/);
+        const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=\s*(.+?)[\r\n]/);
 
         if (createdDateMatch) {
           createdDate = createdDateMatch[1].trim();
         }
         if (topicMatch) {
           title = topicMatch[1].trim();
+        }
+        if (tagMatch) {
+          tags = tagMatch[1].split(',').map((t) => t.trim()).filter(Boolean);
+        }
+        if (categoryMatch) {
+          description = categoryMatch[1].trim();
         }
       }
 
@@ -78,6 +91,8 @@ export async function getPosts(): Promise<Post[]> {
         language,
         availableLanguages: [] as string[],
         allTitles: {} as Record<string, string>,
+        tags,
+        description,
       };
     });
 
@@ -131,17 +146,27 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
     );
     let createdDate = '1900-01-01';
     let title = slug;
+    let tags: string[] = [];
+    let description = '';
 
     if (automateFieldMatch) {
       const automateSection = automateFieldMatch[1];
       const createdDateMatch = automateSection.match(/CREATED_DATE\s*=\s*(.+?)[\r\n]/);
       const topicMatch = automateSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
+      const tagMatch = automateSection.match(/TAG\s*=\s*(.+?)[\r\n]/);
+      const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=\s*(.+?)[\r\n]/);
 
       if (createdDateMatch) {
         createdDate = createdDateMatch[1].trim();
       }
       if (topicMatch) {
         title = topicMatch[1].trim();
+      }
+      if (tagMatch) {
+        tags = tagMatch[1].split(',').map((t) => t.trim()).filter(Boolean);
+      }
+      if (categoryMatch) {
+        description = categoryMatch[1].trim();
       }
     }
 
@@ -187,6 +212,8 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       language,
       availableLanguages,
       allTitles,
+      tags,
+      description,
       content,
     };
   } catch (error) {

@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=日本留學記
+Topic=垃圾分類與在日三十天的感想
 ID=japan-study-08-month1
 CREATED_DATE=2026-05-05T00:00:00Z
 EDITED_DATE=2026-05-05T00:00:00Z

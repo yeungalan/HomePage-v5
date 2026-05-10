@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=日本留學記
+Topic=遷出手續、印鑑登記與住民票申請
 ID=japan-study-05-inkan
 CREATED_DATE=2026-04-15T00:00:00Z
 EDITED_DATE=2026-04-15T00:00:00Z

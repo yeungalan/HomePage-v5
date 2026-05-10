@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=日本留學記
+Topic=在日本開設電話號碼
 ID=japan-study-03-phone
 CREATED_DATE=2026-04-09T00:00:00Z
 EDITED_DATE=2026-04-09T00:00:00Z
@@ -22,8 +22,8 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 
 樂天移動的方案定價相當直接：按月使用量計費，3GB 以內為 980 日圓，20GB 以內為 1,980 日圓，超過 20GB 則封頂為 2,980 日圓（均含稅前價格），且附帶 App 內國內通話無限免費。對於用量不固定的留學生而言，這種彈性計費方式相當合適。
 
-![樂天移動官網的方案定價表，顯示 3GB/980 圓、20GB/1,980 圓、無限/2,980 圓三個選項](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10529353.png)
-*樂天移動的「最強プラン」——無需事先選定用量，按實際使用量自動計費，月費上限為 2,980 日圓*
+![樂天移動官網的方案定價表](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10529353.png)
+*樂天移動的「最強プラン」——按實際使用量自動計費，月費上限為 2,980 日圓*
 
 我最初考慮 LINE Mobile，但發現其官網無法順利完成線上申請流程，加上 LINE Mobile 沒有實體門市可以親自前往處理，最終選擇了**樂天移動**。
 

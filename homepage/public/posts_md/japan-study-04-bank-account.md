@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=日本留學記
+Topic=在日本開設銀行戶口
 ID=japan-study-04-bank
 CREATED_DATE=2026-04-12T00:00:00Z
 EDITED_DATE=2026-04-12T00:00:00Z
@@ -46,7 +46,7 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 
 **第一步**：在 ATM 主選單選擇「通帳記入・通帳繰越 有通帳口座への切替」，或找到相應的存摺發行選項。
 
-![郵貯 ATM 的主選單，包含存入、提款、通帳記入等各種功能](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10946656.png)
+![郵貯 ATM 的主選單](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10946656.png)
 *郵貯 ATM 主選單——右下角有「English Guide」按鈕，不懂日文也可操作*
 
 **第二步**：ATM 提示選擇「通帳とカード」或「カードのみ」的服務方式。選擇「通帳とカード」即可啟用存摺功能。

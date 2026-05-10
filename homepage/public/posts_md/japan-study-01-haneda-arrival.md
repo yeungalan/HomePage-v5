@@ -1,9 +1,9 @@
 ### AUTOMATE FIELD
-Topic=日本留學記
+Topic=羽田機場入境全流程
 ID=japan-study-01-haneda
 CREATED_DATE=2026-04-06T00:00:00Z
 EDITED_DATE=2026-04-06T00:00:00Z
-TAG=日本留學,入境,羽田機場,ANA,海關
+TAG=日本留學,入境,羽田機場,ANA,海關,別送行李
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
 CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本

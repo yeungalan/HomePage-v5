@@ -1,8 +1,8 @@
 ### AUTOMATE FIELD
 Topic=09 | 日本垃圾分類完整指南——以澀谷區為例
 ID=japan-study-09-garbage-sorting
-CREATED_DATE=2026-05-06T00:00:00Z
-EDITED_DATE=2026-05-06T00:00:00Z
+CREATED_DATE=2026-05-10T00:00:00Z
+EDITED_DATE=2026-05-10T00:00:00Z
 TAG=日本留學,垃圾分類,澀谷區,可燃ごみ,資源回收,粗大ごみ
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄

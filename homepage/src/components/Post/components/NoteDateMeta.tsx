@@ -10,7 +10,7 @@ export const NoteDateMeta: React.FC = () => {
   const dateFormat = dayjs(created).format('MMMM D, YYYY')
 
   return (
-    <span className="inline-flex items-center gap-1">
+    <span className="inline-flex items-center gap-1 whitespace-nowrap">
       <ClockIcon />
       <time className="font-medium" suppressHydrationWarning>
         {dateFormat}

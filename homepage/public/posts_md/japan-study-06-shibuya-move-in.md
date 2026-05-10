@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=搬遷至澀谷區——轉入手續全記錄
+Topic=06 | 搬遷至澀谷區——轉入手續全記錄
 ID=japan-study-06-shibuya
 CREATED_DATE=2026-04-18T00:00:00Z
 EDITED_DATE=2026-04-18T00:00:00Z

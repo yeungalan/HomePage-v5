@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=區役所轉入登記、健康保險與國民年金
+Topic=02 | 區役所轉入登記、健康保險與國民年金
 ID=japan-study-02-kuyakusho
 CREATED_DATE=2026-04-07T00:00:00Z
 EDITED_DATE=2026-04-07T00:00:00Z

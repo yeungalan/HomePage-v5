@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=日本垃圾分類完整指南——以澀谷區為例
+Topic=09 | 日本垃圾分類完整指南——以澀谷區為例
 ID=japan-study-09-garbage-sorting
 CREATED_DATE=2026-05-06T00:00:00Z
 EDITED_DATE=2026-05-06T00:00:00Z

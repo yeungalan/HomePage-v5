@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=羽田機場入境全流程
+Topic=01 | 羽田機場入境全流程
 ID=japan-study-01-haneda
 CREATED_DATE=2026-04-06T00:00:00Z
 EDITED_DATE=2026-04-06T00:00:00Z

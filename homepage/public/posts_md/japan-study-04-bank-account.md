@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=在日本開設銀行戶口
+Topic=04 | 在日本開設銀行戶口
 ID=japan-study-04-bank
 CREATED_DATE=2026-04-12T00:00:00Z
 EDITED_DATE=2026-04-12T00:00:00Z

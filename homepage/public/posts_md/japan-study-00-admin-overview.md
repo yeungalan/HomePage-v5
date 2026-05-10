@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=來日本之後要做的事——行政手續完整流程總覽
+Topic=00 | 來日本之後要做的事——行政手續完整流程總覽
 ID=japan-study-00-overview
 CREATED_DATE=2026-04-05T00:00:00Z
 EDITED_DATE=2026-04-05T00:00:00Z

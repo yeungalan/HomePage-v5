@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=在日三十天的感想
+Topic=08 | 在日三十天的感想
 ID=japan-study-08-month1
 CREATED_DATE=2026-05-05T00:00:00Z
 EDITED_DATE=2026-05-05T00:00:00Z

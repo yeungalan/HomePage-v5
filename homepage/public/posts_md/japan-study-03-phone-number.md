@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=在日本開設電話號碼
+Topic=03 | 在日本開設電話號碼
 ID=japan-study-03-phone
 CREATED_DATE=2026-04-09T00:00:00Z
 EDITED_DATE=2026-04-09T00:00:00Z

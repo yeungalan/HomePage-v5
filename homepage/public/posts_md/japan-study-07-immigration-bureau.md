@@ -1,5 +1,5 @@
 ### AUTOMATE FIELD
-Topic=出入國在留管理局——資格外活動許可申請
+Topic=07 | 出入國在留管理局——資格外活動許可申請
 ID=japan-study-07-imm
 CREATED_DATE=2026-04-22T00:00:00Z
 EDITED_DATE=2026-04-22T00:00:00Z
@@ -64,9 +64,6 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 *在留卡背面——「許可」印章正式確認每週最多 28 小時的打工資格，住居地欄亦已更新為東京都地址*
 
 這張卡回到手裡的那一刻，感覺整個在日本生活的基礎終於搭建完成。
-
-![在留卡背面放在錢包上](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10032420.png)
-*回到住所後，把更新後的在留卡放回錢包——終於辦好了*
 
 ## 前往入管局的交通
 

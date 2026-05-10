@@ -13,6 +13,16 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 
 語言學校的課程正式開始後不久，我決定將住所遷往澀谷區，展開在東京的下一個生活章節。辦完豐島區的轉出手續後，下一步便是前往**澀谷區役所**辦理轉入登記。
 
+**澀谷區役所（Shibuya City Office）**
+地址：〒150-8010 東京都渋谷区宇田川町1-1
+電話：03-3463-1211　｜　開放時間：週一至週五 8:30–17:00
+
+<iframe
+  src="https://maps.google.com/maps?q=35.6636842,139.6977409&z=16&output=embed"
+  width="100%" height="300" style="border:0; border-radius:8px;"
+  allowfullscreen loading="lazy">
+</iframe>
+
 ## 澀谷區役所的特色：高度電子化
 
 與豐島區役所相比，澀谷區役所最大的差異，在於其行政流程**已高度電子化**，幾乎不需要手動填寫大量紙本表格。

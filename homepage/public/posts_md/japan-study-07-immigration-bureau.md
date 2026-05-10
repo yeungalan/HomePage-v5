@@ -69,6 +69,16 @@ CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 
 入管局位於品川附近，可搭乘 **JR 至品川站**，出站後乘坐**品川 99 號巴士**，沿途有英日雙語報站。
 
+**東京出入國在留管理局（Tokyo Regional Immigration Services Bureau）**
+地址：〒108-8255 東京都港区港南5-5-30
+電話：03-5796-7234　｜　開放時間：週一至週五 9:00–16:00
+
+<iframe
+  src="https://maps.google.com/maps?q=35.6282447,139.7565436&z=16&output=embed"
+  width="100%" height="300" style="border:0; border-radius:8px;"
+  allowfullscreen loading="lazy">
+</iframe>
+
 ![JR 東京站月台站名標誌](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-10856469.png)
 *東京站 JR 月台——轉乘去品川方向，是前往入管局的必經之路*
 

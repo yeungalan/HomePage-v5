@@ -9,7 +9,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
-# 日本留學記 #6：搬遷至澀谷區——轉入手續全記錄
+# 06 | 日本留學記 #6：搬遷至澀谷區——轉入手續全記錄
 
 語言學校的課程正式開始後不久，我決定將住所遷往澀谷區，展開在東京的下一個生活章節。辦完豐島區的轉出手續後，下一步便是前往**澀谷區役所**辦理轉入登記。
 

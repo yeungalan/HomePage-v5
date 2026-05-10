@@ -9,7 +9,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
-# 日本留學記 #3：在日本開設電話號碼
+# 03 | 日本留學記 #3：在日本開設電話號碼
 
 擁有日本本地電話號碼，是在日本生活中幾乎不可或缺的一步。許多服務——包括銀行開戶、PayPay 申請、各種線上登記——都需要日本手機號碼作為驗證。因此，盡早取得電話號碼，是安頓下來的重要環節之一。
 

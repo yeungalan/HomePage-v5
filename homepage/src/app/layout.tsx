@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import 'mingcute_icon/font/Mingcute.css'
+import Script from "next/script";
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
 import StatsComponent from "@/components/StatComponent";
@@ -70,6 +71,18 @@ export default function RootLayout({
         </NextThemeProvider>
         <Analytics />
         <SpeedInsights/>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-5W3MDW6YSY"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-5W3MDW6YSY');
+          `}
+        </Script>
       </body>
     </html>
   );

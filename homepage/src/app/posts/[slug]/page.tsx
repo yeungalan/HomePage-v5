@@ -2,10 +2,16 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { RealFooter } from '@/components/FooterLinks';
 import Post from '@/components/Post';
-import { getPostBySlug, parseSlugLanguage } from '@/lib/posts';
+import { getPosts, getPostBySlug, parseSlugLanguage } from '@/lib/posts';
 
-// Force dynamic rendering (SSR)
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.flatMap((post) =>
+    post.availableLanguages.map((lang) => ({
+      slug: lang === 'default' ? post.baseSlug : `${post.baseSlug}_${lang}`,
+    }))
+  );
+}
 
 interface PageProps {
   params: Promise<{

@@ -2,8 +2,8 @@
 
 Topic=2026-06日文複習筆記
 ID=2026-06JapaneseExam
-CREATED_DATE=2025-10-24T00:00:00Z
-EDITED_DATE=2025-10-24T00:00:00Z
+CREATED_DATE=2026-06-15T00:00:00Z
+EDITED_DATE=2025-06-15T00:00:00Z
 TAG=Japanese
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
@@ -15,7 +15,7 @@ CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https
 
 ## 目前最需要加強的地方
 
-### 1. 助詞 ⭐⭐⭐⭐⭐
+### 1. 助詞 
 
 這是我目前最大的弱點。
 

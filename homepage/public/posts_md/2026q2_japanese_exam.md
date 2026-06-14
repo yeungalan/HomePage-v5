@@ -17,8 +17,6 @@ CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https
 
 ### 1. 助詞 
 
-這是我目前最大的弱點。
-
 | 助詞 | 用法 | 例句 |
 |---|---|---|
 | は | 主題 | わたしは学生です。 |
@@ -38,13 +36,6 @@ CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https
 - と vs に
 
 ---
-
-# 句子改錯技巧
-
-## 改錯題做法
-
-1. 找出錯誤部分。
-2. 只修改錯的地方。
 
 ### 例子
 
@@ -262,6 +253,15 @@ CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https
 - 寿司が食べられます。
 - 映画が見られます。
 
+---
+
+## 特別第二類動詞（一段動詞）
+- おきます
+- います
+- みます
+- できます
+- おります
+- あびます
 ---
 
 ## 不規則動詞

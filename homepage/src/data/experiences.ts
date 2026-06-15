@@ -18,6 +18,14 @@ export interface Experience {
  */
 export const EXPERIENCES: Experience[] = [
   {
+    id: '0',
+    type: 'milestone',
+    title: 'Moved to Japan',
+    startDate: 'Apr 2026',
+    endDate: 'Apr 2026',
+    icon: 'mdi:airplane',
+  },
+  {
     id: '1',
     type: 'work',
     title: 'Software Engineer I',

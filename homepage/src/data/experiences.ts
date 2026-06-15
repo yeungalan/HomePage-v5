@@ -31,7 +31,7 @@ export const EXPERIENCES: Experience[] = [
     title: 'Software Engineer I',
     organization: 'Amazon Web Services',
     startDate: 'Sept 2024',
-    endDate: 'Present',
+    endDate: 'Apr 2026',
     icon: 'mdi:aws',
     isOngoing: true,
   },

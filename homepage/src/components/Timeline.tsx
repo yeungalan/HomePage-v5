@@ -140,26 +140,21 @@ export default function Timeline() {
 
           <ScrollArea.Viewport className="w-full h-full">
             <div className="relative">
-              {/* Timeline line - positioned to go through the center of the icons */}
+              {/* Timeline line - solid through all items */}
               <div
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
+                className="absolute left-[15px] top-[16px] w-[2px]"
                 style={{
-                  height: 'calc(100% - 45px)',
-                  background: `linear-gradient(to bottom, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary})`,
+                  height: 'calc(100% - 161px)',
+                  background: BRAND_COLORS.primary,
                 }}
               />
+              {/* Dashed line below last item */}
               <div
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
+                className="absolute left-[15px] w-[2px]"
                 style={{
-                  backgroundImage: `
-                    repeating-linear-gradient(
-                      to bottom,
-                      ${BRAND_COLORS.primary},
-                      ${BRAND_COLORS.primary} 4px,
-                      ${typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(24,24,27,0.8)' : 'transparent'} 4px,
-                      transparent 8px
-                    )
-                  `,
+                  top: 'calc(100% - 145px)',
+                  height: '100px',
+                  backgroundImage: `repeating-linear-gradient(to bottom, ${BRAND_COLORS.primary} 0px, ${BRAND_COLORS.primary} 4px, transparent 4px, transparent 8px)`,
                 }}
               />
 

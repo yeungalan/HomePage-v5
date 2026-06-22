@@ -315,6 +315,54 @@ CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https
 
 ---
 
+# 文型接續總表
+
+| 接續形 | 句型 | 意思・用法 |
+|---|---|---|
+| て形 | ください | Please do |
+| て形 | います | In progress<br>I know something<br>Habitual action<br>Current state |
+| ます形 | ましょうか | Offer to do something… Shall I…? |
+| て形 | もいいですか | Can I do something |
+| て形 | はいけません | You must not do |
+| て形 | から V2 | Precondition of V2 |
+| い形容詞（去い）くて<br>な形容詞（去な）で<br>N で<br>V て形 | Vて形、Vて形、Vます形 | …list of actions that have a time relationship |
+| ない形 | ないでください | Please don't do |
+| ない形 | なければなりません | Must do |
+| ない形 | なくてもいいです | Need not do… optional |
+| N／辞書形 ＋ こと | ができます | Can do |
+| N／辞書形 ＋ こと | 趣味は XX です | 趣味は 辞書形 ことです（My interest is…） |
+| 辞書形／Nの／時間 | まえに | …before |
+| た形 | ことがあります | Have the experience of V |
+| た形 | Vた形り、Vた形り します | V1, V2, and so on (no time relationship) |
+| い形容詞（去い）く<br>な形容詞（去な）に<br>N に | なります | …become |
+| 普通形 | とおもいます | I think… |
+| 普通形 | といいます | Say… |
+| 普通形 | でしょう | …, right? |
+| 普通形 | …とき… | when… |
+| 普通形 | …と… | if… then |
+| 普通形 | V普通形 ＋ N | Modify a noun |
+
+---
+
+# 普通形變化表（丁寧形 → 普通形）
+
+| 丁寧形（ます形） | 普通形 |
+|---|---|
+| ます | 辞書形（かく） |
+| ません | ない形（かかない） |
+| ました | た形（かいた） |
+| ませんでした | なかった形（かかなかった） |
+| い形容詞です | い形容詞 |
+| い形容詞くないです | い形容詞くない |
+| い形容詞かったです | い形容詞かった |
+| い形容詞くなかったです | い形容詞くなかった |
+| な形容詞・名詞　です | な形容詞・名詞 |
+| な形容詞・名詞　じゃありません | な形容詞・名詞　じゃない |
+| な形容詞・名詞　でした | な形容詞・名詞　だった |
+| な形容詞・名詞　じゃありませんでした | な形容詞・名詞　じゃなかった |
+
+---
+
 # 一般數量詞
 
 | 數字 | 日文 |

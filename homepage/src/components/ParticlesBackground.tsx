@@ -141,42 +141,13 @@ export function ParticlesBackground() {
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10">
-      {/* Top border */}
-      <div className="absolute left-0 right-0 top-0 h-[200px]">
-        <Particles
-          id="tsparticles-top"
-          className="h-full w-full"
-          particlesLoaded={particlesLoaded}
-          options={particleOptions}
-        />
-      </div>
-
-      {/* Bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-[200px]">
-        <Particles
-          id="tsparticles-bottom"
-          className="h-full w-full"
-          options={particleOptions}
-        />
-      </div>
-
-      {/* Left border */}
-      <div className="absolute bottom-0 left-0 top-0 w-[200px]">
-        <Particles
-          id="tsparticles-left"
-          className="h-full w-full"
-          options={particleOptions}
-        />
-      </div>
-
-      {/* Right border */}
-      <div className="absolute bottom-0 right-0 top-0 w-[200px]">
-        <Particles
-          id="tsparticles-right"
-          className="h-full w-full"
-          options={particleOptions}
-        />
-      </div>
+      {/* Full-screen particle field so the links also fill the middle, not just the borders */}
+      <Particles
+        id="tsparticles-full"
+        className="h-full w-full"
+        particlesLoaded={particlesLoaded}
+        options={particleOptions}
+      />
     </div>
   )
 }

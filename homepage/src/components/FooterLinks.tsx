@@ -19,7 +19,7 @@ const footerConfig = {
       links: [
         { name: 'Me', href: '/posts/aboutme_en', external: false },
         { name: '我', href: '/posts/aboutme', external: false },
-        { name: 'Japanese', href: '/posts/aboutme_ja', external: false },
+        { name: 'Self Introduction', href: '/posts/aboutme_ja', external: false },
       ],
     },
     {

@@ -46,6 +46,22 @@ const footerConfig = {
   },
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+// Build date is injected at build time via next.config.ts. Format it with UTC
+// fields so the server and client render an identical string (no hydration
+// mismatch), and fall back to a fixed date if the value is ever unavailable.
+const getRevisionDate = (): string => {
+  const fallback = '2026 Jun 23'
+  const iso = process.env.NEXT_PUBLIC_BUILD_DATE
+  if (!iso) return fallback
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return fallback
+  return `${d.getUTCFullYear()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}`
+}
+
+const REVISION_DATE = getRevisionDate()
+
 export const FooterInfo = () => {
   return (
     <>
@@ -186,7 +202,7 @@ const FooterBottom = () => {
             }
           }}
         >
-          Rev. 2025 Oct 23 Production
+          Rev. {REVISION_DATE} Production
         </span>
       </div>
       <div>

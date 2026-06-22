@@ -16,7 +16,7 @@ const PROJECT_DATA = [
     avatar: '',
     description: 'My own photo gallery',
   },
-    {
+  {
     id: '2',
     name: 's01 arozos',
     url: 'https://s01.aroz.alanyeung.co',
@@ -32,27 +32,27 @@ const PROJECT_DATA = [
   },
   {
     id: '4',
-    name: 's01 arozos',
+    name: 's03 arozos',
     url: 'https://s03.aroz.alanyeung.co',
     avatar: '',
     description: 's03',
   },
   {
-    id: '4',
+    id: '5',
     name: 'Gitlab',
     url: 'https://gitlab.alanyeung.co',
     avatar: '',
     description: 'GItlab',
   },
   {
-    id: '4',
+    id: '6',
     name: 'Jenkins',
     url: 'https://jenkins.alanyeung.co',
     avatar: '',
     description: 'Jenkins',
   },
   {
-    id: '4',
+    id: '7',
     name: 'HKWTC Git',
     url: 'https://git.hkwtc.org',
     avatar: '',

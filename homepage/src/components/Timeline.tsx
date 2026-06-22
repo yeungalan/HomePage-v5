@@ -147,7 +147,7 @@ export default function Timeline() {
                   const isFirstExperience = index === flatData.length - 1
                   return (
                     <motion.li
-                      key={`${activity.type}-${activity.id}`}
+                      key={`${activity.type}-${activity.title}-${activity.startDate}`}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: calculateStaggerDelay(index, ANIMATION_DELAYS.STAGGER_MEDIUM), ...softBouncePreset }}

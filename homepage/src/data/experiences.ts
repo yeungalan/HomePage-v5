@@ -18,6 +18,16 @@ export interface Experience {
  */
 export const EXPERIENCES: Experience[] = [
   {
+    id: '-1',
+    type: 'study',
+    title: 'Student',
+    organization: 'Kudan Institute of Japanese language',
+    startDate: 'Apr 2024',
+    endDate: 'Current',
+    icon: 'mdi:school',
+    isOngoing: true,
+  },
+  {
     id: '0',
     type: 'milestone',
     title: 'Moved to Japan',
@@ -33,7 +43,6 @@ export const EXPERIENCES: Experience[] = [
     startDate: 'Sept 2024',
     endDate: 'Apr 2026',
     icon: 'mdi:aws',
-    isOngoing: true,
   },
   {
     id: '2',

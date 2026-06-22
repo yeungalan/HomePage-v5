@@ -9,6 +9,16 @@ import { GOALS_2026, GOAL_STATUS_CONFIG, GOAL_STATUS_LABELS, getGoalsTitle } fro
 import { FlightCalculator } from '@/components/goals/FlightCalculator';
 import { TIMEZONES, getDaylightInfo } from '@/constants/timezones';
 
+// Calendar-day offset of a timezone relative to the viewer's local day, so a
+// city that has already rolled over to the next day shows "+1" (or "-1" when it
+// is still on the previous day, and "+2"/"-2" across the most extreme zones).
+function getDayOffset(date: Date, tz: string): number {
+  const dayInZone = (timeZone?: string) =>
+    date.toLocaleDateString('en-CA', { timeZone });
+  const asUtc = (day: string) => new Date(`${day}T00:00:00Z`).getTime();
+  return Math.round((asUtc(dayInZone(tz)) - asUtc(dayInZone())) / 86_400_000);
+}
+
 export default function GoalsPage() {
   const [time, setTime] = useState(new Date());
 
@@ -86,6 +96,7 @@ export default function GoalsPage() {
         <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.5,delay:0.6}} className="grid grid-cols-2 gap-4 sm:gap-6">
           {TIMEZONES.map(({ label, tz, lat, lng }) => {
             const { icon: daylightIcon, gradient, textColor } = getDaylightInfo(time, lat, lng);
+            const dayOffset = getDayOffset(time, tz);
             return (
               <div
                 key={tz}
@@ -97,6 +108,11 @@ export default function GoalsPage() {
                 </p>
                 <p className={`text-lg sm:text-xl md:text-2xl font-bold font-mono ${textColor}`}>
                   {time.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })}
+                  {dayOffset !== 0 && (
+                    <sup className="ml-0.5 align-super text-[0.6em] font-semibold opacity-70">
+                      {dayOffset > 0 ? `+${dayOffset}` : dayOffset}
+                    </sup>
+                  )}
                 </p>
               </div>
             );

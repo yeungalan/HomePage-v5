@@ -19,7 +19,7 @@ export interface Experience {
 export const EXPERIENCES: Experience[] = [
   {
     id: '-1',
-    type: 'study',
+    type: 'education',
     title: 'Student',
     organization: 'Kudan Institute of Japanese language',
     startDate: 'Apr 2024',

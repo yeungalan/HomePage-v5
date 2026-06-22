@@ -15,6 +15,7 @@ export const TableOfContents: React.FC = () => {
   const lastScrollTopRef = useRef(0)
   const userScrolledRef = useRef(false)
   const itemRefs = useRef<Map<number, HTMLButtonElement>>(new Map())
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   // Update active index when active ID changes
   useEffect(() => {
@@ -36,6 +37,30 @@ export const TableOfContents: React.FC = () => {
             top: activeElement.offsetTop,
             height: rect.height
           })
+        }
+
+        // Keep the active item visible within the (scrollable) TOC without
+        // moving the page: scroll only the TOC container when the active item
+        // drifts past its top or bottom edge.
+        const scrollContainer = scrollContainerRef.current
+        if (scrollContainer) {
+          const margin = 12
+          const itemTop = activeElement.offsetTop
+          const itemBottom = itemTop + activeElement.offsetHeight
+          const viewTop = scrollContainer.scrollTop
+          const viewBottom = viewTop + scrollContainer.clientHeight
+
+          if (itemTop < viewTop + margin) {
+            scrollContainer.scrollTo({
+              top: Math.max(0, itemTop - margin),
+              behavior: 'smooth'
+            })
+          } else if (itemBottom > viewBottom - margin) {
+            scrollContainer.scrollTo({
+              top: itemBottom - scrollContainer.clientHeight + margin,
+              behavior: 'smooth'
+            })
+          }
         }
       }
     }
@@ -210,7 +235,10 @@ export const TableOfContents: React.FC = () => {
       <h3 className="font-semibold text-gray-900 mb-3 text-xs dark:text-white">
         Table of Contents
       </h3>
-      <div className="relative space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+      <div
+        ref={scrollContainerRef}
+        className="relative space-y-0.5 max-h-[60vh] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+      >
         {/* Animated background indicator */}
         {activeIndex >= 0 && indicatorStyle.height > 0 && (
           <div

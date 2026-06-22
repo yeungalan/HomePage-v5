@@ -140,32 +140,11 @@ export default function Timeline() {
 
           <ScrollArea.Viewport className="w-full h-full">
             <div className="relative">
-              {/* Timeline line - positioned to go through the center of the icons */}
-              <div
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
-                style={{
-                  height: 'calc(100% - 45px)',
-                  background: `linear-gradient(to bottom, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary}, ${BRAND_COLORS.primary})`,
-                }}
-              />
-              <div
-                className="absolute left-[15px] top-[16px] bottom-0 w-[2px]"
-                style={{
-                  backgroundImage: `
-                    repeating-linear-gradient(
-                      to bottom,
-                      ${BRAND_COLORS.primary},
-                      ${BRAND_COLORS.primary} 4px,
-                      ${typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(24,24,27,0.8)' : 'transparent'} 4px,
-                      transparent 8px
-                    )
-                  `,
-                }}
-              />
-
-
               <ul className="flex flex-col relative">
                 {flatData.map((activity, index) => {
+                  // flatData is sorted newest-first, so the last item is the
+                  // oldest / very first experience (High school graduation).
+                  const isFirstExperience = index === flatData.length - 1
                   return (
                     <motion.li
                       key={`${activity.type}-${activity.id}`}
@@ -175,15 +154,54 @@ export default function Timeline() {
                       viewport={{ once: true }}
                       className="flex min-w-0 relative"
                     >
-                      <ActivityCard
-                        type={activity.type}
-                        title={activity.title}
-                        organization={activity.organization}
-                        startDate={activity.startDate}
-                        endDate={activity.endDate}
-                        icon={activity.icon}
-                        isOngoing={activity.isOngoing}
-                      />
+                      {/* Connector line running down through the icon column.
+                          Every segment is solid except the oldest experience at
+                          the bottom: its tail starts solid and then fades to a
+                          dotted line to represent the time "from nothing". */}
+                      {isFirstExperience ? (
+                        <>
+                          <div
+                            aria-hidden
+                            className="absolute left-[15px] top-[16px] h-[50%] w-0 z-0"
+                            style={{
+                              borderLeftWidth: '2px',
+                              borderLeftStyle: 'solid',
+                              borderLeftColor: BRAND_COLORS.primary,
+                            }}
+                          />
+                          <div
+                            aria-hidden
+                            className="absolute left-[15px] bottom-0 w-0 z-0"
+                            style={{
+                              top: 'calc(50% + 16px)',
+                              borderLeftWidth: '2px',
+                              borderLeftStyle: 'dotted',
+                              borderLeftColor: BRAND_COLORS.primary,
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <div
+                          aria-hidden
+                          className="absolute left-[15px] top-[16px] bottom-0 w-0 z-0"
+                          style={{
+                            borderLeftWidth: '2px',
+                            borderLeftStyle: 'solid',
+                            borderLeftColor: BRAND_COLORS.primary,
+                          }}
+                        />
+                      )}
+                      <div className="relative z-[1] w-full min-w-0">
+                        <ActivityCard
+                          type={activity.type}
+                          title={activity.title}
+                          organization={activity.organization}
+                          startDate={activity.startDate}
+                          endDate={activity.endDate}
+                          icon={activity.icon}
+                          isOngoing={activity.isOngoing}
+                        />
+                      </div>
                     </motion.li>
                   )
                 })}

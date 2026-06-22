@@ -1,6 +1,6 @@
 ### AUTOMATE FIELD
 
-Topic=2026-06日文複習筆記
+Topic=11 | 日本留學記 #11：第一個學期完結——成績與反思
 ID=2026-06JapaneseExam
 CREATED_DATE=2026-06-15T00:00:00Z
 EDITED_DATE=2025-06-15T00:00:00Z

@@ -156,17 +156,41 @@ export default function Timeline() {
                     >
                       {/* Connector line running down through the icon column.
                           Every segment is solid except the oldest experience at
-                          the bottom, whose line becomes a dotted tail to
-                          represent the time "from nothing". */}
-                      <div
-                        aria-hidden
-                        className="absolute left-[15px] top-[16px] bottom-0 w-0 z-0"
-                        style={{
-                          borderLeftWidth: '2px',
-                          borderLeftStyle: isFirstExperience ? 'dotted' : 'solid',
-                          borderLeftColor: BRAND_COLORS.primary,
-                        }}
-                      />
+                          the bottom: its tail starts solid and then fades to a
+                          dotted line to represent the time "from nothing". */}
+                      {isFirstExperience ? (
+                        <>
+                          <div
+                            aria-hidden
+                            className="absolute left-[15px] top-[16px] h-[50%] w-0 z-0"
+                            style={{
+                              borderLeftWidth: '2px',
+                              borderLeftStyle: 'solid',
+                              borderLeftColor: BRAND_COLORS.primary,
+                            }}
+                          />
+                          <div
+                            aria-hidden
+                            className="absolute left-[15px] bottom-0 w-0 z-0"
+                            style={{
+                              top: 'calc(50% + 16px)',
+                              borderLeftWidth: '2px',
+                              borderLeftStyle: 'dotted',
+                              borderLeftColor: BRAND_COLORS.primary,
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <div
+                          aria-hidden
+                          className="absolute left-[15px] top-[16px] bottom-0 w-0 z-0"
+                          style={{
+                            borderLeftWidth: '2px',
+                            borderLeftStyle: 'solid',
+                            borderLeftColor: BRAND_COLORS.primary,
+                          }}
+                        />
+                      )}
                       <div className="relative z-[1] w-full min-w-0">
                         <ActivityCard
                           type={activity.type}

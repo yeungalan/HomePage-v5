@@ -48,16 +48,20 @@ const footerConfig = {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-// Build date is injected at build time via next.config.ts. Format it with UTC
-// fields so the server and client render an identical string (no hydration
-// mismatch), and fall back to a fixed date if the value is ever unavailable.
+// Build date is injected at build time via next.config.ts as a UTC ISO string.
+// Shift it to JST (UTC+9) and then read the UTC fields of the shifted value, so
+// the server and client render an identical string (no hydration mismatch)
+// regardless of the runtime's local timezone. Fall back to a fixed date if the
+// value is ever unavailable.
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000
 const getRevisionDate = (): string => {
-  const fallback = '2026 Jun 23'
+  const fallback = '2026 Jun 22'
   const iso = process.env.NEXT_PUBLIC_BUILD_DATE
   if (!iso) return fallback
   const d = new Date(iso)
   if (Number.isNaN(d.getTime())) return fallback
-  return `${d.getUTCFullYear()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}`
+  const jst = new Date(d.getTime() + JST_OFFSET_MS)
+  return `${jst.getUTCFullYear()} ${MONTHS[jst.getUTCMonth()]} ${jst.getUTCDate()}`
 }
 
 const REVISION_DATE = getRevisionDate()

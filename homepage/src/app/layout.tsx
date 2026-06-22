@@ -33,7 +33,7 @@ const notoSansTC = Noto_Sans_TC({
 
 
 export const metadata: Metadata = {
-  title: "Alan Yeung @ Seattle, WA",
+  title: "Alan Yeung @ Tokyo, JP",
   description: "alanyeung.co Home Page | Project Atlas: Global Infrastructure Modernization Initiative 2025",
   icons: { icon: "/favicon.ico" },
 };

@@ -3,7 +3,6 @@
  */
 
 export interface Experience {
-  id: string;
   type: 'work' | 'education' | 'milestone';
   title: string;
   organization?: string;
@@ -18,7 +17,6 @@ export interface Experience {
  */
 export const EXPERIENCES: Experience[] = [
   {
-    id: '-1',
     type: 'education',
     title: 'Student',
     organization: 'Kudan Institute of Japanese language',
@@ -28,7 +26,6 @@ export const EXPERIENCES: Experience[] = [
     isOngoing: true,
   },
   {
-    id: '0',
     type: 'milestone',
     title: 'Moved to Japan',
     startDate: 'Apr 2026',
@@ -36,7 +33,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:airplane',
   },
   {
-    id: '1',
     type: 'work',
     title: 'Software Engineer I',
     organization: 'Amazon Web Services',
@@ -45,7 +41,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:aws',
   },
   {
-    id: '2',
     type: 'work',
     title: 'Cloud Engineer I',
     organization: 'Amazon Web Services',
@@ -54,7 +49,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:aws',
   },
   {
-    id: '3',
     type: 'education',
     title: 'Computer Engineering (GPA 3.75/4.00)',
     organization: 'University of Washington - Seattle Campus',
@@ -63,7 +57,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:school',
   },
   {
-    id: '4',
     type: 'education',
     title: 'Engineering',
     organization: 'The Chinese University of Hong Kong',
@@ -72,7 +65,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:school',
   },
   {
-    id: '5',
     type: 'milestone',
     title: 'Moved to America',
     startDate: '2019',
@@ -80,7 +72,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:airplane',
   },
   {
-    id: '6',
     type: 'work',
     title: 'imuslab',
     startDate: '2018',
@@ -88,7 +79,6 @@ export const EXPERIENCES: Experience[] = [
     icon: 'mdi:office-building',
   },
   {
-    id: '7',
     type: 'education',
     title: 'High school graduation',
     startDate: '2018',

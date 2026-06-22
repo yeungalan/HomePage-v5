@@ -20,7 +20,7 @@ export const EXPERIENCES: Experience[] = [
     type: 'education',
     title: 'Student',
     organization: 'Kudan Institute of Japanese language',
-    startDate: 'Apr 2024',
+    startDate: 'Apr 2026',
     endDate: 'Current',
     icon: 'mdi:school',
     isOngoing: true,

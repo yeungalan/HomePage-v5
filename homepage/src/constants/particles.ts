@@ -8,15 +8,15 @@ export const PARTICLE_COLORS = {
 } as const
 
 export const PARTICLE_LINK_OPACITY = {
-  LIGHT: 0.15,
-  DARK: 0.2,
+  LIGHT: 0.4,
+  DARK: 0.45,
 } as const
 
 export const PARTICLE_CONFIG = {
   FPS_LIMIT: 60,
-  LINK_DISTANCE: 150,
-  LINK_WIDTH: 1,
-  PARTICLE_COUNT: 20,
+  LINK_DISTANCE: 160,
+  LINK_WIDTH: 1.5,
+  PARTICLE_COUNT: 28,
   MOVE_SPEED: 0.3,
   OPACITY_MIN: 0.3,
   OPACITY_MAX: 0.5,

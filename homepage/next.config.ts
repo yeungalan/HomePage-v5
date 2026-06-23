@@ -11,7 +11,12 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_STAGE: process.env.STAGE ?? '',
   },
   images: {
-    remotePatterns: [new URL("https://avatar.iran.liara.run/**")]
+    remotePatterns: [
+      new URL("https://avatar.iran.liara.run/**"),
+      // Blog post photos are hosted on this S3 bucket; whitelist it so the
+      // Next.js Image Optimization API can serve resized/modern formats.
+      new URL("https://s3.alanyeung.co/**"),
+    ]
   },
 };
 

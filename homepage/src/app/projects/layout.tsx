@@ -6,6 +6,13 @@ import { RealFooter } from '@/components/FooterLinks'
 
 export const metadata: Metadata = {
   title: 'Projects',
+  description: 'Projects and things Alan Yeung has built and worked on.',
+  alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Projects',
+    description: 'Projects and things Alan Yeung has built and worked on.',
+    url: '/projects',
+  },
 }
 
 export default async function ProjectsLayout(props: PropsWithChildren) {

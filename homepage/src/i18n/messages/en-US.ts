@@ -40,6 +40,7 @@ export const enUS = {
   },
   home: {
     awards: 'Awards and Certifications',
+    experience: 'Experience',
   },
   goals: {
     titleYear: '{{year}} Goals',

@@ -36,6 +36,7 @@ export const jaJP: Messages = {
   },
   home: {
     awards: '受賞と認定',
+    experience: '経歴',
   },
   goals: {
     titleYear: '{{year}}年の目標',

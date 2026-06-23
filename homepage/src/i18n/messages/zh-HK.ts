@@ -36,6 +36,7 @@ export const zhHK: Messages = {
   },
   home: {
     awards: '獎項與認證',
+    experience: '經歷',
   },
   goals: {
     titleYear: '{{year}} 年目標',

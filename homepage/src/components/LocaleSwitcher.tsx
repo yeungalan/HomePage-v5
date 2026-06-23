@@ -52,10 +52,12 @@ export const LocaleSwitcher = () => {
         onClick={() => setOpen((prev) => !prev)}
         className={clsxm(
           // Match ThemeSwitcher: same 40px height, rounded-full, and border
-          // colours (zinc-200 in light mode, white in dark mode).
+          // colours (zinc-200 in light mode, white in dark mode). The footer
+          // background is dark in both themes (stone-500 / black), so the
+          // label and icons are white throughout for legibility.
           'inline-flex h-[40px] items-center gap-1.5 rounded-full border border-zinc-200 px-4',
-          'text-xs font-medium text-current transition-colors duration-200 dark:border-white dark:text-white',
-          'hover:bg-current/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current',
+          'text-xs font-medium text-white transition-colors duration-200 dark:border-white',
+          'hover:bg-white/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white',
         )}
       >
         <Icon icon="mingcute:translate-2-line" className="text-base" />

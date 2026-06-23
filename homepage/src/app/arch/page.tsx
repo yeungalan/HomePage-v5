@@ -7,6 +7,7 @@ import ThreeTierInfrastructure from "@/components/FlowGraph";
 import type { FlowGraphConfig } from "@/components/FlowGraph";
 import { RealFooter } from "@/components/FooterLinks";
 import { Icon } from '@iconify/react';
+import { useTranslation } from "@/i18n";
 
 // Type definitions for infrastructure configuration
 interface ServiceNode {
@@ -239,7 +240,8 @@ const infrastructureConfig: FlowGraphConfig = {
   ]
 };
 
-export default function Page() {    
+export default function Page() {
+    const t = useTranslation();
     return (
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">
@@ -249,8 +251,8 @@ export default function Page() {
                   <div className="w-full">
                     <div className="mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl">
                       <header className="mb-10">
-                        <h1 className="text-3xl font-bold mb-4 dark:text-white">Architecture</h1>
-                        <h3 className="text-xl text-gray-600 dark:text-gray-300">Infrastructure Overview</h3>
+                        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('arch.title')}</h1>
+                        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('arch.subtitle')}</h3>
                       </header>
                       <ArchitectureSection config={infrastructureConfig} />
                     </div>

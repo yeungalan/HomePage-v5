@@ -24,7 +24,14 @@ export const enUS = {
     sectionAbout: 'About',
     sectionSocials: 'Socials',
     sectionMore: 'More',
+    moreFriends: 'Friends',
+    moreProjects: 'Projects',
+    moreStatusMonitor: 'Status monitor',
     poweredBy: 'Powered by Vercel and Next.js.',
+    copyright: 'Alan Yeung & alanyeung.co and its affiliates',
+    initiative: 'Project Atlas: Global Infrastructure Modernization Initiative 2025',
+    production: 'Production',
+    nonProduction: 'Non Production',
     language: 'Language',
   },
   hero: {
@@ -55,6 +62,25 @@ export const enUS = {
   posts: {
     title: 'Posts',
     subtitle: 'Post Links',
+  },
+  arch: {
+    title: 'Architecture',
+    subtitle: 'Infrastructure Overview',
+  },
+  time: {
+    justNow: 'Just now',
+    secondAgo: '{{count}} second ago',
+    secondsAgo: '{{count}} seconds ago',
+    minuteAgo: '{{count}} minute ago',
+    minutesAgo: '{{count}} minutes ago',
+    hourAgo: '{{count}} hour ago',
+    hoursAgo: '{{count}} hours ago',
+    dayAgo: '{{count}} day ago',
+    daysAgo: '{{count}} days ago',
+    monthAgo: '{{count}} month ago',
+    monthsAgo: '{{count}} months ago',
+    yearAgo: '{{count}} year ago',
+    yearsAgo: '{{count}} years ago',
   },
 }
 

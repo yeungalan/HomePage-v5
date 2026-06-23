@@ -37,16 +37,16 @@ const footerConfig = {
       name: 'More',
       nameKey: 'footer.sectionMore',
       links: [
-        { name: 'Friends', href: '/friends', external: false },
-        { name: 'Projects', href: '/projects', external: false },
-        { name: 'Status mointor', href: 'https://stats.uptimerobot.com/JKvyVhBqBO', external: true },
+        { name: 'Friends', nameKey: 'footer.moreFriends', href: '/friends', external: false },
+        { name: 'Projects', nameKey: 'footer.moreProjects', href: '/projects', external: false },
+        { name: 'Status monitor', nameKey: 'footer.moreStatusMonitor', href: 'https://stats.uptimerobot.com/JKvyVhBqBO', external: true },
       ],
     },
   ],
   otherInfo: {
     date: '2016-{{now}}',
     icp: {
-      text: 'Project Atlas: Global Infrastructure Modernization Initiative 2025',
+      textKey: 'footer.initiative',
       link: '#',
     },
   },
@@ -71,6 +71,11 @@ const getRevisionDate = (): string => {
 }
 
 const REVISION_DATE = getRevisionDate()
+
+// Deployment stage, bridged from the `STAGE` env var via next.config.ts. When it
+// is `nonprod` or `dev`, the footer flags the build as non-production.
+const STAGE = (process.env.NEXT_PUBLIC_STAGE ?? '').toLowerCase()
+const IS_NON_PROD = STAGE === 'nonprod' || STAGE === 'dev'
 
 export const FooterInfo = () => {
   return (
@@ -108,7 +113,7 @@ const FooterLinkSection = () => {
                     href={link.href}
                     key={link.name}
                   >
-                    {link.name}
+                    {'nameKey' in link ? t(link.nameKey) : link.name}
                   </StyledLink>
                 )
               })}
@@ -155,6 +160,7 @@ const PoweredBy: Component = ({ className }) => {
 }
 
 const FooterBottom = () => {
+  const t = useTranslation()
   const { otherInfo } = footerConfig
   const currentYear = new Date().getFullYear().toString()
   const { date = currentYear, icp } = otherInfo || {}
@@ -198,7 +204,7 @@ const FooterBottom = () => {
     <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
       <div>
         <span>© {date.replace('{{now}}', currentYear)} </span>
-        <span>Alan Yeung & alanyeung.co and its affiliates</span>
+        <span>{t('footer.copyright')}</span>
         <span>.</span>
         <span>
           <Divider className="inline" />
@@ -214,7 +220,7 @@ const FooterBottom = () => {
             }
           }}
         >
-          Rev. {REVISION_DATE} Production
+          Rev. {REVISION_DATE} {IS_NON_PROD ? t('footer.nonProduction') : t('footer.production')}
         </span>
       </div>
       <div>
@@ -223,7 +229,7 @@ const FooterBottom = () => {
           <>
             <Divider className="hidden md:inline" />
             <StyledLink href={icp.link} target="_blank" rel="noreferrer" external>
-              {icp.text}
+              {t(icp.textKey)}
             </StyledLink>
           </>
         )}

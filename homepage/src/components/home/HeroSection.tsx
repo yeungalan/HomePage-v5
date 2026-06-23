@@ -11,11 +11,13 @@ import GiantGreetText, { GiantGreetTextTemplate } from '@/components/greet-text/
 import { isSupportIcon, SocialIcon } from '@/components/SocialIcon';
 import { softBouncePreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
+import { useTranslation } from '@/i18n';
 import { QUOTES, getDifferentQuoteIndex, getRandomQuoteIndex } from '@/data/quotes';
 import { getSocialLinksArray } from '@/data/social';
 import { ANIMATION_DELAYS, ANIMATION_DURATIONS, calculateStaggerDelay } from '@/constants/timing';
 
 export const HeroSection: React.FC = () => {
+  const t = useTranslation();
   const titleAnimateD =
     GiantGreetTextTemplate.reduce((acc, cur) => {
       return acc + (cur.text?.length || 0);
@@ -99,7 +101,7 @@ export const HeroSection: React.FC = () => {
               <button
                 onClick={handleRefreshQuote}
                 className="shrink-0 rounded-full p-1.5 transition-colors hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50"
-                aria-label="Change a new sentence"
+                aria-label={t('hero.changeSentence')}
               >
                 <Icon icon="mingcute:refresh-1-line" className="text-xs" />
               </button>

@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import Link from 'next/link';
 
 import { RelativeTime } from '@/components/RelativeTime';
+import { useTranslation } from '@/i18n';
 import { NormalContainer } from './NormalContainer';
 
 interface Post {
@@ -36,12 +37,14 @@ const listVariants = {
   show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
 
-export const PostsList: React.FC<PostsListProps> = ({ posts }) => (
+export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
+  const t = useTranslation();
+  return (
   <div className="relative w-full overflow-hidden">
     <NormalContainer>
       <header className="pt-5 mb-10">
-        <h1 className="text-3xl font-bold mb-4 dark:text-white">Posts</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-300">Post Links</h3>
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('posts.title')}</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('posts.subtitle')}</h3>
       </header>
       <motion.ul
         className="shiro-timeline mt-4"
@@ -66,4 +69,5 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => (
       </motion.ul>
     </NormalContainer>
   </div>
-);
+  );
+};

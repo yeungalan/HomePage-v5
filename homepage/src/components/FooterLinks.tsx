@@ -3,6 +3,8 @@
 import { clsxm } from '@/lib/helper'
 import { FunctionComponent, ReactNode, SVGProps, useState, useRef } from 'react'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { LocaleSwitcher } from './LocaleSwitcher'
+import { useTranslation } from '@/i18n'
 import Link from 'next/link'
 
 type Component<P = object> = FunctionComponent<{
@@ -16,6 +18,7 @@ const footerConfig = {
   linkSections: [
     {
       name: 'About',
+      nameKey: 'footer.sectionAbout',
       links: [
         { name: 'Me', href: '/posts/aboutme_en', external: false },
         { name: '我', href: '/posts/aboutme', external: false },
@@ -24,6 +27,7 @@ const footerConfig = {
     },
     {
       name: 'Socials',
+      nameKey: 'footer.sectionSocials',
       links: [
         { name: 'GitHub', href: 'https://github.com/yeungalan', external: true },
         { name: 'Twitter', href: 'https://twitter.com/yeungbluecat123', external: true },
@@ -31,6 +35,7 @@ const footerConfig = {
     },
     {
       name: 'More',
+      nameKey: 'footer.sectionMore',
       links: [
         { name: 'Friends', href: '/friends', external: false },
         { name: 'Projects', href: '/projects', external: false },
@@ -80,6 +85,7 @@ export const FooterInfo = () => {
 }
 
 const FooterLinkSection = () => {
+  const t = useTranslation()
   return (
     <div className="space-x-0 space-y-3 md:space-x-6 md:space-y-0">
       {footerConfig.linkSections.map((section) => {
@@ -89,7 +95,7 @@ const FooterLinkSection = () => {
             key={section.name}
           >
             <b className="inline-flex items-center font-medium">
-              {section.name}
+              {t(section.nameKey)}
               <IonIosArrowDown className="ml-2 inline -rotate-90 select-none" />
             </b>
 
@@ -144,7 +150,8 @@ const Divider: Component = ({ className }) => {
 }
 
 const PoweredBy: Component = ({ className }) => {
-  return <span className={className}>Powered by Vercel and Next.js.</span>
+  const t = useTranslation()
+  return <span className={className}>{t('footer.poweredBy')}</span>
 }
 
 const FooterBottom = () => {
@@ -259,7 +266,8 @@ export const RealFooter = () => {
         <div className="relative mx-auto max-w-7xl lg:px-8">
           <FooterInfo />
 
-          <div className="mt-6 block text-center md:absolute md:bottom-0 md:right-0 md:mt-0">
+          <div className="mt-6 flex items-center justify-center gap-3 md:absolute md:bottom-0 md:right-0 md:mt-0">
+            <LocaleSwitcher />
             <ThemeSwitcher />
           </div>
         </div>

@@ -5,9 +5,17 @@ import { motion } from 'motion/react';
 import { Icon } from '@iconify/react';
 import { RealFooter } from '@/components/FooterLinks';
 import { getDayOfYear, differenceInDays, endOfYear, startOfYear } from 'date-fns';
-import { GOALS_2026, GOAL_STATUS_CONFIG, GOAL_STATUS_LABELS, getGoalsTitle } from '@/data/goals';
+import { GOALS_2026, GOAL_STATUS_CONFIG } from '@/data/goals';
 import { FlightCalculator } from '@/components/goals/FlightCalculator';
 import { TIMEZONES, getDaylightInfo } from '@/constants/timezones';
+import { useTranslation } from '@/i18n';
+
+// Maps each goal status onto its i18n key.
+const GOAL_STATUS_LABEL_KEYS: Record<string, string> = {
+  completed: 'goals.statusCompleted',
+  in_progress: 'goals.statusInProgress',
+  not_started: 'goals.statusNotStarted',
+};
 
 // Calendar-day offset of a timezone relative to the viewer's local day, so a
 // city that has already rolled over to the next day shows "+1" (or "-1" when it
@@ -20,6 +28,7 @@ function getDayOffset(date: Date, tz: string): number {
 }
 
 export default function GoalsPage() {
+  const t = useTranslation();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -55,8 +64,8 @@ export default function GoalsPage() {
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 md:space-y-12 pt-5 sm:pt-[60px]">
         <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:0.5}}>
                 <header className="mb-10">
-        <h1 className="text-3xl font-bold mb-4 dark:text-white">{nextYear - 1} Goals</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-300">{daysLeft} days left until {nextYear}</h3>
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('goals.titleYear', { year: currentYear })}</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('goals.daysLeft', { days: daysLeft, year: nextYear })}</h3>
       </header>
 
         </motion.div>
@@ -79,15 +88,15 @@ export default function GoalsPage() {
         {/* Timeline Stats */}
         <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.5,delay:0.4}} className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">Day of the Year</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">{t('goals.dayOfYear')}</p>
             <p className="text-lg sm:text-xl md:text-2xl font-bold dark:text-white">{dayOfYear}</p>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">Year Progress</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">{t('goals.yearProgress')}</p>
             <p className="text-lg sm:text-xl md:text-2xl font-bold dark:text-white">{yearProgress}%</p>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">Today Progress</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">{t('goals.todayProgress')}</p>
             <p className="text-lg sm:text-xl md:text-2xl font-bold dark:text-white">{todayProgress}%</p>
           </div>
         </motion.div>
@@ -131,12 +140,12 @@ export default function GoalsPage() {
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
             <Icon icon="mage:goals" className="text-3xl sm:text-4xl" />
-            <span>{getGoalsTitle()}</span>
+            <span>{t('goals.titleYear', { year: currentYear })}</span>
           </h2>
           <div className="space-y-3 sm:space-y-4">
             {GOALS_2026.map((goal, index) => {
               const statusConfig = GOAL_STATUS_CONFIG[goal.status];
-              const statusLabel = GOAL_STATUS_LABELS[goal.status];
+              const statusLabel = t(GOAL_STATUS_LABEL_KEYS[goal.status]);
 
               return (
                 <motion.div

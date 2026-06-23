@@ -5,6 +5,7 @@ import { memo, useState } from 'react'
 
 import { Avatar } from '@/components/Avatar'
 import { BottomToUpTransitionView } from '@/components/BottomToUpTransitionView'
+import { useTranslation } from '@/i18n'
 import { motion } from 'motion/react'
 
 // Fake data array
@@ -61,11 +62,12 @@ const PROJECT_DATA = [
 ]
 
 export default function Page() {
+  const t = useTranslation()
   return (
     <div className={"pt-5"}>
       <header className="mb-10">
-        <h1 className="text-3xl font-bold mb-4 dark:text-white">Projects</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-300">Project Links</h3>
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('projects.title')}</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('projects.subtitle')}</h3>
       </header>
 
       <main className="mt-10 flex w-full flex-col">

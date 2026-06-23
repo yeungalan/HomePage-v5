@@ -6,6 +6,13 @@ import { RealFooter } from '@/components/FooterLinks'
 
 export const metadata: Metadata = {
   title: 'Friends',
+  description: "Friends' links and sites worth visiting, curated by Alan Yeung.",
+  alternates: { canonical: '/friends' },
+  openGraph: {
+    title: 'Friends',
+    description: "Friends' links and sites worth visiting, curated by Alan Yeung.",
+    url: '/friends',
+  },
 }
 
 export default async function FriendsLayout(props: PropsWithChildren) {

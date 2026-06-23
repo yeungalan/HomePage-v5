@@ -8,9 +8,24 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
+import { MarkdownChart } from '../charts'
 
 interface SimpleMarkdownProps {
   content: string
+}
+
+// Detects a ```chart fenced block by inspecting the <pre>'s child <code> node.
+// Used to strip the surrounding <pre> so the rendered chart isn't wrapped in
+// monospace/preformatted styling.
+function isChartNode(node: unknown): boolean {
+  if (!node || typeof node !== 'object') return false
+  const children = (node as { children?: unknown }).children
+  if (!Array.isArray(children)) return false
+  const codeNode = children.find(
+    (child) => (child as { tagName?: string })?.tagName === 'code',
+  ) as { properties?: { className?: unknown } } | undefined
+  const className = codeNode?.properties?.className
+  return Array.isArray(className) && className.includes('language-chart')
 }
 
 interface CodeProps {
@@ -152,6 +167,11 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           code: (allProps) => {
             const { inline, className, children, ...props } = stripNode(allProps) as CodeProps
             const match = /language-(\w+)/.exec(className || '')
+            // ```chart blocks carry a JSON chart definition; render the graph
+            // instead of highlighted source.
+            if (!inline && match && match[1] === 'chart') {
+              return <MarkdownChart source={String(children)} />
+            }
             return !inline && match ? (
               <div className="relative max-w-full overflow-x-auto">
                 <SyntaxHighlighter
@@ -173,7 +193,12 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
             )
           },
           pre: (allProps) => {
+            const node = (allProps as { node?: unknown }).node
             const { children, ...props } = stripNode(allProps)
+            // Charts are block elements already; don't wrap them in <pre>.
+            if (isChartNode(node)) {
+              return <>{children}</>
+            }
             return (
               <pre className="max-w-full overflow-x-auto my-4" {...props}>{children}</pre>
             )

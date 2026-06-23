@@ -7,13 +7,15 @@ import Link from "next/link"
 import { FOOTER_LINKS } from "@/data/navigation"
 import { BRAND_COLORS } from "@/constants/colors"
 import { ANIMATION_DELAYS, calculateStaggerDelay } from "@/constants/timing"
+import { useTranslation } from "@/i18n"
 
 export const Footer = () => {
+  const t = useTranslation()
   return (
     <>
       <div className="center mt-10 mb-20 flex flex-col">
-        <div className="my-5 text-2xl font-medium text-black dark:text-white">Quick links</div>
-        <div className="mb-15 opacity-90">Want to go somewhere else?</div>
+        <div className="my-5 text-2xl font-medium text-black dark:text-white">{t('footer.quickLinksTitle')}</div>
+        <div className="mb-15 opacity-90">{t('footer.quickLinksSubtitle')}</div>
         <ul className="flex flex-col flex-wrap gap-2 gap-y-8 opacity-80 lg:flex-row">
           {FOOTER_LINKS.map((item, index) => {
             return (
@@ -58,7 +60,7 @@ export const Footer = () => {
                   }}
                 >
                   {createElement(item.icon, { className: 'w-6 h-6' })}
-                  <span>{item.title}</span>
+                  <span>{item.titleKey ? t(item.titleKey) : item.title}</span>
                 </Link>
 
                 {index !== FOOTER_LINKS.length - 1 && (

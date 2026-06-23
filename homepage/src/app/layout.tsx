@@ -5,6 +5,7 @@ import 'mingcute_icon/font/Mingcute.css'
 import Script from "next/script";
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
+import { I18nProvider } from "@/i18n";
 import StatsComponent from "@/components/StatComponent";
 import { IconifyConfig } from "@/components/IconifyConfig";
 import { Analytics } from "@vercel/analytics/next";
@@ -59,16 +60,18 @@ export default function RootLayout({
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >
         <IconifyConfig />
-        <NextThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
-          <StatsComponent />
-          {children}
-        </NextThemeProvider>
+        <I18nProvider>
+          <NextThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <StatsComponent />
+            {children}
+          </NextThemeProvider>
+        </I18nProvider>
         <Analytics />
         <SpeedInsights/>
         <Script

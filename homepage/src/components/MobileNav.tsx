@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsxm } from "@/lib/helper";
+import { useTranslation } from "@/i18n";
 import { type MenuItem } from "@/data/navigation";
 import { Z_INDEX } from "@/constants/spacing";
 
@@ -27,6 +28,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
   const [, setDragY] = useState(0);
   const dragControls = useDragControls();
   const pathname = usePathname();
+  const t = useTranslation();
 
   // Open menu
   const openMenu = (): void => {
@@ -187,7 +189,10 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                                 className="text-[18px] flex-shrink-0 ml-1"
                               />
                               <span className="text-[15px] font-normal">
-                                {subItemActive?.title ?? section.title}
+                                {(() => {
+                                  const active = subItemActive ?? section;
+                                  return active.titleKey ? t(active.titleKey) : active.title;
+                                })()}
                               </span>
                             </Link>
 
@@ -216,7 +221,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                                       target={item.path.startsWith("http") ? "_blank" : undefined}
                                       rel={item.path.startsWith("http") ? "noopener noreferrer" : undefined}
                                     >
-                                      {item.title}
+                                      {item.titleKey ? t(item.titleKey) : item.title}
                                     </Link>
                                   );
                                 })}

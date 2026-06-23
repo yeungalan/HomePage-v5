@@ -3,6 +3,7 @@
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { LotteryText } from "@/components/LotteryText";
+import { useTranslation } from "@/i18n";
 import { motion } from 'motion/react'
 import React, { createElement, useState, useEffect } from 'react'
 
@@ -90,7 +91,8 @@ const titleAnimateD =
 
 export default function GiantGreetText() {
   const [, setMounted] = useState(false)
-  
+  const t = useTranslation()
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -148,7 +150,7 @@ export default function GiantGreetText() {
         transition={softBouncePreset}
         className="my-3 text-center lg:text-left dark:text-white"
       >
-        <span className="opacity-80">Protecting What Matters Most, One Identity at a Time, with Love in AWS</span>
+        <span className="opacity-80">{t('hero.tagline')}</span>
       </BottomToUpTransitionView>
     </div>
   )

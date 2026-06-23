@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { clsxm } from '@/lib/helper';
+import { useTranslation } from '@/i18n';
 import { HEADER_MENU_CONFIG, type MenuItem, type SubMenuItem } from '@/data/navigation';
 import { ANIMATION_DELAYS, ANIMATION_DURATIONS } from '@/constants/timing';
 import { Z_INDEX } from '@/constants/spacing';
@@ -68,6 +69,7 @@ const MenuPopover = ({
   forceDarkMode?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslation();
 
   if (!subMenu || subMenu.length === 0) {
     return <>{children}</>;
@@ -120,7 +122,7 @@ const MenuPopover = ({
                   {item.icon && (
                     <Icon icon={item.icon} className="text-base mr-2" />
                   )}
-                  <span>{item.title}</span>
+                  <span>{item.titleKey ? t(item.titleKey) : item.title}</span>
                 </Link>
               </motion.div>
             ))}
@@ -142,7 +144,10 @@ const HeaderMenuItem = memo(({
   subItemActive?: SubMenuItem;
   forceDarkMode?: boolean;
 }) => {
+  const t = useTranslation();
   const href = section.path;
+  const activeItem = subItemActive ?? section;
+  const label = activeItem.titleKey ? t(activeItem.titleKey) : activeItem.title;
 
   return (
     <MenuPopover subMenu={section.subMenu} forceDarkMode={forceDarkMode}>
@@ -172,7 +177,7 @@ const HeaderMenuItem = memo(({
                 />
               </motion.span>
             )}
-            <span>{subItemActive?.title ?? section.title}</span>
+            <span>{label}</span>
           </span>
           {isActive && (
             <motion.span 

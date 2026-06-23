@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef, useEffect, ReactNode } from 'react'
-import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -215,27 +214,6 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           li(allProps) {
             const props = stripNode(allProps)
             return <li className="mb-2" {...props} />
-          },
-          img(allProps) {
-            const { src, alt } = stripNode(allProps)
-            // react-markdown / rehype-raw hand us a plain string URL; skip
-            // anything else (e.g. blob/empty) that next/image can't optimize.
-            if (typeof src !== 'string' || src.length === 0) return null
-            // Markdown images carry no intrinsic dimensions, so use next/image's
-            // "fill the content width, keep aspect ratio" pattern (width/height 0
-            // + sizes). This enables automatic optimization — responsive srcset,
-            // lazy loading, and AVIF/WebP — for post photos. The content column
-            // maxes out around 864px on desktop and spans the viewport below that.
-            return (
-              <Image
-                src={src}
-                alt={typeof alt === 'string' ? alt : ''}
-                width={0}
-                height={0}
-                sizes="(max-width: 1024px) 100vw, 864px"
-                className="h-auto w-full rounded-lg"
-              />
-            )
           },
           iframe(allProps) {
             const { height, className, src, sandbox, ...otherProps } = stripNode(allProps)

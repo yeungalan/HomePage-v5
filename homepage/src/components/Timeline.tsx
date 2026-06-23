@@ -11,10 +11,12 @@ import { EXPERIENCES, sortExperiencesByDate } from '@/data/experiences'
 import { BRAND_COLORS } from '@/constants/colors'
 import { ANIMATION_DELAYS, calculateStaggerDelay } from '@/constants/timing'
 import { COMPONENT_HEIGHTS, Z_INDEX } from '@/constants/spacing'
+import { useTranslation } from '@/i18n'
 
 const isLoading = false
 
 export default function Timeline() {
+  const t = useTranslation()
   const leftSideRef = useRef<HTMLDivElement>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [leftSideHeight, setLeftSideHeight] = useState(0)
@@ -97,7 +99,7 @@ export default function Timeline() {
       viewport={{ once: true }}
     >
       <motion.h2 className="text-2xl font-medium leading-loose">
-        Experience
+        {t('home.experience')}
       </motion.h2>
 
       {isLoading ? (

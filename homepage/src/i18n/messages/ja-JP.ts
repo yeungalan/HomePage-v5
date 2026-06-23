@@ -20,7 +20,14 @@ export const jaJP: Messages = {
     sectionAbout: 'プロフィール',
     sectionSocials: 'ソーシャル',
     sectionMore: 'その他',
+    moreFriends: '友達',
+    moreProjects: 'プロジェクト',
+    moreStatusMonitor: 'ステータスモニター',
     poweredBy: 'Powered by Vercel and Next.js.',
+    copyright: 'Alan Yeung & alanyeung.co およびその関連会社',
+    initiative: 'Project Atlas: グローバルインフラ近代化イニシアチブ 2025',
+    production: '本番環境',
+    nonProduction: '非本番環境',
     language: '言語',
   },
   hero: {
@@ -29,6 +36,7 @@ export const jaJP: Messages = {
   },
   home: {
     awards: '受賞と認定',
+    experience: '経歴',
   },
   goals: {
     titleYear: '{{year}}年の目標',
@@ -51,5 +59,24 @@ export const jaJP: Messages = {
   posts: {
     title: '投稿',
     subtitle: '投稿リンク',
+  },
+  arch: {
+    title: 'アーキテクチャ',
+    subtitle: 'インフラ概要',
+  },
+  time: {
+    justNow: 'たった今',
+    secondAgo: '{{count}} 秒前',
+    secondsAgo: '{{count}} 秒前',
+    minuteAgo: '{{count}} 分前',
+    minutesAgo: '{{count}} 分前',
+    hourAgo: '{{count}} 時間前',
+    hoursAgo: '{{count}} 時間前',
+    dayAgo: '{{count}} 日前',
+    daysAgo: '{{count}} 日前',
+    monthAgo: '{{count}} ヶ月前',
+    monthsAgo: '{{count}} ヶ月前',
+    yearAgo: '{{count}} 年前',
+    yearsAgo: '{{count}} 年前',
   },
 }

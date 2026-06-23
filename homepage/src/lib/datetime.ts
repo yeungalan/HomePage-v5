@@ -26,8 +26,12 @@ export const parseDate = (
   format: keyof typeof DateFormat,
 ) => dayjs(time).format(format)
 
+/** Translate function shape (mirrors `useTranslation` from `@/i18n`). */
+type TranslateFn = (key: string, vars?: Record<string, string | number>) => string
+
 export const relativeTimeFromNow = (
   time: Date | string,
+  t: TranslateFn,
   current = new Date(),
 ) => {
   if (!time) {
@@ -42,24 +46,29 @@ export const relativeTimeFromNow = (
 
   const elapsed = +current - +time
 
+  // Pick the singular or plural `time.*` key based on the count. CJK locales use
+  // an identical template for both, while English supplies distinct wording.
+  const phrase = (count: number, singularKey: string, pluralKey: string) =>
+    t(`time.${count === 1 ? singularKey : pluralKey}`, { count })
+
   if (elapsed < msPerMinute) {
     const gap = Math.ceil(elapsed / 1000)
-    return gap <= 0 ? 'Just now' : `${gap} second${gap === 1 ? '' : 's'} ago`
+    return gap <= 0 ? t('time.justNow') : phrase(gap, 'secondAgo', 'secondsAgo')
   } else if (elapsed < msPerHour) {
     const minutes = Math.round(elapsed / msPerMinute)
-    return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
+    return phrase(minutes, 'minuteAgo', 'minutesAgo')
   } else if (elapsed < msPerDay) {
     const hours = Math.round(elapsed / msPerHour)
-    return `${hours} hour${hours === 1 ? '' : 's'} ago`
+    return phrase(hours, 'hourAgo', 'hoursAgo')
   } else if (elapsed < msPerMonth) {
     const days = Math.round(elapsed / msPerDay)
-    return `${days} day${days === 1 ? '' : 's'} ago`
+    return phrase(days, 'dayAgo', 'daysAgo')
   } else if (elapsed < msPerYear) {
     const months = Math.round(elapsed / msPerMonth)
-    return `${months} month${months === 1 ? '' : 's'} ago`
+    return phrase(months, 'monthAgo', 'monthsAgo')
   } else {
     const years = Math.round(elapsed / msPerYear)
-    return `${years} year${years === 1 ? '' : 's'} ago`
+    return phrase(years, 'yearAgo', 'yearsAgo')
   }
 }
 

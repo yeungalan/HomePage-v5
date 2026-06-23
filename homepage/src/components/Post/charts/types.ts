@@ -90,6 +90,8 @@ export interface MapChartSpec {
   routes?: MapRoute[]
   /** Height of the globe canvas in pixels (default 420). */
   height?: number
+  /** Whether the globe spins on its own. Defaults to true. */
+  autoRotate?: boolean
 }
 
 export type ChartSpec = LineChartSpec | PieChartSpec | MapChartSpec

@@ -24,6 +24,7 @@ interface GlobeMapProps {
   arcs: ResolvedArc[]
   width: number
   height: number
+  autoRotate: boolean
 }
 
 // Minimal structural type for the bits of the globe instance we touch.
@@ -53,7 +54,13 @@ function computeAltitude(points: ResolvedPoint[]): number {
   return Math.min(3.2, Math.max(1.2, 0.6 + spread / 45))
 }
 
-export default function GlobeMap({ points, arcs, width, height }: GlobeMapProps) {
+export default function GlobeMap({
+  points,
+  arcs,
+  width,
+  height,
+  autoRotate,
+}: GlobeMapProps) {
   const globeRef = useRef<GlobeInstance | null>(null)
 
   const center = useMemo(() => {
@@ -63,6 +70,7 @@ export default function GlobeMap({ points, arcs, width, height }: GlobeMapProps)
     return { lat, lng }
   }, [points])
 
+  // Frame the points once the globe is mounted.
   useEffect(() => {
     const globe = globeRef.current
     if (!globe) return
@@ -70,11 +78,16 @@ export default function GlobeMap({ points, arcs, width, height }: GlobeMapProps)
       { lat: center.lat, lng: center.lng, altitude: computeAltitude(points) },
       1000,
     )
-    const controls = globe.controls()
-    controls.autoRotate = true
-    controls.autoRotateSpeed = 0.4
-    controls.enableZoom = true
+    globe.controls().enableZoom = true
   }, [center, points])
+
+  // Toggle auto-rotation without re-framing the camera.
+  useEffect(() => {
+    const controls = globeRef.current?.controls()
+    if (!controls) return
+    controls.autoRotate = autoRotate
+    controls.autoRotateSpeed = 0.4
+  }, [autoRotate])
 
   return (
     <Globe
@@ -85,7 +98,8 @@ export default function GlobeMap({ points, arcs, width, height }: GlobeMapProps)
       globeImageUrl="/assets/images/day.jpg"
       atmosphereColor="#9ec5ff"
       atmosphereAltitude={0.18}
-      // Route arcs (Point A -> Point B)
+      // Route arcs (Point A -> Point B). Solid and static so the line between
+      // cities does not animate/flow.
       arcsData={arcs}
       arcStartLat="startLat"
       arcStartLng="startLng"
@@ -94,10 +108,11 @@ export default function GlobeMap({ points, arcs, width, height }: GlobeMapProps)
       arcColor={(d: object) => (d as ResolvedArc).color}
       arcLabel={(d: object) => (d as ResolvedArc).label}
       arcStroke={0.6}
-      arcDashLength={0.4}
-      arcDashGap={0.2}
-      arcDashAnimateTime={2000}
+      arcDashLength={1}
+      arcDashGap={0}
+      arcDashAnimateTime={0}
       arcAltitudeAutoScale={0.4}
+      arcsTransitionDuration={0}
       // Named locations
       labelsData={points}
       labelLat="lat"

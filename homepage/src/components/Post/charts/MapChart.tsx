@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { Icon } from '@iconify/react'
 import type { MapChartSpec, MapRouteEndpoint } from './types'
 import { paletteColor } from './palette'
 import type { ResolvedArc, ResolvedPoint } from './GlobeMap'
@@ -24,6 +25,7 @@ function GlobeFallback() {
 export const MapChart: React.FC<{ spec: MapChartSpec }> = ({ spec }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [width, setWidth] = useState(0)
+  const [rotating, setRotating] = useState(spec.autoRotate ?? true)
   const height = spec.height ?? 420
 
   useEffect(() => {
@@ -79,9 +81,7 @@ export const MapChart: React.FC<{ spec: MapChartSpec }> = ({ spec }) => {
       const to = ensurePoint(route.to)
       if (!from || !to) return
       const color = route.color ?? paletteColor(i)
-      const label =
-        route.label ??
-        `${from.name || 'A'} → ${to.name || 'B'}`
+      const label = route.label ?? `${from.name || 'A'} → ${to.name || 'B'}`
       arcs.push({
         startLat: from.lat,
         startLng: from.lng,
@@ -111,12 +111,30 @@ export const MapChart: React.FC<{ spec: MapChartSpec }> = ({ spec }) => {
           {spec.title}
         </figcaption>
       )}
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-gradient-to-b from-slate-900 to-black shadow-sm dark:border-zinc-700">
+      <div className="relative overflow-hidden rounded-xl border border-zinc-200 bg-gradient-to-b from-slate-900 to-black shadow-sm dark:border-zinc-700">
         <div ref={containerRef} className="w-full" style={{ height }}>
           {width > 0 && (
-            <GlobeMap points={points} arcs={arcs} width={width} height={height} />
+            <GlobeMap
+              points={points}
+              arcs={arcs}
+              width={width}
+              height={height}
+              autoRotate={rotating}
+            />
           )}
         </div>
+
+        {/* Interactive rotation toggle */}
+        <button
+          type="button"
+          onClick={() => setRotating((r) => !r)}
+          className="absolute right-2 top-2 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+          aria-pressed={rotating}
+          title={rotating ? 'Pause rotation' : 'Auto-rotate'}
+        >
+          <Icon icon={rotating ? 'mdi:pause' : 'mdi:play'} className="text-base" />
+          {rotating ? 'Pause' : 'Rotate'}
+        </button>
       </div>
 
       {routeList.length > 0 && (

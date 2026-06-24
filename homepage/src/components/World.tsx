@@ -15,10 +15,10 @@ import { motion } from "motion/react";
 import { Icon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
 import { GLOBE_COLORS } from "@/constants/colors";
-import { CLUSTER_THRESHOLDS, ALTITUDE_LEVELS, GLOBE_CONFIG, ROUTE_ARC_OPACITY, GLOBE_ANIMATION_VELOCITY, OVERLAP_THRESHOLD_DEGREES } from "@/constants/globe";
+import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES } from "@/constants/globe";
 import { dayNightShader } from "@/lib/worldShader";
-import { airportParse, sunPosAt, haversineDistance, clusterPoints } from "@/lib/worldUtils";
-import type { Airport, Route, TrainStation, PointData, Dimensions, TimeMode } from "@/types/world";
+import { airportParse, sunPosAt, clusterPoints } from "@/lib/worldUtils";
+import type { Airport, Route, TrainStation, TrainPath, PointData, Dimensions, TimeMode } from "@/types/world";
 
 interface GlobeInstance {
   pointOfView: (pov?: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void | { lat: number; lng: number; altitude: number };

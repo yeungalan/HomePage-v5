@@ -8,7 +8,6 @@ import { MobileNav } from './MobileNav';
 import { clsxm } from '@/lib/helper';
 import { useTranslation } from '@/i18n';
 import { HEADER_MENU_CONFIG, type MenuItem, type SubMenuItem } from '@/data/navigation';
-import { ANIMATION_DELAYS, ANIMATION_DURATIONS } from '@/constants/timing';
 import { Z_INDEX } from '@/constants/spacing';
 import { HEADER_COLORS } from '@/constants/colors';
 import { popoverVariants, staggerItemVariants } from '@/constants/motion';

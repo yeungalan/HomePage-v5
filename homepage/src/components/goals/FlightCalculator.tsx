@@ -24,7 +24,6 @@ export const FlightCalculator: React.FC = () => {
     const savedDst = localStorage.getItem('dstAirport');
     if (savedSrc) handleOriginChange({ target: { value: savedSrc } } as ChangeEvent<HTMLInputElement>);
     if (savedDst) handleDestinationChange({ target: { value: savedDst } } as ChangeEvent<HTMLInputElement>);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {

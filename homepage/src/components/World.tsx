@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { csvParseRows } from "d3-dsv";
 import indexBy from "index-array-by";
 import { AIRPORTS_RAW } from "@/data/airports";
-import { ROUTES_RAW } from "@/data/routes";
+import { FLIGHT_ROUTES } from "@/data/routes";
 import { TRAIN_DATA } from "@/data/train";
 import {
   TextureLoader,
@@ -130,7 +130,6 @@ const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt
   source,
 });
 
-const routeParse = ([srcIata, dstIata]: string[]): Route => ({ srcIata, dstIata });
 
 // --- SHADER ---
 const dayNightShader = {
@@ -401,7 +400,7 @@ export default function WorldMap(): React.JSX.Element {
   // Load airports + routes from constants
   useEffect(() => {
     const airports: Airport[] = csvParseRows(AIRPORTS_RAW, airportParse);
-    const routes: Route[] = csvParseRows(ROUTES_RAW, routeParse);
+    const routes: Route[] = FLIGHT_ROUTES;
     const byIata: Record<string, Airport> = indexBy(airports, "iata", false);
 
     const filteredRoutes = routes

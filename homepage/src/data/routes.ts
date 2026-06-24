@@ -1,37 +1,44 @@
-export const ROUTES_RAW = `SEA,BOS
-SEA,PDX
-SEA,SFO
-SEA,SAN
-SEA,ORD
-SEA,FLL
-SEA,IAD
-LAX,HKG
-SEA,LHR
-LHR,BER
-BER,STN
-HKG,SIN
-SIN,SYD
-HKG,TPE
-HKG,FUK
-HKG,KIX
-HKG,HND
-HKG,NRT
-HKG,PVG
-SEA,HND
-SEA,NRT
-SEA,YVR
-PAE,HNL
-HKG,YVR
-SEA,LAX
-TSA,HND
-YVR,NRT
-HKG,RMQ
-SEA,YYZ
-SEA,ANC
-SFO,HKG
-HKG,KUL
-KUL,PEN
-KUL,BKI
-KUL,LBJ
-BKI,HKG
-HND,KOJ`;
+export interface FlightRoute {
+  srcIata: string;
+  dstIata: string;
+}
+
+export const FLIGHT_ROUTES: FlightRoute[] = [
+  { srcIata: 'SEA', dstIata: 'BOS' },
+  { srcIata: 'SEA', dstIata: 'PDX' },
+  { srcIata: 'SEA', dstIata: 'SFO' },
+  { srcIata: 'SEA', dstIata: 'SAN' },
+  { srcIata: 'SEA', dstIata: 'ORD' },
+  { srcIata: 'SEA', dstIata: 'FLL' },
+  { srcIata: 'SEA', dstIata: 'IAD' },
+  { srcIata: 'LAX', dstIata: 'HKG' },
+  { srcIata: 'SEA', dstIata: 'LHR' },
+  { srcIata: 'LHR', dstIata: 'BER' },
+  { srcIata: 'BER', dstIata: 'STN' },
+  { srcIata: 'HKG', dstIata: 'SIN' },
+  { srcIata: 'SIN', dstIata: 'SYD' },
+  { srcIata: 'HKG', dstIata: 'TPE' },
+  { srcIata: 'HKG', dstIata: 'FUK' },
+  { srcIata: 'HKG', dstIata: 'KIX' },
+  { srcIata: 'HKG', dstIata: 'HND' },
+  { srcIata: 'HKG', dstIata: 'NRT' },
+  { srcIata: 'HKG', dstIata: 'PVG' },
+  { srcIata: 'SEA', dstIata: 'HND' },
+  { srcIata: 'SEA', dstIata: 'NRT' },
+  { srcIata: 'SEA', dstIata: 'YVR' },
+  { srcIata: 'PAE', dstIata: 'HNL' },
+  { srcIata: 'HKG', dstIata: 'YVR' },
+  { srcIata: 'SEA', dstIata: 'LAX' },
+  { srcIata: 'TSA', dstIata: 'HND' },
+  { srcIata: 'YVR', dstIata: 'NRT' },
+  { srcIata: 'HKG', dstIata: 'RMQ' },
+  { srcIata: 'SEA', dstIata: 'YYZ' },
+  { srcIata: 'SEA', dstIata: 'ANC' },
+  { srcIata: 'SFO', dstIata: 'HKG' },
+  { srcIata: 'HKG', dstIata: 'KUL' },
+  { srcIata: 'KUL', dstIata: 'PEN' },
+  { srcIata: 'KUL', dstIata: 'BKI' },
+  { srcIata: 'KUL', dstIata: 'LBJ' },
+  { srcIata: 'BKI', dstIata: 'HKG' },
+  { srcIata: 'HND', dstIata: 'KOJ' },
+];

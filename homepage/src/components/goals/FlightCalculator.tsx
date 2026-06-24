@@ -1,17 +1,12 @@
 'use client';
 
+import type { ChangeEvent } from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Icon } from '@iconify/react';
+import { getAirportByIata, type AirportInfo as Airport } from '@/data/airports';
 
-export interface Airport {
-  name: string;
-  city: string;
-  country: string;
-  iata: string;
-  lat: number;
-  lon: number;
-}
+export type { Airport };
 
 export const FlightCalculator: React.FC = () => {
   const [srcCode, setSrcCode] = useState('');
@@ -24,61 +19,29 @@ export const FlightCalculator: React.FC = () => {
   const [isFlying, setIsFlying] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  // Load saved airports from localStorage
   useEffect(() => {
     const savedSrc = localStorage.getItem('srcAirport');
     const savedDst = localStorage.getItem('dstAirport');
-    if (savedSrc) handleSrcChange({ target: { value: savedSrc } });
-    if (savedDst) handleDstChange({ target: { value: savedDst } });
+    if (savedSrc) handleOriginChange({ target: { value: savedSrc } } as ChangeEvent<HTMLInputElement>);
+    if (savedDst) handleDestinationChange({ target: { value: savedDst } } as ChangeEvent<HTMLInputElement>);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Haversine formula to calculate distance
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  // Fetch airport data
-  const fetchAirportData = async (code: string): Promise<Airport | null> => {
-    try {
-      const response = await fetch('/airports.dat');
-      const text = await response.text();
-      const lines = text.split('\n');
-      for (const line of lines) {
-        const parts = line.split(',');
-        if (parts.length >= 8) {
-          const iataCode = parts[4]?.replace(/"/g, '');
-          if (iataCode === code.toUpperCase()) {
-            return {
-              name: parts[1]?.replace(/"/g, ''),
-              city: parts[2]?.replace(/"/g, ''),
-              country: parts[3]?.replace(/"/g, ''),
-              iata: iataCode,
-              lat: parseFloat(parts[6]),
-              lon: parseFloat(parts[7]),
-            };
-          }
-        }
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching airport data:', error);
-      return null;
-    }
-  };
-
-  const handleSrcChange = async (e: { target: { value: string } }) => {
+  const handleOriginChange = (e: ChangeEvent<HTMLInputElement>) => {
     const code = e.target.value.toUpperCase();
     setSrcCode(code);
     if (code.length === 3) {
-      const airport = await fetchAirportData(code);
+      const airport = getAirportByIata(code);
       setSrcAirport(airport);
       if (airport) localStorage.setItem('srcAirport', code);
     } else {
@@ -86,11 +49,11 @@ export const FlightCalculator: React.FC = () => {
     }
   };
 
-  const handleDstChange = async (e: { target: { value: string } }) => {
+  const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
     const code = e.target.value.toUpperCase();
     setDstCode(code);
     if (code.length === 3) {
-      const airport = await fetchAirportData(code);
+      const airport = getAirportByIata(code);
       setDstAirport(airport);
       if (airport) localStorage.setItem('dstAirport', code);
     } else {
@@ -101,7 +64,7 @@ export const FlightCalculator: React.FC = () => {
   // Calculate distance and duration
   useEffect(() => {
     if (srcAirport && dstAirport) {
-      const dist = calculateDistance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon);
+      const dist = haversineDistance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon);
       setDistance(dist);
       setDuration(dist / 800 + 0.5); // 800 km/h + 0.5 hr buffer
       setProgress(0);
@@ -184,7 +147,7 @@ export const FlightCalculator: React.FC = () => {
           <input
             type="text"
             value={srcCode}
-            onChange={handleSrcChange}
+            onChange={handleOriginChange}
             maxLength={3}
             placeholder="e.g., JFK"
             className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"
@@ -202,7 +165,7 @@ export const FlightCalculator: React.FC = () => {
           <input
             type="text"
             value={dstCode}
-            onChange={handleDstChange}
+            onChange={handleDestinationChange}
             maxLength={3}
             placeholder="e.g., LAX"
             className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"

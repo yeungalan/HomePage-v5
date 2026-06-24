@@ -14,8 +14,9 @@ import {
 import { motion } from "motion/react";
 import { Icon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
+import { useTranslation } from "@/i18n";
 import { GLOBE_COLORS } from "@/constants/colors";
-import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES } from "@/constants/globe";
+import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES, ROUTE_ARC_OPACITY, GLOBE_ANIMATION_VELOCITY } from "@/constants/globe";
 import { dayNightShader } from "@/lib/worldShader";
 import { airportParse, sunPosAt, clusterPoints } from "@/lib/worldUtils";
 import type { Airport, Route, TrainStation, TrainPath, PointData, Dimensions, TimeMode } from "@/types/world";
@@ -26,6 +27,7 @@ interface GlobeInstance {
 }
 
 export default function WorldMap(): React.JSX.Element {
+  const t = useTranslation();
   const globeEl = useRef<GlobeInstance | null>(null);
   const [airports, setAirports] = useState<Airport[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -57,7 +59,7 @@ export default function WorldMap(): React.JSX.Element {
         if (timeMode === 'realtime') {
           return +new Date();
         } else if (timeMode === 'animated') {
-          return t + VELOCITY * 60 * 1000;
+          return t + GLOBE_ANIMATION_VELOCITY * 60 * 1000;
         }
         return t;
       });
@@ -363,8 +365,8 @@ export default function WorldMap(): React.JSX.Element {
               arcEndLat={(d: Route) => +d.dstAirport!.lat}
               arcEndLng={(d: Route) => +d.dstAirport!.lng}
               arcColor={() => [
-                `rgba(255, 255, 255, ${OPACITY})`,
-                `rgba(255, 255, 255, ${OPACITY})`,
+                `rgba(255, 255, 255, ${ROUTE_ARC_OPACITY})`,
+                `rgba(255, 255, 255, ${ROUTE_ARC_OPACITY})`,
               ]}
               arcsTransitionDuration={0}
               
@@ -374,27 +376,26 @@ export default function WorldMap(): React.JSX.Element {
                 // Cluster labels
                 if (d.type?.startsWith('cluster')) {
                   const locations = (d.names || []).join(', ');
-                  const moreText = d.clusterSize && d.names && d.clusterSize > d.names.length ? ` +${d.clusterSize - d.names.length} more` : '';
+                  const moreText = d.clusterSize && d.names && d.clusterSize > d.names.length ? ` ${t('world.tooltipMore', { count: d.clusterSize - d.names.length })}` : '';
                   let typeText = '';
                   
                   if (d.type === 'cluster-both') {
-                    typeText = `${d.airportCount} Airport(s) & ${d.trainCount} Train/Car Stop(s)`;
+                    typeText = t('world.tooltipAirportsAndTrains', { airportCount: d.airportCount, trainCount: d.trainCount });
                   } else if (d.type === 'cluster-airport') {
-                    typeText = `${d.airportCount} Airport(s)`;
+                    typeText = t('world.tooltipAirports', { count: d.airportCount });
                   } else if (d.type === 'cluster-train') {
-                    typeText = `${d.trainCount} Train/Car Stop(s)`;
+                    typeText = t('world.tooltipTrainStops', { count: d.trainCount });
                   }
-                  
-                  // Show routes info
-                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0 
-                    ? `<div class="text-xs mt-1">✈️ ${d.flightRoutes.length} flight destination(s)</div>`
+
+                  const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
+                    ? `<div class="text-xs mt-1">✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<div class="text-xs mt-1">🚂 ${d.trainRoutes.length} train/car route(s)</div>`
+                    ? `<div class="text-xs mt-1">🚂 ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</div>`
                     : '';
-                  
+
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
-                    <div class="font-bold text-yellow-300">📍 ${d.clusterSize} Locations</div>
+                    <div class="font-bold text-yellow-300">📍 ${t('world.tooltipLocations', { count: d.clusterSize })}</div>
                     <div class="text-sm mt-1">${typeText}</div>
                     <div class="text-xs mt-1 text-gray-300">${locations}${moreText}</div>
                     ${flightInfo}${trainInfo}
@@ -403,23 +404,23 @@ export default function WorldMap(): React.JSX.Element {
                 
                 // Regular point labels
                 if (d.type === 'overlap') {
-                  const trainInfo = d.trainRoutes && d.trainRoutes.length > 0 
-                    ? `<br/><small>🚂 ${d.trainRoutes.length} train route(s)</small>` 
+                  const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
+                    ? `<br/><small>🚂 ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</small>`
                     : '';
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
-                    ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
+                    ? `<br/><small>✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
                     : '';
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>Airport & Train Station${flightInfo}${trainInfo}</div>`;
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>${t('world.tooltipAirportAndTrain')}${flightInfo}${trainInfo}</div>`;
                 }
                 if (d.type === 'train') {
-                  const routeInfo = d.routes && d.routes.length > 0 
-                    ? `<br/><small>🚂 ${d.routes.length} route(s): ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
+                  const routeInfo = d.routes && d.routes.length > 0
+                    ? `<br/><small>🚂 ${t('world.tooltipRoutes', { count: d.routes.length })}: ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
                     : '';
-                  return `<div class="text-white bg-black/80 px-2 py-1 rounded"><strong>${d.name}</strong><br/>Train Station${routeInfo}</div>`;
+                  return `<div class="text-white bg-black/80 px-2 py-1 rounded"><strong>${d.name}</strong><br/>${t('world.tooltipTrainStation')}${routeInfo}</div>`;
                 }
                 // Airport
                 const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
-                  ? `<br/><small>✈️ ${d.flightRoutes.length} flight destination(s)</small>`
+                  ? `<br/><small>✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
                   : '';
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}${flightInfo}</div>`;
               }}
@@ -520,7 +521,7 @@ export default function WorldMap(): React.JSX.Element {
           {/* Button Group */}
           <div className="relative inline-flex rounded-full border border-zinc-200 dark:border-zinc-700 p-[3px]">
             <button
-              aria-label="No daylight"
+              aria-label={t('world.timeModeFlat')}
               type="button"
               onClick={() => handleModeChange('flat')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
@@ -529,7 +530,7 @@ export default function WorldMap(): React.JSX.Element {
               <Icon icon="mdi:weather-sunny-off" className="text-[18px]" />
             </button>
             <button
-              aria-label="Pause time"
+              aria-label={t('world.timeModePaused')}
               type="button"
               onClick={() => handleModeChange('paused')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
@@ -538,7 +539,7 @@ export default function WorldMap(): React.JSX.Element {
               <Icon icon="mdi:pause" className="text-[18px]" />
             </button>
             <button
-              aria-label="Real time"
+              aria-label={t('world.timeModeRealtime')}
               type="button"
               onClick={() => handleModeChange('realtime')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
@@ -547,7 +548,7 @@ export default function WorldMap(): React.JSX.Element {
               <Icon icon="mdi:clock-outline" className="text-[18px]" />
             </button>
             <button
-              aria-label="Animated time"
+              aria-label={t('world.timeModeAnimated')}
               type="button"
               onClick={() => handleModeChange('animated')}
               className="relative z-10 inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border-0 transition-colors"
@@ -577,27 +578,27 @@ export default function WorldMap(): React.JSX.Element {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span>Airports</span>
+            <span>{t('world.legendAirports')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.trainRoute }}></div>
-            <span>Train Stations</span>
+            <span>{t('world.legendTrainStations')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.overlap }}></div>
-            <span>Both (Airport & Train/Car)</span>
+            <span>{t('world.legendBoth')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.clusterBoth }}></div>
-            <span>Clustered Locations</span>
+            <span>{t('world.legendClustered')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-0.5 bg-white"></div>
-            <span>Flight Routes</span>
+            <span>{t('world.legendFlightRoutes')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-0.5" style={{ backgroundColor: GLOBE_COLORS.trainRoute }}></div>
-            <span>Train/Car Routes</span>
+            <span>{t('world.legendTrainRoutes')}</span>
           </div>
         </div>
       </motion.div>
@@ -618,13 +619,13 @@ export default function WorldMap(): React.JSX.Element {
         }}
       >
         <div className="flex flex-col gap-2">
-          <div>Altitude: {altitude.toFixed(2)}</div>
+          <div>{t('world.altitudeLabel', { value: altitude.toFixed(2) })}</div>
           <div className="text-xs text-gray-400">
-            {altitude < 1.5 ? 'Individual points' : 
-             altitude < 2 ? 'Light clustering (50km)' :
-             altitude < 2.5 ? 'Medium clustering (100km)' :
-             altitude < 3 ? 'Heavy clustering (200km)' :
-             'Max clustering (300km+)'}
+            {altitude < 1.5 ? t('world.clusterNone') :
+             altitude < 2 ? t('world.clusterLight') :
+             altitude < 2.5 ? t('world.clusterMedium') :
+             altitude < 3 ? t('world.clusterHeavy') :
+             t('world.clusterMax')}
           </div>
           
           {/* Route Toggle Controls */}
@@ -641,22 +642,22 @@ export default function WorldMap(): React.JSX.Element {
                 icon={showFlightRoutes ? "mdi:airplane" : "mdi:airplane-off"} 
                 className="text-base" 
               />
-              <span className="text-xs">Flight Routes</span>
+              <span className="text-xs">{t('world.toggleFlightRoutes')}</span>
             </button>
-            
+
             <button
               onClick={() => setShowTrainRoutes(!showTrainRoutes)}
               className="flex items-center gap-2 px-2 py-1 rounded transition-colors hover:bg-white/10"
-              style={{ 
+              style={{
                 backgroundColor: showTrainRoutes ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                 opacity: showTrainRoutes ? 1 : 0.5
               }}
             >
-              <Icon 
-                icon={showTrainRoutes ? "mdi:train" : "mdi:train-off"} 
-                className="text-base" 
+              <Icon
+                icon={showTrainRoutes ? "mdi:train" : "mdi:train-off"}
+                className="text-base"
               />
-              <span className="text-xs">Train/Car Routes</span>
+              <span className="text-xs">{t('world.toggleTrainRoutes')}</span>
             </button>
           </div>
         </div>

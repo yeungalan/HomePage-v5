@@ -1,6 +1,7 @@
 import { Handle, Position } from '@xyflow/react';
 import { Icon } from '@iconify/react';
-import { HEALTH_STATUS_COLORS } from '@/constants/colors';
+import { HEALTH_STATUS_COLORS, FLOWGRAPH_DEFAULTS } from '@/constants/colors';
+import { NODE_SIZES } from '@/constants/spacing';
 
 interface CustomNodeData {
   label?: string;
@@ -37,7 +38,7 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         borderRadius: '12px',
         padding: '16px 20px',
         minWidth: '180px',
-        boxShadow: isSelected ? undefined : '0 2px 8px rgba(0,0,0,0.08)',
+        boxShadow: isSelected ? undefined : '0 2px 8px rgba(0,0,0,0.08)', // subtle lift
         position: 'relative',
         zIndex: 10,
       }}
@@ -74,10 +75,10 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
           type="target"
           position={Position.Left}
           style={{
-            background: '#6b7280',
-            width: '8px',
-            height: '8px',
-            border: '2px solid white',
+            background: FLOWGRAPH_DEFAULTS.handleColor,
+            width: `${NODE_SIZES.HANDLE_SIZE}px`,
+            height: `${NODE_SIZES.HANDLE_SIZE}px`,
+            border: `${NODE_SIZES.HANDLE_BORDER}px solid white`,
             left: '-5px',
           }}
         />
@@ -87,7 +88,7 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
         {data.icon && (
           <div
             style={{
-              background: data.iconBg || '#f3f4f6',
+              background: data.iconBg || FLOWGRAPH_DEFAULTS.iconBg,
               borderRadius: '8px',
               padding: '8px',
               display: 'flex',
@@ -97,7 +98,7 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
               minHeight: '40px',
             }}
           >
-            <Icon icon={data.icon} width="24" height="24" style={{ color: data.iconColor || '#6b7280' }} />
+            <Icon icon={data.icon} width={NODE_SIZES.ICON_DIMENSION} height={NODE_SIZES.ICON_DIMENSION} style={{ color: data.iconColor || FLOWGRAPH_DEFAULTS.iconColor }} />
           </div>
         )}
 
@@ -106,7 +107,7 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
             <div
               style={{
                 fontSize: '11px',
-                color: '#6b7280',
+                color: FLOWGRAPH_DEFAULTS.iconColor,
                 marginBottom: '4px',
                 fontWeight: 500,
               }}
@@ -142,10 +143,10 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
           type="source"
           position={Position.Right}
           style={{
-            background: '#6b7280',
-            width: '8px',
-            height: '8px',
-            border: '2px solid white',
+            background: FLOWGRAPH_DEFAULTS.handleColor,
+            width: `${NODE_SIZES.HANDLE_SIZE}px`,
+            height: `${NODE_SIZES.HANDLE_SIZE}px`,
+            border: `${NODE_SIZES.HANDLE_BORDER}px solid white`,
             right: '-5px',
           }}
         />

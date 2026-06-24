@@ -11,322 +11,15 @@ import {
   ShaderMaterial,
   Vector2,
 } from "three";
-import * as solar from "solar-calculator";
 import { motion } from "motion/react";
 import { Icon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
+import { GLOBE_COLORS } from "@/constants/colors";
+import { CLUSTER_THRESHOLDS, ALTITUDE_LEVELS, GLOBE_CONFIG, ROUTE_ARC_OPACITY, GLOBE_ANIMATION_VELOCITY, OVERLAP_THRESHOLD_DEGREES } from "@/constants/globe";
+import { dayNightShader } from "@/lib/worldShader";
+import { airportParse, sunPosAt, haversineDistance, clusterPoints } from "@/lib/worldUtils";
+import type { Airport, Route, TrainStation, PointData, Dimensions, TimeMode } from "@/types/world";
 
-// Type definitions
-interface Airport {
-  airportId: string;
-  name: string;
-  city: string;
-  country: string;
-  iata: string;
-  icao: string;
-  lat: string;
-  lng: string;
-  alt: string;
-  timezone: string;
-  dst: string;
-  tz: string;
-  type: string;
-  source: string;
-}
-
-interface Route {
-  srcIata: string;
-  dstIata: string;
-  srcAirport?: Airport;
-  dstAirport?: Airport;
-}
-
-interface TrainStation {
-  lat: number;
-  lng: number;
-  name: string;
-  routes: string[];
-  type?: string;
-}
-
-export interface TrainPath {
-  properties: {
-    name: string;
-    [key: string]: unknown;
-  };
-  coords: Array<{lat: number; lng: number; city?: string} | [number, number]>;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PointData = Record<string, any> & {
-  type: string;
-  lat?: string | number;
-  lng?: string | number;
-  name?: string;
-  city?: string;
-  iata?: string;
-  routes?: string[];
-  flightRoutes?: string[];
-  trainRoutes?: string[];
-  clusterSize?: number;
-  airportCount?: number;
-  trainCount?: number;
-  names?: string[];
-  originalPoints?: PointData[];
-}
-
-interface Dimensions {
-  width: number;
-  height: number;
-}
-
-// Configuration constants
-const OPACITY = 1;
-const VELOCITY = 1; // minutes per frame
-
-// Clustering thresholds (in kilometers)
-const CLUSTER_THRESHOLDS = {
-  MIN_ALTITUDE_FOR_CLUSTERING: 1.5,
-  LIGHT_CLUSTERING_KM: 50,
-  MEDIUM_CLUSTERING_KM: 100,
-  HEAVY_CLUSTERING_KM: 200,
-  MAX_CLUSTERING_KM: 300,
-} as const;
-
-// Altitude levels for clustering
-const ALTITUDE_LEVELS = {
-  LIGHT: 2,
-  MEDIUM: 2.5,
-  HEAVY: 3,
-} as const;
-
-// Point detection threshold
-const OVERLAP_THRESHOLD_DEGREES = 0.01; // ~1km
-
-// Globe configuration
-const GLOBE_CONFIG = {
-  MIN_ALTITUDE: 0.5,
-  MAX_ALTITUDE: 4,
-  DEFAULT_ALTITUDE: 2.5,
-  INITIAL_LATITUDE: 39.6,
-  INITIAL_LONGITUDE: -98.5,
-  INITIAL_ANIMATION_DURATION: 6000,
-} as const;
-
-const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]: string[]): Airport => ({
-  airportId,
-  name,
-  city,
-  country,
-  iata,
-  icao,
-  lat,
-  lng,
-  alt,
-  timezone,
-  dst,
-  tz,
-  type,
-  source,
-});
-
-
-// --- SHADER ---
-const dayNightShader = {
-  vertexShader: `
-    varying vec3 vWorldPosition;
-    varying vec2 vUv;
-    void main() {
-      vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    #define PI 3.141592653589793
-    uniform sampler2D dayTexture;
-    uniform sampler2D nightTexture;
-    uniform vec2 sunPosition;
-    uniform float forceDaylight;
-    
-    varying vec3 vWorldPosition;
-    varying vec2 vUv;
-
-    float toRad(in float a) {
-      return a * PI / 180.0;
-    }
-
-    vec3 Polar2Cartesian(in vec2 c) { // [lng, lat]
-      float theta = toRad(90.0 - c.x);
-      float phi = toRad(90.0 - c.y);
-      return vec3(
-        sin(phi) * cos(theta),
-        cos(phi),
-        sin(phi) * sin(theta)
-      );
-    }
-
-    void main() {
-      vec4 dayColor = texture2D(dayTexture, vUv);
-      if (forceDaylight > 0.5) {
-        gl_FragColor = dayColor;
-        return;
-      }
-      vec3 worldNormal = normalize(vWorldPosition);
-      vec3 sunDirection = Polar2Cartesian(sunPosition);
-      float intensity = dot(worldNormal, normalize(sunDirection));
-      vec4 nightColor = texture2D(nightTexture, vUv);
-      float blendFactor = smoothstep(-0.1, 0.1, intensity);
-      gl_FragColor = mix(nightColor, dayColor, blendFactor);
-    }
-  `,
-};
-
-// --- UTIL: Get sun position for a given timestamp ---
-const sunPosAt = (dt: number | Date): [number, number] => {
-  const day = new Date(+dt).setUTCHours(0, 0, 0, 0);
-  const t = solar.century(dt);
-  const longitude = ((day - +dt) / 864e5) * 360 - 180;
-  return [longitude - solar.equationOfTime(t) / 4, solar.declination(t)];
-};
-
-// --- CLUSTERING UTILITIES ---
-/**
- * Calculate great circle distance between two lat/lng points in kilometers
- */
-const haversineDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
-  const R = 6371; // Earth radius in km
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a = 
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) * Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
-
-/**
- * Cluster points based on altitude (zoom level)
- * Returns merged points when zoomed out
- */
-const clusterPoints = (points: PointData[], altitude: number): PointData[] => {
-  // Adjust clustering threshold based on altitude
-  // Higher altitude = more zoomed out = larger clustering distance
-  let clusterThresholdKm = 0;
-
-  if (altitude < CLUSTER_THRESHOLDS.MIN_ALTITUDE_FOR_CLUSTERING) {
-    // Very zoomed in - no clustering
-    return points;
-  } else if (altitude < ALTITUDE_LEVELS.LIGHT) {
-    clusterThresholdKm = CLUSTER_THRESHOLDS.LIGHT_CLUSTERING_KM;
-  } else if (altitude < ALTITUDE_LEVELS.MEDIUM) {
-    clusterThresholdKm = CLUSTER_THRESHOLDS.MEDIUM_CLUSTERING_KM;
-  } else if (altitude < ALTITUDE_LEVELS.HEAVY) {
-    clusterThresholdKm = CLUSTER_THRESHOLDS.HEAVY_CLUSTERING_KM;
-  } else {
-    clusterThresholdKm = CLUSTER_THRESHOLDS.MAX_CLUSTERING_KM;
-  }
-
-  const clustered: PointData[] = [];
-  const used = new Set<number>();
-
-  points.forEach((point, i) => {
-    if (used.has(i)) return;
-
-    const cluster = [point];
-    used.add(i);
-
-    // Find all nearby points
-    for (let j = i + 1; j < points.length; j++) {
-      if (used.has(j)) continue;
-
-      const other = points[j];
-      const distance = haversineDistance(
-        parseFloat(String(point.lat)), 
-        parseFloat(String(point.lng)),
-        parseFloat(String(other.lat)), 
-        parseFloat(String(other.lng))
-      );
-
-      if (distance <= clusterThresholdKm) {
-        cluster.push(other);
-        used.add(j);
-      }
-    }
-
-    if (cluster.length === 1) {
-      // No clustering needed
-      clustered.push(point);
-    } else {
-      // Merge multiple points
-      const avgLat = cluster.reduce((sum, p) => sum + parseFloat(String(p.lat)), 0) / cluster.length;
-      const avgLng = cluster.reduce((sum, p) => sum + parseFloat(String(p.lng)), 0) / cluster.length;
-
-      // Separate by type
-      const airports = cluster.filter(p => p.type === 'airport' || p.type === 'overlap');
-      const trainStations = cluster.filter(p => p.type === 'train' || p.type === 'overlap');
-
-      // Count unique items
-      const airportCount = airports.length;
-      const trainCount = trainStations.length;
-      const hasAirports = airportCount > 0;
-      const hasTrains = trainCount > 0;
-
-      // Determine type
-      let mergedType = 'cluster';
-      if (hasAirports && hasTrains) {
-        mergedType = 'cluster-both';
-      } else if (hasAirports) {
-        mergedType = 'cluster-airport';
-      } else if (hasTrains) {
-        mergedType = 'cluster-train';
-      }
-
-      // Gather names
-      const names = cluster
-        .map(p => p.name || p.city)
-        .filter((v): v is string => !!v)
-        .filter((v, i, a) => a.indexOf(v) === i) // unique
-        .slice(0, 5); // limit to first 5
-
-      // Aggregate flight routes from all airports in cluster
-      const allFlightRoutes = new Set<string>();
-      airports.forEach(airport => {
-        if (airport.flightRoutes) {
-          airport.flightRoutes.forEach(route => allFlightRoutes.add(route));
-        }
-      });
-
-      // Aggregate train routes from all train stations in cluster
-      const allTrainRoutes = new Set<string>();
-      trainStations.forEach(station => {
-        if (station.routes) {
-          station.routes.forEach(route => allTrainRoutes.add(route));
-        }
-      });
-
-      clustered.push({
-        lat: avgLat.toString(),
-        lng: avgLng.toString(),
-        type: mergedType,
-        clusterSize: cluster.length,
-        airportCount,
-        trainCount,
-        names,
-        originalPoints: cluster,
-        flightRoutes: Array.from(allFlightRoutes),
-        trainRoutes: Array.from(allTrainRoutes),
-      });
-    }
-  });
-
-  return clustered;
-};
-
-type TimeMode = 'paused' | 'realtime' | 'animated' | 'stopped' | 'flat';
-
-// Type for react-globe.gl instance
 interface GlobeInstance {
   pointOfView: (pov?: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void | { lat: number; lng: number; altitude: number };
   controls: () => { enableRotate: boolean };
@@ -731,15 +424,12 @@ export default function WorldMap(): React.JSX.Element {
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}${flightInfo}</div>`;
               }}
               pointColor={(d: PointData) => {
-                // Cluster colors
-                if (d.type === 'cluster-both') return '#FFD700'; // Gold
-                if (d.type === 'cluster-airport') return '#FFA500'; // Orange
-                if (d.type === 'cluster-train') return '#00ff88'; // Green
-                
-                // Regular colors
-                if (d.type === 'overlap') return '#8B4513'; // Brown for overlap
-                if (d.type === 'train') return '#00ff88'; // Green for train
-                return 'orange'; // Orange for airport
+                if (d.type === 'cluster-both') return GLOBE_COLORS.clusterBoth;
+                if (d.type === 'cluster-airport') return GLOBE_COLORS.clusterAirport;
+                if (d.type === 'cluster-train') return GLOBE_COLORS.clusterTrain;
+                if (d.type === 'overlap') return GLOBE_COLORS.overlap;
+                if (d.type === 'train') return GLOBE_COLORS.trainRoute;
+                return GLOBE_COLORS.clusterAirport;
               }}
               pointAltitude={0.001}
               pointRadius={(d: PointData) => {
@@ -760,7 +450,7 @@ export default function WorldMap(): React.JSX.Element {
               pathPoints="coords"
               pathPointLat={(p: [number, number] | {lat: number; lng: number}) => Array.isArray(p) ? p[0] : p.lat}
               pathPointLng={(p: [number, number] | {lat: number; lng: number}) => Array.isArray(p) ? p[1] : p.lng}
-              pathColor={() => '#00ff88'}
+              pathColor={() => GLOBE_COLORS.trainRoute}
               pathLabel={(path: TrainPath) => path.properties.name}
               pathStroke={2}
               pathDashLength={1}
@@ -890,15 +580,15 @@ export default function WorldMap(): React.JSX.Element {
             <span>Airports</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#00ff88' }}></div>
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.trainRoute }}></div>
             <span>Train Stations</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#8B4513' }}></div>
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.overlap }}></div>
             <span>Both (Airport & Train/Car)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: GLOBE_COLORS.clusterBoth }}></div>
             <span>Clustered Locations</span>
           </div>
           <div className="flex items-center gap-2">
@@ -906,7 +596,7 @@ export default function WorldMap(): React.JSX.Element {
             <span>Flight Routes</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-0.5" style={{ backgroundColor: '#00ff88' }}></div>
+            <div className="w-8 h-0.5" style={{ backgroundColor: GLOBE_COLORS.trainRoute }}></div>
             <span>Train/Car Routes</span>
           </div>
         </div>

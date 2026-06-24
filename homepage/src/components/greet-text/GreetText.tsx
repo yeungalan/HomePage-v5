@@ -6,12 +6,7 @@ import { LotteryText } from "@/components/LotteryText";
 import { useTranslation } from "@/i18n";
 import { motion } from 'motion/react'
 import React, { createElement, useState, useEffect } from 'react'
-
-const softBouncePreset = {
-  type: "spring" as const,
-  stiffness: 100,
-  damping: 15,
-}
+import { softBouncePreset } from '@/constants/motion'
 
 const htmlElements = [
   <span key="traveller" className="font-bold text-purple-600 dark:text-cyan-400">Traveller</span>,

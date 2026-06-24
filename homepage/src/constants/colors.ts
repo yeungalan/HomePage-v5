@@ -48,6 +48,7 @@ export const TIER_COLORS = {
 
 export const UI_COLORS = {
   border: '#e5e7eb',
+  nearWhite: '#fafafa',
   gray: {
     50: '#f9fafb',
     100: '#f3f4f6',
@@ -69,4 +70,36 @@ export const UI_COLORS = {
     400: '#a78bfa',
     600: '#7c3aed',
   },
+} as const;
+
+/** Dark-mode header / Apple-style surface color */
+export const HEADER_COLORS = {
+  darkSurface: '#1d1d1f',
+  /** Radial spotlight gradient in dark mode */
+  spotlightDark: 'rgba(59, 130, 246, 0.15)',
+  /** Radial spotlight gradient in light mode */
+  spotlightLight: 'rgba(59, 130, 246, 0.12)',
+} as const;
+
+/** Globe / world-map point and route colors */
+export const GLOBE_COLORS = {
+  trainRoute: '#00ff88',
+  clusterBoth: '#FFD700',
+  clusterAirport: '#FFA500',
+  clusterTrain: '#00ff88',
+  overlap: '#8B4513',
+} as const;
+
+/** Reading-progress ring colors */
+export const READING_PROGRESS_COLORS = {
+  track: '#E5E7EB',
+  fill: '#155DFC',
+} as const;
+
+/** Default fallback colors for flowgraph nodes/edges */
+export const FLOWGRAPH_DEFAULTS = {
+  iconBg: '#f3f4f6',
+  iconColor: '#6b7280',
+  handleColor: '#6b7280',
+  edgeStroke: '#94a3b8',
 } as const;

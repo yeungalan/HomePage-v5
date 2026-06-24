@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { READING_PROGRESS_COLORS } from '@/constants/colors'
 
 export const ReadingProgress: React.FC = () => {
   const [progress, setProgress] = useState(0)
@@ -49,7 +50,7 @@ export const ReadingProgress: React.FC = () => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#E5E7EB"
+            stroke={READING_PROGRESS_COLORS.track}
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -58,7 +59,7 @@ export const ReadingProgress: React.FC = () => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#155DFC"
+            stroke={READING_PROGRESS_COLORS.fill}
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={circumference}

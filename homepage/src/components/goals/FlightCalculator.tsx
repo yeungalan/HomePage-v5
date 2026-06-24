@@ -1,19 +1,17 @@
 'use client';
 
+import type { ChangeEvent } from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Icon } from '@iconify/react';
+import { getAirportByIata, type AirportInfo as Airport } from '@/data/airports';
+import { haversineDistance } from '@/lib/worldUtils';
+import { useTranslation } from '@/i18n';
 
-export interface Airport {
-  name: string;
-  city: string;
-  country: string;
-  iata: string;
-  lat: number;
-  lon: number;
-}
+export type { Airport };
 
 export const FlightCalculator: React.FC = () => {
+  const t = useTranslation();
   const [srcCode, setSrcCode] = useState('');
   const [dstCode, setDstCode] = useState('');
   const [srcAirport, setSrcAirport] = useState<Airport | null>(null);
@@ -24,61 +22,18 @@ export const FlightCalculator: React.FC = () => {
   const [isFlying, setIsFlying] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  // Load saved airports from localStorage
   useEffect(() => {
     const savedSrc = localStorage.getItem('srcAirport');
     const savedDst = localStorage.getItem('dstAirport');
-    if (savedSrc) handleSrcChange({ target: { value: savedSrc } });
-    if (savedDst) handleDstChange({ target: { value: savedDst } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (savedSrc) handleOriginChange({ target: { value: savedSrc } } as ChangeEvent<HTMLInputElement>);
+    if (savedDst) handleDestinationChange({ target: { value: savedDst } } as ChangeEvent<HTMLInputElement>);
   }, []);
 
-  // Haversine formula to calculate distance
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
-
-  // Fetch airport data
-  const fetchAirportData = async (code: string): Promise<Airport | null> => {
-    try {
-      const response = await fetch('/airports.dat');
-      const text = await response.text();
-      const lines = text.split('\n');
-      for (const line of lines) {
-        const parts = line.split(',');
-        if (parts.length >= 8) {
-          const iataCode = parts[4]?.replace(/"/g, '');
-          if (iataCode === code.toUpperCase()) {
-            return {
-              name: parts[1]?.replace(/"/g, ''),
-              city: parts[2]?.replace(/"/g, ''),
-              country: parts[3]?.replace(/"/g, ''),
-              iata: iataCode,
-              lat: parseFloat(parts[6]),
-              lon: parseFloat(parts[7]),
-            };
-          }
-        }
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching airport data:', error);
-      return null;
-    }
-  };
-
-  const handleSrcChange = async (e: { target: { value: string } }) => {
+  const handleOriginChange = (e: ChangeEvent<HTMLInputElement>) => {
     const code = e.target.value.toUpperCase();
     setSrcCode(code);
     if (code.length === 3) {
-      const airport = await fetchAirportData(code);
+      const airport = getAirportByIata(code);
       setSrcAirport(airport);
       if (airport) localStorage.setItem('srcAirport', code);
     } else {
@@ -86,11 +41,11 @@ export const FlightCalculator: React.FC = () => {
     }
   };
 
-  const handleDstChange = async (e: { target: { value: string } }) => {
+  const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
     const code = e.target.value.toUpperCase();
     setDstCode(code);
     if (code.length === 3) {
-      const airport = await fetchAirportData(code);
+      const airport = getAirportByIata(code);
       setDstAirport(airport);
       if (airport) localStorage.setItem('dstAirport', code);
     } else {
@@ -101,7 +56,7 @@ export const FlightCalculator: React.FC = () => {
   // Calculate distance and duration
   useEffect(() => {
     if (srcAirport && dstAirport) {
-      const dist = calculateDistance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon);
+      const dist = haversineDistance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon);
       setDistance(dist);
       setDuration(dist / 800 + 0.5); // 800 km/h + 0.5 hr buffer
       setProgress(0);
@@ -168,10 +123,10 @@ export const FlightCalculator: React.FC = () => {
     >
       <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
         <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
-        <span>Flight Distance</span>
+        <span>{t('flightCalculator.title')}</span>
       </h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        This widget calculates how far you can travel while staying on this page.
+        {t('flightCalculator.subtitle')}
       </p>
       <br />
 
@@ -179,12 +134,12 @@ export const FlightCalculator: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            From (IATA Code)
+            {t('flightCalculator.from')}
           </label>
           <input
             type="text"
             value={srcCode}
-            onChange={handleSrcChange}
+            onChange={handleOriginChange}
             maxLength={3}
             placeholder="e.g., JFK"
             className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"
@@ -197,12 +152,12 @@ export const FlightCalculator: React.FC = () => {
         </div>
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            To (IATA Code)
+            {t('flightCalculator.to')}
           </label>
           <input
             type="text"
             value={dstCode}
-            onChange={handleDstChange}
+            onChange={handleDestinationChange}
             maxLength={3}
             placeholder="e.g., LAX"
             className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-[#fafafa] dark:bg-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 text-base sm:text-lg font-mono uppercase"
@@ -221,15 +176,15 @@ export const FlightCalculator: React.FC = () => {
           <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Distance</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('flightCalculator.distance')}</p>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  {distance.toFixed(0)} km
+                  {t('flightCalculator.distanceValue', { value: distance.toFixed(0) })}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('flightCalculator.duration')}</p>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  {duration.toFixed(1)} hrs
+                  {t('flightCalculator.durationValue', { value: duration.toFixed(1) })}
                 </p>
               </div>
             </div>
@@ -238,7 +193,7 @@ export const FlightCalculator: React.FC = () => {
           {/* Progress Bar */}
           <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Flight Progress</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('flightCalculator.flightProgress')}</p>
               <p className="text-xs font-mono text-gray-600 dark:text-gray-300">
                 {formatElapsedTime(elapsedTime)} / {duration.toFixed(1)}h
               </p>
@@ -273,7 +228,7 @@ export const FlightCalculator: React.FC = () => {
               className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-300 dark:border-gray-600"
             >
               <p className="text-sm sm:text-base text-gray-900 dark:text-gray-100 text-center font-medium">
-                ✈️ Flight completed! You&apos;ve arrived at {dstAirport.city}!
+                {t('flightCalculator.completed', { city: dstAirport.city })}
               </p>
             </motion.div>
           )}
@@ -287,7 +242,7 @@ export const FlightCalculator: React.FC = () => {
             className="text-4xl sm:text-5xl text-gray-300 dark:text-gray-600 mx-auto mb-3"
           />
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
-            Enter both airport codes to calculate flight distance
+            {t('flightCalculator.placeholder')}
           </p>
         </div>
       ) : null}

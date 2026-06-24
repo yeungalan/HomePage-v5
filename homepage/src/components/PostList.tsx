@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { RelativeTime } from '@/components/RelativeTime';
 import { useTranslation } from '@/i18n';
 import { NormalContainer } from './NormalContainer';
+import { staggerListVariants } from '@/constants/motion';
 
 interface Post {
   id: string;
@@ -32,10 +33,6 @@ const getCombinedTitle = (post: Post): string => {
   return titles.join(' / ');
 };
 
-const listVariants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
-};
 
 export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
   const t = useTranslation();
@@ -48,7 +45,7 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
       </header>
       <motion.ul
         className="shiro-timeline mt-4"
-        variants={listVariants}
+        variants={staggerListVariants}
         initial="hidden"
         animate="show"
       >

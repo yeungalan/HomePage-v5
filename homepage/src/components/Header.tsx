@@ -8,55 +8,15 @@ import { MobileNav } from './MobileNav';
 import { clsxm } from '@/lib/helper';
 import { useTranslation } from '@/i18n';
 import { HEADER_MENU_CONFIG, type MenuItem, type SubMenuItem } from '@/data/navigation';
-import { ANIMATION_DELAYS, ANIMATION_DURATIONS } from '@/constants/timing';
 import { Z_INDEX } from '@/constants/spacing';
+import { HEADER_COLORS } from '@/constants/colors';
+import { popoverVariants, staggerItemVariants } from '@/constants/motion';
 
 interface HeaderProps {
   forceDarkMode?: boolean;
 }
 
 // Animation variants
-const popoverVariants = {
-  initial: { 
-    opacity: 0, 
-    y: -10,
-    scale: 0.95
-  },
-  animate: { 
-    opacity: 1, 
-    y: 0,
-    scale: 1,
-    transition: {
-      type: 'spring' as const,
-      stiffness: 500,
-      damping: 30,
-      mass: 0.8
-    }
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    scale: 0.95,
-    transition: {
-      type: 'tween' as const,
-      duration: ANIMATION_DURATIONS.QUICK
-    }
-  }
-};
-
-const itemVariants = {
-  initial: { opacity: 0, x: -10 },
-  animate: (index: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: index * ANIMATION_DELAYS.STAGGER_SMALL,
-      type: 'spring' as const,
-      stiffness: 400,
-      damping: 25
-    }
-  })
-};
 
 // Components
 const MenuPopover = ({ 
@@ -94,7 +54,7 @@ const MenuPopover = ({
               'rounded-xl backdrop-blur-md',
               'border shadow-lg focus-visible:ring-0 outline-none',
               forceDarkMode
-                ? 'bg-[#1d1d1f]/90 border-zinc-100/10 shadow-zinc-950/50'
+                ? `bg-[${HEADER_COLORS.darkSurface}]/90 border-zinc-100/10 shadow-zinc-950/50`
                 : 'bg-white/80 dark:bg-neutral-900/80 border-zinc-900/5 shadow-zinc-800/5 dark:border-zinc-100/10'
             )}
             style={{ zIndex: Z_INDEX.HEADER }}
@@ -103,7 +63,7 @@ const MenuPopover = ({
               <motion.div
                 key={index}
                 custom={index}
-                variants={itemVariants}
+                variants={staggerItemVariants}
                 initial="initial"
                 animate="animate"
               >
@@ -227,7 +187,7 @@ const DesktopNav = ({
         'relative rounded-full transition-all duration-200',
         'backdrop-blur-md group pointer-events-auto',
         forceDarkMode
-          ? 'bg-[#1d1d1f]/90'
+          ? `bg-[${HEADER_COLORS.darkSurface}]/90`
           : 'bg-gradient-to-b from-zinc-50/70 to-white/90 dark:from-zinc-900/70 dark:to-zinc-800/90',
         hasShadow ? '' : 'ring-1 shadow-lg',
         forceDarkMode
@@ -239,9 +199,9 @@ const DesktopNav = ({
         className="spotlight pointer-events-none absolute -inset-px rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
           background: `radial-gradient(200px circle at ${mousePos.x}px ${mousePos.y}px, ${
-            forceDarkMode 
-              ? 'rgba(59, 130, 246, 0.15)' 
-              : 'rgba(59, 130, 246, 0.12)'
+            forceDarkMode
+              ? HEADER_COLORS.spotlightDark
+              : HEADER_COLORS.spotlightLight
           } 0%, transparent 65%)`,
         }}
       />
@@ -307,7 +267,7 @@ export default function Header({ forceDarkMode: propForceDarkMode = false }: Hea
       'fixed top-0 left-0 right-0 h-16 transition-all duration-200',
       'backdrop-blur-md',
       forceDarkMode
-        ? 'bg-[#1d1d1f]/60'
+        ? `bg-[${HEADER_COLORS.darkSurface}]/60`
         : 'bg-white/60 dark:bg-zinc-900/60',
       hasShadow && 'shadow-sm border-b',
       forceDarkMode

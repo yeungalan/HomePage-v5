@@ -1,277 +1,74 @@
 "use client"
 
+import type { FC } from 'react';
 import { useState } from 'react';
 import { BottomToUpTransitionView } from "@/components/BottomToUpTransitionView";
 import { motion } from 'motion/react'
 import ThreeTierInfrastructure from "@/components/FlowGraph";
-import type { FlowGraphConfig } from "@/components/FlowGraph";
+import type { Service } from "@/components/FlowGraph";
 import { RealFooter } from "@/components/FooterLinks";
 import { Icon } from '@iconify/react';
 import { useTranslation } from "@/i18n";
+import { INFRASTRUCTURE_CONFIG } from "@/data/infrastructure";
 
-// Type definitions for infrastructure configuration
-interface ServiceNode {
-  serviceId: string;
-  serviceName: string;
-  serviceDescription?: string;
-  tier?: string;
-  icon?: string;
-  iconBg?: string;
-  iconColor?: string;
-  status?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
-  serviceType?: string;
-  serviceLabel?: string;
-}
-
-// Example 3: Custom tiers/layers definition
-const infrastructureConfig: FlowGraphConfig = {
-  tiers: ['Client Plane', 'Cloud Plane', 'Data Plane', 'Control Plane s01', 'Control Plane s02', 'Control Plane s03'],
-  services: [
-    // Client Layer
-    {
-      serviceId: "user",
-      serviceName: "User",
-      serviceDescription: "End User",
-      tier: "Client Plane",
-      icon: "mdi:account",
-      iconBg: "#e0e7ff",
-      iconColor: "#4f46e5",
-      status: "healthy"
-    },
-
-    // Cloud Services Layer
-    {
-      serviceId: "cloudflare",
-      serviceName: "CloudFlare",
-      serviceDescription: "CDN/DNS",
-      tier: "Cloud Plane",
-      icon: "mdi:cloud-outline",
-      iconBg: "#fff7ed",
-      iconColor: "#f97316",
-      status: "unknown"
-    },
-    {
-      serviceId: "icloud",
-      serviceName: "iCloud",
-      serviceDescription: "Mail",
-      tier: "Cloud Plane",
-      icon: "mdi:cloud",
-      iconBg: "#dbeafe",
-      iconColor: "#2563eb",
-      status: "unknown"
-    },
-    {
-      serviceId: "vercel",
-      serviceName: "Vercel",
-      serviceDescription: "Vercel Homepage",
-      tier: "Cloud Plane",
-      icon: "mdi:triangle",
-      iconBg: "#0a0a0a",
-      iconColor: "#ffffff",
-      status: "unknown"
-    },
-    {
-      serviceId: "amazon-glacier",
-      serviceName: "Amazon Glacier",
-      serviceDescription: "Cold Storage",
-      tier: "Cloud Plane",
-      serviceType: "database",
-      icon: "mdi:snowflake",
-      iconBg: "#dbeafe",
-      iconColor: "#0ea5e9",
-      status: "unknown"
-    },
-    // Home Infrastructure - Servers
-    {
-      serviceId: "lb",
-      serviceName: "s01 Load Balancer",
-      serviceDescription: "HTTPS Traffic Distribution",
-      tier: "Data Plane",
-      serviceType: "server",
-      serviceLabel: "s01",
-      status: "unknown",
-      icon: 'mdi:server', 
-      iconBg: '#fed7aa', 
-      iconColor: '#ea580c'
-    },
-    {
-      serviceId: "serviceExit",
-      serviceName: "Service Exit",
-      serviceDescription: "Non HTTP Traffic",
-      tier: "Data Plane",
-      serviceType: "server",
-      serviceLabel: "s01",
-      status: "unknown",
-      icon: 'mdi:server', 
-      iconBg: '#fed7aa', 
-      iconColor: '#ea580c'
-    },
-    // Home Services - s01 group
-    {
-      serviceId: "core-data-storage",
-      serviceName: "Core Data Storage",
-      serviceDescription: "Core Data Storage",
-      tier: "Control Plane s01",
-      serviceType: "database",
-      status: "unknown",
-      icon: 'mdi:database',
-      iconBg: '#e9d5ff', 
-      iconColor: '#9333ea'
-    },
-    {
-      serviceId: "arozos-1",
-      serviceName: "arozos",
-      serviceDescription: "Arozos",
-      tier: "Control Plane s01",
-      icon: "mdi:cube",
-      iconBg: "#e9d5ff",
-      iconColor: "#9333ea",
-      status: "unknown"
-    },
-    {
-      serviceId: "s01-web",
-      serviceName: "Core Web Server",
-      serviceDescription: "Services",
-      tier: "Control Plane s01",
-      icon: "mdi:microsoft-windows",
-      iconBg: "#e9d5ff",
-      iconColor: "#9333ea",
-      status: "unknown"
-    },
-    {
-      serviceId: "cas",
-      serviceName: "Central Authentication Service",
-      serviceDescription: "oAuth System",
-      tier: "Control Plane s01",
-      icon: "mdi:shield-account",
-      iconBg: "#e9d5ff",
-      iconColor: "#9333ea",
-      status: "unknown"
-    },
-
-    // Home Services - s02 group
-    {
-      serviceId: "jenkins",
-      serviceName: "Jenkins",
-      serviceDescription: "Jenkins CI/CD",
-      tier: "Control Plane s01",
-      icon: "mdi:hammer-wrench",
-      iconBg: "#fef3c7",
-      iconColor: "#f59e0b",
-      status: "unknown"
-    },
-    {
-      serviceId: "arozos-2",
-      serviceName: "arozos",
-      serviceDescription: "arozos",
-      tier: "Control Plane s02",
-      icon: "mdi:cube",
-      iconBg: "#fef3c7",
-      iconColor: "#f59e0b",
-      status: "unknown"
-    },
-    {
-      serviceId: "gitlab",
-      serviceName: "Gitlab",
-      serviceDescription: "Gitlab",
-      tier: "Control Plane s02",
-      icon: "mdi:gitlab",
-      iconBg: "#fef3c7",
-      iconColor: "#f59e0b",
-      status: "unknown"
-    },
-
-    // Home Services - s03 group
-    {
-      serviceId: "gogs",
-      serviceName: "gogs",
-      serviceDescription: "HKWTC Git gogs",
-      tier: "Control Plane s03",
-      icon: "mdi:git",
-      iconBg: "#dcfce7",
-      iconColor: "#16a34a",
-      status: "unknown"
-    },
-    {
-      serviceId: "minecraft-25565",
-      serviceName: "Minecraft 25565",
-      serviceDescription: "Minecraft server 25565",
-      tier: "Control Plane s03",
-      icon: "mdi:minecraft",
-      iconBg: "#dcfce7",
-      iconColor: "#16a34a",
-      status: "unknown"
-    },
-    {
-      serviceId: "minecraft-25566",
-      serviceName: "Minecraft 25566",
-      serviceDescription: "Minecraft server 25566",
-      tier: "Control Plane s03",
-      icon: "mdi:minecraft",
-      iconBg: "#dcfce7",
-      iconColor: "#16a34a",
-      status: "unknown"
-    },
-  ],
-  connections: [
-    // User to CloudFlare
-    ["user", "cloudflare", "-"],
-
-    // CloudFlare to iCloud
-    ["user", "icloud", "-"],
-
-        ["user", "vercel", "-"],
-    ["user", "amazon-glacier", "-"],
-
-
-    // CloudFlare to home servers
-    ["cloudflare", "lb", "15ms"],
-    ["lb", "arozos-1", "-"],
-    ["lb", "arozos-2", "-"],
-    ["lb", "cas", "-"],
-    ["lb", "s01-web", "-"],
-    ["lb", "jenkins", "-"],
-    ["lb", "gitlab", "-"],
-    ["lb", "gogs", "-"],
-    ["amazon-glacier", "core-data-storage", "-"],
-    ["serviceExit", "minecraft-25565", "-"],
-    ["serviceExit", "minecraft-25566", "-"],
-    ["user", "serviceExit", "-"]
-  ]
-};
-
-export default function Page() {
-    const t = useTranslation();
-    return (
-        <div className="flex flex-col min-h-screen">
-          <div className="flex-1">
-            <div className="pt-5">
-              <main className="flex w-full flex-col">
-                <div className="relative w-full overflow-hidden">
-                  <div className="w-full">
-                    <div className="mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl">
-                      <header className="mb-10">
-                        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('arch.title')}</h1>
-                        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('arch.subtitle')}</h3>
-                      </header>
-                      <ArchitectureSection config={infrastructureConfig} />
-                    </div>
-                  </div>
-                </div>
-              </main>
-            </div>
+const NodeDetailPanel: FC<{ node: Service }> = ({ node }) => (
+  <motion.div
+    className="mt-6 border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm bg-white dark:bg-neutral-900 p-6"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+  >
+    <div className="flex items-start justify-between mb-4">
+      <div className="flex items-center gap-3">
+        {node.icon && (
+          <div
+            className="rounded-lg p-3 flex items-center justify-center"
+            style={{ backgroundColor: node.iconBg ?? '#f3f4f6' }}
+          >
+            <Icon icon={node.icon} width="32" height="32" style={{ color: node.iconColor ?? '#6b7280' }} />
           </div>
-          <RealFooter />
+        )}
+        <div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">{node.serviceName}</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{node.serviceId}</p>
         </div>
-    )
-}
+      </div>
+    </div>
 
-const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = ({ config }) => {
-  const [selectedNode, setSelectedNode] = useState<ServiceNode | null>(null);
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description</h4>
+        <p className="text-gray-600 dark:text-gray-400">{node.serviceDescription ?? 'No description available'}</p>
+      </div>
+      <div>
+        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Details</h4>
+        <div className="space-y-2">
+          {node.tier && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500 dark:text-gray-500">Tier:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{node.tier}</span>
+            </div>
+          )}
+          {node.serviceType && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500 dark:text-gray-500">Type:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{node.serviceType}</span>
+            </div>
+          )}
+          {node.status && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500 dark:text-gray-500">Status:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">{node.status}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </motion.div>
+)
 
-  const handleNodeClick = (nodeId: string, nodeData: ServiceNode): void => {
-    setSelectedNode(nodeData);
-  };
+const ArchitectureSection: FC = () => {
+  const [selectedNode, setSelectedNode] = useState<Service | null>(null);
 
   return (
     <BottomToUpTransitionView duration={80}>
@@ -281,88 +78,35 @@ const ArchitectureSection: React.FC<{ config: typeof infrastructureConfig }> = (
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <ThreeTierInfrastructure config={config} onNodeClick={handleNodeClick} />
+        <ThreeTierInfrastructure config={INFRASTRUCTURE_CONFIG} onNodeClick={(_, node) => setSelectedNode(node)} />
       </motion.div>
-
-      {selectedNode && (
-        <motion.div
-          className="mt-6 border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm bg-white dark:bg-neutral-900 p-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              {selectedNode.icon && (
-                <div
-                  className="rounded-lg p-3 flex items-center justify-center"
-                  style={{
-                    backgroundColor: selectedNode.iconBg || '#f3f4f6',
-                  }}
-                >
-                  <Icon
-                    icon={selectedNode.icon}
-                    width="32"
-                    height="32"
-                    style={{ color: selectedNode.iconColor || '#6b7280' }}
-                  />
-                </div>
-              )}
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {selectedNode.serviceName}
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {selectedNode.serviceId}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Description
-              </h4>
-              <p className="text-gray-600 dark:text-gray-400">
-                {selectedNode.serviceDescription || 'No description available'}
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Details
-              </h4>
-              <div className="space-y-2">
-                {selectedNode.tier && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-500 dark:text-gray-500">Tier:</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {selectedNode.tier}
-                    </span>
-                  </div>
-                )}
-                {selectedNode.serviceType && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-500 dark:text-gray-500">Type:</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {selectedNode.serviceType}
-                    </span>
-                  </div>
-                )}
-                {selectedNode.status && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-500 dark:text-gray-500">Status:</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
-                      {selectedNode.status}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
+      {selectedNode && <NodeDetailPanel node={selectedNode} />}
     </BottomToUpTransitionView>
+  )
+}
+
+export default function ArchPage() {
+  const t = useTranslation();
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-1">
+        <div className="pt-5">
+          <main className="flex w-full flex-col">
+            <div className="relative w-full overflow-hidden">
+              <div className="w-full">
+                <div className="mx-auto mt-14 max-w-3xl px-4 lg:mt-20 lg:px-0 2xl:max-w-4xl">
+                  <header className="mb-10">
+                    <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('arch.title')}</h1>
+                    <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('arch.subtitle')}</h3>
+                  </header>
+                  <ArchitectureSection />
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <RealFooter />
+    </div>
   )
 }

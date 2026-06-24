@@ -9,6 +9,7 @@ import { clsxm } from "@/lib/helper";
 import { useTranslation } from "@/i18n";
 import { type MenuItem } from "@/data/navigation";
 import { Z_INDEX } from "@/constants/spacing";
+import { HEADER_COLORS } from "@/constants/colors";
 
 interface MobileNavProps {
   menuConfig: MenuItem[];
@@ -116,7 +117,7 @@ export function MobileNav({ menuConfig, forceDarkMode = false }: MobileNavProps)
                     onDragEnd={handleDragEnd}
                     className={clsxm(
                       "fixed left-0 right-0 rounded-t-2xl shadow-2xl flex flex-col",
-                      forceDarkMode ? "bg-[#1d1d1f]" : "bg-white dark:bg-zinc-900"
+                      forceDarkMode ? `bg-[${HEADER_COLORS.darkSurface}]` : "bg-white dark:bg-zinc-900"
                     )}
                     style={{
                       touchAction: "none",

@@ -7696,3 +7696,39 @@ export const AIRPORTS_RAW = `1,"Goroka Airport","Goroka","Papua New Guinea","GKA
 14108,"Krechevitsy Air Base","Novgorod","Russia",\\N,"ULLK",58.625,31.385000228881836,85,\\N,\\N,\\N,"airport","OurAirports"
 14109,"Desierto de Atacama Airport","Copiapo","Chile","CPO","SCAT",-27.2611999512,-70.7791976929,670,\\N,\\N,\\N,"airport","OurAirports"
 14110,"Melitopol Air Base","Melitopol","Ukraine",\\N,"UKDM",46.880001,35.305,0,\\N,\\N,\\N,"airport","OurAirports"`;
+
+export interface AirportInfo {
+  name: string;
+  city: string;
+  country: string;
+  iata: string;
+  lat: number;
+  lon: number;
+}
+
+let airportIndex: Map<string, AirportInfo> | null = null;
+
+function buildAirportIndex(): Map<string, AirportInfo> {
+  const index = new Map<string, AirportInfo>();
+  const lines = AIRPORTS_RAW.split('\n');
+  for (const line of lines) {
+    const parts = line.split(',');
+    if (parts.length < 8) continue;
+    const iata = parts[4]?.replace(/"/g, '');
+    if (!iata || iata === '\\N' || iata.length !== 3) continue;
+    index.set(iata, {
+      name: parts[1]?.replace(/"/g, '') ?? '',
+      city: parts[2]?.replace(/"/g, '') ?? '',
+      country: parts[3]?.replace(/"/g, '') ?? '',
+      iata,
+      lat: parseFloat(parts[6]),
+      lon: parseFloat(parts[7]),
+    });
+  }
+  return index;
+}
+
+export function getAirportByIata(iata: string): AirportInfo | null {
+  if (!airportIndex) airportIndex = buildAirportIndex();
+  return airportIndex.get(iata.toUpperCase()) ?? null;
+}

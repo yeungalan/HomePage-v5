@@ -7,10 +7,10 @@ import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
 
 // Type definitions
-type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'unknown';
-type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
+export type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'unknown';
+export type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
 
-interface Service {
+export interface Service {
   serviceId: string;
   serviceName: string;
   serviceDescription?: string;

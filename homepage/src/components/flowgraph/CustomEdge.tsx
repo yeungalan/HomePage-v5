@@ -1,21 +1,10 @@
 import { BaseEdge, EdgeProps, getSmoothStepPath } from '@xyflow/react';
+import { FLOWGRAPH_DEFAULTS } from '@/constants/colors';
+import { EDGE_STYLES } from '@/constants/spacing';
 
-/**
- * Custom Edge Component with L-shaped routing
- */
 export const CustomEdge: React.FC<EdgeProps> = (props) => {
-  const {
-    id,
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    style,
-  } = props;
+  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, style } = props;
 
-  // Use smooth step path for L-shaped lines
   const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -23,7 +12,7 @@ export const CustomEdge: React.FC<EdgeProps> = (props) => {
     targetX,
     targetY,
     targetPosition,
-    borderRadius: 8,
+    borderRadius: EDGE_STYLES.BORDER_RADIUS,
   });
 
   return (
@@ -31,9 +20,9 @@ export const CustomEdge: React.FC<EdgeProps> = (props) => {
       id={id}
       path={edgePath}
       style={{
-        strokeWidth: style?.strokeWidth || 2,
-        stroke: style?.stroke || '#94a3b8',
-        strokeDasharray: style?.strokeDasharray || '8,8',
+        strokeWidth: style?.strokeWidth || EDGE_STYLES.STROKE_WIDTH,
+        stroke: style?.stroke || FLOWGRAPH_DEFAULTS.edgeStroke,
+        strokeDasharray: style?.strokeDasharray || EDGE_STYLES.DASH_ARRAY,
         strokeLinecap: 'round',
         strokeLinejoin: 'round',
         ...style,

@@ -380,11 +380,11 @@ export default function WorldMap(): React.JSX.Element {
                   let typeText = '';
                   
                   if (d.type === 'cluster-both') {
-                    typeText = t('world.tooltipAirportsAndTrains', { airportCount: d.airportCount, trainCount: d.trainCount });
+                    typeText = t('world.tooltipAirportsAndTrains', { airportCount: d.airportCount ?? 0, trainCount: d.trainCount ?? 0 });
                   } else if (d.type === 'cluster-airport') {
-                    typeText = t('world.tooltipAirports', { count: d.airportCount });
+                    typeText = t('world.tooltipAirports', { count: d.airportCount ?? 0 });
                   } else if (d.type === 'cluster-train') {
-                    typeText = t('world.tooltipTrainStops', { count: d.trainCount });
+                    typeText = t('world.tooltipTrainStops', { count: d.trainCount ?? 0 });
                   }
 
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
@@ -395,7 +395,7 @@ export default function WorldMap(): React.JSX.Element {
                     : '';
 
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
-                    <div class="font-bold text-yellow-300">📍 ${t('world.tooltipLocations', { count: d.clusterSize })}</div>
+                    <div class="font-bold text-yellow-300">📍 ${t('world.tooltipLocations', { count: d.clusterSize ?? 0 })}</div>
                     <div class="text-sm mt-1">${typeText}</div>
                     <div class="text-xs mt-1 text-gray-300">${locations}${moreText}</div>
                     ${flightInfo}${trainInfo}

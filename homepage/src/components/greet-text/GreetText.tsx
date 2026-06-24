@@ -5,7 +5,7 @@ import { TextUpTransitionView } from "@/components/TextUpTransitionView";
 import { LotteryText } from "@/components/LotteryText";
 import { useTranslation } from "@/i18n";
 import { motion } from 'motion/react'
-import React, { createElement, useState, useEffect } from 'react'
+import React, { createElement } from 'react'
 import { softBouncePreset } from '@/constants/motion'
 
 const htmlElements = [
@@ -85,14 +85,7 @@ const titleAnimateD =
   }, 0) * 50;
 
 export default function GiantGreetText() {
-  const [, setMounted] = useState(false)
   const t = useTranslation()
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  //if (!mounted) return <FullPageLoading/>
 
   return (
     <div className="px-4 sm:px-6 lg:px-0">

@@ -1,9 +1,7 @@
 "use client"
 import Globe from "react-globe.gl";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { csvParseRows } from "d3-dsv";
-import indexBy from "index-array-by";
-import { AIRPORTS_RAW } from "@/data/airports";
+import { WORLD_AIRPORTS } from "@/data/worldAirports";
 import { FLIGHT_ROUTES } from "@/data/routes";
 import { TRAIN_DATA } from "@/data/train";
 import {
@@ -18,13 +16,23 @@ import { useTranslation } from "@/i18n";
 import { GLOBE_COLORS } from "@/constants/colors";
 import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES, ROUTE_ARC_OPACITY, GLOBE_ANIMATION_VELOCITY } from "@/constants/globe";
 import { dayNightShader } from "@/lib/worldShader";
-import { airportParse, sunPosAt, clusterPoints } from "@/lib/worldUtils";
+import { sunPosAt, clusterPoints } from "@/lib/worldUtils";
 import type { Airport, Route, TrainStation, TrainPath, PointData, Dimensions, TimeMode } from "@/types/world";
 
 interface GlobeInstance {
   pointOfView: (pov?: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void | { lat: number; lng: number; altitude: number };
   controls: () => { enableRotate: boolean };
 }
+
+// Enrich routes with airport objects once at module load time.
+// WORLD_AIRPORTS is already filtered to only the ~33 airports used by FLIGHT_ROUTES,
+// so this is trivially cheap and avoids state + a full CSV parse on every page visit.
+const _airportByIata = new Map(WORLD_AIRPORTS.map(a => [a.iata, a]));
+const ENRICHED_ROUTES: Route[] = FLIGHT_ROUTES
+  .filter(r => _airportByIata.has(r.srcIata) && _airportByIata.has(r.dstIata))
+  .map(r => ({ ...r, srcAirport: _airportByIata.get(r.srcIata)!, dstAirport: _airportByIata.get(r.dstIata)! }));
+const ROUTE_AIRPORT_IATAS = new Set(ENRICHED_ROUTES.flatMap(r => [r.srcIata, r.dstIata]));
+const FILTERED_AIRPORTS = WORLD_AIRPORTS.filter(a => ROUTE_AIRPORT_IATAS.has(a.iata));
 
 // Interval (ms) for the animated time loop — much cheaper than requestAnimationFrame
 const ANIMATION_INTERVAL_MS = 100;
@@ -36,8 +44,6 @@ const ADVANCE_PER_INTERVAL = GLOBE_ANIMATION_VELOCITY * 6 * 60 * 1000;
 export default function WorldMap(): React.JSX.Element {
   const t = useTranslation();
   const globeEl = useRef<GlobeInstance | null>(null);
-  const [airports, setAirports] = useState<Airport[]>([]);
-  const [routes, setRoutes] = useState<Route[]>([]);
   const [trainStations, setTrainStations] = useState<TrainStation[]>([]);
   const [trainPaths, setTrainPaths] = useState<TrainPath[]>([]);
 
@@ -117,32 +123,6 @@ export default function WorldMap(): React.JSX.Element {
       window.removeEventListener('resize', updateDimensions);
       if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
     };
-  }, []);
-
-  // Load airports + routes from constants
-  useEffect(() => {
-    const airports: Airport[] = csvParseRows(AIRPORTS_RAW, airportParse);
-    const routes: Route[] = FLIGHT_ROUTES;
-    const byIata: Record<string, Airport> = indexBy(airports, "iata", false);
-
-    const filteredRoutes = routes
-      .filter(
-        (d) => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)
-      )
-      .map((d) =>
-        Object.assign(d, {
-          srcAirport: byIata[d.srcIata],
-          dstAirport: byIata[d.dstIata],
-        })
-      );
-
-    const usedIatas = new Set(
-      filteredRoutes.flatMap((r) => [r.srcIata, r.dstIata])
-    );
-    const filteredAirports = airports.filter((a) => usedIatas.has(a.iata));
-
-    setAirports(filteredAirports);
-    setRoutes(filteredRoutes);
   }, []);
 
   // Load train data from constants
@@ -296,21 +276,19 @@ export default function WorldMap(): React.JSX.Element {
   const allPoints = useMemo(() => {
     // Build a map of flight routes for each airport IATA code
     const flightRoutesByIata = new Map();
-    routes.forEach(route => {
-      // Add to source airport
+    ENRICHED_ROUTES.forEach(route => {
       if (!flightRoutesByIata.has(route.srcIata)) {
         flightRoutesByIata.set(route.srcIata, []);
       }
       flightRoutesByIata.get(route.srcIata).push(route.dstIata);
 
-      // Add to destination airport (bidirectional)
       if (!flightRoutesByIata.has(route.dstIata)) {
         flightRoutesByIata.set(route.dstIata, []);
       }
       flightRoutesByIata.get(route.dstIata).push(route.srcIata);
     });
 
-    const airportPoints = airports.map(a => ({
+    const airportPoints = FILTERED_AIRPORTS.map(a => ({
       ...a,
       type: 'airport',
       flightRoutes: flightRoutesByIata.get(a.iata) || []
@@ -356,7 +334,7 @@ export default function WorldMap(): React.JSX.Element {
 
     // Apply clustering based on altitude
     return clusterPoints(mergedPoints, altitude);
-  }, [airports, trainStations, routes, altitude]);
+  }, [trainStations, altitude]); // airports/routes are module-level constants
 
   const getIndicatorPosition = (): number => {
     const positions: Record<TimeMode, number> = {
@@ -391,7 +369,7 @@ export default function WorldMap(): React.JSX.Element {
               onZoom={handleZoom}
 
               // Flight routes as arcs - conditionally shown
-              arcsData={showFlightRoutes ? routes : []}
+              arcsData={showFlightRoutes ? ENRICHED_ROUTES : []}
               arcLabel={(d: Route) => `${d.srcIata} ↔ ${d.dstIata}`}
               arcStartLat={(d: Route) => +d.srcAirport!.lat}
               arcStartLng={(d: Route) => +d.srcAirport!.lng}

@@ -109,4 +109,17 @@ export const jaJP: Messages = {
     yearAgo: '{{count}} 年前',
     yearsAgo: '{{count}} 年前',
   },
+  flightCalculator: {
+    title: 'フライト距離',
+    subtitle: 'このページを離れずに、どこまで飛べるか計算するウィジェットです。',
+    from: '出発地（IATAコード）',
+    to: '目的地（IATAコード）',
+    distance: '距離',
+    distanceValue: '{{value}} km',
+    duration: '所要時間',
+    durationValue: '{{value}} 時間',
+    flightProgress: 'フライト進捗',
+    placeholder: '両方の空港コードを入力して距離を計算してください',
+    completed: '✈️ フライト完了！{{city}}に到着しました！',
+  },
 }

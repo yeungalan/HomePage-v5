@@ -109,4 +109,17 @@ export const zhHK: Messages = {
     yearAgo: '{{count}} 年前',
     yearsAgo: '{{count}} 年前',
   },
+  flightCalculator: {
+    title: '飛行距離',
+    subtitle: '此小工具計算你在瀏覽此頁面期間可飛行的距離。',
+    from: '出發地（IATA代碼）',
+    to: '目的地（IATA代碼）',
+    distance: '距離',
+    distanceValue: '{{value}} 公里',
+    duration: '飛行時間',
+    durationValue: '{{value}} 小時',
+    flightProgress: '飛行進度',
+    placeholder: '請輸入兩個機場代碼以計算飛行距離',
+    completed: '✈️ 飛行完成！已抵達{{city}}！',
+  },
 }

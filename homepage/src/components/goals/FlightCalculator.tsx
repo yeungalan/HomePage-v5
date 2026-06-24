@@ -6,10 +6,12 @@ import { motion } from 'motion/react';
 import { Icon } from '@iconify/react';
 import { getAirportByIata, type AirportInfo as Airport } from '@/data/airports';
 import { haversineDistance } from '@/lib/worldUtils';
+import { useTranslation } from '@/i18n';
 
 export type { Airport };
 
 export const FlightCalculator: React.FC = () => {
+  const t = useTranslation();
   const [srcCode, setSrcCode] = useState('');
   const [dstCode, setDstCode] = useState('');
   const [srcAirport, setSrcAirport] = useState<Airport | null>(null);
@@ -121,10 +123,10 @@ export const FlightCalculator: React.FC = () => {
     >
       <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 text-gray-900 dark:text-white">
         <Icon icon="mdi:airplane" className="text-3xl sm:text-4xl" />
-        <span>Flight Distance</span>
+        <span>{t('flightCalculator.title')}</span>
       </h2>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        This widget calculates how far you can travel while staying on this page.
+        {t('flightCalculator.subtitle')}
       </p>
       <br />
 
@@ -132,7 +134,7 @@ export const FlightCalculator: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            From (IATA Code)
+            {t('flightCalculator.from')}
           </label>
           <input
             type="text"
@@ -150,7 +152,7 @@ export const FlightCalculator: React.FC = () => {
         </div>
         <div>
           <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            To (IATA Code)
+            {t('flightCalculator.to')}
           </label>
           <input
             type="text"
@@ -174,15 +176,15 @@ export const FlightCalculator: React.FC = () => {
           <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Distance</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('flightCalculator.distance')}</p>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  {distance.toFixed(0)} km
+                  {t('flightCalculator.distanceValue', { value: distance.toFixed(0) })}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t('flightCalculator.duration')}</p>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-                  {duration.toFixed(1)} hrs
+                  {t('flightCalculator.durationValue', { value: duration.toFixed(1) })}
                 </p>
               </div>
             </div>
@@ -191,7 +193,7 @@ export const FlightCalculator: React.FC = () => {
           {/* Progress Bar */}
           <div className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Flight Progress</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('flightCalculator.flightProgress')}</p>
               <p className="text-xs font-mono text-gray-600 dark:text-gray-300">
                 {formatElapsedTime(elapsedTime)} / {duration.toFixed(1)}h
               </p>
@@ -226,7 +228,7 @@ export const FlightCalculator: React.FC = () => {
               className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-300 dark:border-gray-600"
             >
               <p className="text-sm sm:text-base text-gray-900 dark:text-gray-100 text-center font-medium">
-                ✈️ Flight completed! You&apos;ve arrived at {dstAirport.city}!
+                {t('flightCalculator.completed', { city: dstAirport.city })}
               </p>
             </motion.div>
           )}
@@ -240,7 +242,7 @@ export const FlightCalculator: React.FC = () => {
             className="text-4xl sm:text-5xl text-gray-300 dark:text-gray-600 mx-auto mb-3"
           />
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
-            Enter both airport codes to calculate flight distance
+            {t('flightCalculator.placeholder')}
           </p>
         </div>
       ) : null}

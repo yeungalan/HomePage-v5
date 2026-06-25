@@ -76,7 +76,7 @@ const FooterLinkSection = () => {
                     href={link.href}
                     key={link.name}
                   >
-                    {'nameKey' in link ? t(link.nameKey) : link.name}
+                    {link.nameKey ? t(link.nameKey) : link.name}
                   </StyledLink>
                 )
               })}

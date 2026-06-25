@@ -1,9 +1,7 @@
 "use client"
 import Globe from "react-globe.gl";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { csvParseRows } from "d3-dsv";
-import indexBy from "index-array-by";
-import { AIRPORTS_RAW } from "@/data/airports";
+import { WORLD_AIRPORTS } from "@/data/worldAirports";
 import { FLIGHT_ROUTES } from "@/data/routes";
 import { TRAIN_DATA } from "@/data/train";
 import {
@@ -18,7 +16,7 @@ import { useTranslation } from "@/i18n";
 import { GLOBE_COLORS } from "@/constants/colors";
 import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES, ROUTE_ARC_OPACITY, GLOBE_ANIMATION_VELOCITY } from "@/constants/globe";
 import { dayNightShader } from "@/lib/worldShader";
-import { airportParse, sunPosAt, clusterPoints } from "@/lib/worldUtils";
+import { sunPosAt, clusterPoints } from "@/lib/worldUtils";
 import type { Airport, Route, TrainStation, TrainPath, PointData, Dimensions, TimeMode } from "@/types/world";
 
 interface GlobeInstance {
@@ -26,17 +24,48 @@ interface GlobeInstance {
   controls: () => { enableRotate: boolean };
 }
 
+// Enrich routes with airport objects once at module load time.
+// WORLD_AIRPORTS is already filtered to only the ~33 airports used by FLIGHT_ROUTES,
+// so this is trivially cheap and avoids state + a full CSV parse on every page visit.
+const _airportByIata = new Map(WORLD_AIRPORTS.map(a => [a.iata, a]));
+const ENRICHED_ROUTES: Route[] = FLIGHT_ROUTES
+  .filter(r => _airportByIata.has(r.srcIata) && _airportByIata.has(r.dstIata))
+  .map(r => ({ ...r, srcAirport: _airportByIata.get(r.srcIata)!, dstAirport: _airportByIata.get(r.dstIata)! }));
+const ROUTE_AIRPORT_IATAS = new Set(ENRICHED_ROUTES.flatMap(r => [r.srcIata, r.dstIata]));
+const FILTERED_AIRPORTS = WORLD_AIRPORTS.filter(a => ROUTE_AIRPORT_IATAS.has(a.iata));
+
+// Interval (ms) for the animated time loop — much cheaper than requestAnimationFrame
+const ANIMATION_INTERVAL_MS = 100;
+// Simulation-time advance per interval tick, calibrated to match the original RAF-based
+// speed (GLOBE_ANIMATION_VELOCITY * 60s per real second at 60 fps):
+// 10 ticks/s × ADVANCE_PER_INTERVAL = 60 × (GLOBE_ANIMATION_VELOCITY × 60,000 ms)
+const ADVANCE_PER_INTERVAL = GLOBE_ANIMATION_VELOCITY * 6 * 60 * 1000;
+
 export default function WorldMap(): React.JSX.Element {
   const t = useTranslation();
   const globeEl = useRef<GlobeInstance | null>(null);
-  const [airports, setAirports] = useState<Airport[]>([]);
-  const [routes, setRoutes] = useState<Route[]>([]);
   const [trainStations, setTrainStations] = useState<TrainStation[]>([]);
   const [trainPaths, setTrainPaths] = useState<TrainPath[]>([]);
-  const [dt, setDt] = useState<number>(+new Date());
+
+  // dt lives in a ref so time advances don't trigger React re-renders.
+  // displayDt is state only for the clock UI, updated at 1 fps.
+  const dtRef = useRef<number>(+new Date());
+  const [displayDt, setDisplayDt] = useState<number>(+new Date());
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [globeMaterial, setGlobeMaterial] = useState<any>(null);
-  const [timeMode, setTimeMode] = useState<TimeMode>('animated');
+
+  // Detect mobile once at mount via lazy useState (component is never SSR'd, so window is safe).
+  const [isMobile] = useState<boolean>(() =>
+    typeof window !== 'undefined' && (window.innerWidth < 768 || navigator.maxTouchPoints > 1)
+  );
+
+  // Default to flat (static day texture, no animation loop) on mobile.
+  const [timeMode, setTimeMode] = useState<TimeMode>(() =>
+    typeof window !== 'undefined' && (window.innerWidth < 768 || navigator.maxTouchPoints > 1)
+      ? 'flat'
+      : 'animated'
+  );
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
   const [isAnimating, setIsAnimating] = useState<boolean>(true);
   const [altitude, setAltitude] = useState<number>(GLOBE_CONFIG.DEFAULT_ALTITUDE);
@@ -44,78 +73,56 @@ export default function WorldMap(): React.JSX.Element {
   const [showTrainRoutes, setShowTrainRoutes] = useState<boolean>(true);
   const [enableDaylight, setEnableDaylight] = useState<boolean>(true);
 
-  // Animate time based on mode
+  // Refs for debouncing altitude and resize state updates
+  const altitudeDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Advance simulation time via interval — replaces the original RAF loop that triggered
+  // ~60 React state updates per second and caused the component to re-render at 60 fps.
   useEffect(() => {
-    if(timeMode === 'stopped' || timeMode === 'flat') {
+    if (timeMode === 'stopped' || timeMode === 'flat') {
       setEnableDaylight(false);
-    }else{
+    } else {
       setEnableDaylight(true);
     }
     if (timeMode === 'paused' || timeMode === 'flat') return;
 
-    let animationId: number;
-    (function iterateTime(): void {
-      setDt((t) => {
-        if (timeMode === 'realtime') {
-          return +new Date();
-        } else if (timeMode === 'animated') {
-          return t + GLOBE_ANIMATION_VELOCITY * 60 * 1000;
-        }
-        return t;
-      });
-      animationId = requestAnimationFrame(iterateTime);
-    })();
-    
-    return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
+    const interval = setInterval(() => {
+      if (timeMode === 'realtime') {
+        dtRef.current = +new Date();
+      } else if (timeMode === 'animated') {
+        dtRef.current += ADVANCE_PER_INTERVAL;
       }
-    };
+    }, ANIMATION_INTERVAL_MS);
+
+    return () => clearInterval(interval);
   }, [timeMode]);
 
-  // Listen for screen size changes and update dimensions
+  // Update the clock display at 1 fps — the only state update tied to simulation time.
+  useEffect(() => {
+    if (timeMode === 'flat' || timeMode === 'stopped') return;
+    const interval = setInterval(() => {
+      setDisplayDt(dtRef.current);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timeMode]);
+
+  // Listen for screen-size changes — debounced to avoid rapid re-renders during resize.
   useEffect(() => {
     const updateDimensions = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      resizeTimeoutRef.current = setTimeout(() => {
+        setDimensions({ width: window.innerWidth, height: window.innerHeight });
+      }, 200);
     };
 
-    // Set initial dimensions
-    updateDimensions();
-
-    // Add event listener
+    // Set initial dimensions immediately (no debounce on first load).
+    setDimensions({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', updateDimensions);
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
-
-  // Load airports + routes from constants
-  useEffect(() => {
-    const airports: Airport[] = csvParseRows(AIRPORTS_RAW, airportParse);
-    const routes: Route[] = FLIGHT_ROUTES;
-    const byIata: Record<string, Airport> = indexBy(airports, "iata", false);
-
-    const filteredRoutes = routes
-      .filter(
-        (d) => byIata.hasOwnProperty(d.srcIata) && byIata.hasOwnProperty(d.dstIata)
-      )
-      .map((d) =>
-        Object.assign(d, {
-          srcAirport: byIata[d.srcIata],
-          dstAirport: byIata[d.dstIata],
-        })
-      );
-
-    const usedIatas = new Set(
-      filteredRoutes.flatMap((r) => [r.srcIata, r.dstIata])
-    );
-    const filteredAirports = airports.filter((a) => usedIatas.has(a.iata));
-
-    setAirports(filteredAirports);
-    setRoutes(filteredRoutes);
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+    };
   }, []);
 
   // Load train data from constants
@@ -162,33 +169,35 @@ export default function WorldMap(): React.JSX.Element {
     setTrainPaths(TRAIN_DATA);
   }, []);
 
-  // Setup globe material with day/night shader
+  // Setup globe material — skip the night texture on mobile to save bandwidth.
   useEffect(() => {
     const loader = new TextureLoader();
-    Promise.all([
-      loader.loadAsync("/assets/images/day.jpg"),
-      loader.loadAsync("/assets/images/night.jpg"),
-    ]).then(([dayTexture, nightTexture]) => {
+    const dayPromise = loader.loadAsync("/assets/images/day.jpg");
+    const nightPromise = isMobile
+      ? Promise.resolve(null)
+      : loader.loadAsync("/assets/images/night.jpg");
+
+    Promise.all([dayPromise, nightPromise]).then(([dayTexture, nightTexture]) => {
       const material = new ShaderMaterial({
         uniforms: {
           dayTexture: { value: dayTexture },
-          nightTexture: { value: nightTexture },
+          nightTexture: { value: nightTexture ?? dayTexture },
           sunPosition: { value: new Vector2() },
-          forceDaylight: { value: 0.0 },
+          forceDaylight: { value: isMobile ? 1.0 : 0.0 },
         },
         vertexShader: dayNightShader.vertexShader,
         fragmentShader: dayNightShader.fragmentShader,
       });
       setGlobeMaterial(material);
     });
-  }, []);
+  }, [isMobile]); // isMobile is stable (lazy init), so this runs exactly once
 
-    useEffect(() => {
+  useEffect(() => {
     if (globeEl.current) {
       // Disable rotation controls during animation
       globeEl.current.controls().enableRotate = false;
-      
-      
+
+
       globeEl.current.pointOfView({
         lat: GLOBE_CONFIG.INITIAL_LATITUDE,
         lng: GLOBE_CONFIG.INITIAL_LONGITUDE,
@@ -205,26 +214,25 @@ export default function WorldMap(): React.JSX.Element {
     }
   }, [globeMaterial]);
 
-
-  // Update sun position & globe rotation in shader
+  // Update sun position in the shader — reads dt from a ref, so this effect no longer
+  // depends on dt state and doesn't re-run on every animation tick.
   useEffect(() => {
-    if (!globeMaterial || !globeEl.current) return;
+    if (!globeMaterial) return;
 
     const updateShader = () => {
       if (enableDaylight) {
         globeMaterial.uniforms.forceDaylight.value = 0.0;
-        const [lng, lat] = sunPosAt(dt);
+        const [lng, lat] = sunPosAt(dtRef.current);
         globeMaterial.uniforms.sunPosition.value.set(lng, lat);
       } else {
         globeMaterial.uniforms.forceDaylight.value = 1.0;
       }
-
     };
 
     updateShader();
     const interval = setInterval(updateShader, 100);
     return () => clearInterval(interval);
-  }, [globeMaterial, dt, enableDaylight]);
+  }, [globeMaterial, enableDaylight]); // dt removed — read from dtRef instead
 
   const handleModeChange = (newMode: TimeMode): void => {
     setTimeMode(newMode);
@@ -234,18 +242,17 @@ export default function WorldMap(): React.JSX.Element {
     ({ lng, lat, altitude }: { lng: number; lat: number; altitude: number }): void => {
       // Block zoom during animation
       if (isAnimating) return;
-      
+
       if (globeMaterial?.uniforms?.globeRotation?.value) {
         globeMaterial.uniforms.globeRotation.value.set(lng, lat);
       }
-      
+
       // Enforce altitude limits
       if (globeEl.current && altitude !== undefined) {
         const clampedAltitude = Math.max(
           GLOBE_CONFIG.MIN_ALTITUDE,
           Math.min(GLOBE_CONFIG.MAX_ALTITUDE, altitude)
         );
-        setAltitude(clampedAltitude);
 
         if (altitude !== clampedAltitude) {
           const currentPOV = globeEl.current.pointOfView();
@@ -254,6 +261,12 @@ export default function WorldMap(): React.JSX.Element {
             altitude: clampedAltitude
           }, 0);
         }
+
+        // Debounce setAltitude to avoid O(n²) re-clustering on every zoom tick.
+        if (altitudeDebounceRef.current) clearTimeout(altitudeDebounceRef.current);
+        altitudeDebounceRef.current = setTimeout(() => {
+          setAltitude(clampedAltitude);
+        }, 150);
       }
     },
     [globeMaterial, isAnimating]
@@ -263,22 +276,20 @@ export default function WorldMap(): React.JSX.Element {
   const allPoints = useMemo(() => {
     // Build a map of flight routes for each airport IATA code
     const flightRoutesByIata = new Map();
-    routes.forEach(route => {
-      // Add to source airport
+    ENRICHED_ROUTES.forEach(route => {
       if (!flightRoutesByIata.has(route.srcIata)) {
         flightRoutesByIata.set(route.srcIata, []);
       }
       flightRoutesByIata.get(route.srcIata).push(route.dstIata);
-      
-      // Add to destination airport (bidirectional)
+
       if (!flightRoutesByIata.has(route.dstIata)) {
         flightRoutesByIata.set(route.dstIata, []);
       }
       flightRoutesByIata.get(route.dstIata).push(route.srcIata);
     });
-    
-    const airportPoints = airports.map(a => ({ 
-      ...a, 
+
+    const airportPoints = FILTERED_AIRPORTS.map(a => ({
+      ...a,
       type: 'airport',
       flightRoutes: flightRoutesByIata.get(a.iata) || []
     }));
@@ -292,7 +303,7 @@ export default function WorldMap(): React.JSX.Element {
       let foundOverlap = false;
       trainPoints.forEach((train, idx) => {
         if (usedTrainIndices.has(idx)) return;
-        
+
         const latDiff = Math.abs(parseFloat(airport.lat) - parseFloat(String(train.lat)));
         const lngDiff = Math.abs(parseFloat(airport.lng) - parseFloat(String(train.lng)));
 
@@ -308,7 +319,7 @@ export default function WorldMap(): React.JSX.Element {
           foundOverlap = true;
         }
       });
-      
+
       if (!foundOverlap) {
         mergedPoints.push(airport);
       }
@@ -323,7 +334,7 @@ export default function WorldMap(): React.JSX.Element {
 
     // Apply clustering based on altitude
     return clusterPoints(mergedPoints, altitude);
-  }, [airports, trainStations, routes, altitude]);
+  }, [trainStations, altitude]); // airports/routes are module-level constants
 
   const getIndicatorPosition = (): number => {
     const positions: Record<TimeMode, number> = {
@@ -341,12 +352,12 @@ export default function WorldMap(): React.JSX.Element {
       {/* Globe Container - Always Centered */}
       <div className="absolute inset-0 flex items-center justify-center">
         {globeMaterial ? (
-          <motion.div 
-            className="w-full h-full" 
+          <motion.div
+            className="w-full h-full"
             key={`${dimensions.width}-${dimensions.height}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ 
+            transition={{
               duration: 1.2,
               ease: "easeOut"
             }}
@@ -356,9 +367,9 @@ export default function WorldMap(): React.JSX.Element {
               globeMaterial={globeMaterial}
               backgroundImageUrl="/assets/images/sky.png"
               onZoom={handleZoom}
-              
+
               // Flight routes as arcs - conditionally shown
-              arcsData={showFlightRoutes ? routes : []}
+              arcsData={showFlightRoutes ? ENRICHED_ROUTES : []}
               arcLabel={(d: Route) => `${d.srcIata} ↔ ${d.dstIata}`}
               arcStartLat={(d: Route) => +d.srcAirport!.lat}
               arcStartLng={(d: Route) => +d.srcAirport!.lng}
@@ -369,7 +380,7 @@ export default function WorldMap(): React.JSX.Element {
                 `rgba(255, 255, 255, ${ROUTE_ARC_OPACITY})`,
               ]}
               arcsTransitionDuration={0}
-              
+
               // All points (airports + train stations + clusters)
               pointsData={allPoints}
               pointLabel={(d: PointData) => {
@@ -378,7 +389,7 @@ export default function WorldMap(): React.JSX.Element {
                   const locations = (d.names || []).join(', ');
                   const moreText = d.clusterSize && d.names && d.clusterSize > d.names.length ? ` ${t('world.tooltipMore', { count: d.clusterSize - d.names.length })}` : '';
                   let typeText = '';
-                  
+
                   if (d.type === 'cluster-both') {
                     typeText = t('world.tooltipAirportsAndTrains', { airportCount: d.airportCount ?? 0, trainCount: d.trainCount ?? 0 });
                   } else if (d.type === 'cluster-airport') {
@@ -401,7 +412,7 @@ export default function WorldMap(): React.JSX.Element {
                     ${flightInfo}${trainInfo}
                   </div>`;
                 }
-                
+
                 // Regular point labels
                 if (d.type === 'overlap') {
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
@@ -435,17 +446,17 @@ export default function WorldMap(): React.JSX.Element {
               pointAltitude={0.001}
               pointRadius={(d: PointData) => {
                 const baseRadius = altitude > 1 ? 0.5 : 0.15;
-                
+
                 // Make clusters larger based on size
                 if (d.type?.startsWith('cluster')) {
                   return baseRadius * (1 + Math.log10(d.clusterSize || 1) * 0.5);
                 }
-                
+
                 return baseRadius;
               }}
               pointsTransitionDuration={300}
               pointsMerge={false}
-              
+
               // Train routes as paths - conditionally shown
               pathsData={showTrainRoutes ? trainPaths : []}
               pathPoints="coords"
@@ -457,7 +468,7 @@ export default function WorldMap(): React.JSX.Element {
               pathDashLength={1}
               pathDashGap={0}
               pathTransitionDuration={0}
-              
+
               width={dimensions.width}
               height={dimensions.height}
             />
@@ -472,32 +483,32 @@ export default function WorldMap(): React.JSX.Element {
       </div>
 
       {/* Time Display - Fixed to Bottom Left */}
-      <motion.div 
+      <motion.div
         className="fixed left-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
-        style={{ 
+        style={{
           bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
           left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
         }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : 20 }}
-        transition={{ 
+        transition={{
           duration: 0.8,
           delay: 0.3,
           ease: "easeOut"
         }}
       >
-        {new Date(dt).toLocaleString()}
+        {new Date(displayDt).toLocaleString()}
       </motion.div>
 
-      <motion.div 
-        className="fixed right-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10" 
-        style={{ 
+      <motion.div
+        className="fixed right-4 bottom-4 text-sky-300 font-mono text-sm sm:text-base bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10"
+        style={{
           bottom: 'max(1rem, calc(env(safe-area-inset-bottom) + 1rem))',
           right: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
         }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : 20 }}
-        transition={{ 
+        transition={{
           duration: 0.8,
           delay: 0.5,
           ease: "easeOut"
@@ -563,13 +574,13 @@ export default function WorldMap(): React.JSX.Element {
       {/* Legend */}
       <motion.div
         className="fixed left-4 top-20 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
-        style={{ 
+        style={{
           //top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
           //left: 'max(1rem, calc(env(safe-area-inset-left) + 1rem))'
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : -20 }}
-        transition={{ 
+        transition={{
           duration: 0.8,
           delay: 0.5,
           ease: "easeOut"
@@ -606,13 +617,13 @@ export default function WorldMap(): React.JSX.Element {
       {/* Zoom Level Indicator */}
       <motion.div
         className="fixed right-4 top-20 text-white font-mono text-xs bg-black/50 px-3 py-2 rounded backdrop-blur-sm z-10 hidden md:block"
-        style={{ 
+        style={{
           //top: 'max(1rem, calc(env(safe-area-inset-top) + 1rem))',
           //right: 'max(1rem, calc(env(safe-area-inset-right) + 1rem))'
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: globeMaterial ? 1 : 0, y: globeMaterial ? 0 : -20 }}
-        transition={{ 
+        transition={{
           duration: 0.8,
           delay: 0.7,
           ease: "easeOut"
@@ -627,20 +638,20 @@ export default function WorldMap(): React.JSX.Element {
              altitude < 3 ? t('world.clusterHeavy') :
              t('world.clusterMax')}
           </div>
-          
+
           {/* Route Toggle Controls */}
           <div className="border-t border-gray-600 pt-2 mt-1 flex flex-col gap-2 ">
             <button
               onClick={() => setShowFlightRoutes(!showFlightRoutes)}
               className="flex items-center gap-2 px-2 py-1 rounded transition-colors hover:bg-white/10"
-              style={{ 
+              style={{
                 backgroundColor: showFlightRoutes ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                 opacity: showFlightRoutes ? 1 : 0.5
               }}
             >
-              <Icon 
-                icon={showFlightRoutes ? "mdi:airplane" : "mdi:airplane-off"} 
-                className="text-base" 
+              <Icon
+                icon={showFlightRoutes ? "mdi:airplane" : "mdi:airplane-off"}
+                className="text-base"
               />
               <span className="text-xs">{t('world.toggleFlightRoutes')}</span>
             </button>

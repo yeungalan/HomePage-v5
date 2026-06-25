@@ -10,6 +10,7 @@ import { RealFooter } from "@/components/FooterLinks";
 import { Icon } from '@iconify/react';
 import { useTranslation } from "@/i18n";
 import { INFRASTRUCTURE_CONFIG } from "@/data/infrastructure";
+import { FLOWGRAPH_DEFAULTS } from "@/constants/colors";
 
 const NodeDetailPanel: FC<{ node: Service }> = ({ node }) => (
   <motion.div
@@ -23,9 +24,9 @@ const NodeDetailPanel: FC<{ node: Service }> = ({ node }) => (
         {node.icon && (
           <div
             className="rounded-lg p-3 flex items-center justify-center"
-            style={{ backgroundColor: node.iconBg ?? '#f3f4f6' }}
+            style={{ backgroundColor: node.iconBg ?? FLOWGRAPH_DEFAULTS.iconBg }}
           >
-            <Icon icon={node.icon} width="32" height="32" style={{ color: node.iconColor ?? '#6b7280' }} />
+            <Icon icon={node.icon} width="32" height="32" style={{ color: node.iconColor ?? FLOWGRAPH_DEFAULTS.iconColor }} />
           </div>
         )}
         <div>

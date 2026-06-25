@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react';
 import { getAirportByIata, type AirportInfo as Airport } from '@/data/airports';
 import { haversineDistance } from '@/lib/worldUtils';
 import { useTranslation } from '@/i18n';
+import { FLIGHT_CRUISE_SPEED_KMH, FLIGHT_TIME_BUFFER_HRS } from '@/constants/flight';
 
 export type { Airport };
 
@@ -58,7 +59,7 @@ export const FlightCalculator: React.FC = () => {
     if (srcAirport && dstAirport) {
       const dist = haversineDistance(srcAirport.lat, srcAirport.lon, dstAirport.lat, dstAirport.lon);
       setDistance(dist);
-      setDuration(dist / 800 + 0.5); // 800 km/h + 0.5 hr buffer
+      setDuration(dist / FLIGHT_CRUISE_SPEED_KMH + FLIGHT_TIME_BUFFER_HRS);
       setProgress(0);
       setElapsedTime(0);
       setIsFlying(true);

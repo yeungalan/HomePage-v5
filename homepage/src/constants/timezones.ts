@@ -2,6 +2,10 @@
  * Timezone display configuration for the goals page
  * Coordinates from airport ICAO codes
  */
+
+/** UTC offset for Japan Standard Time (JST = UTC+9) in milliseconds. */
+export const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
 export const TIMEZONES = [
   { label: 'Hong Kong', tz: 'Asia/Hong_Kong', lat: 22.308901, lng: 113.915001 },     // VHHH
   { label: 'Tokyo', tz: 'Asia/Tokyo', lat: 35.552299, lng: 139.779999 },              // RJTT

@@ -94,6 +94,23 @@ export const jaJP: Messages = {
     tooltipAirportsAndTrains: '{{airportCount}} 空港 & {{trainCount}} 鉄道/バス停',
     tooltipMore: 'あと{{count}}件',
   },
+  activity: {
+    present: '現在',
+    current: '在籍中',
+  },
+  author: {
+    fallbackTitle: '著者について',
+    fallbackCaption: 'こんにちは！私は情熱的な開発者・ライターとして、思考や経験を共有しています。新しい技術の探求、クリエイティブなプロジェクトの構築、そして旅の記録が大好きです。',
+    fallbackHobby: 'コーディングをしていない時は、読書、新しいアイデアの実験、またはオープンソースプロジェクトへの貢献をしています。ぜひ繋がりましょう！',
+  },
+  post: {
+    noteInfo: 'ノート情報',
+    category: 'カテゴリ',
+    topic: 'トピック',
+    tags: 'タグ',
+    id: 'ID：',
+    tableOfContents: '目次',
+  },
   time: {
     justNow: 'たった今',
     secondAgo: '{{count}} 秒前',

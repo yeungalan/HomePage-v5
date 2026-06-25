@@ -1,16 +1,17 @@
 import type { Metadata } from 'next'
 import type { PropsWithChildren } from 'react'
+import { SITE_CONFIG } from '@/constants/site'
 
 import { NormalContainer } from '@/components/NormalContainer'
 import { RealFooter } from '@/components/FooterLinks'
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'Projects and things Alan Yeung has built and worked on.',
+  description: `Projects and things ${SITE_CONFIG.author.name} has built and worked on.`,
   alternates: { canonical: '/projects' },
   openGraph: {
     title: 'Projects',
-    description: 'Projects and things Alan Yeung has built and worked on.',
+    description: `Projects and things ${SITE_CONFIG.author.name} has built and worked on.`,
     url: '/projects',
   },
 }

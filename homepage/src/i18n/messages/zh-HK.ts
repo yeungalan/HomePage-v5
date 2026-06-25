@@ -94,6 +94,23 @@ export const zhHK: Messages = {
     tooltipAirportsAndTrains: '{{airportCount}} 個機場 & {{trainCount}} 個火車/汽車站',
     tooltipMore: '還有 {{count}} 個',
   },
+  activity: {
+    present: '至今',
+    current: '現職',
+  },
+  author: {
+    fallbackTitle: '關於作者',
+    fallbackCaption: '你好！我是一個充滿熱情的開發者與寫作者，喜歡分享想法與經歷。我熱愛探索新技術、建立創意項目，並記錄自己的成長旅程。',
+    fallbackHobby: '不在寫程式的時候，你可以找到我在閱讀、嘗試新想法，或為開源項目作出貢獻。歡迎與我聯繫！',
+  },
+  post: {
+    noteInfo: '筆記資訊',
+    category: '分類',
+    topic: '主題',
+    tags: '標籤',
+    id: 'ID：',
+    tableOfContents: '目錄',
+  },
   time: {
     justNow: '剛剛',
     secondAgo: '{{count}} 秒前',

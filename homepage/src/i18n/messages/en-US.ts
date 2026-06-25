@@ -111,6 +111,28 @@ export const enUS = {
     placeholder: 'Enter both airport codes to calculate flight distance',
     completed: '✈️ Flight completed! You\'ve arrived at {{city}}!',
   },
+  activity: {
+    /** Shown in the date range of an ongoing experience, e.g. "Sept 2024 - Present". */
+    present: 'Present',
+    /** Badge label for the currently active experience. */
+    current: 'Current',
+  },
+  author: {
+    /** Sidebar/section heading when a post has no category defined. */
+    fallbackTitle: 'About the Author',
+    /** Generic bio shown when a post category provides no caption. */
+    fallbackCaption: "Hi! I'm a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey.",
+    /** Second paragraph shown alongside the generic bio. */
+    fallbackHobby: "When I'm not coding, you can find me reading, experimenting with new ideas, or contributing to open-source projects. Feel free to connect with me!",
+  },
+  post: {
+    noteInfo: 'Note Info',
+    category: 'Category',
+    topic: 'Topic',
+    tags: 'Tags',
+    id: 'ID:',
+    tableOfContents: 'Table of Contents',
+  },
   time: {
     justNow: 'Just now',
     secondAgo: '{{count}} second ago',

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { TocItem as TocItemType } from '../types'
 import { TocItem } from './TocItem'
+import { useTranslation } from '@/i18n'
 
 export const TableOfContents: React.FC = () => {
+  const t = useTranslation()
   const [headings, setHeadings] = useState<TocItemType[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [activeIndex, setActiveIndex] = useState<number>(-1)
@@ -233,7 +235,7 @@ export const TableOfContents: React.FC = () => {
   return (
     <div className="space-y-2 max-w-[200px]">
       <h3 className="font-semibold text-gray-900 mb-3 text-xs dark:text-white">
-        Table of Contents
+        {t('post.tableOfContents')}
       </h3>
       <div
         ref={scrollContainerRef}

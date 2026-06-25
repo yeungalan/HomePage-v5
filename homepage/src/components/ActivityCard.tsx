@@ -3,6 +3,7 @@
 import clsx from 'clsx'
 import { Icon } from '@iconify/react'
 import { BRAND_COLORS } from '@/constants/colors'
+import { useTranslation } from '@/i18n'
 
 const iconClassName = `rounded-full border shrink-0 text-base center inline-flex size-[32px] bg-white dark:bg-zinc-900`
 
@@ -16,12 +17,6 @@ interface ActivityCardProps {
   isOngoing?: boolean
 }
 
-const formatDateRange = (start: string, end: string, isOngoing?: boolean) => {
-  if (isOngoing) return `${start} - Present`
-  if (start === end) return start
-  return `${start} - ${end}`
-}
-
 export const ActivityCard = ({
   title,
   organization,
@@ -29,32 +24,42 @@ export const ActivityCard = ({
   endDate,
   icon,
   isOngoing,
-}: ActivityCardProps) => (
-  <div className="pb-8 text-base w-full">
-    <div className="flex gap-4 items-start w-full">
-      <div
-        className={clsx(iconClassName, 'flex-shrink-0')}
-        style={{ borderColor: BRAND_COLORS.primary, color: BRAND_COLORS.primary }}
-      >
-        <Icon icon={icon} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-base text-zinc-800 space-y-1 dark:text-white">
-          <div className="font-medium">{title}</div>
-          {organization && (
-            <div className="text-sm text-zinc-600 dark:text-white">{organization}</div>
-          )}
-          <div className="text-sm text-zinc-500 dark:text-white">
-            {formatDateRange(startDate, endDate, isOngoing)}
-          </div>
-          {isOngoing && (
-            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              Current
+}: ActivityCardProps) => {
+  const t = useTranslation()
+
+  const formatDateRange = (start: string, end: string, ongoing?: boolean) => {
+    if (ongoing) return `${start} - ${t('activity.present')}`
+    if (start === end) return start
+    return `${start} - ${end}`
+  }
+
+  return (
+    <div className="pb-8 text-base w-full">
+      <div className="flex gap-4 items-start w-full">
+        <div
+          className={clsx(iconClassName, 'flex-shrink-0')}
+          style={{ borderColor: BRAND_COLORS.primary, color: BRAND_COLORS.primary }}
+        >
+          <Icon icon={icon} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-base text-zinc-800 space-y-1 dark:text-white">
+            <div className="font-medium">{title}</div>
+            {organization && (
+              <div className="text-sm text-zinc-600 dark:text-white">{organization}</div>
+            )}
+            <div className="text-sm text-zinc-500 dark:text-white">
+              {formatDateRange(startDate, endDate, isOngoing)}
             </div>
-          )}
+            {isOngoing && (
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                {t('activity.current')}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}

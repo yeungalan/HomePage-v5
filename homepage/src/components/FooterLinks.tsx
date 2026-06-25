@@ -6,51 +6,15 @@ import { ThemeSwitcher } from './ThemeSwitcher'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { useTranslation } from '@/i18n'
 import Link from 'next/link'
+import { FOOTER_CONFIG } from '@/data/footer'
+import { JST_OFFSET_MS } from '@/constants/timezones'
+import { SITE_CONFIG } from '@/constants/site'
 
 type Component<P = object> = FunctionComponent<{
   className?: string
 } & {
   children?: ReactNode | undefined
 } & P>
-
-// Footer configuration
-const footerConfig = {
-  linkSections: [
-    {
-      name: 'About',
-      nameKey: 'footer.sectionAbout',
-      links: [
-        { name: 'Me', href: '/posts/aboutme_en', external: false },
-        { name: '我', href: '/posts/aboutme', external: false },
-        { name: '自己紹介', href: '/posts/aboutme_ja', external: false },
-      ],
-    },
-    {
-      name: 'Socials',
-      nameKey: 'footer.sectionSocials',
-      links: [
-        { name: 'GitHub', href: 'https://github.com/yeungalan', external: true },
-        { name: 'Twitter', href: 'https://twitter.com/yeungbluecat123', external: true },
-      ],
-    },
-    {
-      name: 'More',
-      nameKey: 'footer.sectionMore',
-      links: [
-        { name: 'Friends', nameKey: 'footer.moreFriends', href: '/friends', external: false },
-        { name: 'Projects', nameKey: 'footer.moreProjects', href: '/projects', external: false },
-        { name: 'Status monitor', nameKey: 'footer.moreStatusMonitor', href: 'https://stats.uptimerobot.com/JKvyVhBqBO', external: true },
-      ],
-    },
-  ],
-  otherInfo: {
-    date: '2016-{{now}}',
-    icp: {
-      textKey: 'footer.initiative',
-      link: '#',
-    },
-  },
-}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -59,9 +23,8 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 // the server and client render an identical string (no hydration mismatch)
 // regardless of the runtime's local timezone. Fall back to a fixed date if the
 // value is ever unavailable.
-const JST_OFFSET_MS = 9 * 60 * 60 * 1000
 const getRevisionDate = (): string => {
-  const fallback = '2026 Jun 22'
+  const fallback = SITE_CONFIG.buildDateFallback
   const iso = process.env.NEXT_PUBLIC_BUILD_DATE
   if (!iso) return fallback
   const d = new Date(iso)
@@ -93,7 +56,7 @@ const FooterLinkSection = () => {
   const t = useTranslation()
   return (
     <div className="space-x-0 space-y-3 md:space-x-6 md:space-y-0">
-      {footerConfig.linkSections.map((section) => {
+      {FOOTER_CONFIG.linkSections.map((section) => {
         return (
           <div
             className="flex items-center gap-4 md:inline-flex"
@@ -161,7 +124,7 @@ const PoweredBy: Component = ({ className }) => {
 
 const FooterBottom = () => {
   const t = useTranslation()
-  const { otherInfo } = footerConfig
+  const { otherInfo } = FOOTER_CONFIG
   const currentYear = new Date().getFullYear().toString()
   const { date = currentYear, icp } = otherInfo || {}
 

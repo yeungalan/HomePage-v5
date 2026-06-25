@@ -110,7 +110,7 @@ export default function RootLayout({
         name: SITE_CONFIG.author.name,
         url: SITE_CONFIG.url,
         image: `${SITE_CONFIG.url}${SITE_CONFIG.ogImage}`,
-        jobTitle: "Cloud Security Engineer",
+        jobTitle: SITE_CONFIG.author.jobTitle,
         sameAs: [SITE_CONFIG.author.github, SITE_CONFIG.author.linkedin],
       },
       {
@@ -126,7 +126,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={SITE_CONFIG.defaultLang} suppressHydrationWarning>
       <body
         className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >
@@ -151,7 +151,7 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights/>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-5W3MDW6YSY"
+          src={`https://www.googletagmanager.com/gtag/js?id=${SITE_CONFIG.googleAnalyticsId}`}
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -159,7 +159,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-5W3MDW6YSY');
+            gtag('config', '${SITE_CONFIG.googleAnalyticsId}');
           `}
         </Script>
       </body>

@@ -1,8 +1,10 @@
 import React from 'react'
 import { useCurrentNoteDataSelector } from '../hooks/useCurrentNoteData'
 import { Avatar } from '../../Avatar'
+import { useTranslation } from '@/i18n'
 
 export const AuthorIntroduction: React.FC = () => {
+  const t = useTranslation()
   const category = useCurrentNoteDataSelector(data => data?.data.category)
 
   return (
@@ -38,17 +40,14 @@ export const AuthorIntroduction: React.FC = () => {
         {/* Author/Category Info */}
         <div className="flex-1">
           <h3 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">
-            {category?.name || 'About the Author'}
+            {category?.name || t('author.fallbackTitle')}
           </h3>
           <p className="text-base text-gray-600 mb-3 leading-relaxed dark:text-white">
-            {category?.caption ||
-              "Hi! I'm a passionate developer and writer sharing my thoughts and experiences. I love exploring new technologies, building creative projects, and documenting my journey."}
+            {category?.caption || t('author.fallbackCaption')}
           </p>
           {!category?.caption && (
             <p className="text-base text-gray-600 mb-4 leading-relaxed">
-              When I&apos;m not coding, you can find me reading, experimenting with new
-              ideas, or contributing to open-source projects. Feel free to connect
-              with me!
+              {t('author.fallbackHobby')}
             </p>
           )}
         </div>

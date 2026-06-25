@@ -4,6 +4,8 @@
 
 import * as dagre from 'dagre';
 import type { Node } from '@xyflow/react';
+import { UI_COLORS, TIER_COLORS } from '@/constants/colors';
+import { EDGE_STYLES } from '@/constants/spacing';
 
 interface Service {
   serviceId: string;
@@ -45,21 +47,24 @@ interface FlowNodeData {
   isSelected?: boolean;
 }
 
+/** Default edge label when a connection has no explicit latency annotation. */
+const DEFAULT_EDGE_LABEL = '1-5ms';
+
 /**
- * Default service type configurations
+ * Default service type configurations — colours come from TIER_COLORS in colors.ts.
  */
 export const serviceTypeDefaults: Record<string, ServiceTypeDefaults> = {
-  web: { icon: 'mdi:web', iconBg: '#dbeafe', iconColor: '#2563eb', tier: 'presentation' },
-  mobile: { icon: 'mdi:cellphone', iconBg: '#dbeafe', iconColor: '#2563eb', tier: 'presentation' },
+  web: { icon: 'mdi:web', iconBg: TIER_COLORS.presentation.bg, iconColor: TIER_COLORS.presentation.primary, tier: 'presentation' },
+  mobile: { icon: 'mdi:cellphone', iconBg: TIER_COLORS.presentation.bg, iconColor: TIER_COLORS.presentation.primary, tier: 'presentation' },
   loadbalancer: {
     icon: 'mdi:scale-balance',
-    iconBg: '#fed7aa',
-    iconColor: '#ea580c',
+    iconBg: TIER_COLORS.application.bg,
+    iconColor: TIER_COLORS.application.primary,
     tier: 'application',
   },
-  server: { icon: 'mdi:server', iconBg: '#fed7aa', iconColor: '#ea580c', tier: 'application' },
-  database: { icon: 'mdi:database', iconBg: '#e9d5ff', iconColor: '#9333ea', tier: 'data' },
-  cache: { icon: 'mdi:database-clock', iconBg: '#e9d5ff', iconColor: '#9333ea', tier: 'data' },
+  server: { icon: 'mdi:server', iconBg: TIER_COLORS.application.bg, iconColor: TIER_COLORS.application.primary, tier: 'application' },
+  database: { icon: 'mdi:database', iconBg: TIER_COLORS.data.bg, iconColor: TIER_COLORS.data.primary, tier: 'data' },
+  cache: { icon: 'mdi:database-clock', iconBg: TIER_COLORS.data.bg, iconColor: TIER_COLORS.data.primary, tier: 'data' },
 };
 
 /**
@@ -165,16 +170,16 @@ export function configToFlow(config: FlowGraphConfig) {
       source,
       target,
       type: 'custom',
-      label: conn[2] || '1-5ms',
+      label: conn[2] || DEFAULT_EDGE_LABEL,
       animated: true,
       style: {
-        stroke: isDatabaseReplication ? '#a78bfa' : '#94a3b8',
-        strokeWidth: 2,
-        strokeDasharray: '8,8',
+        stroke: isDatabaseReplication ? UI_COLORS.purple[400] : UI_COLORS.slate[400],
+        strokeWidth: EDGE_STYLES.STROKE_WIDTH,
+        strokeDasharray: EDGE_STYLES.DASH_ARRAY,
         zIndex: 0,
       },
       labelStyle: {
-        fill: isDatabaseReplication ? '#7c3aed' : '#475569',
+        fill: isDatabaseReplication ? UI_COLORS.purple[600] : UI_COLORS.slate[600],
         fontWeight: 600,
         fontSize: 11,
         zIndex: 5,

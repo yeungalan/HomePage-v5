@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.8",
@@ -59,8 +62,10 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "cypress": "^14.5.4",
     "eslint": "^9.39.4",
     "eslint-config-next": "15.5.5",
+    "start-server-and-test": "^2.0.13",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3"
   }

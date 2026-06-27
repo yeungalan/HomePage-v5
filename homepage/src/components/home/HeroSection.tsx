@@ -11,13 +11,13 @@ import GiantGreetText, { GiantGreetTextTemplate } from '@/components/greet-text/
 import { isSupportIcon, SocialIcon } from '@/components/SocialIcon';
 import { softBouncePreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
-import { useTranslation } from '@/i18n';
-import { QUOTES, getDifferentQuoteIndex, getRandomQuoteIndex } from '@/data/quotes';
+import { useI18n } from '@/i18n';
+import { QUOTES_BY_LOCALE, getDifferentQuoteIndex, getRandomQuoteIndex } from '@/data/quotes';
 import { getSocialLinksArray } from '@/data/social';
 import { ANIMATION_DELAYS, ANIMATION_DURATIONS, calculateStaggerDelay } from '@/constants/timing';
 
 export const HeroSection: React.FC = () => {
-  const t = useTranslation();
+  const { t, locale } = useI18n();
   const titleAnimateD =
     GiantGreetTextTemplate.reduce((acc, cur) => {
       return acc + (cur.text?.length || 0);
@@ -96,7 +96,7 @@ export const HeroSection: React.FC = () => {
                 }}
                 className="text-center origin-center"
               >
-                {QUOTES[quoteIndex]}
+                {QUOTES_BY_LOCALE[locale][quoteIndex]}
               </motion.small>
               <button
                 onClick={handleRefreshQuote}

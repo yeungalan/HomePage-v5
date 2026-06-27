@@ -186,17 +186,8 @@
   }
 
   .shiro-timeline > li:last-child::before {
+    bottom: 50%;
     top: 0;
-    bottom: 0;
-    left: -20px;
-    width: 2px;
-    border-left: none;
-    /* solid top half, dotted bottom half — mirrors the experience timeline tail.
-       background-position uses 0 0 (top) for the solid strip and 0 100% (bottom)
-       for the dotted strip so each 50%-height image occupies its correct half. */
-    background:
-      linear-gradient(#33A6B8, #33A6B8) 0 0 / 2px 50% no-repeat,
-      repeating-linear-gradient(to bottom, #33A6B8 0, #33A6B8 4px, transparent 4px, transparent 8px) 0 100% / 2px 50% no-repeat;
   }
 
   .shiro-timeline > li {

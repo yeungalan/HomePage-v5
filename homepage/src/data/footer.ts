@@ -12,6 +12,8 @@ export interface FooterLinkItem {
   nameKey?: string;
   href: string;
   external: boolean;
+  /** When set, only show this link for these locales. */
+  locales?: string[];
 }
 
 export interface FooterLinkSection {
@@ -40,9 +42,9 @@ export const FOOTER_CONFIG: FooterConfig = {
       name: 'About',
       nameKey: 'footer.sectionAbout',
       links: [
-        { name: 'Me', href: '/posts/aboutme_en', external: false },
-        { name: '我', href: '/posts/aboutme', external: false },
-        { name: '自己紹介', href: '/posts/aboutme_ja', external: false },
+        { name: 'Me', href: '/posts/aboutme_en', external: false, locales: ['en-US'] },
+        { name: '我', href: '/posts/aboutme', external: false, locales: ['zh-HK'] },
+        { name: '自己紹介', href: '/posts/aboutme_ja', external: false, locales: ['ja-JP'] },
       ],
     },
     {

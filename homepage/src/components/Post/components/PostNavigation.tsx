@@ -17,7 +17,7 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
   return (
     <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
       <div className="grid grid-cols-2 gap-4">
-        {/* Newer post (prev in date-desc list) */}
+        {/* Older post — Previous (←) */}
         <div className="col-start-1">
           {prevPost ? (
             <Link
@@ -28,7 +28,7 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
             >
               <span className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 group-hover:text-blue-500">
                 <Icon icon="mdi:arrow-left" />
-                Newer
+                Previous
               </span>
               <span className="text-sm font-medium text-gray-800 dark:text-gray-200 line-clamp-2">
                 {prevPost.title}
@@ -39,7 +39,7 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
           )}
         </div>
 
-        {/* Older post (next in date-desc list) */}
+        {/* Newer post — Next (→) */}
         <div className="col-start-2">
           {nextPost ? (
             <Link
@@ -49,7 +49,7 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
                 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors text-right"
             >
               <span className="flex items-center justify-end gap-1.5 text-xs text-gray-500 dark:text-gray-400 group-hover:text-blue-500">
-                Older
+                Next
                 <Icon icon="mdi:arrow-right" />
               </span>
               <span className="text-sm font-medium text-gray-800 dark:text-gray-200 line-clamp-2">

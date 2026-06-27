@@ -97,13 +97,14 @@ export default async function PostPage({ params }: PageProps) {
   // Parse language from slug
   const { baseSlug, language: currentLanguage } = parseSlugLanguage(slug);
 
-  // Find adjacent posts (allPosts is sorted newest-first)
+  // Find adjacent posts (allPosts is sorted newest-first).
+  // prevPost = chronologically older (← left), nextPost = chronologically newer (→ right).
   const currentIndex = allPosts.findIndex((p) => p.baseSlug === baseSlug);
-  const prevPost = currentIndex > 0
-    ? { slug: allPosts[currentIndex - 1].slug, title: allPosts[currentIndex - 1].title }
-    : null;
-  const nextPost = currentIndex !== -1 && currentIndex < allPosts.length - 1
+  const prevPost = currentIndex !== -1 && currentIndex < allPosts.length - 1
     ? { slug: allPosts[currentIndex + 1].slug, title: allPosts[currentIndex + 1].title }
+    : null;
+  const nextPost = currentIndex > 0
+    ? { slug: allPosts[currentIndex - 1].slug, title: allPosts[currentIndex - 1].title }
     : null;
 
   const articleStructuredData = {

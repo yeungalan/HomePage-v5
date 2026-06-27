@@ -6,7 +6,6 @@ EDITED_DATE=2026-04-12T00:00:00Z
 TAG=日本留學,銀行開戶,郵貯銀行,ATM,通帳
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 04 | 日本留學記 #4：在日本開設銀行戶口

@@ -18,21 +18,16 @@ export const AuthorIntroduction: React.FC = () => {
               imageUrl={category.avatar}
               lazy
               radius={8}
-              text={category.name}
+              text={category.name[0]?.toUpperCase()}
               alt={`Avatar of ${category.name}`}
               size={64}
               className="ring-2 ring-gray-400/30 dark:ring-zinc-50"
             />
           ) : (
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-              {/* Placeholder avatar */}
-              <svg
-                className="w-16 h-16 md:w-20 md:h-20 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-              </svg>
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center ring-2 ring-gray-400/30 dark:ring-zinc-50">
+              <span className="text-2xl font-bold select-none">
+                {category?.name?.[0]?.toUpperCase() ?? '?'}
+              </span>
             </div>
           )}
         </div>

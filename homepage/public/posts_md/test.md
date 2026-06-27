@@ -6,7 +6,6 @@ EDITED_DATE=2025-01-22T15:30:00Z
 TAG=React, JavaScript, Frontend, Tutorial
 CATEGORY=Web Development
 CATEGORY_CAPTION=Building modern web applications with React
-CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 ### AUTOMATE FIELD END
 
 # Testing Post 2

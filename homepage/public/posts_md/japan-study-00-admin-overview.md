@@ -6,7 +6,6 @@ EDITED_DATE=2026-04-05T00:00:00Z
 TAG=日本留學,行政手續,留學生活,流程總覽
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 00 | 日本留學記 #0：來日本之後要做的事——行政手續完整流程總覽

@@ -6,7 +6,6 @@ EDITED_DATE=2026-05-08T00:00:00Z
 TAG=日本留學,入管局,資格外活動許可,打工
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 07 | 日本留學記 #7：出入國在留管理局——資格外活動許可申請

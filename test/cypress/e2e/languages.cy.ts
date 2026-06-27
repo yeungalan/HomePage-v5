@@ -69,6 +69,7 @@ describe('Multi-language display', () => {
     })
 
     cy.contains('Quick links').should('be.visible')
+    cy.revealFooter()
 
     // Open the switcher and pick Japanese.
     cy.get('button[aria-haspopup="listbox"]').click()

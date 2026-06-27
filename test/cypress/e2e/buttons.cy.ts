@@ -40,8 +40,11 @@ describe('Interactive controls are clickable', () => {
 
     subTargets.forEach(({ label, path }) => {
       cy.visit('/')
-      // Hovering the "More" item reveals the submenu popover.
-      cy.contains('More').filter(':visible').first().trigger('mouseenter')
+      // Hovering the "More" item reveals the submenu popover. The onMouseEnter
+      // handler lives on an ancestor div and React derives "enter" from the
+      // native (bubbling) mouseover event, so trigger mouseover rather than
+      // mouseenter (which does not bubble).
+      cy.contains('More').filter(':visible').first().trigger('mouseover')
       cy.contains('a', label).filter(':visible').first().click()
       cy.location('pathname').should('eq', path)
     })
@@ -49,6 +52,7 @@ describe('Interactive controls are clickable', () => {
 
   it('exposes a clickable, enabled option for every language', () => {
     cy.visit('/')
+    cy.revealFooter()
 
     cy.get('button[aria-haspopup="listbox"]').should('be.enabled').click()
     cy.get('ul[role="listbox"]').should('be.visible')
@@ -60,6 +64,7 @@ describe('Interactive controls are clickable', () => {
 
   it('toggles the theme switcher buttons', () => {
     cy.visit('/')
+    cy.revealFooter()
 
     cy.get('button[aria-label="Switch to dark theme"]')
       .should('be.visible')
@@ -84,14 +89,17 @@ describe('Interactive controls are clickable', () => {
   })
 
   it('follows the footer quick links', () => {
-    const footerTargets: Array<{ label: string; path: string }> = [
-      { label: 'Post', path: '/posts' },
-      { label: 'Friends link', path: '/friends' },
+    // Exact text match so the footer "Post" link is not confused with the
+    // header "Posts" nav link (and likewise for the footer "Friends link").
+    const footerTargets: Array<{ label: RegExp; path: string }> = [
+      { label: /^Post$/, path: '/posts' },
+      { label: /^Friends link$/, path: '/friends' },
     ]
 
     footerTargets.forEach(({ label, path }) => {
       cy.visit('/')
-      cy.contains('a', label).filter(':visible').first().scrollIntoView().click()
+      cy.revealFooter()
+      cy.contains('a', label).filter(':visible').first().click()
       cy.location('pathname').should('eq', path)
     })
   })

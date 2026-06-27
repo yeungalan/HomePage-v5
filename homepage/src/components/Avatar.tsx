@@ -40,6 +40,7 @@ export const Avatar: FC<
     url,
     randomColor,
     radius,
+    className: propClassName,
     ...imageProps
   } = props
   const avatarRef = useRef<HTMLDivElement>(null)
@@ -47,7 +48,8 @@ export const Avatar: FC<
   const [loaded, setLoaded] = useState(!lazy)
   const [loadError, setLoadError] = useState(false)
 
-  const { className, ...restProps } = wrapperProps
+  const { className: wrapperClassName, ...restProps } = wrapperProps
+  const className = clsxm(propClassName, wrapperClassName)
   const colors = useMemo<ColorScheme | false>(
     () =>
       !!(text || imageUrl) &&
@@ -61,7 +63,7 @@ export const Avatar: FC<
   return (
     <div
       className={clsxm(
-        'box-border backface-hidden',
+        'box-border backface-hidden overflow-hidden',
         shadow && 'shadow-sm',
         className,
       )}
@@ -91,49 +93,23 @@ export const Avatar: FC<
             : {}),
         },
         imageUrl && !loadError ? (
-          <div
-            className={clsxm(
-              'size-full bg-cover bg-center bg-no-repeat transition-opacity duration-300',
-              className,
-            )}
-          >
-            <RadixAvatar.Root>
-              <RadixAvatar.Image
-                src={imageUrl}
-                style={{
-                  opacity: loaded ? 1 : 0,
-                  ...(radius
-                    ? {
-                        borderRadius:
-                          radius === 'full' ? '100%' : `${radius}px`,
-                      }
-                    : undefined),
-                }}
-                height={size}
-                width={size}
-                onLoad={() => setLoaded(true)}
-                onError={() => setLoadError(true)}
-                loading={lazy ? 'lazy' : 'eager'}
-                {...imageProps}
-                className={clsxm(
-                  'aspect-square duration-200',
-                  imageProps.className,
-                )}
-              />
-              <RadixAvatar.Fallback
-                delayMs={600}
-                style={{
-                  height: `${size}px`,
-                  width: `${size}px`,
-                  borderRadius: radius === 'full' ? '100%' : `${radius}px`,
-                }}
-                className={clsxm(
-                  'size-full block shrink-0',
-                  imageProps.className,
-                )}
-              />
-            </RadixAvatar.Root>
-          </div>
+          <RadixAvatar.Root className="block size-full overflow-hidden">
+            <RadixAvatar.Image
+              src={imageUrl}
+              style={{ opacity: loaded ? 1 : 0 }}
+              height={size}
+              width={size}
+              onLoad={() => setLoaded(true)}
+              onError={() => setLoadError(true)}
+              loading={lazy ? 'lazy' : 'eager'}
+              {...imageProps}
+              className="size-full object-cover duration-200"
+            />
+            <RadixAvatar.Fallback
+              delayMs={600}
+              className="size-full block shrink-0"
+            />
+          </RadixAvatar.Root>
         ) : text ? (
           <div className="relative flex size-full grow select-none items-center justify-center">
             <FlexText scale={0.5} text={text} />

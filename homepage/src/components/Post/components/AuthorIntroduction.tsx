@@ -9,7 +9,7 @@ export const AuthorIntroduction: React.FC = () => {
 
   return (
     <div className="mt-16 pt-8 border-t border-gray-200">
-      <div className="flex flex-col md:flex-row gap-6 items-start">
+      <div className="flex flex-col md:flex-row gap-6 items-center">
         {/* Author/Category Image */}
         <div className="flex-shrink-0">
           {category?.avatar ? (

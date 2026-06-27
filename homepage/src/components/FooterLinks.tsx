@@ -4,7 +4,7 @@ import { clsxm } from '@/lib/helper'
 import { FunctionComponent, ReactNode, SVGProps, useState, useRef } from 'react'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { LocaleSwitcher } from './LocaleSwitcher'
-import { useTranslation } from '@/i18n'
+import { useI18n, useTranslation } from '@/i18n'
 import Link from 'next/link'
 import { FOOTER_CONFIG } from '@/data/footer'
 import { JST_OFFSET_MS } from '@/constants/timezones'
@@ -53,7 +53,7 @@ export const FooterInfo = () => {
 }
 
 const FooterLinkSection = () => {
-  const t = useTranslation()
+  const { t, locale } = useI18n()
   return (
     <div className="space-x-0 space-y-3 md:space-x-6 md:space-y-0">
       {FOOTER_CONFIG.linkSections.map((section) => {
@@ -68,7 +68,7 @@ const FooterLinkSection = () => {
             </b>
 
             <span className="space-x-4 text-neutral-content/90">
-              {section.links.map((link) => {
+              {section.links.filter((link) => !link.locales || link.locales.includes(locale)).map((link) => {
                 return (
                   <StyledLink
                     external={link.external}

@@ -6,7 +6,6 @@ EDITED_DATE=2025-12-20T00:00:00Z
 TAG=Personal
 CATEGORY=Personal
 CATEGORY_CAPTION=Personal
-CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 ### AUTOMATE FIELD END
 
 # 2025 Year in Review: A Year of Growth and Adventure

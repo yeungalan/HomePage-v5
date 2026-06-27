@@ -6,7 +6,6 @@ EDITED_DATE=2026-05-11T00:00:00Z
 TAG=日本留學,駕駛執照,外国免許切替,江東運転免許試験場,初心免除,JAF翻譯
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 10 | 日本留學記 #10：在日本換領駕駛執照——外國駕照切替全流程

@@ -6,7 +6,6 @@ EDITED_DATE=2026-05-08T00:00:00Z
 TAG=日本留學,澀谷,轉入登記,搬家,印鑑
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 06 | 日本留學記 #6：搬遷至澀谷區——轉入手續全記錄

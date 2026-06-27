@@ -6,7 +6,6 @@ EDITED_DATE=2026-04-09T00:00:00Z
 TAG=日本留學,電話號碼,樂天移動,SIM卡
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 03 | 日本留學記 #3：在日本開設電話號碼

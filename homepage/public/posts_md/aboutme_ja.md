@@ -7,7 +7,6 @@ EDITED_DATE=2025-10-24T00:00:00Z
 TAG=About Me
 CATEGORY=個人
 CATEGORY_CAPTION=個人エッセイ
-CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https://via.placeholder.com/150/0088cc/FFFFFF?text=React)
 
 ### AUTOMATE FIELD END
 

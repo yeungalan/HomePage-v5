@@ -6,7 +6,6 @@ EDITED_DATE=2026-04-15T00:00:00Z
 TAG=日本留學,遷出,印鑑登錄,住民票,搬家
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 05 | 日本留學記 #5：遷出手續、印鑑登記與住民票申請

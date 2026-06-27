@@ -6,7 +6,6 @@ EDITED_DATE=2026-05-10T00:00:00Z
 TAG=日本留學,垃圾分類,澀谷區,可燃ごみ,資源回收,粗大ごみ
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 09 | 日本留學記 #9：日本垃圾分類完整指南——以澀谷區為例

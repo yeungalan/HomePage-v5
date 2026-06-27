@@ -6,7 +6,6 @@ EDITED_DATE=2025-11-05T07:19:00Z
 TAG=Reflective
 CATEGORY=Personal
 CATEGORY_CAPTION=Reflective
-CATEGORY_AVATAR=https://via.placeholder.com/150/0088cc/FFFFFF?text=React
 ### AUTOMATE FIELD END
 
 # My Friends Are Leaving Seattle

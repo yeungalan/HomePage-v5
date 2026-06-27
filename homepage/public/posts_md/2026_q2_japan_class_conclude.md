@@ -7,7 +7,6 @@ EDITED_DATE=2025-06-23T00:00:00Z
 TAG=Japanese
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
-CATEGORY_AVATAR=[https://via.placeholder.com/150/0088cc/FFFFFF?text=React](https://via.placeholder.com/150/0088cc/FFFFFF?text=React)
 
 ### AUTOMATE FIELD END
 

@@ -6,7 +6,6 @@ EDITED_DATE=2026-04-07T00:00:00Z
 TAG=日本留學,區役所,住址登記,健康保險,國民年金
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
-CATEGORY_AVATAR=https://via.placeholder.com/150/e60026/FFFFFF?text=日本
 ### AUTOMATE FIELD END
 
 # 02 | 日本留學記 #2：區役所轉入登記、健康保險與國民年金

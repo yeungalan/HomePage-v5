@@ -57,9 +57,16 @@ export interface LanguageData {
   availableLanguages: string[]
 }
 
+export interface AdjacentPost {
+  slug: string
+  title: string
+}
+
 export interface PostProps {
   markdownContent?: string
   baseSlug?: string
   currentLanguage?: string
   availableLanguages?: string[]
+  prevPost?: AdjacentPost | null
+  nextPost?: AdjacentPost | null
 }

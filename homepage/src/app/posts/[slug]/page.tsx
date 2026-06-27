@@ -87,7 +87,7 @@ export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
 
   // Fetch post with metadata and available languages
-  const post = await getPostBySlug(slug);
+  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getPosts()]);
 
   // If post doesn't exist, return 404
   if (!post) {
@@ -96,6 +96,15 @@ export default async function PostPage({ params }: PageProps) {
 
   // Parse language from slug
   const { baseSlug, language: currentLanguage } = parseSlugLanguage(slug);
+
+  // Find adjacent posts (allPosts is sorted newest-first)
+  const currentIndex = allPosts.findIndex((p) => p.baseSlug === baseSlug);
+  const prevPost = currentIndex > 0
+    ? { slug: allPosts[currentIndex - 1].slug, title: allPosts[currentIndex - 1].title }
+    : null;
+  const nextPost = currentIndex !== -1 && currentIndex < allPosts.length - 1
+    ? { slug: allPosts[currentIndex + 1].slug, title: allPosts[currentIndex + 1].title }
+    : null;
 
   const articleStructuredData = {
     '@context': 'https://schema.org',
@@ -135,6 +144,8 @@ export default async function PostPage({ params }: PageProps) {
         baseSlug={baseSlug}
         currentLanguage={currentLanguage}
         availableLanguages={post.availableLanguages}
+        prevPost={prevPost}
+        nextPost={nextPost}
       />
       <RealFooter />
     </div>

@@ -17,12 +17,16 @@ import { NoteMarkdown } from './components/NoteMarkdown'
 import { AuthorIntroduction } from './components/AuthorIntroduction'
 import { NoteLeftSidebar } from './components/NoteLeftSidebar'
 import { NoteRightSidebar } from './components/NoteRightSidebar'
+import { MobileLanguageDropdown } from './components/MobileLanguageDropdown'
+import { PostNavigation } from './components/PostNavigation'
 
 const Post: React.FC<PostProps> = ({
   markdownContent,
   baseSlug = '',
   currentLanguage = 'default',
-  availableLanguages = []
+  availableLanguages = [],
+  prevPost = null,
+  nextPost = null,
 }) => {
   // Use provided markdown or fall back to mock data
   const content = markdownContent || ''
@@ -133,6 +137,7 @@ const Post: React.FC<PostProps> = ({
               {/* Main Content */}
               <PaperWithMainContainer>
                 <div>
+                  <MobileLanguageDropdown />
                   <NoteTitle />
                   <span className="flex flex-wrap items-center text-sm text-gray-600 dark:text-white">
                     <div className="flex flex-col lg:flex-row items-start">
@@ -164,6 +169,9 @@ const Post: React.FC<PostProps> = ({
 
                   {/* Author Introduction */}
                   <AuthorIntroduction />
+
+                  {/* Post Navigation */}
+                  <PostNavigation prevPost={prevPost} nextPost={nextPost} />
                 </div>
               </PaperWithMainContainer>
 

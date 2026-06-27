@@ -2,6 +2,10 @@ name: Cypress E2E
 
 # Runs the Cypress end-to-end suite that checks the site renders correctly in
 # every supported language and that all interactive controls are clickable.
+#
+# The tests live in their own package under ./test so their dependencies never
+# touch the app in ./homepage. This job builds and starts the homepage app, then
+# runs Cypress (from ./test) against it.
 
 on:
   push:
@@ -13,9 +17,6 @@ jobs:
   cypress:
     name: Run Cypress tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: homepage
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,21 +26,25 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: homepage/package-lock.json
+          cache-dependency-path: |
+            homepage/package-lock.json
+            test/package-lock.json
 
-      # The project resolves with --legacy-peer-deps (a transitive dep still
-      # pins React 18 while the app uses React 19), so install explicitly here
-      # and tell the Cypress action not to install again.
-      - name: Install dependencies
+      # The homepage project resolves with --legacy-peer-deps (a transitive dep
+      # still pins React 18 while the app uses React 19).
+      - name: Install homepage dependencies
+        working-directory: homepage
         run: npm ci --legacy-peer-deps
 
-      - name: Build and run Cypress
+      - name: Build homepage
+        working-directory: homepage
+        run: npm run build
+
+      - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
-          working-directory: homepage
-          install: false
-          build: npm run build
-          start: npm run start
+          working-directory: test
+          start: npm run start:app
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 180
           browser: chrome
@@ -49,5 +54,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
-          path: homepage/cypress/screenshots
+          path: test/cypress/screenshots
           if-no-files-found: ignore

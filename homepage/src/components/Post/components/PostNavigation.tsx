@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
@@ -12,6 +16,27 @@ interface PostNavigationProps {
 }
 
 export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPost }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore when focus is inside a text input
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement).isContentEditable) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' && prevPost) {
+        router.push(`/posts/${prevPost.slug}`);
+      } else if (e.key === 'ArrowRight' && nextPost) {
+        router.push(`/posts/${nextPost.slug}`);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [prevPost, nextPost, router]);
+
   if (!prevPost && !nextPost) return null;
 
   return (

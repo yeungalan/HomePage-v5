@@ -1,0 +1,18 @@
+{
+  "name": "homepage-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cypress end-to-end tests for the homepage app. Kept in its own package so its dependencies never touch the app in ../homepage.",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "start:app": "npm --prefix ../homepage run start",
+    "e2e": "start-server-and-test start:app http://localhost:3000 cypress:run"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "cypress": "^14.5.4",
+    "start-server-and-test": "^2.0.13",
+    "typescript": "^5.9.3"
+  }
+}

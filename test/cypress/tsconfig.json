@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2019", "DOM"],
+    "types": ["cypress", "node"],
+    "isolatedModules": false,
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}

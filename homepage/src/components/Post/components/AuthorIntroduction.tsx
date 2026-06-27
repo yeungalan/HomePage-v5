@@ -24,8 +24,8 @@ export const AuthorIntroduction: React.FC = () => {
               className="ring-2 ring-gray-400/30 dark:ring-zinc-50"
             />
           ) : (
-            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center ring-2 ring-gray-400/30 dark:ring-zinc-50">
-              <span className="text-2xl font-bold text-white select-none">
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center ring-2 ring-gray-400/30 dark:ring-zinc-50">
+              <span className="text-2xl font-bold select-none">
                 {category?.name?.[0]?.toUpperCase() ?? '?'}
               </span>
             </div>

@@ -40,6 +40,7 @@ export const Avatar: FC<
     url,
     randomColor,
     radius,
+    className: propClassName,
     ...imageProps
   } = props
   const avatarRef = useRef<HTMLDivElement>(null)
@@ -47,7 +48,8 @@ export const Avatar: FC<
   const [loaded, setLoaded] = useState(!lazy)
   const [loadError, setLoadError] = useState(false)
 
-  const { className, ...restProps } = wrapperProps
+  const { className: wrapperClassName, ...restProps } = wrapperProps
+  const className = clsxm(propClassName, wrapperClassName)
   const colors = useMemo<ColorScheme | false>(
     () =>
       !!(text || imageUrl) &&
@@ -92,10 +94,7 @@ export const Avatar: FC<
         },
         imageUrl && !loadError ? (
           <div
-            className={clsxm(
-              'size-full bg-cover bg-center bg-no-repeat transition-opacity duration-300',
-              className,
-            )}
+            className="size-full bg-cover bg-center bg-no-repeat transition-opacity duration-300"
           >
             <RadixAvatar.Root>
               <RadixAvatar.Image
@@ -115,10 +114,7 @@ export const Avatar: FC<
                 onError={() => setLoadError(true)}
                 loading={lazy ? 'lazy' : 'eager'}
                 {...imageProps}
-                className={clsxm(
-                  'aspect-square duration-200',
-                  imageProps.className,
-                )}
+                className="aspect-square duration-200"
               />
               <RadixAvatar.Fallback
                 delayMs={600}
@@ -127,10 +123,7 @@ export const Avatar: FC<
                   width: `${size}px`,
                   borderRadius: radius === 'full' ? '100%' : `${radius}px`,
                 }}
-                className={clsxm(
-                  'size-full block shrink-0',
-                  imageProps.className,
-                )}
+                className="size-full block shrink-0"
               />
             </RadixAvatar.Root>
           </div>

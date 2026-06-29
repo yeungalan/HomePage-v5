@@ -44,7 +44,7 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
         <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('posts.subtitle')}</h3>
       </header>
       <motion.ul
-        className="shiro-timeline mt-4"
+        className="shiro-timeline shiro-timeline--posts mt-4"
         variants={staggerListVariants}
         initial="hidden"
         animate="show"

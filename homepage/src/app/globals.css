@@ -195,15 +195,9 @@
     position: absolute;
     left: -19px;
     top: calc(50% + 4px);
-    height: 1.5rem;
-    width: 2px;
-    background: repeating-linear-gradient(
-      to bottom,
-      #33A6B8 0,
-      #33A6B8 4px,
-      transparent 4px,
-      transparent 8px
-    );
+    height: 3.5rem;
+    width: 0;
+    border-left: 2px dotted #33A6B8;
   }
 
   .shiro-timeline > li {

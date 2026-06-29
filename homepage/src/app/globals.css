@@ -190,6 +190,16 @@
     top: 0;
   }
 
+  .shiro-timeline--posts > li:last-child > a::before {
+    content: '';
+    position: absolute;
+    left: -19px;
+    top: calc(50% + 4px);
+    height: 3.5rem;
+    width: 0;
+    border-left: 2px dotted #33A6B8;
+  }
+
   .shiro-timeline > li {
     position: relative;
     list-style-type: none;

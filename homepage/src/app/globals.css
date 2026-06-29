@@ -190,6 +190,22 @@
     top: 0;
   }
 
+  .shiro-timeline > li:last-child > a::before {
+    content: '';
+    position: absolute;
+    left: -19px;
+    top: calc(50% + 4px);
+    height: 1.5rem;
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      #33A6B8 0,
+      #33A6B8 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
   .shiro-timeline > li {
     position: relative;
     list-style-type: none;

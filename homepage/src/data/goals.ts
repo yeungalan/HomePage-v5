@@ -101,7 +101,7 @@ export const GOALS_2026: Goal[] = [
   {
     id: 'target-weight',
     title: '65-70kg weight',
-    status: 'in_progress',
+    status: 'completed',
     description: 'Achieve and maintain healthy weight between 65-70kg',
   },
   {

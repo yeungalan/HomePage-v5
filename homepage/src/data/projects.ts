@@ -52,4 +52,11 @@ export const PROJECTS_DATA: LinkEntry[] = [
     avatar: '',
     description: 'GIT HKWTC',
   },
+  {
+    id: '8',
+    name: 'Shinjuku 3D Map',
+    url: 'https://shinjuku.alanyeung.co',
+    avatar: '',
+    description: 'Interactive 3D underground map of Shinjuku station',
+  },
 ];

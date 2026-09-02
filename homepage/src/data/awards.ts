@@ -9,7 +9,7 @@ export interface Award {
 }
 
 export const AWARDS: Award[] = [
-  { id: "1", title: "(ISC)² Certified Information Systems Security Professional (CISSP)", created: "2026-09-02 00:00:00" },
+  { id: "1", title: "ISC2 Certified Information Systems Security Professional (CISSP)", created: "2026-09-02 00:00:00" },
   { id: "2", title: "Scrum.org Professional Scrum Master I", created: "2026-01-29 00:00:00" },
   { id: "3", title: "Professional Association of Diving Instructors - Open Water", created: "2025-07-28 00:00:00" },
   { id: "4", title: "Japanese-Language Proficiency Test - N5", created: "2025-01-10 00:00:00" },

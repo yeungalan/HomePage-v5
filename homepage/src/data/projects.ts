@@ -14,21 +14,21 @@ export const PROJECTS_DATA: LinkEntry[] = [
     id: '2',
     name: 's01 arozos',
     url: 'https://s01.aroz.alanyeung.co',
-    avatar: '/assets/images/imuslab.png',
+    avatar: 'https://raw.githubusercontent.com/tobychui/arozos/master/src/web/img/system/favicon.png',
     description: 's01',
   },
   {
     id: '3',
     name: 's02 arozos',
     url: 'https://s02.aroz.alanyeung.co',
-    avatar: '/assets/images/imuslab.png',
+    avatar: 'https://raw.githubusercontent.com/tobychui/arozos/master/src/web/img/system/favicon.png',
     description: 's02',
   },
   {
     id: '4',
     name: 's03 arozos',
     url: 'https://s03.aroz.alanyeung.co',
-    avatar: '/assets/images/imuslab.png',
+    avatar: 'https://raw.githubusercontent.com/tobychui/arozos/master/src/web/img/system/favicon.png',
     description: 's03',
   },
   {
@@ -49,7 +49,7 @@ export const PROJECTS_DATA: LinkEntry[] = [
     id: '7',
     name: 'HKWTC Git',
     url: 'https://git.hkwtc.org',
-    avatar: 'https://api.iconify.design/simple-icons/git.svg?color=%23F05032',
+    avatar: 'https://git.hkwtc.org/img/favicon.png',
     description: 'GIT HKWTC',
   },
   {

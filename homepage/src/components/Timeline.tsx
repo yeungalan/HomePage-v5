@@ -125,8 +125,8 @@ export default function Timeline() {
           {canScroll && !isAtTop && (
             <div
               className="absolute top-0 left-0 right-0 pointer-events-none
-                        bg-[linear-gradient(to_bottom,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
-                        dark:bg-[linear-gradient(to_bottom,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
+                        bg-gradient-to-b from-white/80 to-white/0
+                        dark:from-zinc-900/90 dark:to-zinc-900/0"
               style={{ zIndex: Z_INDEX.NODES, height: `${COMPONENT_HEIGHTS.GRADIENT_HEIGHT}px` }}
             />
           )}
@@ -134,8 +134,8 @@ export default function Timeline() {
           {canScroll && !isAtBottom && (
             <div
               className="absolute bottom-0 left-0 right-0 pointer-events-none
-                        bg-[linear-gradient(to_top,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0)_100%)]
-                        dark:bg-[linear-gradient(to_top,rgba(24,24,27,0.9)_0%,rgba(24,24,27,0)_100%)]"
+                        bg-gradient-to-t from-white/80 to-white/0
+                        dark:from-zinc-900/90 dark:to-zinc-900/0"
               style={{ zIndex: Z_INDEX.NODES, height: `${COMPONENT_HEIGHTS.GRADIENT_HEIGHT}px` }}
             />
           )}

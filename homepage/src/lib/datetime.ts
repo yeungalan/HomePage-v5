@@ -61,7 +61,9 @@ export const relativeTimeFromNow = (
     const hours = Math.round(elapsed / msPerHour)
     return phrase(hours, 'hourAgo', 'hoursAgo')
   } else if (elapsed < msPerMonth) {
-    const days = Math.round(elapsed / msPerDay)
+    // Calendar-day difference, not rounded elapsed hours: otherwise something
+    // from "yesterday" flips to showing "2 days ago" once >36h have passed.
+    const days = dayjs(current).startOf('day').diff(dayjs(time).startOf('day'), 'day')
     return phrase(days, 'dayAgo', 'daysAgo')
   } else if (elapsed < msPerYear) {
     const months = Math.round(elapsed / msPerMonth)

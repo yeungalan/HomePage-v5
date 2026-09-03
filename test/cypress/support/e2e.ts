@@ -17,6 +17,8 @@
  *
  * Anything else is left to fail the run as usual.
  */
+import 'cypress-mochawesome-reporter/register'
+
 const HYDRATION_REACT_ERROR_CODES = ['418', '421', '422', '423', '425']
 
 const isBenign = (message: string): boolean => {

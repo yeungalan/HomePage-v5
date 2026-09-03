@@ -1,6 +1,20 @@
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
+  reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    reportDir: 'cypress/reports',
+    reportFilename: 'mochawesome',
+    charts: false,
+    overwrite: true,
+    html: true,
+    // Keeps cypress/reports/mochawesome.json alongside the HTML report, so
+    // scripts/generate-pr-comment.mjs has a machine-readable summary to
+    // build the PR comment from.
+    saveJson: true,
+    embeddedScreenshots: true,
+    inlineAssets: true,
+  },
   e2e: {
     baseUrl: 'http://localhost:3000',
     // The app is animation-heavy (motion/three.js); give pages room to settle.
@@ -17,8 +31,8 @@ export default defineConfig({
       runMode: 2,
       openMode: 0,
     },
-    setupNodeEvents() {
-      // No custom node events needed yet.
+    setupNodeEvents(on) {
+      require('cypress-mochawesome-reporter/plugin')(on)
     },
   },
 })

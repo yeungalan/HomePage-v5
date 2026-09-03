@@ -7,11 +7,13 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "start:app": "npm --prefix ../homepage run start",
-    "e2e": "start-server-and-test start:app http://localhost:3000 cypress:run"
+    "e2e": "start-server-and-test start:app http://localhost:3000 cypress:run",
+    "report:comment": "node scripts/generate-pr-comment.mjs"
   },
   "devDependencies": {
     "@types/node": "^22",
     "cypress": "^14.5.4",
+    "cypress-mochawesome-reporter": "^3.8.2",
     "start-server-and-test": "^2.0.13",
     "typescript": "^5.9.3"
   }

@@ -13,6 +13,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   cypress:
     name: Run Cypress tests
@@ -41,6 +45,13 @@ jobs:
         run: npm run build
 
       - name: Run Cypress
+        id: cypress
+        # Never fail the step itself: a comprehensive suite covering every
+        # component is expected to occasionally catch a real regression, and
+        # the report must still be generated and posted to the PR when that
+        # happens. The job is failed explicitly at the end based on the
+        # outcome captured here.
+        continue-on-error: true
         uses: cypress-io/github-action@v6
         with:
           working-directory: test
@@ -50,9 +61,30 @@ jobs:
           browser: chrome
 
       - name: Upload screenshots on failure
-        if: failure()
+        if: steps.cypress.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
           path: test/cypress/screenshots
           if-no-files-found: ignore
+
+      - name: Upload mochawesome HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-mochawesome-report
+          path: test/cypress/reports
+          if-no-files-found: ignore
+
+      - name: Post/update the PR comment with the test report
+        if: always() && github.event_name == 'pull_request'
+        working-directory: test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: npm run report:comment
+
+      - name: Fail the job if Cypress failed
+        if: steps.cypress.outcome == 'failure'
+        run: exit 1

@@ -3,12 +3,18 @@
 import React, { useRef, useEffect, ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeRaw from 'rehype-raw'
+import rehypeKatex from 'rehype-katex'
 import { MarkdownChart } from '../charts'
+
+// KaTeX ships its own stylesheet (and web fonts); without it the rendered
+// math is unstyled and the hidden MathML fallback shows up as duplicate text.
+import 'katex/dist/katex.min.css'
 
 interface SimpleMarkdownProps {
   content: string
@@ -67,10 +73,12 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
         [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:break-words
         [&_pre_code]:break-words [&_pre_code]:whitespace-pre-wrap [&_pre_code]:word-break-break-all
         [&_code]:break-words [&_code]:max-w-full
+        [&_.katex]:text-current
+        [&_.katex-display]:my-6 [&_.katex-display]:max-w-full [&_.katex-display]:overflow-x-auto [&_.katex-display]:overflow-y-hidden [&_.katex-display]:py-1
       "
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[
           rehypeRaw,
           rehypeSlug,
@@ -92,7 +100,12 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
                 children: [{ type: 'text', value: '' }]
               }
             }
-          ]
+          ],
+          // Runs after rehype-slug/autolink so heading anchors keep being
+          // derived from the TeX source rather than KaTeX's rendered markup.
+          // A formula KaTeX cannot parse is rendered as a red `.katex-error`
+          // span instead of throwing, so one bad expression never blanks a post.
+          [rehypeKatex, { output: 'htmlAndMathml' }]
         ]}
         components={{
           h1: (allProps) => {

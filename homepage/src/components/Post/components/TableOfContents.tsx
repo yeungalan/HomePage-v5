@@ -3,6 +3,22 @@ import { TocItem as TocItemType } from '../types'
 import { TocItem } from './TocItem'
 import { useTranslation } from '@/i18n'
 
+/**
+ * Read a heading's visible text.
+ *
+ * KaTeX renders each formula twice: a visual `.katex-html` tree and a hidden
+ * `.katex-mathml` copy for screen readers. Plain `textContent` would return
+ * both, so a heading containing math would show up doubled in the TOC. Drop
+ * the MathML copy from a detached clone before reading the text.
+ */
+const headingText = (el: Element): string => {
+  if (!el.querySelector('.katex-mathml')) return el.textContent || ''
+
+  const clone = el.cloneNode(true) as Element
+  clone.querySelectorAll('.katex-mathml').forEach(node => node.remove())
+  return (clone.textContent || '').replace(/\s+/g, ' ').trim()
+}
+
 export const TableOfContents: React.FC = () => {
   const t = useTranslation()
   const [headings, setHeadings] = useState<TocItemType[]>([])
@@ -84,7 +100,7 @@ export const TableOfContents: React.FC = () => {
 
     const tocItems: TocItemType[] = Array.from(headingElements).map((el, idx) => {
       const depth = parseInt(el.tagName.slice(1))
-      const title = el.textContent || ''
+      const title = headingText(el)
       const anchorId = el.id
 
       return {

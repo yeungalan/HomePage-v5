@@ -106,6 +106,94 @@ toggle rotation. The route line itself stays fixed.
 }
 ```
 
+## Math (LaTeX)
+
+Posts render LaTeX with [KaTeX](https://katex.org/). There are three ways to
+write it: `$…$` for inline math, `$$…$$` for a centred display block, and a
+fenced ` ```math ` block when the source deserves its own lines. Everything is
+typeset at build time, so no client-side script has to run for the formulas to
+show up.
+
+### Inline math
+
+Wrap the expression in single dollar signs: Euler's identity, $e^{i\pi} + 1 = 0$,
+flows with the surrounding sentence, and so do symbols such as $\alpha$,
+$\Sigma$, $\sqrt{2}$, fractions like $\tfrac{3}{4}$ and comparisons such as
+$0 < \varepsilon \ll 1$.
+
+### Display math
+
+Double dollar signs on their own lines centre the formula and give it room to
+breathe:
+
+$$
+\int_{-\infty}^{\infty} e^{-x^{2}}\,dx = \sqrt{\pi}
+$$
+
+$$
+\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\, e^{-2\pi i x \xi}\,dx
+$$
+
+### Fenced math blocks
+
+A fenced block tagged `math` is equivalent to `$$…$$` and keeps long derivations
+readable in the source file:
+
+```math
+\begin{aligned}
+(a + b)^2 &= a^2 + 2ab + b^2 \\
+(a - b)^2 &= a^2 - 2ab + b^2 \\
+(a + b)(a - b) &= a^2 - b^2
+\end{aligned}
+```
+
+Environments such as `aligned`, `cases`, `matrix` and `array` all work:
+
+```math
+f(n) =
+\begin{cases}
+  n / 2 & \text{if } n \equiv 0 \pmod{2} \\
+  3n + 1 & \text{if } n \equiv 1 \pmod{2}
+\end{cases}
+```
+
+```math
+A =
+\begin{bmatrix}
+  1 & 0 & 0 \\
+  0 & \cos\theta & -\sin\theta \\
+  0 & \sin\theta & \cos\theta
+\end{bmatrix}
+```
+
+### Math inside other blocks
+
+Formulas are allowed anywhere inline text is, including list items:
+
+1. Arithmetic series: $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$
+2. Geometric series: $\sum_{i=0}^{\infty} r^{i} = \frac{1}{1-r}$ for $|r| < 1$
+3. Binomial coefficient: $\binom{n}{k} = \frac{n!}{k!\,(n-k)!}$
+
+...and table cells:
+
+| Notation | Meaning | Example |
+| --- | --- | --- |
+| $O(n)$ | Linear time | A single pass over $n$ items |
+| $O(n \log n)$ | Linearithmic time | Comparison sorting |
+| $\Theta(1)$ | Constant time | A hash lookup |
+
+### Headings can hold math, like $a^2 + b^2 = c^2$
+
+The table of contents on the right lists this section by the formula as it is
+drawn, and the heading's anchor link is still derived from the plain source.
+
+### Escaping dollar signs
+
+A backslash keeps a dollar sign literal, so \$5 and \$10 stay plain text rather
+than opening a formula. Inline code is never parsed as math either, so
+`$not math$` renders verbatim. A formula KaTeX cannot parse is shown in red
+where it sits instead of breaking the rest of the page.
+
 ## Some photos
 <iframe
   src="https://photos.alanyeung.co/share/iframe?id=DSC02207-1"

@@ -129,7 +129,7 @@ export default function RootLayout({
   return (
     <html lang={SITE_CONFIG.defaultLang} suppressHydrationWarning>
       <body
-        className={`dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
+        className={`bg-white dark:bg-black ${geistSans.variable} ${geistMono.variable} ${notoSansTC.className} antialiased`}
       >
         <Script
           id="structured-data"

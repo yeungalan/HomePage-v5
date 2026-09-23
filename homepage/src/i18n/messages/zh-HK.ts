@@ -65,6 +65,9 @@ export const zhHK: Messages = {
     title: '文章',
     subtitle: '文章連結',
   },
+  tags: {
+    subtitle: '帶有此標籤的文章（{{count}}）',
+  },
   arch: {
     title: '系統架構',
     subtitle: '基礎設施概覽',

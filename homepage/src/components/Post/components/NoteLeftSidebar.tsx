@@ -1,4 +1,6 @@
 import React from 'react'
+import Link from 'next/link'
+import { tagHref } from '@/lib/tags'
 import { useCurrentNoteDataSelector } from '../hooks/useCurrentNoteData'
 import { useCurrentNoteNid } from '../hooks/useCurrentNoteNid'
 import { useLanguageData } from '../hooks/useLanguageData'
@@ -55,12 +57,14 @@ export const NoteLeftSidebar: React.FC = () => {
               </div>
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag, index) => (
-                  <span
+                  <Link
                     key={index}
-                    className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs dark:text-black"
+                    href={tagHref(tag)}
+                    data-cy="sidebar-tag"
+                    className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs hover:bg-gray-200 transition-colors dark:text-black"
                   >
                     #{tag}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>

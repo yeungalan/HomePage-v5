@@ -65,6 +65,9 @@ export const jaJP: Messages = {
     title: '投稿',
     subtitle: '投稿リンク',
   },
+  tags: {
+    subtitle: 'このタグが付いた投稿（{{count}}）',
+  },
   arch: {
     title: 'アーキテクチャ',
     subtitle: 'インフラ概要',

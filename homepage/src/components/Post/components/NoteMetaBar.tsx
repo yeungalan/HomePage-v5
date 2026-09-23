@@ -1,4 +1,6 @@
 import React from 'react'
+import Link from 'next/link'
+import { tagHref } from '@/lib/tags'
 import { useCurrentNoteDataSelector } from '../hooks/useCurrentNoteData'
 
 export const NoteMetaBar: React.FC = () => {
@@ -13,12 +15,14 @@ export const NoteMetaBar: React.FC = () => {
         </span>
       )}
       {tags.map((tag, index) => (
-        <span
+        <Link
           key={index}
-          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+          href={tagHref(tag)}
+          data-cy="post-tag"
+          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs hover:bg-gray-200 transition-colors"
         >
-          Post{tag}
-        </span>
+          #{tag}
+        </Link>
       ))}
     </div>
   )

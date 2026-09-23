@@ -19,6 +19,9 @@ interface Post {
 
 interface PostsListProps {
   posts: Post[];
+  /** Overrides the default "Posts" heading (e.g. on a tag page). */
+  title?: string;
+  subtitle?: string;
 }
 
 const getCombinedTitle = (post: Post): string => {
@@ -34,14 +37,14 @@ const getCombinedTitle = (post: Post): string => {
 };
 
 
-export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
+export const PostsList: React.FC<PostsListProps> = ({ posts, title, subtitle }) => {
   const t = useTranslation();
   return (
   <div className="relative w-full overflow-hidden">
     <NormalContainer>
       <header className="pt-5 mb-10">
-        <h1 className="text-3xl font-bold mb-4 dark:text-white">{t('posts.title')}</h1>
-        <h3 className="text-xl text-gray-600 dark:text-gray-300">{t('posts.subtitle')}</h3>
+        <h1 className="text-3xl font-bold mb-4 dark:text-white">{title ?? t('posts.title')}</h1>
+        <h3 className="text-xl text-gray-600 dark:text-gray-300">{subtitle ?? t('posts.subtitle')}</h3>
       </header>
       <motion.ul
         className="shiro-timeline shiro-timeline--posts mt-4"
@@ -50,7 +53,7 @@ export const PostsList: React.FC<PostsListProps> = ({ posts }) => {
         animate="show"
       >
         {posts.map((post) => (
-          <li key={post.id} className="flex min-w-0 justify-between">
+          <li key={post.id} data-cy="post-item" className="flex min-w-0 justify-between">
             <Link
               prefetch
               className="min-w-0 shrink truncate dark:text-white"

@@ -11,6 +11,8 @@ export interface Post {
   availableLanguages: string[];
   allTitles: Record<string, string>; // Map of language -> title
   tags: string[];
+  /** Union of tags across every language variant of this post. */
+  allTags: string[];
   description: string;
 }
 
@@ -92,6 +94,7 @@ export async function getPosts(): Promise<Post[]> {
         availableLanguages: [] as string[],
         allTitles: {} as Record<string, string>,
         tags,
+        allTags: [] as string[],
         description,
       };
     });
@@ -114,9 +117,12 @@ export async function getPosts(): Promise<Post[]> {
       allTitles[post.language] = post.title;
     }
 
+    const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+
     for (const post of posts) {
       post.availableLanguages = languages;
       post.allTitles = allTitles;
+      post.allTags = allTags;
     }
   }
 
@@ -213,6 +219,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       availableLanguages,
       allTitles,
       tags,
+      allTags: tags,
       description,
       content,
     };
@@ -220,6 +227,31 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
     console.error(`Error loading post "${slug}":`, error);
     return null;
   }
+}
+
+/** Tags are matched case-insensitively so "homelab" and "HomeLab" share a page. */
+function normalizeTag(tag: string): string {
+  return tag.trim().toLowerCase();
+}
+
+/** Every distinct tag used by any post (first-seen spelling wins). */
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getPosts();
+  const tags = new Map<string, string>();
+  for (const post of posts) {
+    for (const tag of post.allTags) {
+      const key = normalizeTag(tag);
+      if (!tags.has(key)) tags.set(key, tag);
+    }
+  }
+  return Array.from(tags.values());
+}
+
+/** Posts (newest first) carrying the given tag in any language variant. */
+export async function getPostsByTag(tag: string): Promise<Post[]> {
+  const key = normalizeTag(tag);
+  const posts = await getPosts();
+  return posts.filter((post) => post.allTags.some((t) => normalizeTag(t) === key));
 }
 
 /**

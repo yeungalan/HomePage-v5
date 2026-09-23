@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { getPosts } from '@/lib/posts';
+import { getAllTags, getPosts } from '@/lib/posts';
+import { tagHref } from '@/lib/tags';
 import { SITE_CONFIG } from '@/constants/site';
 
 const BASE_URL = SITE_CONFIG.url;
@@ -21,6 +22,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     });
   });
+
+  const tagEntries: MetadataRoute.Sitemap = (await getAllTags()).map((tag) => ({
+    url: `${BASE_URL}${tagHref(tag)}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.5,
+  }));
 
   const staticPages = ['projects', 'goals', 'friends', 'world', 'arch'].map((page) => ({
     url: `${BASE_URL}/${page}`,
@@ -44,5 +52,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...staticPages,
     ...postEntries,
+    ...tagEntries,
   ];
 }

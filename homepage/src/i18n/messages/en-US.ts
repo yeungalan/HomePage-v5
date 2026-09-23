@@ -69,6 +69,9 @@ export const enUS = {
     title: 'Posts',
     subtitle: 'Post Links',
   },
+  tags: {
+    subtitle: 'Posts tagged with this topic ({{count}})',
+  },
   arch: {
     title: 'Architecture',
     subtitle: 'Infrastructure Overview',

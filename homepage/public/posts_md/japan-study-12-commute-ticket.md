@@ -1,6 +1,6 @@
 ### AUTOMATE FIELD
-Topic=11 | 購買 PASMO 通學定期券——從填表到取卡全流程
-ID=japan-study-11-pasmo-teiki
+Topic=12 | 購買 PASMO 通學定期券——從填表到取卡全流程
+ID=japan-study-12-pasmo-teiki
 CREATED_DATE=2026-09-23T00:00:00Z
 EDITED_DATE=2026-09-23T00:00:00Z
 TAG=日本留學,PASMO,Suica,定期券,通學定期,通學證明書,都營地下鐵
@@ -8,7 +8,7 @@ CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
 ### AUTOMATE FIELD END
 
-# 11 | 日本留學記 #11：購買 PASMO 通學定期券——從填表到取卡全流程
+# 12 | 日本留學記 #12：購買 PASMO 通學定期券——從填表到取卡全流程
 
 在東京每天上班或上學的人，幾乎人手一張 **PASMO** 或 **Suica**。而對於需要每天往返學校或公司的人來說，最值得辦理的，莫過於「**定期券（ていきけん）**」。
 

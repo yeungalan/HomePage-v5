@@ -1,14 +1,14 @@
 ### AUTOMATE FIELD
-Topic=14 | 在日半年的感想——2026 年最後一百日
-ID=japan-study-14-half-year
-CREATED_DATE=2026-09-23T00:00:00Z
-EDITED_DATE=2026-09-23T00:00:00Z
+Topic=15 | 在日半年的感想——2026 年最後一百日
+ID=japan-study-15-half-year
+CREATED_DATE=2026-09-23T03:00:00Z
+EDITED_DATE=2026-09-23T03:00:00Z
 TAG=日本留學,半年感想,生活感悟,富士山,種子島,JLPT
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄
 ### AUTOMATE FIELD END
 
-# 14 | 日本留學記 #14：在日半年的感想——2026 年最後一百日
+# 15 | 日本留學記 #15：在日半年的感想——2026 年最後一百日
 
 時間過得真快，轉眼間 2026 年已經只剩下不足一百日。回想四月來到日本，開始在這裡生活，到現在已經差不多半年。是時候停下來，好好回顧這半年的感受。
 

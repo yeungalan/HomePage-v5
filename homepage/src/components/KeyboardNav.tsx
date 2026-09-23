@@ -94,6 +94,21 @@ const isVisible = (el: HTMLElement, rect: DOMRect) => {
   return !!top && (el === top || el.contains(top) || top.contains(el));
 };
 
+/** Where a hint sits for an element: on its right edge, vertically centred. */
+const anchorOf = (rect: DOMRect) => ({
+  x: Math.min(rect.right, window.innerWidth - 12),
+  y: rect.top + rect.height / 2,
+});
+
+/** Combined inline opacity of an element and its ancestors (motion animates this). */
+const opacityOf = (el: HTMLElement) => {
+  let opacity = 1;
+  for (let node: HTMLElement | null = el; node && node !== document.body; node = node.parentElement) {
+    if (node.style.opacity) opacity *= parseFloat(node.style.opacity);
+  }
+  return opacity;
+};
+
 const collectHints = (): Hint[] => {
   const found: { el: HTMLElement; rect: DOMRect; section?: string }[] = [];
   document.querySelectorAll<HTMLElement>(CLICKABLE_SELECTOR).forEach((el) => {
@@ -111,8 +126,7 @@ const collectHints = (): Hint[] => {
   return found.map(({ el, rect, section }) => ({
     el,
     label: section ? String(SECTIONS.indexOf(section) + 1) : letters[next++],
-    x: Math.min(rect.right, window.innerWidth - 12),
-    y: rect.top + rect.height / 2,
+    ...anchorOf(rect),
   }));
 };
 
@@ -128,6 +142,7 @@ export function KeyboardNav() {
   const state = useRef({ active, typed, hints, pathname });
   state.current = { active, typed, hints, pathname };
   const mouseOrigin = useRef<{ x: number; y: number } | null>(null);
+  const badges = useRef<(HTMLElement | null)[]>([]);
 
   const exit = useCallback(() => {
     setActive(false);
@@ -255,6 +270,27 @@ export function KeyboardNav() {
     };
   }, [active, pathname]);
 
+  // Glue each badge to its element every frame, so it follows hover, entry and
+  // layout animations. Styles are written directly to avoid re-rendering.
+  useEffect(() => {
+    if (!active || hints.length === 0) return;
+    let frame = 0;
+    const track = () => {
+      hints.forEach((hint, i) => {
+        const badge = badges.current[i];
+        if (!badge) return;
+        const rect = hint.el.getBoundingClientRect();
+        const { x, y } = anchorOf(rect);
+        badge.style.left = `${x}px`;
+        badge.style.top = `${y}px`;
+        badge.style.opacity = rect.width && rect.height ? String(opacityOf(hint.el)) : '0';
+      });
+      frame = requestAnimationFrame(track);
+    };
+    track();
+    return () => cancelAnimationFrame(frame);
+  }, [active, hints]);
+
   if (!active) return null;
 
   return (
@@ -269,6 +305,9 @@ export function KeyboardNav() {
         return (
           <kbd
             key={i}
+            ref={(node) => {
+              badges.current[i] = node;
+            }}
             className="absolute -translate-x-1/2 -translate-y-1/2 rounded-md border border-zinc-900/10 bg-zinc-900 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase leading-none text-white shadow-md dark:border-white/20 dark:bg-white dark:text-zinc-900"
             style={{ left: hint.x, top: hint.y }}
           >

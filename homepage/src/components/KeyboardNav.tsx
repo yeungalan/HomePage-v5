@@ -12,7 +12,9 @@ import { HEADER_MENU_CONFIG } from '@/data/navigation';
  *   their own ← / → for previous / next post (see PostNavigation).
  * - Any key press switches into "keyboard mode": every visible button and link
  *   gets a small hint badge on its right edge. Typing that hint clicks it.
- *   Section links always use their number (1–7); everything else gets letters.
+ *   Section links always use their number (1–7), controls with their own key
+ *   declare it with `data-hotkey` (e.g. ← / → on post pages); everything else
+ *   gets letters.
  * - Moving or clicking the mouse, touching the screen or pressing Esc leaves
  *   keyboard mode.
  */
@@ -91,7 +93,7 @@ const isVisible = (el: HTMLElement, rect: DOMRect) => {
   const x = Math.min(Math.max(rect.left + rect.width / 2, 0), window.innerWidth - 1);
   const y = Math.min(Math.max(rect.top + rect.height / 2, 0), window.innerHeight - 1);
   const top = document.elementFromPoint(x, y);
-  return !!top && (el === top || el.contains(top) || top.contains(el));
+  return !!top && (el === top || el.contains(top));
 };
 
 /** Where a hint sits for an element: on its right edge, vertically centred. */
@@ -117,7 +119,7 @@ const wrapsLink = (el: HTMLElement) =>
   !(el instanceof HTMLAnchorElement) && !!el.querySelector('a[href]');
 
 const collectHints = (): Hint[] => {
-  const found: { el: HTMLElement; rect: DOMRect; section?: string }[] = [];
+  const found: { el: HTMLElement; rect: DOMRect; fixed?: string }[] = [];
   document.querySelectorAll<HTMLElement>(CLICKABLE_SELECTOR).forEach((el) => {
     if (el.closest('[data-keyboard-nav-overlay]')) return;
     if (el.getAttribute('href') === '#') return;
@@ -128,14 +130,16 @@ const collectHints = (): Hint[] => {
     if (outer && !wrapsLink(outer)) return;
     const rect = el.getBoundingClientRect();
     if (!isVisible(el, rect)) return;
-    found.push({ el, rect, section: sectionPathOf(el) });
+    const section = sectionPathOf(el);
+    const fixed = el.dataset.hotkey ?? (section && String(SECTIONS.indexOf(section) + 1));
+    found.push({ el, rect, fixed });
   });
 
-  const letters = makeLabels(found.filter((f) => !f.section).length);
+  const letters = makeLabels(found.filter((f) => !f.fixed).length);
   let next = 0;
-  return found.map(({ el, rect, section }) => ({
+  return found.map(({ el, rect, fixed }) => ({
     el,
-    label: section ? String(SECTIONS.indexOf(section) + 1) : letters[next++],
+    label: fixed ?? letters[next++],
     ...anchorOf(rect),
   }));
 };
@@ -332,7 +336,8 @@ export function KeyboardNav() {
 
       <div className="absolute bottom-4 left-1/2 hidden sm:flex -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full border border-zinc-900/10 bg-white/90 px-4 py-2 text-xs text-zinc-600 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-zinc-900/90 dark:text-zinc-300">
         <span>
-          <kbd className="font-mono font-semibold">← →</kbd> {t('hotkeys.switchSection')}
+          <kbd className="font-mono font-semibold">← →</kbd>{' '}
+          {t(pathname.startsWith('/posts/') ? 'hotkeys.switchPost' : 'hotkeys.switchSection')}
         </span>
         <span className="opacity-40">·</span>
         <span>{t('hotkeys.pressToClick')}</span>

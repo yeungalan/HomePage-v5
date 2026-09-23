@@ -19,10 +19,16 @@ const visitReady = (path: string) => {
 }
 
 /**
- * Dispatch a raw keydown. cy.type() may click its target first, and a mouse
- * press is exactly what makes the page leave keyboard mode.
+ * Dispatch a native keydown from the page, as a real key press would. Not
+ * cy.type() / cy.trigger(): those click or scroll their target first, and a
+ * mouse press is exactly what makes the page leave keyboard mode.
  */
-const press = (key: string) => cy.get('body').trigger('keydown', { key })
+const press = (key: string) =>
+  cy.window().then((win) => {
+    win.document.body.dispatchEvent(
+      new win.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+    )
+  })
 
 /** Enter keyboard mode (↓ scrolls at most, it never clicks anything). */
 const showHints = () => {
@@ -83,6 +89,39 @@ describe('Keyboard navigation', () => {
       cy.location('pathname').should('match', /^\/posts\/.+/)
       press('ArrowLeft')
       cy.location('pathname').should('match', /^\/posts\/.+/)
+    })
+  })
+
+  it('marks previous / next post with ← / → on post pages', () => {
+    visitReady('/posts')
+    cy.get('a[href^="/posts/"]').eq(1).invoke('attr', 'href').then((href) => {
+      visitReady(href!)
+    })
+    // The second-newest post has both neighbours.
+    cy.get('a[data-hotkey="←"]').scrollIntoView()
+    press('ArrowDown')
+    cy.get('[data-keyboard-nav-overlay]').should('contain.text', 'previous / next post')
+    cy.get('a[data-hotkey="←"]').then(($a) => hintFor($a).should('have.text', '←'))
+    cy.get('a[data-hotkey="→"]').then(($a) => hintFor($a).should('have.text', '→'))
+  })
+
+  it('only puts badges over controls you can see', () => {
+    visitReady('/posts')
+    cy.get('a[href^="/posts/"]').first().invoke('attr', 'href').then((href) => {
+      visitReady(href!)
+    })
+    showHints()
+    // Let the hints settle after the page's entry animations.
+    cy.wait(800)
+    cy.get(HINTS).each(($badge) => {
+      const doc = $badge[0].ownerDocument
+      const x = parseFloat($badge[0].style.left)
+      const y = parseFloat($badge[0].style.top)
+      expect(y, 'badge inside the viewport').to.be.within(0, doc.defaultView!.innerHeight)
+      // Just left of the badge's anchor is the control it labels.
+      const under = doc.elementFromPoint(x - 4, y)
+      expect(under?.closest('a[href], button, [role="button"], [role="tab"], [role="menuitem"], summary'),
+        `control under badge "${$badge.text()}"`).to.exist
     })
   })
 

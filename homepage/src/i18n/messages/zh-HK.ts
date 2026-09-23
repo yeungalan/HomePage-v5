@@ -12,6 +12,11 @@ export const zhHK: Messages = {
     friends: '友情連結',
     arch: '系統架構',
   },
+  hotkeys: {
+    switchSection: '切換頁面',
+    pressToClick: '按對應按鍵即可點擊',
+    exit: '離開',
+  },
   footer: {
     quickLinksTitle: '快速連結',
     quickLinksSubtitle: '想去其他地方嗎？',

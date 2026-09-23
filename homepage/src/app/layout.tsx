@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";
 import { I18nProvider } from "@/i18n";
 import StatsComponent from "@/components/StatComponent";
+import { KeyboardNav } from "@/components/KeyboardNav";
 import { IconifyConfig } from "@/components/IconifyConfig";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -145,6 +146,7 @@ export default function RootLayout({
           >
             <Header />
             <StatsComponent />
+            <KeyboardNav />
             {children}
           </NextThemeProvider>
         </I18nProvider>

@@ -12,6 +12,11 @@ export const jaJP: Messages = {
     friends: '友達リンク',
     arch: 'アーキテクチャ',
   },
+  hotkeys: {
+    switchSection: 'ページ切替',
+    pressToClick: 'キーを押してクリック',
+    exit: '終了',
+  },
   footer: {
     quickLinksTitle: 'クイックリンク',
     quickLinksSubtitle: '他の場所へ行きますか？',

@@ -16,6 +16,11 @@ export const enUS = {
     friends: 'Friends Link',
     arch: 'Architecture',
   },
+  hotkeys: {
+    switchSection: 'switch section',
+    pressToClick: 'press a key to click',
+    exit: 'to exit',
+  },
   footer: {
     quickLinksTitle: 'Quick links',
     quickLinksSubtitle: 'Want to go somewhere else?',

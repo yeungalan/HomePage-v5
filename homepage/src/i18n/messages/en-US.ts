@@ -18,7 +18,6 @@ export const enUS = {
   },
   hotkeys: {
     switchSection: 'switch section',
-    switchPost: 'previous / next post',
     pressToClick: 'press a key to click',
     exit: 'to exit',
   },

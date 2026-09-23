@@ -8,15 +8,14 @@ import { HEADER_MENU_CONFIG } from '@/data/navigation';
  * Site-wide keyboard navigation.
  *
  * - ← / → cycle through the header sections (Home → Places I visited → Goals →
- *   Posts → Projects → Friends → Architecture, wrapping around). Post pages keep
- *   their own ← / → for previous / next post (see PostNavigation).
+ *   Posts → Projects → Friends → Architecture, wrapping around).
  * - Any key press switches into "keyboard mode": every visible button and link
  *   gets a small hint badge on its right edge. Typing that hint clicks it.
- *   Section links always use their number (1–7), controls with their own key
- *   declare it with `data-hotkey` (e.g. ← / → on post pages); everything else
- *   gets letters.
+ *   Section links always use their number (1–7); everything else gets letters.
  * - Moving or clicking the mouse, touching the screen or pressing Esc leaves
  *   keyboard mode.
+ * - Post pages opt out entirely: there ← / → mean previous / next post (see
+ *   PostNavigation) and no hints are shown, so reading stays undisturbed.
  */
 
 /** Every navigable section, in header order (the "More" submenu flattened in). */
@@ -51,6 +50,8 @@ const sectionIndexOf = (pathname: string) =>
   SECTIONS.findIndex((path) =>
     path === '/' ? pathname === '/' : pathname === path || pathname.startsWith(`${path}/`)
   );
+
+const isPostPage = (pathname: string) => pathname.startsWith('/posts/');
 
 const isTypingTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
@@ -119,7 +120,7 @@ const wrapsLink = (el: HTMLElement) =>
   !(el instanceof HTMLAnchorElement) && !!el.querySelector('a[href]');
 
 const collectHints = (): Hint[] => {
-  const found: { el: HTMLElement; rect: DOMRect; fixed?: string }[] = [];
+  const found: { el: HTMLElement; rect: DOMRect; section?: string }[] = [];
   document.querySelectorAll<HTMLElement>(CLICKABLE_SELECTOR).forEach((el) => {
     if (el.closest('[data-keyboard-nav-overlay]')) return;
     if (el.getAttribute('href') === '#') return;
@@ -130,16 +131,14 @@ const collectHints = (): Hint[] => {
     if (outer && !wrapsLink(outer)) return;
     const rect = el.getBoundingClientRect();
     if (!isVisible(el, rect)) return;
-    const section = sectionPathOf(el);
-    const fixed = el.dataset.hotkey ?? (section && String(SECTIONS.indexOf(section) + 1));
-    found.push({ el, rect, fixed });
+    found.push({ el, rect, section: sectionPathOf(el) });
   });
 
-  const letters = makeLabels(found.filter((f) => !f.fixed).length);
+  const letters = makeLabels(found.filter((f) => !f.section).length);
   let next = 0;
-  return found.map(({ el, rect, fixed }) => ({
+  return found.map(({ el, rect, section }) => ({
     el,
-    label: fixed ?? letters[next++],
+    label: section ? String(SECTIONS.indexOf(section) + 1) : letters[next++],
     ...anchorOf(rect),
   }));
 };
@@ -181,6 +180,7 @@ export function KeyboardNav() {
       if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'].includes(e.key)) return;
 
       const { active, typed, hints, pathname } = state.current;
+      if (isPostPage(pathname)) return;
 
       if (e.key === 'Escape') {
         if (typed) setTyped('');
@@ -191,8 +191,6 @@ export function KeyboardNav() {
       if (!active) setActive(true);
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        // Post pages use ← / → for previous / next post.
-        if (pathname.startsWith('/posts/')) return;
         e.preventDefault();
         setTyped('');
         goToSection(e.key === 'ArrowRight' ? 1 : -1);
@@ -251,6 +249,11 @@ export function KeyboardNav() {
       window.removeEventListener('touchstart', onPointerDown);
     };
   }, [exit, goToSection]);
+
+  // Leave keyboard mode when opening a post (e.g. by its hint from /posts).
+  useEffect(() => {
+    if (isPostPage(pathname)) exit();
+  }, [pathname, exit]);
 
   // While in keyboard mode, keep the hints in sync with the page.
   useEffect(() => {
@@ -336,8 +339,7 @@ export function KeyboardNav() {
 
       <div className="absolute bottom-4 left-1/2 hidden sm:flex -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full border border-zinc-900/10 bg-white/90 px-4 py-2 text-xs text-zinc-600 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-zinc-900/90 dark:text-zinc-300">
         <span>
-          <kbd className="font-mono font-semibold">← →</kbd>{' '}
-          {t(pathname.startsWith('/posts/') ? 'hotkeys.switchPost' : 'hotkeys.switchSection')}
+          <kbd className="font-mono font-semibold">← →</kbd> {t('hotkeys.switchSection')}
         </span>
         <span className="opacity-40">·</span>
         <span>{t('hotkeys.pressToClick')}</span>

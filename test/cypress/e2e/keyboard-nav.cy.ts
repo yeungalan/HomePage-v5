@@ -92,24 +92,30 @@ describe('Keyboard navigation', () => {
     })
   })
 
-  it('marks previous / next post with ← / → on post pages', () => {
-    visitReady('/posts')
-    cy.get('a[href^="/posts/"]').eq(1).invoke('attr', 'href').then((href) => {
-      visitReady(href!)
-    })
-    // The second-newest post has both neighbours.
-    cy.get('a[data-hotkey="←"]').scrollIntoView()
-    press('ArrowDown')
-    cy.get('[data-keyboard-nav-overlay]').should('contain.text', 'previous / next post')
-    cy.get('a[data-hotkey="←"]').then(($a) => hintFor($a).should('have.text', '←'))
-    cy.get('a[data-hotkey="→"]').then(($a) => hintFor($a).should('have.text', '→'))
-  })
-
-  it('only puts badges over controls you can see', () => {
+  it('shows no badges on post pages', () => {
     visitReady('/posts')
     cy.get('a[href^="/posts/"]').first().invoke('attr', 'href').then((href) => {
       visitReady(href!)
     })
+    ;['ArrowDown', 'a', 'Tab', 'ArrowLeft', 'ArrowRight'].forEach((key) => press(key))
+    cy.location('pathname').should('match', /^\/posts\/.+/)
+    // Give a (wrongly) activated overlay time to render before asserting.
+    cy.wait(300)
+    cy.get('[data-keyboard-nav-overlay]').should('not.exist')
+  })
+
+  it('leaves keyboard mode when a post is opened by its hint', () => {
+    visitReady('/posts')
+    showHints()
+    cy.get('a[href^="/posts/"]').filter(':visible').first().then(($a) => {
+      hintFor($a).invoke('text').then((label) => press(label))
+    })
+    cy.location('pathname').should('match', /^\/posts\/.+/)
+    cy.get('[data-keyboard-nav-overlay]').should('not.exist')
+  })
+
+  it('only puts badges over controls you can see', () => {
+    visitReady('/posts')
     showHints()
     // Let the hints settle after the page's entry animations.
     cy.wait(800)

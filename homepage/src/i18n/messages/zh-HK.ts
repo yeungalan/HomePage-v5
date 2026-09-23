@@ -14,7 +14,6 @@ export const zhHK: Messages = {
   },
   hotkeys: {
     switchSection: '切換頁面',
-    switchPost: '上一篇 / 下一篇',
     pressToClick: '按對應按鍵即可點擊',
     exit: '離開',
   },

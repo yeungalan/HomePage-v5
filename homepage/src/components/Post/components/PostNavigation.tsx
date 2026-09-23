@@ -47,7 +47,6 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
           {prevPost ? (
             <Link
               href={`/posts/${prevPost.slug}`}
-              data-hotkey="←"
               className="group flex flex-col gap-1 p-4 rounded-xl border border-gray-200
                 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500
                 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
@@ -70,7 +69,6 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
           {nextPost ? (
             <Link
               href={`/posts/${nextPost.slug}`}
-              data-hotkey="→"
               className="group flex flex-col gap-1 p-4 rounded-xl border border-gray-200
                 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500
                 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors text-right"

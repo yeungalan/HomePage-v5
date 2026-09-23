@@ -14,7 +14,6 @@ export const jaJP: Messages = {
   },
   hotkeys: {
     switchSection: 'ページ切替',
-    switchPost: '前 / 次の記事',
     pressToClick: 'キーを押してクリック',
     exit: '終了',
   },

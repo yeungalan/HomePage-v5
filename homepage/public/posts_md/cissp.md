@@ -63,9 +63,9 @@ CISSP 的考試內容分為**八大範疇（Domain）**，每個範疇所佔的�
 - **CISSP 官方學習手冊（Official Study Guide）**
 - **Udemy 上的模擬試題**
 - **網上的 CISSP 筆記**：以下幾份 HackMD 上的中文筆記整理得相當清晰，溫習時經常參考：
-  - 🔗 [CISSP筆記](https://hackmd.io/@TTC989/BkA8CRx6s)
-  - 🔗 [CISSP筆記（Domain 1～Domain 4）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/HyrND7kh3)
-  - 🔗 [CISSP筆記（Domain 5～Domain 8）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/BkfDtY-A3)
+  - <span data-icon="mingcute:link-line"></span> [CISSP筆記](https://hackmd.io/@TTC989/BkA8CRx6s)
+  - <span data-icon="mingcute:link-line"></span> [CISSP筆記（Domain 1～Domain 4）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/HyrND7kh3)
+  - <span data-icon="mingcute:link-line"></span> [CISSP筆記（Domain 5～Domain 8）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/BkfDtY-A3)
 
 我的溫習方法如下：
 
@@ -294,7 +294,7 @@ CISSP 的考試內容分為**八大範疇（Domain）**，每個範疇所佔的�
 - **Endorsement（背書）程序**：要正式取得 CISSP 資格，還需要完成背書程序。相關指示會在考試結果處理完畢後寄出。
 - **Associate of ISC2**：若工作經驗未符合要求，可以先成為 Associate of ISC2，待累積足夠經驗後再申請正式認證。
 
-> 💡 正式取得 CISSP，一般需要在 8 個範疇中的 2 個或以上，累積 **5 年**全職相關工作經驗（持有指定學歷或資格可豁免 1 年），並在合格後 **9 個月內**完成背書申請。
+> <span data-icon="mingcute:bulb-line"></span> 正式取得 CISSP，一般需要在 8 個範疇中的 2 個或以上，累積 **5 年**全職相關工作經驗（持有指定學歷或資格可豁免 1 年），並在合格後 **9 個月內**完成背書申請。
 
 ---
 
@@ -331,9 +331,9 @@ CISSP 是一個範圍很廣的考試，但只要有系統地準備，並且掌�
 
 ## 參考資料
 
-- 🔗 [ISC2：CISSP Certification Exam Outline](https://www.isc2.org/certifications/cissp/cissp-certification-exam-outline)
-- 🔗 [CISSP.app：CISSP CAT Exam Format](https://blog.cissp.app/cissp-cat-exam-format.html)
-- 🔗 [CISSP.app：CISSP 8 Domains Explained](https://blog.cissp.app/cissp-domains-explained)
-- 📝 [HackMD：CISSP筆記](https://hackmd.io/@TTC989/BkA8CRx6s)
-- 📝 [HackMD：CISSP筆記（Domain 1～Domain 4）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/HyrND7kh3)
-- 📝 [HackMD：CISSP筆記（Domain 5～Domain 8）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/BkfDtY-A3)
+- <span data-icon="mingcute:link-line"></span> [ISC2：CISSP Certification Exam Outline](https://www.isc2.org/certifications/cissp/cissp-certification-exam-outline)
+- <span data-icon="mingcute:link-line"></span> [CISSP.app：CISSP CAT Exam Format](https://blog.cissp.app/cissp-cat-exam-format.html)
+- <span data-icon="mingcute:link-line"></span> [CISSP.app：CISSP 8 Domains Explained](https://blog.cissp.app/cissp-domains-explained)
+- <span data-icon="mingcute:notebook-line"></span> [HackMD：CISSP筆記](https://hackmd.io/@TTC989/BkA8CRx6s)
+- <span data-icon="mingcute:notebook-line"></span> [HackMD：CISSP筆記（Domain 1～Domain 4）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/HyrND7kh3)
+- <span data-icon="mingcute:notebook-line"></span> [HackMD：CISSP筆記（Domain 5～Domain 8）](https://hackmd.io/@FcFHrCduTW2SfX4rGnRGcw/BkfDtY-A3)

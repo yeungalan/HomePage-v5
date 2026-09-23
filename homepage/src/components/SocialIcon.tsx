@@ -7,9 +7,8 @@ import { BlueskyIcon } from '@/components/icons/platform/BlueskyIcon'
 import { NeteaseCloudMusicIcon } from '@/components/icons/platform/NeteaseIcon'
 import { SteamIcon } from '@/components/icons/platform/SteamIcon'
 import { XIcon } from '@/components/icons/platform/XIcon'
-import { MotionButtonBase } from '@/components/MotionButtonBase'
+import { motion } from 'motion/react'
 import { FloatPopover } from './FloatPopOver'
-import Link from 'next/link'
 
 interface SocialIconProps {
   type: string
@@ -135,21 +134,21 @@ export const SocialIcon = memo((props: SocialIconProps) => {
 <FloatPopover
       type="tooltip"
       triggerElement={
-        <MotionButtonBase
+        <motion.a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={name}
           className="center flex aspect-square size-10 rounded-full text-2xl text-white"
           style={{
             background: iconBg,
           }}
+          whileFocus={{ scale: 1.02 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <Link
-            target="_blank"
-            href={href}
-            className="center flex"
-            rel="noreferrer"
-          >
-            {IconComponent}
-          </Link>
-        </MotionButtonBase>
+          {IconComponent}
+        </motion.a>
       }
     >
       {name}

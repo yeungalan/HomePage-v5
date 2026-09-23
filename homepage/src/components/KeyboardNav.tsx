@@ -109,13 +109,23 @@ const opacityOf = (el: HTMLElement) => {
   return opacity;
 };
 
+/**
+ * A button that wraps a link usually does nothing itself; the link is the
+ * real target, so hint that instead.
+ */
+const wrapsLink = (el: HTMLElement) =>
+  !(el instanceof HTMLAnchorElement) && !!el.querySelector('a[href]');
+
 const collectHints = (): Hint[] => {
   const found: { el: HTMLElement; rect: DOMRect; section?: string }[] = [];
   document.querySelectorAll<HTMLElement>(CLICKABLE_SELECTOR).forEach((el) => {
     if (el.closest('[data-keyboard-nav-overlay]')) return;
     if (el.getAttribute('href') === '#') return;
-    // Only hint the outermost clickable (e.g. a button wrapped in a link).
-    if (el.parentElement?.closest(CLICKABLE_SELECTOR)) return;
+    if (wrapsLink(el)) return;
+    // Only hint the outermost clickable (e.g. a button wrapped in a link),
+    // unless that outer one was skipped in favour of its link.
+    const outer = el.parentElement?.closest<HTMLElement>(CLICKABLE_SELECTOR);
+    if (outer && !wrapsLink(outer)) return;
     const rect = el.getBoundingClientRect();
     if (!isVisible(el, rect)) return;
     found.push({ el, rect, section: sectionPathOf(el) });
@@ -227,7 +237,10 @@ export function KeyboardNav() {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('mousedown', onPointerDown, { passive: true });
     window.addEventListener('touchstart', onPointerDown, { passive: true });
+    // Lets E2E tests wait until the hotkeys are live.
+    document.documentElement.dataset.keyboardNav = 'ready';
     return () => {
+      delete document.documentElement.dataset.keyboardNav;
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onPointerDown);

@@ -6,6 +6,7 @@ EDITED_DATE=2025-12-20T00:00:00Z
 TAG=Personal
 CATEGORY=Personal
 CATEGORY_CAPTION=Personal
+AI_SUMMARY=Alan looks back on 2025, a year in which he achieved three of his four goals. He earned his scuba certification with a first dive in Taiwan, got his motorcycle license in Seattle, and reached an ambitious health target that brought his blood sugar into the normal range. The one miss was finding a girlfriend, which he carries into 2026. It was also one of his busiest travel years, with trips to Boston and Toronto with family, Miami with friends, a solo journey through Berlin and London, and Tokyo and Taiwan with friends. Work was productive but unsettled: he finished projects he is proud of and pushed for a promotion, but his manager changed three times. Looking ahead, he hopes to move to Japan in April, learn Japanese properly, visit islands like Tanegashima and Okinawa, and build a life there.
 ### AUTOMATE FIELD END
 
 # 2025 Year in Review: A Year of Growth and Adventure

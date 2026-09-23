@@ -104,6 +104,7 @@ export const zhHK: Messages = {
     fallbackHobby: '不在寫程式的時候，你可以找到我在閱讀、嘗試新想法，或為開源項目作出貢獻。歡迎與我聯繫！',
   },
   post: {
+    aiSummary: 'AI 摘要',
     noteInfo: '筆記資訊',
     category: '分類',
     topic: '主題',

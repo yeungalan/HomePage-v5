@@ -20,6 +20,7 @@ export interface NoteModel {
     caption?: string
     avatar?: string
   }
+  aiSummary?: string
 }
 
 export interface Image {
@@ -42,6 +43,7 @@ export interface AutomateField {
   category?: string
   categoryCaption?: string
   categoryAvatar?: string
+  aiSummary?: string
 }
 
 export interface TocItem {

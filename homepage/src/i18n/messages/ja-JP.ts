@@ -104,6 +104,7 @@ export const jaJP: Messages = {
     fallbackHobby: 'コーディングをしていない時は、読書、新しいアイデアの実験、またはオープンソースプロジェクトへの貢献をしています。ぜひ繋がりましょう！',
   },
   post: {
+    aiSummary: 'AI 要約',
     noteInfo: 'ノート情報',
     category: 'カテゴリ',
     topic: 'トピック',

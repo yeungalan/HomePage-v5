@@ -6,6 +6,7 @@ EDITED_DATE=2025-10-24T00:00:00Z
 TAG=About Me
 CATEGORY=個人
 CATEGORY_CAPTION=個人隨筆
+AI_SUMMARY=Alan Yeung 來自香港，2019 年移居美國，2021 年畢業於華盛頓大學。他現於 AWS Marketing - Technology AI and Analytics 團隊擔任軟體工程師，專注身份平台，以 GraphQL、Serverless 架構及 OAuth 打造統一的登入與認證體驗，並累積了高可用系統設計，以及 SOC2、滲透測試等資訊安全經驗。文章亦介紹了他由雲端工程師轉為軟體工程師的歷程和技術能力。工作以外，他熱愛旅行與攝影，足跡遍及歐洲、美洲及亞洲，以 Sony α6700 記錄旅途，目標是踏遍所有大洲；近年亦開始游泳和潛水。文章最後附上聯絡方式，歡迎對科技、旅行、潛水或語言學習有興趣的朋友交流。
 ### AUTOMATE FIELD END
 
 # 關於我

@@ -126,6 +126,8 @@ export const enUS = {
     fallbackHobby: "When I'm not coding, you can find me reading, experimenting with new ideas, or contributing to open-source projects. Feel free to connect with me!",
   },
   post: {
+    /** Heading of the auto-generated summary shown above a post. */
+    aiSummary: 'AI Summary',
     noteInfo: 'Note Info',
     category: 'Category',
     topic: 'Topic',

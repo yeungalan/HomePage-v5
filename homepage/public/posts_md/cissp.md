@@ -6,6 +6,7 @@ EDITED_DATE=2026-09-02T00:00:00Z
 TAG=CISSP,ISC2,資訊安全,考試心得,Pearson VUE,CAT
 CATEGORY=其他
 CATEGORY_CAPTION=其他文章與分享
+AI_SUMMARY=作者在日本留學期間報考並順利通過 CISSP。文章先介紹考試形式：採用 CAT 電腦自適應測驗，3 小時內作答 100 至 150 題，不能返回上一題，合格分數為 700/1000，並列出八大範疇及比重，其中 Domain 1 比重最高。作者用三至四個月，以官方學習手冊、Udemy 模擬試題及 HackMD 筆記溫習，整理了熱門考點，以及串連 Domain 1 與 Domain 7 的九大重點。他把錯題按範疇和原因分類，發現約一半失分源於答題技巧，因而訂出六條答題規則。文章亦記錄在西新宿 Pearson VUE 考場的流程及合格後的背書程序，並強調最重要的心得是以經理而非工程師的角度思考。
 ### AUTOMATE FIELD END
 
 # CISSP 考試後感——準備方法、考試流程與「經理思維」

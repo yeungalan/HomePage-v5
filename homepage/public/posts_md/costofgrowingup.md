@@ -6,6 +6,7 @@ EDITED_DATE=2025-11-05T07:19:00Z
 TAG=Reflective
 CATEGORY=Personal
 CATEGORY_CAPTION=Reflective
+AI_SUMMARY=Alan reflects on two close friends from the University of Washington leaving Seattle after a year of planning. They were the first friends he made in college and helped him through those years, and Seattle has been home to all of them for about a quarter of their lives. His feelings are mixed. He is genuinely happy for them and believes youth is the time to take risks, try new things and not fear failure. At the same time he is sad that his best friends will be far away for years to come. He sees this as the nature of growing up: gaining growth, opportunity and wider horizons means losing the everyday closeness of friends nearby. He resolves to cherish the time they have left together, and ends with a note wishing his friends happiness and luck in their new home.
 ### AUTOMATE FIELD END
 
 # My Friends Are Leaving Seattle

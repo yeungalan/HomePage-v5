@@ -13,6 +13,7 @@ import { NoteTitle } from './components/NoteTitle'
 import { NoteHeaderDate } from './components/NoteHeaderDate'
 import { NoteMetaBar } from './components/NoteMetaBar'
 import { NoteBanner } from './components/NoteBanner'
+import { NoteAiSummary } from './components/NoteAiSummary'
 import { NoteMarkdown } from './components/NoteMarkdown'
 import { AuthorIntroduction } from './components/AuthorIntroduction'
 import { NoteLeftSidebar } from './components/NoteLeftSidebar'
@@ -56,7 +57,8 @@ const Post: React.FC<PostProps> = ({
             caption: metadata.categoryCaption,
             avatar: metadata.categoryAvatar
           }
-        : undefined
+        : undefined,
+      aiSummary: metadata.aiSummary
     }
   }
 
@@ -92,7 +94,8 @@ const Post: React.FC<PostProps> = ({
                 caption: metadata.categoryCaption,
                 avatar: metadata.categoryAvatar
               }
-            : undefined
+            : undefined,
+          aiSummary: metadata.aiSummary
         }
       }
       setCurrentNote(updatedNoteData)
@@ -150,6 +153,8 @@ const Post: React.FC<PostProps> = ({
                       </div>
                     </div>
                   </span>
+
+                  <NoteAiSummary />
 
                   {currentNote.data.hide && (
                     <NoteBanner

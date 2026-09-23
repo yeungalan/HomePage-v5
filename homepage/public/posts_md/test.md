@@ -6,6 +6,7 @@ EDITED_DATE=2025-01-22T15:30:00Z
 TAG=React, JavaScript, Frontend, Tutorial
 CATEGORY=Web Development
 CATEGORY_CAPTION=Building modern web applications with React
+AI_SUMMARY=A test post that demonstrates the rich content the blog's Markdown renderer supports. The first half covers interactive charts written as fenced chart blocks with a JSON body: line charts built from shared labels or x/y points with optional smoothing and area fill, pie and donut charts built from labelled slices, and a draggable 3D globe that draws routes between named points, here from Hong Kong via Taipei to Tokyo. The second half covers LaTeX math rendered with KaTeX at build time: inline formulas in single dollar signs, centred display blocks, and fenced math blocks for aligned equations, piecewise functions and matrices. It also shows math inside lists, table cells and headings, how to escape literal dollar signs, and how an invalid formula appears in red without breaking the rest of the page. It ends with an embedded photo.
 ### AUTOMATE FIELD END
 
 # Testing Post 2

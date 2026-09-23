@@ -6,6 +6,7 @@ EDITED_DATE=2025-01-22T15:30:00Z
 TAG=React, JavaScript, Frontend, Tutorial
 CATEGORY=Web Development
 CATEGORY_CAPTION=Building modern web applications with React
+AI_SUMMARY=A beginner's guide to React that explains what the library is and why it became a popular choice for building user interfaces. It covers three core ideas, component-based design, declarative views and learn once, write anywhere, then walks through a first Welcome component to show that components are functions that take props and return elements. A Counter example introduces state and side effects with useState and useEffect, followed by a quick reference to common hooks such as useContext, useReducer, useMemo and useCallback. The guide lists best practices, including small focused components, meaningful names, lifting state up and using keys correctly, and suggests a folder layout for components and hooks. It closes with next steps such as React Router, state management, API integration, testing and performance optimization, plus an embedded photo.
 ### AUTOMATE FIELD END
 
 # Getting Started with React 202

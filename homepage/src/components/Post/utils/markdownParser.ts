@@ -23,7 +23,10 @@ export const parseMarkdownWithMetadata = (
     const lines = innerContent.split(/\r?\n/).filter(line => line.trim())
 
     lines.forEach(line => {
-      const [key, value] = line.split('=').map(s => s.trim())
+      const separator = line.indexOf('=')
+      if (separator === -1) return
+      const key = line.slice(0, separator).trim()
+      const value = line.slice(separator + 1).trim()
       if (key && value) {
         switch (key) {
           case 'Topic':
@@ -49,6 +52,9 @@ export const parseMarkdownWithMetadata = (
             break
           case 'CATEGORY_AVATAR':
             metadata.categoryAvatar = value
+            break
+          case 'AI_SUMMARY':
+            metadata.aiSummary = value
             break
         }
       }

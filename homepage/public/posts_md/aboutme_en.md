@@ -7,6 +7,7 @@ EDITED_DATE=2025-10-24T00:00:00Z
 TAG=About Me
 CATEGORY=Personal
 CATEGORY_CAPTION=Personal Essays
+AI_SUMMARY=Alan Yeung grew up in Hong Kong, moved to the United States in 2019 and graduated from the University of Washington in 2021. He works as a software engineer on the Identity Platform in AWS Marketing - Technology AI and Analytics, using GraphQL, serverless architectures and OAuth to make sign-in and authentication across AWS systems simpler and more consistent. The page traces his path from cloud engineer to software engineer, lists his skills in cloud, programming, marketing platforms and identity security, and notes his experience with fault-tolerant systems, SOC2 and penetration testing. Outside work he loves travel and photography, shooting with a Sony α6700 across Europe, the Americas and Asia, with the goal of reaching every continent. He has recently taken up swimming and scuba diving, and closes with how to reach him and an invitation to connect.
 
 ### AUTOMATE FIELD END
 

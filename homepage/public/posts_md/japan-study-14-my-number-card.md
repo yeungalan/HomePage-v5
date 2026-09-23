@@ -27,7 +27,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 - **作為健康保險證使用（マイナ保険証）**
 - **網上服務申請**：不少網上服務在申請時，都會要求出示個人編號卡及個人番號；甚至連抽寶可夢卡（ポケモンカード）這類抽選活動，也有要求以個人編號卡驗證身份的情況
 
-> 💡 外國人的個人編號卡，有效期限與在留卡的**在留期間滿了日**掛鈎。續簽在留期間後，記得同時到區役所更新個人編號卡的有效期限。
+> <span data-icon="mingcute:bulb-line"></span> 外國人的個人編號卡，有效期限與在留卡的**在留期間滿了日**掛鈎。續簽在留期間後，記得同時到區役所更新個人編號卡的有效期限。
 
 ---
 
@@ -35,7 +35,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 首先，在區役所辦理轉入手續時，向職員表明想申請個人編號卡。完成住民登記後，區役所便會將一封信寄到你的住址。
 
-> 💡 個人番號是完成住民登記後自動分配的，因此即使沒有特別提出，這封信一般也會寄到。
+> <span data-icon="mingcute:bulb-line"></span> 個人番號是完成住民登記後自動分配的，因此即使沒有特別提出，這封信一般也會寄到。
 
 信封內主要有兩張紙：第一張是「**個人番號通知書**」，第二張則是「**個人編號卡交付申請書**」，另外還附有回郵信封及說明小冊子。
 
@@ -148,7 +148,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 其中三種 4 位數字的密碼，可以設定為**相同的號碼**，因此實際上要記住的，一般只有「4 位數字」和「英數字」兩組。
 
-> ⚠️ 4 位數字的密碼連續輸入錯誤 **3 次**、署名用密碼連續輸入錯誤 **5 次**，便會被鎖定，一般需要親身到區役所辦理重設。領卡時可以把密碼寫在一張紙上，妥善保存在安全的地方。
+> <span data-icon="mingcute:warning-line"></span> 4 位數字的密碼連續輸入錯誤 **3 次**、署名用密碼連續輸入錯誤 **5 次**，便會被鎖定，一般需要親身到區役所辦理重設。領卡時可以把密碼寫在一張紙上，妥善保存在安全的地方。
 
 ---
 
@@ -170,7 +170,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 - **左下角 16 位英數字**：卡片的製造番號，每一張卡都不同，重新發卡後號碼亦會改變。
 - **旁邊的 4 位數字**：セキュリティコード，主要在以專用程式讀取卡內資料時使用。
 
-> ⚠️ 12 位的個人番號印在卡的**背面**。除了稅務、社會保障等法定手續需要之外，不要隨便讓人影印或拍下卡的背面。
+> <span data-icon="mingcute:warning-line"></span> 12 位的個人番號印在卡的**背面**。除了稅務、社會保障等法定手續需要之外，不要隨便讓人影印或拍下卡的背面。
 
 ---
 
@@ -192,7 +192,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 ## 參考資料
 
-- 🔗 [マイナンバーカード総合サイト：申請方法](https://www.kojinbango-card.go.jp/kofushinse/)
-- 🔗 [澀谷區：マイナンバーカードの受け取り（本人が受け取る場合）](https://www.city.shibuya.tokyo.jp/kurashi/mynumber/mynumber-tsuchi/mynumber_kjncardkofu.html)
-- 🔗 [東京都北區：マイナンバーカードの暗証番号](https://www.city.kita.lg.jp/living/registration/1001648/1001656/1001666/1001671.html)
-- 📄 [大阪府忠岡町：マイナンバーカードの表面・裏面の見方（PDF）](https://www.town.tadaoka.osaka.jp/material/files/group/7/mynumbercard_tadaoka.pdf)
+- <span data-icon="mingcute:link-line"></span> [マイナンバーカード総合サイト：申請方法](https://www.kojinbango-card.go.jp/kofushinse/)
+- <span data-icon="mingcute:link-line"></span> [澀谷區：マイナンバーカードの受け取り（本人が受け取る場合）](https://www.city.shibuya.tokyo.jp/kurashi/mynumber/mynumber-tsuchi/mynumber_kjncardkofu.html)
+- <span data-icon="mingcute:link-line"></span> [東京都北區：マイナンバーカードの暗証番号](https://www.city.kita.lg.jp/living/registration/1001648/1001656/1001666/1001671.html)
+- <span data-icon="mingcute:file-line"></span> [大阪府忠岡町：マイナンバーカードの表面・裏面の見方（PDF）](https://www.town.tadaoka.osaka.jp/material/files/group/7/mynumbercard_tadaoka.pdf)

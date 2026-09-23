@@ -120,7 +120,7 @@ Now that you understand the basics, here are some topics to explore:
 
 React is a powerful tool for building modern web applications. With its component-based architecture and rich ecosystem, you can create scalable and maintainable applications.
 
-Happy coding! 🚀
+Happy coding! <span data-icon="mingcute:rocket-line"></span>
 
 
 ## dsadasdas dasdmaskdmas dsandasjkndkasndkjas ddsankjdasnkdas das dasd a

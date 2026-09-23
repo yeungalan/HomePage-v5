@@ -109,7 +109,7 @@ export const enUS = {
     durationValue: '{{value}} hrs',
     flightProgress: 'Flight Progress',
     placeholder: 'Enter both airport codes to calculate flight distance',
-    completed: '✈️ Flight completed! You\'ve arrived at {{city}}!',
+    completed: 'Flight completed! You\'ve arrived at {{city}}!',
   },
   activity: {
     /** Shown in the date range of an ongoing experience, e.g. "Sept 2024 - Present". */

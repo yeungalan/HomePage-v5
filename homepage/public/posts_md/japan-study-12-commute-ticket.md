@@ -50,7 +50,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 我的出發站和到達站都在**都營地下鐵**的範圍內，而都營地下鐵是 PASMO 的發行業者之一，因此在都營車站辦理定期券，發出的自然就是 PASMO。
 
-> 💡 一張 PASMO 最多只可以載入鐵路定期券及巴士定期券各一種。若路線需要跨公司轉乘，可以向窗口查詢是否能辦理「連絡定期券」，一張卡便可涵蓋整條路線。
+> <span data-icon="mingcute:bulb-line"></span> 一張 PASMO 最多只可以載入鐵路定期券及巴士定期券各一種。若路線需要跨公司轉乘，可以向窗口查詢是否能辦理「連絡定期券」，一張卡便可涵蓋整條路線。
 
 ---
 
@@ -63,7 +63,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 - **學生證**
 - **付款方式**：現金或信用卡
 
-> ⚠️ 通學證明書的有效期只有**一個月**，向學校申請後請盡快前往辦理。另外，都營地下鐵的定期券最早可在**使用開始日的 14 日前**購買，可以預早安排。
+> <span data-icon="mingcute:warning-line"></span> 通學證明書的有效期只有**一個月**，向學校申請後請盡快前往辦理。另外，都營地下鐵的定期券最早可在**使用開始日的 14 日前**購買，可以預早安排。
 
 ---
 
@@ -98,7 +98,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 表格最下方「下欄には記入しないでください」的部分由車站職員填寫，不需理會。
 
-> ⚠️ 表格右側的注意事項有兩點值得留意：記名 PASMO 與定期券的記名人必須是同一人，否則無法購買；另外，不附定期券的記名 PASMO 不能以信用卡購買。
+> <span data-icon="mingcute:warning-line"></span> 表格右側的注意事項有兩點值得留意：記名 PASMO 與定期券的記名人必須是同一人，否則無法購買；另外，不附定期券的記名 PASMO 不能以信用卡購買。
 
 ---
 
@@ -154,7 +154,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 - **「パスモ タロウ 様」**：持有人的姓名，以片假名或英文字母印出。
 - **右下日期及「馬喰横山駅 1発行」**：發售日期及發售車站。
 
-> 💡 定期券到期之後，PASMO 卡本身仍然可以當作普通 IC 卡繼續使用，卡內餘額不受影響。續期時，只要仍在同一學年度內、乘車區間不變，一般可以直接在車站的定期券售票機辦理；但第一次購買通學定期券，或跨學年度續期，則必須到窗口辦理。
+> <span data-icon="mingcute:bulb-line"></span> 定期券到期之後，PASMO 卡本身仍然可以當作普通 IC 卡繼續使用，卡內餘額不受影響。續期時，只要仍在同一學年度內、乘車區間不變，一般可以直接在車站的定期券售票機辦理；但第一次購買通學定期券，或跨學年度續期，則必須到窗口辦理。
 
 ---
 
@@ -175,7 +175,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 ## 參考資料
 
-- 🔗 [東京都交通局：通学定期券を購入されるお客様へ](https://www.kotsu.metro.tokyo.jp/subway/fare/pass/school_seasonal_ticket.html)
-- 🔗 [東京都交通局：定期券（都営地下鉄）](https://www.kotsu.metro.tokyo.jp/subway/fare/pass.html)
-- 🔗 [PASMO：PASMO鉄道定期券のご購入](https://www.pasmo.co.jp/buy/train/)
-- 🔗 [PASMO：PASMO定期券](https://www.pasmo.co.jp/about/pass/)
+- <span data-icon="mingcute:link-line"></span> [東京都交通局：通学定期券を購入されるお客様へ](https://www.kotsu.metro.tokyo.jp/subway/fare/pass/school_seasonal_ticket.html)
+- <span data-icon="mingcute:link-line"></span> [東京都交通局：定期券（都営地下鉄）](https://www.kotsu.metro.tokyo.jp/subway/fare/pass.html)
+- <span data-icon="mingcute:link-line"></span> [PASMO：PASMO鉄道定期券のご購入](https://www.pasmo.co.jp/buy/train/)
+- <span data-icon="mingcute:link-line"></span> [PASMO：PASMO定期券](https://www.pasmo.co.jp/about/pass/)

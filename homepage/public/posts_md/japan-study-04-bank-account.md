@@ -24,8 +24,8 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 郵貯銀行提供官方的「**ゆうちょ手続きアプリ**」，可以全程在手機上完成開戶，無需親身前往窗口。
 
-- 🔗 [ゆうちょ手続きアプリ 官方介紹頁](https://www.jp-bank.japanpost.jp/app/tetsuzuki/app_tz_en.html)
-- 📄 [ゆうちょ手続きアプリ 快速指引（PDF）](https://www.jp-bank.japanpost.jp/app/tetsuzuki/pdf/guide_jp_quick.pdf)
+- <span data-icon="mingcute:link-line"></span> [ゆうちょ手続きアプリ 官方介紹頁](https://www.jp-bank.japanpost.jp/app/tetsuzuki/app_tz_en.html)
+- <span data-icon="mingcute:file-line"></span> [ゆうちょ手続きアプリ 快速指引（PDF）](https://www.jp-bank.japanpost.jp/app/tetsuzuki/pdf/guide_jp_quick.pdf)
 
 **開戶申請流程（簡明步驟）：**
 
@@ -36,7 +36,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
    - **ゆうちょダイレクト 登錄密碼**（8–12 位，需同時包含大寫英文、小寫英文及數字）
 4. 確認申請內容後送出，即時審查通過的情況下，**約一週內**提款卡（キャッシュカード）會以掛號郵件寄送至登記地址。
 
-> ⚠️ App 本身開設的帳戶為**無通帳型（ゆうちょダイレクト+）**，即不附存摺。若需要存摺，請在收到提款卡後，前往任何一台支援通帳繰越功能的 ATM 辦理通帳發行（開戶後 2 個月內、首次辦理免手續費）。
+> <span data-icon="mingcute:warning-line"></span> App 本身開設的帳戶為**無通帳型（ゆうちょダイレクト+）**，即不附存摺。若需要存摺，請在收到提款卡後，前往任何一台支援通帳繰越功能的 ATM 辦理通帳發行（開戶後 2 個月內、首次辦理免手續費）。
 
 收到提款卡後，不妨先確認：
 
@@ -85,7 +85,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 3. 選擇本人確認方式：**ゆうちょ認証アプリ**或**本人確認書類**（運轉免許証 / My Number Card）。
 4. 完成身份核實後，輸入新的 4 位數暗証番号即完成重設。
 
-> ⚠️ 重設後，若通帳本身也因密碼輸入錯誤而鎖定，App 的重設只會解鎖 Cash Card；通帳的解鎖需另外前往郵局或ゆうちょ銀行窗口辦理。
+> <span data-icon="mingcute:warning-line"></span> 重設後，若通帳本身也因密碼輸入錯誤而鎖定，App 的重設只會解鎖 Cash Card；通帳的解鎖需另外前往郵局或ゆうちょ銀行窗口辦理。
 
 ## 關於其他銀行
 

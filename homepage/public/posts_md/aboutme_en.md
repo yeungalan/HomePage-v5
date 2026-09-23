@@ -12,7 +12,7 @@ CATEGORY_CAPTION=Personal Essays
 
 # About Me
 
-## Hi there, I'm Alan Yeung 👋
+## Hi there, I'm Alan Yeung <span data-icon="mingcute:wave-hand-line"></span>
 
 I'm originally from **Hong Kong** and moved to the United States in 2019.
 I'm so glad you've found your way to my little corner of the web!

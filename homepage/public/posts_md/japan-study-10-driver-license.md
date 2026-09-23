@@ -14,7 +14,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 換照的地點是各都道府縣的運轉免許試驗場。東京都內共有三個受理地點：府中、鮫洲及江東。我選擇了位於江東區的**江東運転免許試験場**辦理。
 
-> 📄 官方參考資料：[外国で取得した運転免許証を日本の運転免許証に切り替えるには（警視庁）](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.html)
+> <span data-icon="mingcute:file-line"></span> 官方參考資料：[外国で取得した運転免許証を日本の運転免許証に切り替えるには（警視庁）](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.html)
 
 ---
 
@@ -32,9 +32,9 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 以下為換照所需的一般文件。因應取得國不同，部分要求有所差異，建議辦理前下載官方文件清單仔細核對：
 
-- 📋 [必要書類（共通）PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/hitsuyou071218.pdf)
-- 🌍 [國別必要書類一覧 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/kunibetuhituyou.pdf)
-- ⚠️ [注意事項 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/tyuui.pdf)
+- <span data-icon="mingcute:clipboard-line"></span> [必要書類（共通）PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/hitsuyou071218.pdf)
+- <span data-icon="mingcute:earth-line"></span> [國別必要書類一覧 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/kunibetuhituyou.pdf)
+- <span data-icon="mingcute:warning-line"></span> [注意事項 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/tyuui.pdf)
 
 一般所需文件如下：
 
@@ -56,7 +56,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 翻譯文必須由 JAF（日本自動車連盟）或其指定機構出具，不接受個人或坊間翻譯社的文件。
 
-- 🔗 [JAF 申請翻譯文官方指引](https://english.jaf.or.jp/driving-in-japan/drive-in-japan/about-dltas)
+- <span data-icon="mingcute:link-line"></span> [JAF 申請翻譯文官方指引](https://english.jaf.or.jp/driving-in-japan/drive-in-japan/about-dltas)
 
 ![JAF 日本語翻譯文樣本，列有氏名、住所、發給國、免許証番号等欄位](https://s3.alanyeung.co/blogphoto/ImagePaste%202026-4-11158058.png)
 *JAF 出具的日本語翻譯文樣本——整份文件由日本自動車連盟蓋章認證，辦理時間通常為兩至三天*
@@ -69,7 +69,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 現時換照**必須事先網上預約**，不接受即日申請。預約系統連結：
 
-- 🔗 [警視庁行政手続オンライン（WEB 預約）](https://www.keishicho-gto.metro.tokyo.lg.jp/keishicho-u/)
+- <span data-icon="mingcute:link-line"></span> [警視庁行政手続オンライン（WEB 預約）](https://www.keishicho-gto.metro.tokyo.lg.jp/keishicho-u/)
 
 預約需求相當旺盛，等候時間通常長達**約兩個月**。我在 3 月 12 日預約，最早的空位是 5 月 11 日早上 8:30，整整等了兩個月。
 
@@ -142,7 +142,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 此外，由於我駕齡已超過一年，順帶取得了**初心免除**資格，之後駕車時無需在車輛前後貼上初心者標誌。
 
-> ⚠️ 若二輪取照不足 365 日，工作人員會特別告知限制：摩托車只能單人駕駛，不可乘載後座乘客，直至滿一年為止。
+> <span data-icon="mingcute:warning-line"></span> 若二輪取照不足 365 日，工作人員會特別告知限制：摩托車只能單人駕駛，不可乘載後座乘客，直至滿一年為止。
 
 ### 視力檢查：8 號窗口
 
@@ -226,8 +226,8 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 ## 參考資料
 
-- 🔗 [警視庁：外国で取得した運転免許証を日本の運転免許証に切り替えるには](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.html)
-- 📋 [必要書類（共通）PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/hitsuyou071218.pdf)
-- 🌍 [國別必要書類一覧 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/kunibetuhituyou.pdf)
-- ⚠️ [注意事項 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/tyuui.pdf)
-- 🔗 [JAF 申請翻譯文官方指引](https://english.jaf.or.jp/driving-in-japan/drive-in-japan/about-dltas)
+- <span data-icon="mingcute:link-line"></span> [警視庁：外国で取得した運転免許証を日本の運転免許証に切り替えるには](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.html)
+- <span data-icon="mingcute:clipboard-line"></span> [必要書類（共通）PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/hitsuyou071218.pdf)
+- <span data-icon="mingcute:earth-line"></span> [國別必要書類一覧 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/kunibetuhituyou.pdf)
+- <span data-icon="mingcute:warning-line"></span> [注意事項 PDF](https://www.keishicho.metro.tokyo.lg.jp/menkyo/menkyo/kokugai/kokugai05.files/tyuui.pdf)
+- <span data-icon="mingcute:link-line"></span> [JAF 申請翻譯文官方指引](https://english.jaf.or.jp/driving-in-japan/drive-in-japan/about-dltas)

@@ -149,7 +149,7 @@ const FooterBottom = () => {
       window.dispatchEvent(new CustomEvent('fps-monitor-toggle', { detail: { enabled: newState } }))
 
       // Show feedback
-      alert(newState ? 'FPS Monitor Enabled! 🎮' : 'FPS Monitor Disabled')
+      alert(newState ? 'FPS Monitor Enabled!' : 'FPS Monitor Disabled')
 
       // Reset tap count
       setTapCount(0)

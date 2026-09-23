@@ -40,14 +40,14 @@ export const NoteActionButtons: React.FC = () => {
       <h3 className="font-semibold text-gray-900 mb-3 text-sm">Actions</h3>
       <div className="flex flex-col space-y-2">
         <ActionButton
-          icon={liked ? '❤️' : '🤍'}
+          icon={liked ? 'mingcute:heart-fill' : 'mingcute:heart-line'}
           label="Like"
           onClick={handleLike}
           count={likeCount}
         />
-        <ActionButton icon="📤" label="Share" onClick={handleShare} />
-        <ActionButton icon="💬" label="Comments" onClick={handleComment} />
-        <ActionButton icon="🔔" label="Subscribe" onClick={handleSubscribe} />
+        <ActionButton icon="mingcute:share-forward-line" label="Share" onClick={handleShare} />
+        <ActionButton icon="mingcute:chat-3-line" label="Comments" onClick={handleComment} />
+        <ActionButton icon="mingcute:notification-line" label="Subscribe" onClick={handleSubscribe} />
       </div>
     </div>
   )

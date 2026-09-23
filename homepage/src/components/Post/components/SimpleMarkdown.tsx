@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useRef, useEffect, ReactNode } from 'react'
+import { Icon } from '@iconify/react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
@@ -227,6 +228,15 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
           li(allProps) {
             const props = stripNode(allProps)
             return <li className="mb-2" {...props} />
+          },
+          // Posts embed icons as raw HTML: <span data-icon="mingcute:link-line"></span>
+          span(allProps) {
+            const props = stripNode(allProps) as Record<string, unknown>
+            const icon = props['data-icon']
+            if (typeof icon === 'string') {
+              return <Icon icon={icon} className="inline-block align-[-0.125em]" aria-hidden />
+            }
+            return <span {...props} />
           },
           iframe(allProps) {
             const { height, className, src, sandbox, ...otherProps } = stripNode(allProps)

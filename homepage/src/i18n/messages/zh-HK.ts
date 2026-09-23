@@ -137,6 +137,6 @@ export const zhHK: Messages = {
     durationValue: '{{value}} 小時',
     flightProgress: '飛行進度',
     placeholder: '請輸入兩個機場代碼以計算飛行距離',
-    completed: '✈️ 飛行完成！已抵達{{city}}！',
+    completed: '飛行完成！已抵達{{city}}！',
   },
 }

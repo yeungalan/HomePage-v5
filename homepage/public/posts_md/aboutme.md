@@ -10,7 +10,7 @@ CATEGORY_CAPTION=個人隨筆
 
 # 關於我
 
-## 嗨，你好，我是 Alan Yeung 👋
+## 嗨，你好，我是 Alan Yeung <span data-icon="mingcute:wave-hand-line"></span>
 
 來自 **香港**，2019 年搬到美國。很高興你造訪我的小天地！  
 如果想找我聊聊科技、旅行或潛水，也可以透過 [LinkedIn](https://www.linkedin.com/in/ho-yeung/) 聯絡我～  

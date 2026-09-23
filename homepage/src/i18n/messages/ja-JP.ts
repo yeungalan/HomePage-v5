@@ -137,6 +137,6 @@ export const jaJP: Messages = {
     durationValue: '{{value}} 時間',
     flightProgress: 'フライト進捗',
     placeholder: '両方の空港コードを入力して距離を計算してください',
-    completed: '✈️ フライト完了！{{city}}に到着しました！',
+    completed: 'フライト完了！{{city}}に到着しました！',
   },
 }

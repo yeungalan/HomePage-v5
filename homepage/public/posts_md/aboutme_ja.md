@@ -12,7 +12,7 @@ CATEGORY_CAPTION=個人エッセイ
 
 # 私について
 
-## こんにちは、Alan Yeung です 👋
+## こんにちは、Alan Yeung です <span data-icon="mingcute:wave-hand-line"></span>
 
 私は **香港** 出身で、2019 年にアメリカへ移住しました。
 私のこの小さなウェブの片隅へ訪れてくれて、とても嬉しいです！

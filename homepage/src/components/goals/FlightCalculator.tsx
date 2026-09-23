@@ -92,11 +92,11 @@ export const FlightCalculator: React.FC = () => {
         clearInterval(interval);
         // Desktop notification
         if (Notification.permission === 'granted') {
-          new Notification(`Flight arrived at ${dstAirport?.city} (${dstAirport?.iata}) ✈️`);
+          new Notification(`Flight arrived at ${dstAirport?.city} (${dstAirport?.iata})`);
         } else if (Notification.permission !== 'denied') {
           Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
-              new Notification(`Flight arrived at ${dstAirport?.city} (${dstAirport?.iata}) ✈️`);
+              new Notification(`Flight arrived at ${dstAirport?.city} (${dstAirport?.iata})`);
             }
           });
         }
@@ -228,7 +228,8 @@ export const FlightCalculator: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="bg-[#fafafa] dark:bg-gray-900 rounded-xl p-3 sm:p-4 border border-gray-300 dark:border-gray-600"
             >
-              <p className="text-sm sm:text-base text-gray-900 dark:text-gray-100 text-center font-medium">
+              <p className="flex items-center justify-center gap-1.5 text-sm sm:text-base text-gray-900 dark:text-gray-100 text-center font-medium">
+                <Icon icon="mingcute:flight-land-line" className="shrink-0" />
                 {t('flightCalculator.completed', { city: dstAirport.city })}
               </p>
             </motion.div>

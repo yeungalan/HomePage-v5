@@ -10,7 +10,7 @@ import {
   Vector2,
 } from "three";
 import { motion } from "motion/react";
-import { Icon } from '@iconify/react';
+import { Icon, getIcon, buildIcon } from '@iconify/react';
 import { FullPageLoading } from "./Loading";
 import { useTranslation } from "@/i18n";
 import { GLOBE_COLORS } from "@/constants/colors";
@@ -18,6 +18,16 @@ import { ALTITUDE_LEVELS, GLOBE_CONFIG, OVERLAP_THRESHOLD_DEGREES, ROUTE_ARC_OPA
 import { dayNightShader } from "@/lib/worldShader";
 import { sunPosAt, clusterPoints } from "@/lib/worldUtils";
 import type { Airport, Route, TrainStation, TrainPath, PointData, Dimensions, TimeMode } from "@/types/world";
+
+// Point tooltips are raw HTML strings, so the <Icon> component can't be used
+// there; render the (already registered) icon's SVG markup instead.
+function tooltipIcon(name: string): string {
+  const data = getIcon(name);
+  if (!data) return '';
+  const { attributes, body } = buildIcon(data, { height: '1em' });
+  const attrs = Object.entries(attributes).map(([k, v]) => `${k}="${v}"`).join(' ');
+  return `<svg ${attrs} style="display:inline-block;vertical-align:-0.125em">${body}</svg>`;
+}
 
 interface GlobeInstance {
   pointOfView: (pov?: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void | { lat: number; lng: number; altitude: number };
@@ -399,14 +409,14 @@ export default function WorldMap(): React.JSX.Element {
                   }
 
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
-                    ? `<div class="text-xs mt-1">✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</div>`
+                    ? `<div class="text-xs mt-1">${tooltipIcon('mingcute:airplane-line')} ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</div>`
                     : '';
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<div class="text-xs mt-1">🚂 ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</div>`
+                    ? `<div class="text-xs mt-1">${tooltipIcon('mingcute:train-line')} ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</div>`
                     : '';
 
                   return `<div class="text-white bg-black/90 px-3 py-2 rounded max-w-xs">
-                    <div class="font-bold text-yellow-300">📍 ${t('world.tooltipLocations', { count: d.clusterSize ?? 0 })}</div>
+                    <div class="font-bold text-yellow-300">${tooltipIcon('mingcute:location-line')} ${t('world.tooltipLocations', { count: d.clusterSize ?? 0 })}</div>
                     <div class="text-sm mt-1">${typeText}</div>
                     <div class="text-xs mt-1 text-gray-300">${locations}${moreText}</div>
                     ${flightInfo}${trainInfo}
@@ -416,22 +426,22 @@ export default function WorldMap(): React.JSX.Element {
                 // Regular point labels
                 if (d.type === 'overlap') {
                   const trainInfo = d.trainRoutes && d.trainRoutes.length > 0
-                    ? `<br/><small>🚂 ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</small>`
+                    ? `<br/><small>${tooltipIcon('mingcute:train-line')} ${t('world.tooltipTrainRoutes', { count: d.trainRoutes.length })}</small>`
                     : '';
                   const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
-                    ? `<br/><small>✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
+                    ? `<br/><small>${tooltipIcon('mingcute:airplane-line')} ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
                     : '';
                   return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.name || d.city}<br/>${t('world.tooltipAirportAndTrain')}${flightInfo}${trainInfo}</div>`;
                 }
                 if (d.type === 'train') {
                   const routeInfo = d.routes && d.routes.length > 0
-                    ? `<br/><small>🚂 ${t('world.tooltipRoutes', { count: d.routes.length })}: ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
+                    ? `<br/><small>${tooltipIcon('mingcute:train-line')} ${t('world.tooltipRoutes', { count: d.routes.length })}: ${d.routes.slice(0, 2).join(', ')}${d.routes.length > 2 ? '...' : ''}</small>`
                     : '';
                   return `<div class="text-white bg-black/80 px-2 py-1 rounded"><strong>${d.name}</strong><br/>${t('world.tooltipTrainStation')}${routeInfo}</div>`;
                 }
                 // Airport
                 const flightInfo = d.flightRoutes && d.flightRoutes.length > 0
-                  ? `<br/><small>✈️ ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
+                  ? `<br/><small>${tooltipIcon('mingcute:airplane-line')} ${t('world.tooltipFlightDest', { count: d.flightRoutes.length })}</small>`
                   : '';
                 return `<div class="text-white bg-black/80 px-2 py-1 rounded">${d.city}<br/>${d.name}${flightInfo}</div>`;
               }}

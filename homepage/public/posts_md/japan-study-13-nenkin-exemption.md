@@ -42,7 +42,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 | 對象期間 | 4 月至翌年 3 月 | 7 月至翌年 6 月 |
 | 對將來年金額的影響 | 不計入年金額 | 全額免除計入 8 分之 4 |
 
-> 💡 學生若符合學生納付特例的資格，便需要優先申請學生納付特例，不能選擇一般免除。你的學校是否適用，可以參考日本年金機構的「學生納付特例對象校一覽」，或直接向區役所職員查詢。
+> <span data-icon="mingcute:bulb-line"></span> 學生若符合學生納付特例的資格，便需要優先申請學生納付特例，不能選擇一般免除。你的學校是否適用，可以參考日本年金機構的「學生納付特例對象校一覽」，或直接向區役所職員查詢。
 
 ---
 
@@ -128,7 +128,7 @@ CATEGORY_CAPTION=在日留學生活全記錄
 | 4 分之 1 免除 | 8 分之 7 |
 | 納付猶予 | 0（不計入年金額） |
 
-> ⚠️ 若獲承認的是**部分免除**（4 分之 3、半額或 4 分之 1 免除），仍然需要繳付餘下部分的保險料。若沒有繳付，該期間會被當作**未繳（未納）**處理，既不計入年金額，也不計入資格期間。
+> <span data-icon="mingcute:warning-line"></span> 若獲承認的是**部分免除**（4 分之 3、半額或 4 分之 1 免除），仍然需要繳付餘下部分的保險料。若沒有繳付，該期間會被當作**未繳（未納）**處理，既不計入年金額，也不計入資格期間。
 
 右頁最下方亦提示背面有「增加年金額的方法」，其中一個方法便是**追納**：獲承認免除的期間，可在 **10 年內**補繳保險料。對於日後仍會留在日本工作的人來說，可以之後再考慮是否補繳。
 
@@ -151,8 +151,8 @@ CATEGORY_CAPTION=在日留學生活全記錄
 
 ## 參考資料
 
-- 🔗 [日本年金機構：国民年金保険料の免除制度・納付猶予制度](https://www.nenkin.go.jp/service/kokunen/menjo/20150428.html)
-- 🔗 [日本年金機構：国民年金保険料の学生納付特例制度](https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html)
-- 🔗 [日本年金機構：学生納付特例対象校一覧](https://www.nenkin.go.jp/service/kokunen/menjo/gakutokutaisyouko.html)
-- 🔗 [日本年金機構：国民年金保険料](https://www.nenkin.go.jp/service/kokunen/hokenryo/hokenryo.html)
-- 🔗 [港區：国民年金保険料免除・納付猶予申請](https://www.city.minato.tokyo.jp/kokuminnenkin/kurashi/hoken/nenkin/menjo/shinseimenjo.html)
+- <span data-icon="mingcute:link-line"></span> [日本年金機構：国民年金保険料の免除制度・納付猶予制度](https://www.nenkin.go.jp/service/kokunen/menjo/20150428.html)
+- <span data-icon="mingcute:link-line"></span> [日本年金機構：国民年金保険料の学生納付特例制度](https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html)
+- <span data-icon="mingcute:link-line"></span> [日本年金機構：学生納付特例対象校一覧](https://www.nenkin.go.jp/service/kokunen/menjo/gakutokutaisyouko.html)
+- <span data-icon="mingcute:link-line"></span> [日本年金機構：国民年金保険料](https://www.nenkin.go.jp/service/kokunen/hokenryo/hokenryo.html)
+- <span data-icon="mingcute:link-line"></span> [港區：国民年金保険料免除・納付猶予申請](https://www.city.minato.tokyo.jp/kokuminnenkin/kurashi/hoken/nenkin/menjo/shinseimenjo.html)

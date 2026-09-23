@@ -1,8 +1,8 @@
 ### AUTOMATE FIELD
 Topic=13 | 國民年金保險料免除申請——語言學校學生適用的一般免除
 ID=japan-study-13-nenkin-menjo
-CREATED_DATE=2026-09-23T01:00:00Z
-EDITED_DATE=2026-09-23T01:00:00Z
+CREATED_DATE=2026-08-08T00:00:00Z
+EDITED_DATE=2026-08-08T00:00:00Z
 TAG=日本留學,國民年金,保險料免除,學生納付特例,區役所,日本年金機構
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄

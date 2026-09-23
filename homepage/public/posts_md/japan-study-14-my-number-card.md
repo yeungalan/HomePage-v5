@@ -1,8 +1,8 @@
 ### AUTOMATE FIELD
 Topic=14 | 申請個人編號卡（マイナンバーカード）——從通知書到領卡全流程
 ID=japan-study-14-mynumber-card
-CREATED_DATE=2026-09-23T02:00:00Z
-EDITED_DATE=2026-09-23T02:00:00Z
+CREATED_DATE=2026-08-31T00:00:00Z
+EDITED_DATE=2026-08-31T00:00:00Z
 TAG=日本留學,マイナンバーカード,個人編號卡,個人番號通知書,區役所,暗證番號
 CATEGORY=日本留學記
 CATEGORY_CAPTION=在日留學生活全記錄

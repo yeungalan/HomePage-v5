@@ -9,10 +9,10 @@ export interface Award {
 }
 
 export const AWARDS: Award[] = [
-  { id: "1", title: "Professional Association of Diving Instructors - Advanced Open Water", created: "2026-09-27 00:00:00" },
+  { id: "1", title: "PADI - Advanced Open Water", created: "2026-09-27 00:00:00" },
   { id: "2", title: "ISC2 Certified Information Systems Security Professional", created: "2026-09-02 00:00:00" },
   { id: "3", title: "Scrum.org Professional Scrum Master I", created: "2026-01-29 00:00:00" },
-  { id: "4", title: "Professional Association of Diving Instructors - Open Water", created: "2025-07-28 00:00:00" },
+  { id: "4", title: "PADI - Open Water", created: "2025-07-28 00:00:00" },
   { id: "5", title: "Japanese-Language Proficiency Test - N5", created: "2025-01-10 00:00:00" },
   { id: "6", title: "AWS Certified Security – Specialty", created: "2024-02-27 00:00:00" },
   { id: "7", title: "University of Washington - Annual Dean's List", created: "2023-06-13 00:00:00" },

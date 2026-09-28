@@ -17,7 +17,7 @@ The real machine is a second-hand **NEC Mate** office mini PC that cost me about
 
 ## The Hardware
 
-I asked the machine itself instead of trusting my memory. Here is what `dmidecode`, `lscpu` and friends report:
+Here is what is inside:
 
 | Part | Detail |
 |---|---|
@@ -46,11 +46,11 @@ I like Raspberry Pis, but for a machine that runs a pile of containers all day, 
 - **A usable GPU.** The UHD 630 handles video decoding and runs AI object detection for my camera (see below).
 - **Price.** Around 10,000 yen for the whole box, power supply included.
 
-The trade-off is power draw and size, and even there it does better than I expected. The CPU's own power counter (Intel RAPL) reported about **1 W** for the processor package while the machine was mostly idle. That is not the number at the wall plug, but it shows the chip spends most of its day asleep.
+The trade-off is power draw and size, and even there it does better than I expected. When the machine is mostly idle, the processor itself draws only about **1 W**. That is not the whole box at the wall plug, but it tells me the chip spends most of its day asleep.
 
 ## What It Runs
 
-Right now it is a small, fairly busy server:
+Here is what I run on it today:
 
 - **ArozOS**, a web desktop and file manager. I also use this machine as my development box for ArozOS work.
 - **Frigate NVR** for my security camera. Object detection runs on the integrated GPU through **OpenVINO**, so there is no need for a Coral TPU.
@@ -64,12 +64,12 @@ For access, **Cloudflare Tunnel** publishes the web services without opening any
 
 ## A Quick Health Check
 
-Since it is a used machine with a used drive, I checked how it is holding up:
+Since I bought it used, with a used drive, I keep an eye on how it is holding up:
 
 - **Temperatures:** the CPU sits around **40°C** and the drive around **36°C**. The little NEC case handles a 35 W chip without any trouble.
-- **Drive health:** SMART reports **PASSED**, with zero reallocated or pending sectors. It has about **13,900 power-on hours**, most of them probably from its previous life in an office.
-- **One thing to watch:** the drive's head-parking count (Load_Cycle_Count) is already about **139,000**. Laptop drives park their heads aggressively to save power, and on a server that never sleeps, those parks add up. It is not an emergency, but it is a good reason for the upgrade below.
-- **Memory:** about 4 GB of the 12 GB is used by programs. Most of the rest is cache, and about 7 GB is still available.
+- **Drive health:** The drive passes its health check, with no bad sectors so far. It has about **13,900 hours** of use on it, most of them probably from its previous life in an office.
+- **One thing to watch:** the drive has already parked its heads about **139,000** times. Laptop drives park their heads aggressively to save power, and on a server that never sleeps, those parks add up. It is not an emergency, but it is a good reason for the upgrade below.
+- **Memory:** everything above fits in about 4 GB, so there is still plenty of room in the 12 GB.
 
 ## What I Would Upgrade Next
 

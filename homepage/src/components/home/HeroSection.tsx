@@ -13,6 +13,7 @@ import { softBouncePreset } from '@/constants/spring';
 import { clsxm } from '@/lib/helper';
 import { useI18n } from '@/i18n';
 import { QUOTES_BY_LOCALE, getDifferentQuoteIndex, getRandomQuoteIndex } from '@/data/quotes';
+import { useMountedRandom } from '@/hooks/use-mounted-random';
 import { getSocialLinksArray } from '@/data/social';
 import { ANIMATION_DELAYS, ANIMATION_DURATIONS, calculateStaggerDelay } from '@/constants/timing';
 
@@ -23,7 +24,7 @@ export const HeroSection: React.FC = () => {
       return acc + (cur.text?.length || 0);
     }, 0) * 50;
 
-  const [quoteIndex, setQuoteIndex] = useState(getRandomQuoteIndex());
+  const [quoteIndex, setQuoteIndex] = useMountedRandom(0, getRandomQuoteIndex);
   const [hasChanged, setHasChanged] = useState(false);
 
   const handleRefreshQuote = () => {

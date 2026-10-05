@@ -1,44 +1,18 @@
 /**
  * Cypress support file, loaded before every e2e spec.
  *
- * The app throws a couple of classes of errors that are not test failures and
- * must be swallowed so they don't abort the run:
- *
- *  1. Benign rendering noise from motion/three.js (ResizeObserver / WebGL).
- *  2. React hydration mismatches. The production build (next build + next start)
- *     throws these as uncaught errors, whereas dev only warns. They are inherent
- *     to the app's design — e.g. the hero shows a random quote
- *     (useState(getRandomQuoteIndex())) and several pages render time-based
- *     content — so the server HTML and the first client render legitimately
- *     differ. These surface as "Minified React error #418/#421/#422/#423/#425"
- *     in production and as "Hydration failed"/"Text content does not match" in
- *     dev. Neither indicates a broken page, so we ignore them here. (The display
- *     and clickability the tests assert still run against the hydrated DOM.)
- *
- * Anything else is left to fail the run as usual.
+ * Benign rendering noise from motion/three.js (ResizeObserver / WebGL) is not a
+ * test failure, so it is swallowed here. Anything else fails the run as usual.
+ * That includes React hydration errors ("Minified React error #418" and
+ * friends), which mean the pre-rendered HTML disagreed with the browser's first
+ * render; hydration.cy.ts checks every page for them.
  */
-const HYDRATION_REACT_ERROR_CODES = ['418', '421', '422', '423', '425']
-
 const isBenign = (message: string): boolean => {
   const benign = [
     'ResizeObserver loop',
     'WebGL', // react-globe.gl / three.js in headless Chrome
-    // Dev-mode hydration messages.
-    'Hydration failed',
-    'Text content does not match',
-    'did not match',
-    'hydrated but some attributes',
   ]
-  if (benign.some((needle) => message.includes(needle))) return true
-
-  // Production minified hydration errors, e.g. "Minified React error #418".
-  if (
-    message.includes('Minified React error') &&
-    HYDRATION_REACT_ERROR_CODES.some((code) => message.includes(`#${code}`))
-  ) {
-    return true
-  }
-  return false
+  return benign.some((needle) => message.includes(needle))
 }
 
 Cypress.on('uncaught:exception', (err) => {

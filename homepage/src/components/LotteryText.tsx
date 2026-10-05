@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useMountedRandom } from '@/hooks/use-mounted-random';
 
 interface LotteryTextProps {
   elements: React.ReactNode[];
@@ -12,7 +13,7 @@ export const LotteryText: React.FC<LotteryTextProps> = ({
   className = '',
   initialDelay = 0 
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(Math.floor(Math.random() * elements.length));
+  const [currentIndex, setCurrentIndex] = useMountedRandom(0, () => Math.floor(Math.random() * elements.length));
   const [isAnimating, setIsAnimating] = useState(false);
   const canTriggerRef = useRef(true);
   const touchTimeoutRef = useRef<NodeJS.Timeout>(undefined);

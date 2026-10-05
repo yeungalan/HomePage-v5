@@ -17,24 +17,39 @@ function padTwo(n: number): string {
   return n.toString().padStart(2, '0');
 }
 
+/**
+ * The year the site was built, the same in the pre-rendered HTML and the
+ * browser bundle (NEXT_PUBLIC_BUILD_DATE is inlined at build time).
+ */
+const BUILD_YEAR = new Date(process.env.NEXT_PUBLIC_BUILD_DATE ?? Date.UTC(2026, 0)).getUTCFullYear();
+
+const PLACEHOLDER = '--';
+
 export default function GoalsPage() {
   const t = useTranslation();
-  const [time, setTime] = useState(new Date());
+  // The page is pre-rendered at build time, so the current time only exists in
+  // the browser. Rendering it on the server would bake in the build moment and
+  // break hydration; start empty and fill in on the first tick.
+  const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 100);
     return () => clearInterval(timer);
   }, []);
 
-  const currentYear = time.getFullYear();
+  const currentYear = time?.getFullYear() ?? BUILD_YEAR;
   const nextYear = currentYear + 1;
-  const daysLeft = differenceInDays(endOfYear(time), time);
+  const daysLeft = time ? differenceInDays(endOfYear(time), time) : PLACEHOLDER;
 
   const daysInYear = isLeapYear(currentYear) ? 366 : 365;
-  const yearProgress = (((time.getTime() - startOfYear(time).getTime()) / (daysInYear * 86_400_000)) * 100).toFixed(6);
+  const yearProgress = time
+    ? (((time.getTime() - startOfYear(time).getTime()) / (daysInYear * 86_400_000)) * 100).toFixed(6)
+    : PLACEHOLDER;
 
-  const startOfDay = new Date(currentYear, time.getMonth(), time.getDate());
-  const todayProgress = (((time.getTime() - startOfDay.getTime()) / 86_400_000) * 100).toFixed(6);
+  const startOfDay = time ? new Date(currentYear, time.getMonth(), time.getDate()) : null;
+  const todayProgress = time && startOfDay
+    ? (((time.getTime() - startOfDay.getTime()) / 86_400_000) * 100).toFixed(6)
+    : PLACEHOLDER;
 
   return (
     <>
@@ -52,16 +67,16 @@ export default function GoalsPage() {
           </motion.header>
 
           <ClockDisplay
-            hours={padTwo(time.getHours())}
-            minutes={padTwo(time.getMinutes())}
-            seconds={padTwo(time.getSeconds())}
-            utcHours={padTwo(time.getUTCHours())}
-            utcMinutes={padTwo(time.getUTCMinutes())}
-            utcSeconds={padTwo(time.getUTCSeconds())}
+            hours={time ? padTwo(time.getHours()) : PLACEHOLDER}
+            minutes={time ? padTwo(time.getMinutes()) : PLACEHOLDER}
+            seconds={time ? padTwo(time.getSeconds()) : PLACEHOLDER}
+            utcHours={time ? padTwo(time.getUTCHours()) : PLACEHOLDER}
+            utcMinutes={time ? padTwo(time.getUTCMinutes()) : PLACEHOLDER}
+            utcSeconds={time ? padTwo(time.getUTCSeconds()) : PLACEHOLDER}
           />
 
           <YearStats
-            dayOfYear={getDayOfYear(time)}
+            dayOfYear={time ? getDayOfYear(time) : PLACEHOLDER}
             yearProgress={yearProgress}
             todayProgress={todayProgress}
           />

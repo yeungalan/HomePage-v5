@@ -34,6 +34,11 @@ const getRevisionDate = (): string => {
 }
 
 const REVISION_DATE = getRevisionDate()
+/**
+ * The build year rather than `new Date()`, so the pre-rendered footer matches
+ * hydration even when a visit falls in a later year than the build.
+ */
+const COPYRIGHT_YEAR = REVISION_DATE.slice(0, 4)
 
 // Deployment stage, bridged from the `STAGE` env var via next.config.ts. When it
 // is `nonprod` or `dev`, the footer flags the build as non-production.
@@ -125,8 +130,7 @@ const PoweredBy: Component = ({ className }) => {
 const FooterBottom = () => {
   const t = useTranslation()
   const { otherInfo } = FOOTER_CONFIG
-  const currentYear = new Date().getFullYear().toString()
-  const { date = currentYear, icp } = otherInfo || {}
+  const { date = COPYRIGHT_YEAR, icp } = otherInfo || {}
 
   const [tapCount, setTapCount] = useState(0)
   const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -166,7 +170,7 @@ const FooterBottom = () => {
   return (
     <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
       <div>
-        <span>© {date.replace('{{now}}', currentYear)} </span>
+        <span>© {date.replace('{{now}}', COPYRIGHT_YEAR)} </span>
         <span>{t('footer.copyright')}</span>
         <span>.</span>
         <span>

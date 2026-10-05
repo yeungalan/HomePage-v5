@@ -38,8 +38,13 @@ jobs:
         working-directory: homepage
         run: npm run build
 
+      # The build above runs in UTC, like Vercel's. Running the browser in Japan
+      # time lets hydration.cy.ts catch pages whose pre-rendered HTML depends on
+      # the timezone.
       - name: Run Cypress
         uses: cypress-io/github-action@v6
+        env:
+          TZ: Asia/Tokyo
         with:
           working-directory: test
           start: npm run start:app

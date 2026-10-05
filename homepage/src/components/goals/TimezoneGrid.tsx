@@ -15,8 +15,11 @@ function getDayOffset(date: Date, tz: string): number {
 }
 
 interface TimezoneGridProps {
-  time: Date;
+  /** Null until the time is known in the browser; the cards then show placeholders. */
+  time: Date | null;
 }
+
+const PLACEHOLDER_STYLE = { icon: 'mdi:clock-outline', gradient: undefined, textColor: 'text-gray-900 dark:text-white' };
 
 export const TimezoneGrid: FC<TimezoneGridProps> = ({ time }) => (
   <motion.div
@@ -26,8 +29,8 @@ export const TimezoneGrid: FC<TimezoneGridProps> = ({ time }) => (
     className="grid grid-cols-2 gap-4 sm:gap-6"
   >
     {TIMEZONES.map(({ label, tz, lat, lng }) => {
-      const { icon, gradient, textColor } = getDaylightInfo(time, lat, lng);
-      const dayOffset = getDayOffset(time, tz);
+      const { icon, gradient, textColor } = time ? getDaylightInfo(time, lat, lng) : PLACEHOLDER_STYLE;
+      const dayOffset = time ? getDayOffset(time, tz) : 0;
       return (
         <div
           key={tz}
@@ -38,7 +41,7 @@ export const TimezoneGrid: FC<TimezoneGridProps> = ({ time }) => (
             <Icon icon={icon} className="text-base" /> {label}
           </p>
           <p className={`text-lg sm:text-xl md:text-2xl font-bold font-mono ${textColor}`}>
-            {time.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })}
+            {time ? time.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }) : '--:--'}
             {dayOffset !== 0 && (
               <sup className="ml-0.5 align-super text-[0.6em] font-semibold opacity-70">
                 {dayOffset > 0 ? `+${dayOffset}` : dayOffset}

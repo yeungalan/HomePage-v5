@@ -13,7 +13,8 @@ interface Service {
   serviceDescription?: string;
   serviceType?: string;
   serviceLabel?: string;
-  status?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
+  status?: 'healthy' | 'unhealthy' | 'warning' | 'paused' | 'unknown';
+  uptime?: string;
   tier?: string;
   icon?: string;
   iconBg?: string;
@@ -42,6 +43,7 @@ interface FlowNodeData {
   iconBg?: string;
   iconColor?: string;
   health: string;
+  uptime?: string;
   hasIncomingEdge: boolean;
   hasOutgoingEdge: boolean;
   isSelected?: boolean;
@@ -144,6 +146,7 @@ export function configToFlow(config: FlowGraphConfig) {
         iconBg: service.iconBg,
         iconColor: service.iconColor,
         health: service.status || 'healthy',
+        uptime: service.uptime,
         hasIncomingEdge: hasIncoming.has(service.serviceId),
         hasOutgoingEdge: hasOutgoing.has(service.serviceId),
       },

@@ -10,7 +10,9 @@ interface CustomNodeData {
   icon?: string;
   iconBg?: string;
   iconColor?: string;
-  health?: 'healthy' | 'unhealthy' | 'warning' | 'unknown';
+  health?: 'healthy' | 'unhealthy' | 'warning' | 'paused' | 'unknown';
+  /** Uptime summary shown under the subtitle, e.g. "99.77% uptime (30d)". */
+  uptime?: string;
   hasIncomingEdge?: boolean;
   hasOutgoingEdge?: boolean;
   isSelected?: boolean;
@@ -133,6 +135,19 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
               }}
             >
               {data.subtitle}
+            </div>
+          )}
+          {data.uptime && (
+            <div
+              data-cy="node-uptime"
+              style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                marginTop: '4px',
+                color: health.color,
+              }}
+            >
+              {data.uptime}
             </div>
           )}
         </div>

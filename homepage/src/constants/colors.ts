@@ -24,6 +24,11 @@ export const HEALTH_STATUS_COLORS = {
     color: '#f59e0b',
     icon: 'mdi:alert',
   },
+  paused: {
+    bg: '#e0f2fe',
+    color: '#0284c7',
+    icon: 'mdi:pause-circle',
+  },
   unknown: {
     bg: '#f3f4f6',
     color: '#6b7280',

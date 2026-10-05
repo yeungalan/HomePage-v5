@@ -7,7 +7,7 @@ import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
 
 // Type definitions
-export type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'unknown';
+export type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'paused' | 'unknown';
 export type ServiceType = 'web' | 'mobile' | 'loadbalancer' | 'server' | 'database';
 
 export interface Service {
@@ -17,6 +17,10 @@ export interface Service {
   serviceType?: ServiceType;
   serviceLabel?: string;
   status?: ServiceStatus;
+  /** UptimeRobot monitor that reports this service's live status. */
+  uptimeMonitorId?: number;
+  /** Short uptime summary shown on the node, e.g. "99.77% uptime (30d)". */
+  uptime?: string;
   tier?: string;
   icon?: string;
   iconBg?: string;
@@ -151,6 +155,25 @@ export default function ThreeTierInfrastructure({ config, onNodeClick }: FlowGra
       }))
     );
   }, [selectedNodeId, setNodes]);
+
+  // Nodes are created once from the initial config; push later status and
+  // uptime changes (e.g. live monitoring data) into them.
+  // Returning the same array when nothing changed avoids a re-render, which
+  // matters because the default config is a new object on every render.
+  useEffect(() => {
+    setNodes((nds) => {
+      let changed = false;
+      const next = nds.map((node) => {
+        const service = activeConfig.services.find((s) => s.serviceId === node.id);
+        if (!service) return node;
+        const health = service.status || 'healthy';
+        if (node.data.health === health && node.data.uptime === service.uptime) return node;
+        changed = true;
+        return { ...node, data: { ...node.data, health, uptime: service.uptime } };
+      });
+      return changed ? next : nds;
+    });
+  }, [activeConfig, setNodes]);
 
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-950" style={{ width: '100%', height: '75vh', minHeight: '500px', maxHeight: '900px' }}>

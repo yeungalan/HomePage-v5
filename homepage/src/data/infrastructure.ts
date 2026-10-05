@@ -1,5 +1,13 @@
 import type { FlowGraphConfig } from '@/components/FlowGraph';
 
+/**
+ * Public UptimeRobot status page that reports the live status of the services
+ * below. A service with `uptimeMonitorId` takes its status and uptime from that
+ * monitor; the rest keep their static `status`.
+ */
+export const UPTIME_STATUS_PAGE_ID = 'JKvyVhBqBO';
+export const UPTIME_STATUS_PAGE_URL = `https://stats.uptimerobot.com/${UPTIME_STATUS_PAGE_ID}`;
+
 export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
   tiers: [
     'Client Plane',
@@ -42,6 +50,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'vercel',
+      uptimeMonitorId: 789132895,
       serviceName: 'Vercel',
       serviceDescription: 'Vercel Homepage',
       tier: 'Cloud Plane',
@@ -87,6 +96,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'core-data-storage',
+      uptimeMonitorId: 793003454,
       serviceName: 'Core Data Storage',
       serviceDescription: 'Core Data Storage',
       tier: 'Control Plane s01',
@@ -98,6 +108,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'arozos-1',
+      uptimeMonitorId: 789132924,
       serviceName: 'arozos',
       serviceDescription: 'Arozos',
       tier: 'Control Plane s01',
@@ -118,6 +129,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'cas',
+      uptimeMonitorId: 792221048,
       serviceName: 'Central Authentication Service',
       serviceDescription: 'oAuth System',
       tier: 'Control Plane s01',
@@ -128,6 +140,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'jenkins',
+      uptimeMonitorId: 789132921,
       serviceName: 'Jenkins',
       serviceDescription: 'Jenkins CI/CD',
       tier: 'Control Plane s01',
@@ -138,6 +151,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'arozos-2',
+      uptimeMonitorId: 789202200,
       serviceName: 'arozos',
       serviceDescription: 'arozos',
       tier: 'Control Plane s02',
@@ -148,6 +162,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'gitlab',
+      uptimeMonitorId: 789202203,
       serviceName: 'Gitlab',
       serviceDescription: 'Gitlab',
       tier: 'Control Plane s02',
@@ -158,6 +173,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'gogs',
+      uptimeMonitorId: 789132900,
       serviceName: 'gogs',
       serviceDescription: 'HKWTC Git gogs',
       tier: 'Control Plane s03',
@@ -168,6 +184,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'minecraft-25565',
+      uptimeMonitorId: 789132898,
       serviceName: 'Minecraft 25565',
       serviceDescription: 'Minecraft server 25565',
       tier: 'Control Plane s03',
@@ -178,6 +195,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'minecraft-25566',
+      uptimeMonitorId: 789202215,
       serviceName: 'Minecraft 25566',
       serviceDescription: 'Minecraft server 25566',
       tier: 'Control Plane s03',

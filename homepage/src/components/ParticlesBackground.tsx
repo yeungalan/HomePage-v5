@@ -2,9 +2,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Particles, { initParticlesEngine } from '@tsparticles/react'
+import Particles, { ParticlesProvider } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
-import type { ISourceOptions } from '@tsparticles/engine'
+import type { Engine, ISourceOptions } from '@tsparticles/engine'
 import {
   PARTICLE_COLORS,
   PARTICLE_LINK_OPACITY,
@@ -97,17 +97,18 @@ const createParticleOptions = (
   detectRetina: true
 })
 
+/**
+ * Registers the slim bundle with the engine. ParticlesProvider runs this once and
+ * requires the same callback for the app's lifetime, so it lives at module level.
+ */
+const initParticlesEngine = async (engine: Engine): Promise<void> => {
+  await loadSlim(engine)
+}
+
 export function ParticlesBackground() {
-  const [init, setInit] = useState(false)
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine)
-    }).then(() => {
-      setInit(true)
-    })
-
     // Check initial theme
     const checkTheme = () => {
       setIsDark(document.documentElement.classList.contains('dark'))
@@ -129,10 +130,6 @@ export function ParticlesBackground() {
     // particles loaded
   }
 
-  if (!init) {
-    return null
-  }
-
   const particleColor = isDark ? PARTICLE_COLORS.DARK : PARTICLE_COLORS.LIGHT
   const linkOpacity = isDark
     ? PARTICLE_LINK_OPACITY.DARK
@@ -142,12 +139,15 @@ export function ParticlesBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10">
       {/* Full-screen particle field so the links also fill the middle, not just the borders */}
-      <Particles
-        id="tsparticles-full"
-        className="h-full w-full"
-        particlesLoaded={particlesLoaded}
-        options={particleOptions}
-      />
+      {/* ParticlesProvider renders nothing until the engine has loaded */}
+      <ParticlesProvider init={initParticlesEngine}>
+        <Particles
+          id="tsparticles-full"
+          className="h-full w-full"
+          particlesLoaded={particlesLoaded}
+          options={particleOptions}
+        />
+      </ParticlesProvider>
     </div>
   )
 }

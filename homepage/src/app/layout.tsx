@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
-import 'mingcute_icon/font/Mingcute.css'
 import Script from "next/script";
 import Header from "@/components/Header";
 import NextThemeProvider from "@/components/NextThemesProvider";

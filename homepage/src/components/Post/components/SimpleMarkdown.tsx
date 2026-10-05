@@ -87,9 +87,11 @@ export const SimpleMarkdown: React.FC<SimpleMarkdownProps> = ({ content }) => {
             rehypeAutolinkHeadings,
             {
               behavior: 'append',
+              // The plugin already wraps this in the `<a href="#id">` it appends;
+              // another <a> here would nest links, which breaks hydration.
               content: {
                 type: 'element',
-                tagName: 'a',
+                tagName: 'span',
                 properties: {
                   className: [
                     'text-gray-400',

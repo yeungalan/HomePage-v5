@@ -7,6 +7,7 @@ import { useTranslation } from "@/i18n";
 import { motion } from 'motion/react'
 import React, { createElement } from 'react'
 import { softBouncePreset } from '@/constants/motion'
+import { useMountedRandom } from '@/hooks/use-mounted-random'
 
 const htmlElements = [
   <span key="traveller" className="font-bold text-purple-600 dark:text-cyan-400">Traveller</span>,
@@ -34,6 +35,8 @@ const getRandomGreeting = () => {
 interface GreetTemplate {
   type: string;
   text?: string;
+  /** Replace `text` with a random greeting once mounted. */
+  greeting?: boolean;
   class?: string;
   props?: {
     elements: React.ReactNode[];
@@ -44,7 +47,10 @@ interface GreetTemplate {
 export const GiantGreetTextTemplate: GreetTemplate[] = [
   {
     "type": "h1",
-    "text": getRandomGreeting(),
+    // Fixed so the pre-rendered HTML matches hydration; GiantGreetText swaps in
+    // a random greeting after mount.
+    "text": greetings['en-US'],
+    "greeting": true,
     "class": "font-light text-4xl dark:text-white"
   },
     {
@@ -86,6 +92,7 @@ const titleAnimateD =
 
 export default function GiantGreetText() {
   const t = useTranslation()
+  const [greeting] = useMountedRandom(greetings['en-US'], getRandomGreeting)
 
   return (
     <div className="px-4 sm:px-6 lg:px-0">
@@ -127,7 +134,7 @@ export default function GiantGreetText() {
                 initialDelay={prevAllTextLength * 0.05}
                 eachDelay={0.05}
               >
-                {t.text}
+                {t.greeting ? greeting : t.text}
               </TextUpTransitionView>
             ),
           )

@@ -10,9 +10,16 @@ const CX = SIZE / 2
 const CY = SIZE / 2
 const POP = 8 // how far a hovered slice pops outward (user units)
 
+/**
+ * Rounded to 1/1000 of a unit: Node and the browser can disagree in the last
+ * digits of Math.cos/sin, and unrounded values make the pre-rendered SVG fail
+ * to match on hydration.
+ */
+const round = (n: number) => Math.round(n * 1000) / 1000
+
 /** Convert a polar coordinate (angle in radians) to an SVG x/y on the circle. */
 function polar(cx: number, cy: number, r: number, angle: number): [number, number] {
-  return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)]
+  return [round(cx + r * Math.cos(angle)), round(cy + r * Math.sin(angle))]
 }
 
 /** SVG arc path for a slice spanning [start, end] radians. */

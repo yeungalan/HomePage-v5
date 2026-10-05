@@ -108,7 +108,11 @@ const ThemeIndicator = () => {
 }
 
 const ButtonGroup = () => {
-  const { theme, setTheme } = useTheme()
+  const { theme: storedTheme, setTheme } = useTheme()
+  // The theme is only known in the browser (localStorage); render no active
+  // button until mounted so the server HTML matches hydration.
+  const isClient = useIsClient()
+  const theme = isClient ? storedTheme : undefined
 
   const buildThemeTransition = (newTheme: 'light' | 'dark' | 'system') => {
     transitionViewIfSupported(() => {

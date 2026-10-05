@@ -5,7 +5,8 @@ import { motion } from 'motion/react';
 import { useTranslation } from '@/i18n';
 
 interface YearStatsProps {
-  dayOfYear: number;
+  /** A number, or a placeholder string until the time is known. */
+  dayOfYear: number | string;
   yearProgress: string;
   todayProgress: string;
 }

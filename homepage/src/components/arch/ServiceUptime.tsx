@@ -8,6 +8,7 @@ import { HEALTH_STATUS_COLORS } from '@/constants/colors'
 import { UPTIME_STATUS_PAGE_ID, UPTIME_STATUS_PAGE_URL } from '@/data/infrastructure'
 import { useUptimeEvents } from '@/hooks/use-uptime'
 import { useI18n } from '@/i18n'
+import { OFFICIAL_STATUS_PAGES, type OfficialStatus } from '@/lib/official-status'
 import { formatDuration, formatRatio, type UptimeMonitor } from '@/lib/uptime'
 
 const STATUS_LABEL_KEY: Record<ServiceStatus, string> = {
@@ -81,17 +82,40 @@ interface ServiceUptimeProps {
   service: Service
   /** Live data for the service's monitor, if loaded. */
   monitor: UptimeMonitor | undefined
+  /** The provider's official status, for a service with `statusSource`. */
+  official: OfficialStatus | undefined
   /** True until the first monitor list has loaded or failed. */
   loading: boolean
 }
 
 /** Uptime section of the /arch node detail panel. */
-export const ServiceUptime: FC<ServiceUptimeProps> = ({ service, monitor, loading }) => {
+export const ServiceUptime: FC<ServiceUptimeProps> = ({ service, monitor, official, loading }) => {
   const { t, locale } = useI18n()
   const muted = 'text-sm text-gray-500 dark:text-gray-400'
+  const officialPage = service.statusSource && OFFICIAL_STATUS_PAGES[service.statusSource]
+  const statusPageUrl = officialPage
+    ? officialPage.url
+    : service.uptimeMonitorId !== undefined && `${UPTIME_STATUS_PAGE_URL}/${service.uptimeMonitorId}`
 
   let body
-  if (service.uptimeMonitorId === undefined) {
+  if (officialPage) {
+    body = official ? (
+      <div className="space-y-2">
+        <StatusBadge status={official.status} />
+        <p className={muted}>{t('arch.uptime.officialSource', { source: officialPage.name })}</p>
+        {official.summary && <p className="text-sm text-gray-900 dark:text-gray-100">{official.summary}</p>}
+      </div>
+    ) : (
+      <p className={muted}>{t(loading ? 'arch.uptime.checking' : 'arch.uptime.unavailable')}</p>
+    )
+  } else if (service.statusFromDownstream) {
+    body = (
+      <div className="space-y-2">
+        {service.status && <StatusBadge status={service.status} />}
+        <p className={muted}>{t('arch.uptime.downstream')}</p>
+      </div>
+    )
+  } else if (service.uptimeMonitorId === undefined) {
     body = <p className={muted}>{t('arch.uptime.notMonitored')}</p>
   } else if (!monitor) {
     body = <p className={muted}>{t(loading ? 'arch.uptime.checking' : 'arch.uptime.unavailable')}</p>
@@ -166,9 +190,9 @@ export const ServiceUptime: FC<ServiceUptimeProps> = ({ service, monitor, loadin
     <div className="mt-6 border-t border-gray-200 pt-5 dark:border-neutral-800" data-cy="service-uptime">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">{t('arch.uptime.title')}</h4>
-        {service.uptimeMonitorId !== undefined && (
+        {statusPageUrl && (
           <a
-            href={`${UPTIME_STATUS_PAGE_URL}/${service.uptimeMonitorId}`}
+            href={statusPageUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline dark:text-blue-400"

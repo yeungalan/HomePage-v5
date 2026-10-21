@@ -71,6 +71,15 @@ export const jaJP: Messages = {
   arch: {
     title: 'アーキテクチャ',
     subtitle: 'インフラ概要',
+    summary: {
+      operational: 'すべてのシステムが正常に稼働中',
+      partial: '一部のシステムが稼働中',
+      down: 'すべてのシステムが停止中',
+      unavailable: '現在ライブステータスを取得できません。',
+      uptime30d: '30日間の稼働率：{{ratio}}',
+      slaMet: '{{target}} SLA を達成',
+      slaMissed: '{{target}} SLA 未達',
+    },
     uptime: {
       title: '稼働状況',
       nodeSummary: '30日間の稼働率 {{ratio}}',
@@ -89,6 +98,8 @@ export const jaJP: Messages = {
       eventsUnavailable: '最近のイベントを読み込めませんでした。',
       paused: '監視が一時停止中のため、現在の稼働データはありません。',
       notMonitored: 'このサービスには稼働監視がありません。',
+      officialSource: '{{source}} のステータスです。',
+      downstream: '背後にあるサービスのステータスをまとめたものです。一時停止中・不明のサービスは正常とみなします。',
       updatedAt: 'UptimeRobot のライブステータス（{{time}} 更新）',
       unavailable: '現在ライブステータスを取得できません。',
       checking: 'ライブステータスを確認中…',

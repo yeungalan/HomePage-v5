@@ -5,6 +5,7 @@ import { CustomEdge } from './flowgraph/CustomEdge';
 import { CustomNode } from './flowgraph/CustomNode';
 import { TierLabel } from './flowgraph/TierLabel';
 import { configToFlow } from '@/lib/flowGraphUtils';
+import type { OfficialStatusSource } from '@/lib/official-status';
 
 // Type definitions
 export type ServiceStatus = 'healthy' | 'warning' | 'unhealthy' | 'paused' | 'unknown';
@@ -19,6 +20,10 @@ export interface Service {
   status?: ServiceStatus;
   /** UptimeRobot monitor that reports this service's live status. */
   uptimeMonitorId?: number;
+  /** Provider status page that reports this service's live status. */
+  statusSource?: OfficialStatusSource;
+  /** Take the status from the services this one connects to. */
+  statusFromDownstream?: boolean;
   /** Short uptime summary shown on the node, e.g. "99.77% uptime (30d)". */
   uptime?: string;
   tier?: string;

@@ -3,10 +3,15 @@ import type { FlowGraphConfig } from '@/components/FlowGraph';
 /**
  * Public UptimeRobot status page that reports the live status of the services
  * below. A service with `uptimeMonitorId` takes its status and uptime from that
- * monitor; the rest keep their static `status`.
+ * monitor, one with `statusSource` from the provider's official status page and
+ * one with `statusFromDownstream` from the services it connects to; the rest
+ * keep their static `status`.
  */
 export const UPTIME_STATUS_PAGE_ID = 'JKvyVhBqBO';
 export const UPTIME_STATUS_PAGE_URL = `https://stats.uptimerobot.com/${UPTIME_STATUS_PAGE_ID}`;
+
+/** Target 30-day uptime, as a percentage, for the monitored services. */
+export const UPTIME_SLA = 99.9;
 
 export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
   tiers: [
@@ -30,6 +35,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'cloudflare',
+      statusSource: 'cloudflare',
       serviceName: 'CloudFlare',
       serviceDescription: 'CDN/DNS',
       tier: 'Cloud Plane',
@@ -40,6 +46,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'icloud',
+      statusSource: 'icloud',
       serviceName: 'iCloud',
       serviceDescription: 'Mail',
       tier: 'Cloud Plane',
@@ -61,6 +68,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'amazon-glacier',
+      statusSource: 'aws-s3',
       serviceName: 'Amazon Glacier',
       serviceDescription: 'Cold Storage',
       tier: 'Cloud Plane',
@@ -72,6 +80,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'lb',
+      statusFromDownstream: true,
       serviceName: 's01 Load Balancer',
       serviceDescription: 'HTTPS Traffic Distribution',
       tier: 'Data Plane',
@@ -84,6 +93,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'serviceExit',
+      statusFromDownstream: true,
       serviceName: 'Service Exit',
       serviceDescription: 'Non HTTP Traffic',
       tier: 'Data Plane',
@@ -96,7 +106,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'core-data-storage',
-      uptimeMonitorId: 793003454,
+      statusSource: 'aws-glacier',
       serviceName: 'Core Data Storage',
       serviceDescription: 'Core Data Storage',
       tier: 'Control Plane s01',
@@ -119,6 +129,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 's01-web',
+      uptimeMonitorId: 804369853,
       serviceName: 'Core Web Server',
       serviceDescription: 'Services',
       tier: 'Control Plane s01',

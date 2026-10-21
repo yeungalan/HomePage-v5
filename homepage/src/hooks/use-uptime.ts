@@ -6,6 +6,7 @@ import {
   type UptimeEvent,
   type UptimeMonitor,
 } from '@/lib/uptime'
+import type { OfficialStatuses } from '@/lib/official-status'
 
 const REFRESH_MS = 60_000
 
@@ -72,4 +73,42 @@ export const useUptimeEvents = (pageId: string, monitorId: number | undefined, l
     events: current ? state.events : null,
     failed: current && state.failed,
   }
+}
+
+interface OfficialStatusesState {
+  statuses: OfficialStatuses | null
+  failed: boolean
+}
+
+/** Third-party providers' official status (via /api/status), refreshed once a minute. */
+export const useOfficialStatuses = (): OfficialStatusesState => {
+  const [state, setState] = useState<OfficialStatusesState>({ statuses: null, failed: false })
+
+  useEffect(() => {
+    let controller = new AbortController()
+    const load = () => {
+      controller.abort()
+      const request = new AbortController()
+      controller = request
+      fetch('/api/status', { signal: request.signal })
+        .then((res) => {
+          if (!res.ok) throw new Error(`/api/status responded with ${res.status}`)
+          return res.json() as Promise<OfficialStatuses>
+        })
+        .then((statuses) => setState({ statuses, failed: false }))
+        .catch((error: unknown) => {
+          if (request.signal.aborted) return
+          console.warn('Could not load official status', error)
+          setState((prev) => ({ ...prev, failed: true }))
+        })
+    }
+    load()
+    const timer = setInterval(load, REFRESH_MS)
+    return () => {
+      clearInterval(timer)
+      controller.abort()
+    }
+  }, [])
+
+  return state
 }

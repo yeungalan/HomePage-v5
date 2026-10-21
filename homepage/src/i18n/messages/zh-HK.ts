@@ -71,6 +71,15 @@ export const zhHK: Messages = {
   arch: {
     title: '系統架構',
     subtitle: '基礎設施概覽',
+    summary: {
+      operational: '所有系統運作正常',
+      partial: '部分系統運作正常',
+      down: '所有系統停止運作',
+      unavailable: '暫時未能取得即時狀態。',
+      uptime30d: '30 日正常運行率：{{ratio}}',
+      slaMet: '符合 {{target}} SLA',
+      slaMissed: '未達 {{target}} SLA',
+    },
     uptime: {
       title: '在線時間',
       nodeSummary: '30 日在線率 {{ratio}}',
@@ -89,6 +98,8 @@ export const zhHK: Messages = {
       eventsUnavailable: '未能載入最近事件。',
       paused: '監測已暫停，暫無最新在線數據。',
       notMonitored: '此服務沒有在線監測。',
+      officialSource: '狀態來自 {{source}}。',
+      downstream: '綜合其後各服務的狀態；已暫停或未知的服務視為正常。',
       updatedAt: '即時狀態來自 UptimeRobot，更新於 {{time}}',
       unavailable: '暫時未能取得即時狀態。',
       checking: '正在檢查即時狀態…',

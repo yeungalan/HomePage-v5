@@ -1,11 +1,22 @@
 /**
  * The /arch flow chart takes each service's live status and uptime from the
- * public UptimeRobot status page (homepage/src/lib/uptime.ts). The API is
- * stubbed here so the assertions don't depend on the real monitors.
+ * public UptimeRobot status page (homepage/src/lib/uptime.ts), and third-party
+ * providers' status from their official status pages via /api/status
+ * (homepage/src/lib/official-status.ts). Both are stubbed here so the
+ * assertions don't depend on the real monitors.
  */
 
 const LIST = { hostname: 'stats.uptimerobot.com', pathname: '/api/getMonitorList/JKvyVhBqBO' }
 const DETAIL = { hostname: 'stats.uptimerobot.com', pathname: '/api/getMonitor/JKvyVhBqBO' }
+
+const OFFICIAL = { pathname: '/api/status' }
+
+const officialStatuses = {
+  cloudflare: { status: 'warning', summary: 'CDN/Cache: degraded performance' },
+  icloud: { status: 'healthy' },
+  'aws-s3': { status: 'healthy' },
+  'aws-glacier': { status: 'unhealthy', summary: 'Increased Error Rates' },
+}
 
 const HOUR = 3_600_000
 const iso = (msAgo: number) => new Date(Date.now() - msAgo).toISOString().replace('.000Z', '+00:00')
@@ -72,6 +83,7 @@ const visitArch = () =>
 describe('Architecture uptime', () => {
   beforeEach(() => {
     cy.viewport(1280, 900)
+    cy.intercept(OFFICIAL, officialStatuses).as('official')
   })
 
   it('shows live status and 30-day uptime on monitored nodes', () => {
@@ -82,8 +94,7 @@ describe('Architecture uptime', () => {
     node('jenkins').should('contain.text', 'unhealthy').and('contain.text', '99.50% uptime (30d)')
     node('gitlab').should('contain.text', 'healthy').and('contain.text', '100% uptime (30d)')
     node('minecraft-25565').should('contain.text', 'paused').find('[data-cy="node-uptime"]').should('not.exist')
-    // Not monitored, or not on the status page: keeps its static status.
-    node('cloudflare').should('contain.text', 'unknown')
+    // Not on the status page: keeps its static status.
     node('cas').should('contain.text', 'unknown')
 
     cy.get('[data-cy="uptime-caption"]').should('contain.text', 'Live status from UptimeRobot')
@@ -122,8 +133,48 @@ describe('Architecture uptime', () => {
     node('minecraft-25565').click()
     cy.get('[data-cy="service-uptime"]').should('contain.text', 'Monitoring is paused')
 
-    node('cloudflare').click()
+    node('user').click()
     cy.get('[data-cy="service-uptime"]').should('contain.text', 'This service has no uptime monitor.')
+  })
+
+  it('shows third-party status from the official status pages', () => {
+    cy.intercept(LIST, monitorList).as('list')
+    visitArch()
+    cy.wait(['@list', '@official'])
+
+    node('cloudflare').should('contain.text', 'warning')
+    node('icloud').should('contain.text', 'healthy')
+    node('amazon-glacier').should('contain.text', 'healthy')
+    node('core-data-storage').should('contain.text', 'unhealthy')
+
+    node('core-data-storage').click()
+    cy.get('[data-cy="service-uptime"]').within(() => {
+      cy.get('[data-cy="uptime-status"]').should('have.text', 'Down')
+      cy.root().should('contain.text', 'AWS Health Dashboard (Glacier, us-east-1)')
+      cy.root().should('contain.text', 'Increased Error Rates')
+    })
+  })
+
+  it('combines the status of the services behind the load balancer and service exit', () => {
+    cy.intercept(LIST, monitorList).as('list')
+    visitArch()
+    cy.wait('@list')
+
+    // Jenkins is down and Gitlab up, so the load balancer is degraded.
+    node('lb').should('contain.text', 'warning')
+    // Only paused or unknown Minecraft servers behind it: counts as healthy.
+    node('serviceExit').should('contain.text', 'healthy')
+  })
+
+  it('summarizes overall status and 30-day uptime against the SLA', () => {
+    cy.intercept(LIST, monitorList).as('list')
+    visitArch()
+    cy.wait(['@list', '@official'])
+
+    cy.get('[data-cy="status-summary-headline"]').should('have.text', 'Partially operational')
+    // Mean of Jenkins (99.504) and Gitlab (100); the paused Minecraft server is left out.
+    cy.get('[data-cy="status-summary-uptime"]').should('contain.text', '30-day uptime: 99.75%')
+    cy.get('[data-cy="status-summary-sla"]').should('have.text', 'Below 99.9% SLA')
   })
 
   it('keeps the static chart when UptimeRobot is unreachable', () => {

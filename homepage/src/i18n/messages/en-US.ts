@@ -75,6 +75,15 @@ export const enUS = {
   arch: {
     title: 'Architecture',
     subtitle: 'Infrastructure Overview',
+    summary: {
+      operational: 'All systems operational',
+      partial: 'Partially operational',
+      down: 'All systems down',
+      unavailable: 'Live status is unavailable right now.',
+      uptime30d: '30-day uptime: {{ratio}}',
+      slaMet: 'Meets {{target}} SLA',
+      slaMissed: 'Below {{target}} SLA',
+    },
     uptime: {
       title: 'Uptime',
       nodeSummary: '{{ratio}} uptime (30d)',
@@ -93,6 +102,8 @@ export const enUS = {
       eventsUnavailable: 'Could not load recent events.',
       paused: 'Monitoring is paused, so there is no current uptime data.',
       notMonitored: 'This service has no uptime monitor.',
+      officialSource: 'Status from the {{source}}.',
+      downstream: 'Combines the status of the services behind it; paused or unknown ones count as healthy.',
       updatedAt: 'Live status from UptimeRobot, updated {{time}}',
       unavailable: 'Live status is unavailable right now.',
       checking: 'Checking live status…',

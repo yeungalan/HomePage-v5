@@ -28,7 +28,7 @@ const APPLE_API = 'https://www.apple.com/support/systemstatus/data/system_status
 const AWS_API = 'https://health.aws.amazon.com/public/currentevents';
 
 /** Cloudflare components behind the "CDN/DNS" node. */
-const CLOUDFLARE_COMPONENTS = ['CDN/Cache', 'Authoritative DNS'];
+const CLOUDFLARE_COMPONENTS = ['CDN/Cache', 'DNS Root Servers'];
 /** Apple service behind the "iCloud Mail" node. */
 const APPLE_SERVICE = 'iCloud Mail';
 const AWS_SERVICES: Record<'aws-s3' | 'aws-glacier', string> = {

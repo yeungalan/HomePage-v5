@@ -106,6 +106,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'japan-linux',
+      uptimeMonitorId: 804382514,
       serviceName: 'Japan Linux Server',
       serviceDescription: 'Linux Server',
       tier: 'Data Plane',
@@ -117,6 +118,7 @@ export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
     },
     {
       serviceId: 'japan-macos',
+      uptimeMonitorId: 804382590,
       serviceName: 'Japan macOS Server',
       serviceDescription: 'macOS Server',
       tier: 'Data Plane',

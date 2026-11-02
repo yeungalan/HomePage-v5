@@ -6,7 +6,7 @@ EDITED_DATE=2025-01-22T15:30:00Z
 TAG=React, JavaScript, Frontend, Tutorial
 CATEGORY=Web Development
 CATEGORY_CAPTION=Building modern web applications with React
-AI_SUMMARY=A test post that demonstrates the rich content the blog's Markdown renderer supports. The first half covers interactive charts written as fenced chart blocks with a JSON body: line charts built from shared labels or x/y points with optional smoothing and area fill, pie and donut charts built from labelled slices, and a draggable 3D globe that draws routes between named points, here from Hong Kong via Taipei to Tokyo. The second half covers LaTeX math rendered with KaTeX at build time: inline formulas in single dollar signs, centred display blocks, and fenced math blocks for aligned equations, piecewise functions and matrices. It also shows math inside lists, table cells and headings, how to escape literal dollar signs, and how an invalid formula appears in red without breaking the rest of the page. It ends with an embedded photo.
+AI_SUMMARY=A test post that demonstrates the rich content the blog's Markdown renderer supports. The first half covers interactive charts written as fenced chart blocks with a JSON body: line charts built from shared labels or x/y points with optional smoothing and area fill, pie and donut charts built from labelled slices, and a draggable 3D globe that draws routes between named points. The second half covers LaTeX math rendered with KaTeX at build time: inline formulas in single dollar signs, centred display blocks, and fenced math blocks for aligned equations, piecewise functions and matrices, plus a Japanese grammar table built from an array with a one-sided brace and struck-out kana. It also shows math inside lists, table cells and headings, how to escape literal dollar signs, and how an invalid formula appears in red without breaking the rest of the page. It ends with an embedded photo.
 ### AUTOMATE FIELD END
 
 # Testing Post 2
@@ -165,6 +165,22 @@ A =
   0 & \cos\theta & -\sin\theta \\
   0 & \sin\theta & \cos\theta
 \end{bmatrix}
+```
+
+### Grammar brace (Japanese text)
+
+`\text{}` accepts Japanese, and `\left. … \right\}` draws a one-sided brace,
+which suits grammar tables. `\sout{}` strikes out the dropped kana:
+
+```math
+\left.
+\begin{array}{l}
+  \text{V て形} \\
+  \text{V ない形　なくて} \\
+  \text{い形容詞（\sout{い}）くて} \\
+  \text{な形容詞（\sout{な}）で}
+\end{array}
+\right\}\text{、～}
 ```
 
 ### Math inside other blocks

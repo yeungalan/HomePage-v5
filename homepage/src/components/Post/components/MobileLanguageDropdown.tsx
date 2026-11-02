@@ -23,7 +23,7 @@ export const MobileLanguageDropdown: React.FC = () => {
     return null;
   }
 
-  const { baseSlug, currentLanguage, availableLanguages } = languageData;
+  const { baseSlug, currentLanguage, availableLanguages, primaryLanguage } = languageData;
 
   const hrefForLang = (lang: string) =>
     lang === 'default' ? `/posts/${baseSlug}` : `/posts/${baseSlug}_${lang}`;
@@ -45,7 +45,7 @@ export const MobileLanguageDropdown: React.FC = () => {
       >
         {availableLanguages.map((lang) => (
           <option key={lang} value={lang}>
-            {LANGUAGE_LABELS[lang] || lang.toUpperCase()}
+            {LANGUAGE_LABELS[lang === 'default' ? primaryLanguage : lang] || lang.toUpperCase()}
           </option>
         ))}
       </select>

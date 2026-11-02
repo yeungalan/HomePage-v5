@@ -82,6 +82,7 @@ export const NoteLeftSidebar: React.FC = () => {
               baseSlug={languageData.baseSlug}
               currentLanguage={languageData.currentLanguage}
               availableLanguages={languageData.availableLanguages}
+              primaryLanguage={languageData.primaryLanguage}
             />
           )}
         </div>

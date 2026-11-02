@@ -57,6 +57,8 @@ export interface LanguageData {
   baseSlug: string
   currentLanguage: string
   availableLanguages: string[]
+  /** Language of the unsuffixed (default) version. */
+  primaryLanguage: string
 }
 
 export interface AdjacentPost {
@@ -69,6 +71,7 @@ export interface PostProps {
   baseSlug?: string
   currentLanguage?: string
   availableLanguages?: string[]
+  primaryLanguage?: string
   prevPost?: AdjacentPost | null
   nextPost?: AdjacentPost | null
 }

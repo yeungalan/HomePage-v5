@@ -12,9 +12,8 @@ function slugForLanguage(baseSlug: string, language: string): string {
 }
 
 /** Map an internal language code to a BCP-47 hreflang value. */
-function hreflangFor(language: string): string {
-  if (language === 'default') return 'x-default';
-  return language;
+function hreflangFor(language: string, primaryLanguage: string): string {
+  return language === 'default' ? primaryLanguage : language;
 }
 
 export async function generateStaticParams() {
@@ -47,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // hreflang map of every available translation of this post.
   const languageAlternates = Object.fromEntries(
     post.availableLanguages.map((lang) => [
-      hreflangFor(lang),
+      hreflangFor(lang, post.primaryLanguage),
       `/posts/${slugForLanguage(post.baseSlug, lang)}`,
     ])
   );
@@ -145,6 +144,7 @@ export default async function PostPage({ params }: PageProps) {
         baseSlug={baseSlug}
         currentLanguage={currentLanguage}
         availableLanguages={post.availableLanguages}
+        primaryLanguage={post.primaryLanguage}
         prevPost={prevPost}
         nextPost={nextPost}
       />

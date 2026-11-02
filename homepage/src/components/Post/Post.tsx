@@ -26,6 +26,7 @@ const Post: React.FC<PostProps> = ({
   baseSlug = '',
   currentLanguage = 'default',
   availableLanguages = [],
+  primaryLanguage = 'zh',
   prevPost = null,
   nextPost = null,
 }) => {
@@ -112,7 +113,8 @@ const Post: React.FC<PostProps> = ({
   const languageData: LanguageData = {
     baseSlug,
     currentLanguage,
-    availableLanguages
+    availableLanguages,
+    primaryLanguage,
   }
 
   return (

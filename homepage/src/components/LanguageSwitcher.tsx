@@ -7,6 +7,8 @@ interface LanguageSwitcherProps {
   baseSlug: string;
   currentLanguage: string;
   availableLanguages: string[];
+  /** Language of the unsuffixed (default) version, used for its label. */
+  primaryLanguage?: string;
 }
 
 const LANGUAGE_LABELS: Record<string, string> = {
@@ -24,6 +26,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   baseSlug,
   currentLanguage,
   availableLanguages,
+  primaryLanguage = 'zh',
 }) => {
   // Don't show switcher if only one language is available
   if (availableLanguages.length <= 1) {
@@ -39,7 +42,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       <div className="flex flex-wrap gap-2">
         {availableLanguages.map((lang) => {
           const isActive = lang === currentLanguage;
-          const label = LANGUAGE_LABELS[lang] || lang.toUpperCase();
+          const code = lang === 'default' ? primaryLanguage : lang;
+          const label = LANGUAGE_LABELS[code] || code.toUpperCase();
           const href = lang === 'default' ? `/posts/${baseSlug}` : `/posts/${baseSlug}_${lang}`;
 
           return (

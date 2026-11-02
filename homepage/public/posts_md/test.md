@@ -184,6 +184,17 @@ which suits grammar tables. `\sout{}` strikes out the dropped kana:
 \right\}\text{、～}
 ```
 
+```math
+\left[
+\begin{array}{l}
+  \text{V て形} \\
+  \text{V ない形　なくて} \\
+  \text{い形容詞（\sout{い}）くて} \\
+  \text{な形容詞（\sout{な}）で}
+\end{array}
+\right]\text{、～}
+```
+
 ### Math inside other blocks
 
 Formulas are allowed anywhere inline text is, including list items:

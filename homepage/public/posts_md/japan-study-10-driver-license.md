@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=10 | 在日本換領駕駛執照——外國駕照切替全流程
+PRIMARY_LANGUAGE=zh
 ID=japan-study-10-drivers-license
 CREATED_DATE=2026-05-11T00:00:00Z
 EDITED_DATE=2026-05-11T00:00:00Z

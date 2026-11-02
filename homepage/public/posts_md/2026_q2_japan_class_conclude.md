@@ -1,6 +1,7 @@
 ### AUTOMATE FIELD
 
 Topic=11 | 第一個學期完結——成績與反思
+PRIMARY_LANGUAGE=zh
 ID=japan-study-11-first-term
 CREATED_DATE=2026-06-23T00:00:00Z
 EDITED_DATE=2026-06-23T00:00:00Z

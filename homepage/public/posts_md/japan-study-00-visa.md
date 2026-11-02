@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=00 | 由零開始辦日本學生簽證——從申請 CoE 到領取簽證
+PRIMARY_LANGUAGE=zh
 ID=japan-study-00-visa-application
 CREATED_DATE=2026-03-20T00:00:00Z
 EDITED_DATE=2026-03-20T00:00:00Z

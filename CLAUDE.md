@@ -28,3 +28,7 @@ Describe the post from the outside, as a reader would: refer to the author as "A
 ## Publishing
 
 Work on `main` and push to `origin main` when done — Vercel deploys from `main`, and the Cypress E2E workflow runs on every push.
+
+## Post languages
+
+A post can have translations next to it: `slug.md` (primary version) plus `slug_en.md`, `slug_ja.md`, …. Every file's `### AUTOMATE FIELD` block carries `PRIMARY_LANGUAGE=` — the language of the unsuffixed `slug.md`, i.e. the source of truth (`zh` for now on all posts; it defaults to `zh` when missing). The `/posts` list shows one title per post: the variant matching the visitor's site language (browser language unless they picked one in the footer), falling back to the primary version when no translation exists. Add the line to new posts.

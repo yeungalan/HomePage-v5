@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=13 | 國民年金保險料免除申請——語言學校學生適用的一般免除
+PRIMARY_LANGUAGE=zh
 ID=japan-study-13-nenkin-menjo
 CREATED_DATE=2026-08-08T00:00:00Z
 EDITED_DATE=2026-08-08T00:00:00Z

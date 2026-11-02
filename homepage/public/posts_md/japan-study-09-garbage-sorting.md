@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=09 | 日本垃圾分類完整指南——以澀谷區為例
+PRIMARY_LANGUAGE=zh
 ID=japan-study-09-garbage-sorting
 CREATED_DATE=2026-05-10T00:00:00Z
 EDITED_DATE=2026-05-10T00:00:00Z

@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=12 | 購買 PASMO 通學定期券——從填表到取卡全流程
+PRIMARY_LANGUAGE=zh
 ID=japan-study-12-pasmo-teiki
 CREATED_DATE=2026-07-16T00:00:00Z
 EDITED_DATE=2026-07-16T00:00:00Z

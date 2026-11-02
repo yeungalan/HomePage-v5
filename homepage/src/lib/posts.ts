@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { DEFAULT_PRIMARY_LANGUAGE } from './postLanguage';
+
 export interface Post {
   id: string;
   title: string;
@@ -8,6 +10,8 @@ export interface Post {
   created: string;
   baseSlug: string;
   language: string;
+  /** Language of the unsuffixed (`slug.md`) version — the post's source of truth. */
+  primaryLanguage: string;
   availableLanguages: string[];
   allTitles: Record<string, string>; // Map of language -> title
   tags: string[];
@@ -31,6 +35,12 @@ export function parseSlugLanguage(slug: string): { baseSlug: string; language: s
     return { baseSlug: match[1], language: match[2] };
   }
   return { baseSlug: slug, language: 'default' };
+}
+
+/** Read `PRIMARY_LANGUAGE=` from an AUTOMATE FIELD block (defaults to Chinese). */
+function parsePrimaryLanguage(automateSection: string): string {
+  const match = automateSection.match(/PRIMARY_LANGUAGE\s*=\s*(.+?)[\r\n]/);
+  return match ? match[1].trim().toLowerCase() : DEFAULT_PRIMARY_LANGUAGE;
 }
 
 /**
@@ -59,6 +69,7 @@ export async function getPosts(): Promise<Post[]> {
 
       let tags: string[] = [];
       let description = '';
+      let primaryLanguage = DEFAULT_PRIMARY_LANGUAGE;
 
       if (automateFieldMatch) {
         const automateSection = automateFieldMatch[1];
@@ -79,6 +90,7 @@ export async function getPosts(): Promise<Post[]> {
         if (categoryMatch) {
           description = categoryMatch[1].trim();
         }
+        primaryLanguage = parsePrimaryLanguage(automateSection);
       }
 
       const slug = filename.replace(/\.md$/, '');
@@ -91,6 +103,7 @@ export async function getPosts(): Promise<Post[]> {
         created: createdDate,
         baseSlug,
         language,
+        primaryLanguage,
         availableLanguages: [] as string[],
         allTitles: {} as Record<string, string>,
         tags,
@@ -118,8 +131,12 @@ export async function getPosts(): Promise<Post[]> {
     }
 
     const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+    // The unsuffixed file decides the primary language for the whole group.
+    const primaryLanguage =
+      posts.find((p) => p.language === 'default')?.primaryLanguage ?? DEFAULT_PRIMARY_LANGUAGE;
 
     for (const post of posts) {
+      post.primaryLanguage = primaryLanguage;
       post.availableLanguages = languages;
       post.allTitles = allTitles;
       post.allTags = allTags;
@@ -154,6 +171,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
     let title = slug;
     let tags: string[] = [];
     let description = '';
+    let primaryLanguage = DEFAULT_PRIMARY_LANGUAGE;
 
     if (automateFieldMatch) {
       const automateSection = automateFieldMatch[1];
@@ -174,6 +192,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       if (categoryMatch) {
         description = categoryMatch[1].trim();
       }
+      primaryLanguage = parsePrimaryLanguage(automateSection);
     }
 
     const { baseSlug, language } = parseSlugLanguage(slug);
@@ -200,6 +219,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
         let langTitle = fileSlug;
         if (langAutomateMatch) {
           const langSection = langAutomateMatch[1];
+          if (fileLang === 'default') primaryLanguage = parsePrimaryLanguage(langSection);
           const langTopicMatch = langSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
           if (langTopicMatch) {
             langTitle = langTopicMatch[1].trim();
@@ -216,6 +236,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
       created: createdDate,
       baseSlug,
       language,
+      primaryLanguage,
       availableLanguages,
       allTitles,
       tags,

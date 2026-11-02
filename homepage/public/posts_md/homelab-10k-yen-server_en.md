@@ -1,5 +1,6 @@
 ### AUTOMATE FIELD
 Topic=My 10,000 Yen Homelab: It Is Not a Raspberry Pi
+PRIMARY_LANGUAGE=zh
 ID=homelab-10k-yen-server
 CREATED_DATE=2026-09-28T00:00:00Z
 EDITED_DATE=2026-09-28T00:00:00Z

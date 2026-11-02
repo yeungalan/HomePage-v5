@@ -11,7 +11,7 @@ export const UPTIME_STATUS_PAGE_ID = 'JKvyVhBqBO';
 export const UPTIME_STATUS_PAGE_URL = `https://stats.uptimerobot.com/${UPTIME_STATUS_PAGE_ID}`;
 
 /** Target 30-day uptime, as a percentage, for the monitored services. */
-export const UPTIME_SLA = 99.9;
+export const UPTIME_SLA = 99;
 
 export const INFRASTRUCTURE_CONFIG: FlowGraphConfig = {
   tiers: [

@@ -174,7 +174,7 @@ describe('Architecture uptime', () => {
     cy.get('[data-cy="status-summary-headline"]').should('have.text', 'Partially operational')
     // Mean of Jenkins (99.504) and Gitlab (100); the paused Minecraft server is left out.
     cy.get('[data-cy="status-summary-uptime"]').should('contain.text', '30-day uptime: 99.75%')
-    cy.get('[data-cy="status-summary-sla"]').should('have.text', 'Below 99.9% SLA')
+    cy.get('[data-cy="status-summary-sla"]').should('have.text', 'Meets 99% SLA')
   })
 
   it('keeps the static chart when UptimeRobot is unreachable', () => {

@@ -64,8 +64,8 @@ export const FOOTER_CONFIG: FooterConfig = {
         {
           name: 'Status monitor',
           nameKey: 'footer.moreStatusMonitor',
-          href: SITE_CONFIG.statusMonitorUrl,
-          external: true,
+          href: '/arch',
+          external: false,
         },
       ],
     },

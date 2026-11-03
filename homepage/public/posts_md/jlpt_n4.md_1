@@ -21,6 +21,13 @@ AI_SUMMARY=
 | III | します➝できます |
 を→が
 
+## 意向形
+| グループ | 変形  |
+| --- | --- | --- |
+| I | い→お |
+| II | +よう |
+| III | きます➝こよう |
+| III | します➝しよう |
 
 
 ```math
@@ -149,3 +156,70 @@ Necessary action / preparation
 
 とか
 skip listing everything
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{V}_{\text{ない形}}\text{ない}
+\end{array}
+\right]\text{つもります}
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{Nの}
+\end{array}
+\right]\text{予定です}
+```
+
+```math
+\text{まだ}\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{いません}
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{た形}} \\
+  \text{V}_{\text{ない形}}\text{ない}
+\end{array}
+\right]\text{ほうがいいです}
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）} \\
+  \text{N（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{でしょう}
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）} \\
+  \text{N（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{かもしれません}
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}}
+\end{array}
+\right]\text{ましょう}
+```
+
+L33 

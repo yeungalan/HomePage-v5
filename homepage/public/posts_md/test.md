@@ -198,9 +198,9 @@ which suits grammar tables. `\sout{}` strikes out the dropped kana:
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}} \\
-  \text{V}_{\text{ない形} なくて} \\
-  \text{い形容詞（}\cancel{\text{い}}\text{）くて} \\
-  \text{な形容詞（}\cancel{\text{な}}\text{）で}
+  \text{V}_{\text{ない形}}\text{（}\cancel{\text{い}}\text{）くて} \\
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\text{）くて} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\text{）で}
 \end{array}
 \right]\text{、～}
 ```

@@ -39,7 +39,7 @@ export function parseSlugLanguage(slug: string): { baseSlug: string; language: s
 
 /** Read `PRIMARY_LANGUAGE=` from an AUTOMATE FIELD block (defaults to Chinese). */
 function parsePrimaryLanguage(automateSection: string): string {
-  const match = automateSection.match(/PRIMARY_LANGUAGE\s*=\s*(.+?)[\r\n]/);
+  const match = automateSection.match(/PRIMARY_LANGUAGE\s*=[ \t]*(.+?)[\r\n]/);
   return match ? match[1].trim().toLowerCase() : DEFAULT_PRIMARY_LANGUAGE;
 }
 
@@ -73,10 +73,10 @@ export async function getPosts(): Promise<Post[]> {
 
       if (automateFieldMatch) {
         const automateSection = automateFieldMatch[1];
-        const createdDateMatch = automateSection.match(/CREATED_DATE\s*=\s*(.+?)[\r\n]/);
-        const topicMatch = automateSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
-        const tagMatch = automateSection.match(/TAG\s*=\s*(.+?)[\r\n]/);
-        const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=\s*(.+?)[\r\n]/);
+        const createdDateMatch = automateSection.match(/CREATED_DATE\s*=[ \t]*(.+?)[\r\n]/);
+        const topicMatch = automateSection.match(/Topic\s*=[ \t]*(.+?)[\r\n]/);
+        const tagMatch = automateSection.match(/TAG\s*=[ \t]*(.+?)[\r\n]/);
+        const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=[ \t]*(.+?)[\r\n]/);
 
         if (createdDateMatch) {
           createdDate = createdDateMatch[1].trim();
@@ -175,10 +175,10 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
 
     if (automateFieldMatch) {
       const automateSection = automateFieldMatch[1];
-      const createdDateMatch = automateSection.match(/CREATED_DATE\s*=\s*(.+?)[\r\n]/);
-      const topicMatch = automateSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
-      const tagMatch = automateSection.match(/TAG\s*=\s*(.+?)[\r\n]/);
-      const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=\s*(.+?)[\r\n]/);
+      const createdDateMatch = automateSection.match(/CREATED_DATE\s*=[ \t]*(.+?)[\r\n]/);
+      const topicMatch = automateSection.match(/Topic\s*=[ \t]*(.+?)[\r\n]/);
+      const tagMatch = automateSection.match(/TAG\s*=[ \t]*(.+?)[\r\n]/);
+      const categoryMatch = automateSection.match(/CATEGORY_CAPTION\s*=[ \t]*(.+?)[\r\n]/);
 
       if (createdDateMatch) {
         createdDate = createdDateMatch[1].trim();
@@ -220,7 +220,7 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
         if (langAutomateMatch) {
           const langSection = langAutomateMatch[1];
           if (fileLang === 'default') primaryLanguage = parsePrimaryLanguage(langSection);
-          const langTopicMatch = langSection.match(/Topic\s*=\s*(.+?)[\r\n]/);
+          const langTopicMatch = langSection.match(/Topic\s*=[ \t]*(.+?)[\r\n]/);
           if (langTopicMatch) {
             langTitle = langTopicMatch[1].trim();
           }

@@ -1,33 +1,33 @@
 ### AUTOMATE FIELD
-Topic=
+Topic=JLPT N4 Grammar Notes
 PRIMARY_LANGUAGE=en
-ID=
-CREATED_DATE=
-EDITED_DATE=
-TAG=
-CATEGORY=
-CATEGORY_CAPTION=
-AI_SUMMARY=
+ID=jlpt-n4-grammar
+CREATED_DATE=2026-11-03T00:00:00Z
+EDITED_DATE=2026-11-03T00:00:00Z
+TAG=Japanese,JLPT,JLPT N4,文法
+CATEGORY=Japanese
+CATEGORY_CAPTION=Japanese
+AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens with tables for forming the potential form (可能形) and the volitional form (意向形) for group I, II and III verbs, noting that the object particle を changes to が with the potential form. Most patterns are written as KaTeX formulas showing which forms each one connects to, including ～んです, ～ていただけませんか, 疑問詞＋～たらいいですか, ～ながら, ～ています, ～し、～し, ～てしまいます, ～てあります, ～ておきます, ～つもりです, ～予定です, まだ～ていません, ～たほうがいいです, ～でしょう, ～かもしれません and ～ましょう. Short English explanations cover the nuances of みえます and 聞こえます, ができます, しか with a negative, contrastive は, それで, ありました and とか, and the three uses of ～ています: an ongoing action, a habit, and a resulting state.
 ### AUTOMATE FIELD END
 
-# JLPT N4
+# JLPT N4 Grammar Notes
 
 ## 可能形
-| グループ | 変形  |
-| --- | --- | --- |
+| グループ | 変形 |
+| --- | --- |
 | I | い→え |
 | II | +られ |
-| III | きます➝こられます |
-| III | します➝できます |
-を→が
+| III | きます→こられます |
+| III | します→できます |
+を→が (with the potential form, the object particle を becomes が)
 
 ## 意向形
-| グループ | 変形  |
-| --- | --- | --- |
+| グループ | 変形 |
+| --- | --- |
 | I | い→お |
 | II | +よう |
-| III | きます➝こよう |
-| III | します➝しよう |
+| III | きます→こよう |
+| III | します→しよう |
 
 
 ```math
@@ -50,7 +50,7 @@ AI_SUMMARY=
 ```
 
 ```math
-\text{V}_{\text{疑問詞＋問題て形}}\text{らいいですか}
+\text{疑問詞＋V}_{\text{た形}}\text{らいいですか}
 ```
 
 ```math
@@ -64,16 +64,16 @@ AI_SUMMARY=
 ```
 
 が[みえます・聞こえます]
-They come into sight / ears indpenent to one's will
+They come into sight / ears independent of one's will
 
 ができます
 Be completed / finished
 
 しか
-Can only do something and always use as negative, suggests insufficiency or indaquacy
+Only; always used with a negative, suggests insufficiency or inadequacy
 
 Nは…。Nは…。
-Contrast to a object 
+Contrast between two things
 
 ```math
 \left[
@@ -94,8 +94,8 @@ Contrast to a object
 \end{array}
 \right]\text{います}
 ```
-1. Indicating what is doing now 
-2. Indicate as a habitual behavior
+1. Indicates an action in progress
+2. Indicates a habitual behaviour
 3. Show the state resulting from the action (自動詞) …が…
 
 
@@ -121,11 +121,11 @@ So
 \end{array}
 \right]\text{しまいました・しまいます}
 ```
-Has been completed / will be compelted in the future
+Has been completed / will be completed in the future
 
 
 ありました
-Found something now. Doesn't indicate it was here 
+Found something now. It does not mean it was already there
 
 ```math
 \left[
@@ -155,7 +155,7 @@ Necessary action / preparation
 ```
 
 とか
-skip listing everything
+Gives examples without listing everything
 
 ```math
 \left[
@@ -163,7 +163,7 @@ skip listing everything
   \text{V}_{\text{辞書形}} \\
   \text{V}_{\text{ない形}}\text{ない}
 \end{array}
-\right]\text{つもります}
+\right]\text{つもりです}
 ```
 
 ```math

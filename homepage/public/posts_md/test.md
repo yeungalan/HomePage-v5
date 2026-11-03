@@ -194,6 +194,16 @@ which suits grammar tables. `\sout{}` strikes out the dropped kana:
 \end{array}
 \right]\text{、～}
 ```
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}} \\
+  \text{V}_{\text{ない形} なくて} \\
+  \text{い形容詞（}\cancel{\text{い}}\text{）くて} \\
+  \text{な形容詞（}\cancel{\text{な}}\text{）で}
+\end{array}
+\right]\text{、～}
+```
 
 ### Math inside other blocks
 

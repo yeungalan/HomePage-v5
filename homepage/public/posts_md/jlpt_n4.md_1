@@ -12,13 +12,140 @@ AI_SUMMARY=
 
 # JLPT N4
 
+## 可能形
+| グループ | 変形  |
+| --- | --- | --- |
+| I | い→え |
+| II | +られ |
+| III | きます➝こられます |
+| III | します➝できます |
+を→が
+
+
+
 ```math
 \left[
 \begin{array}{l}
-  \text{V_て形} \\
-  \text{V ない形　なくて} \\
-  \text{い形容詞（\sout{い}）くて} \\
-  \text{な形容詞（\sout{な}）で}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）} \\
+  \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
-\right]\text{、～}
+\right]\text{んです}
 ```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{いただけませんか}
+```
+
+```math
+\text{V}_{\text{疑問詞＋問題て形}}\text{らいいですか}
+```
+
+```math
+\text{Nは}\left[
+\begin{array}{l}
+  \text{好きです・嫌いです} \\
+  \text{上手です・下手です} \\
+  \text{あります・います・etc}
+\end{array}
+\right]
+```
+
+が[みえます・聞こえます]
+They come into sight / ears indpenent to one's will
+
+ができます
+Be completed / finished
+
+しか
+Can only do something and always use as negative, suggests insufficiency or indaquacy
+
+Nは…。Nは…。
+Contrast to a object 
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}}
+\end{array}
+\right]\text{ながら}\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}}
+\end{array}
+\right]
+```
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{います}
+```
+1. Indicating what is doing now 
+2. Indicate as a habitual behavior
+3. Show the state resulting from the action (自動詞) …が…
+
+
+```math
+\left[
+\begin{array}{l}
+  \text{文}_{\text{普通形}}
+\end{array}
+\right]\text{し、}\left[
+\begin{array}{l}
+  \text{文}_{\text{普通形}}
+\end{array}
+\right]\text{し、～}
+```
+
+それで
+So
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{しまいました・しまいます}
+```
+Has been completed / will be compelted in the future
+
+
+ありました
+Found something now. Doesn't indicate it was here 
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{あります}
+```
+他動詞
+A situation due to someone's action
+
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{おきます}
+```
+Necessary action / preparation
+
+```math
+\text{まだ}\left[
+\begin{array}{l}
+  \text{文}_{\text{肯定}}
+\end{array}
+\right]
+```
+
+とか
+skip listing everything

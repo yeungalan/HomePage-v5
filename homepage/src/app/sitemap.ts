@@ -11,7 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Emit an entry for every language variant of each post, not just the
   // default one, so translated pages get indexed too.
   const postEntries: MetadataRoute.Sitemap = posts.flatMap((post) => {
-    const lastModified = post.created ? new Date(post.created) : new Date();
+    const parsed = post.created ? new Date(post.created) : null;
+    const lastModified = parsed && !Number.isNaN(parsed.getTime()) ? parsed : new Date();
     return post.availableLanguages.map((lang) => {
       const slug = lang === 'default' ? post.baseSlug : `${post.baseSlug}_${lang}`;
       return {

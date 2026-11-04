@@ -258,32 +258,40 @@ XはYという意味です
 \right]\text{と言っていました}
 ```
 
+```math
 \left[
 \begin{array}{l}
   \text{文}_{\text{普通形}}
 \end{array}
 \right]\text{とつたえていただけませんか}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{た形}} \\
   \text{Nの}
 \end{array}
 \right]\text{とおりに、V}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{た形}} \\
   \text{Nの}
 \end{array}
 \right]\text{あとで、V}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}} \\
   \text{V}_{\text{ない形}}\text{ないで}
 \end{array}
 \right]\text{V}
+```
 
 ```math
 \text{疑問詞＋V}_{\text{條件形}}\text{いいですか}
@@ -295,29 +303,36 @@ Give information for something they just said
 ~はありませんか
 Ask for opinions
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{可能形+辞書形}} \\
   \text{V}_{\text{可能形+ない形}}\text{ない}
 \end{array}
 \right]\text{ように、V}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{可能形+辞書形}}
 \end{array}
 \right]\text{ようになります}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
   \text{V}_{\text{ない形}}\text{ない}
 \end{array}
 \right]\text{ようにします}
+```
 
 早い→早く・上手な→上手に
 形容詞＋動詞
 
+```math
 \left[
 \begin{array}{l}
   \text{人}_{\text{１}}
@@ -331,7 +346,9 @@ Ask for opinions
   \text{V}_{\text{受身形}}
 \end{array}
 \right]
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{人}_{\text{１}}
@@ -349,8 +366,10 @@ Ask for opinions
   \text{V}_{\text{受身形}}
 \end{array}
 \right]
+```
 負面意味
 
+```math
 \left[
 \begin{array}{l}
   \text{N}
@@ -360,15 +379,19 @@ Ask for opinions
   \text{V}_{\text{受身形}}
 \end{array}
 \right]
+```
 Passive voice
 
+```math
 \left[
 \begin{array}{l}
   \text{N}_{\text{見えない・触れないのもの}}\text{から} \\
   \text{N}_{\text{見える・触れのものもの}}\text{で}
 \end{array}
 \right]\text{つくります}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}}
@@ -378,7 +401,9 @@ Passive voice
   \text{形容詞}
 \end{array}
 \right]\text{です}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}}
@@ -388,19 +413,25 @@ Passive voice
   \text{形容詞}
 \end{array}
 \right]\text{です}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}}
 \end{array}
 \right]\text{のを}\text{忘れました}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}}
 \end{array}
 \right]\text{のを}\text{知っていますか}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -409,7 +440,9 @@ Passive voice
   \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
 \right]\text{のはNです}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}} \\
@@ -418,11 +451,13 @@ Passive voice
   \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\rightarrow \text{で）}
 \end{array}
 \right]\text{、～}
+```
 First past of the sentence indicate the result in the second part
 
 Nで
 used when natural pheomena happened
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -431,9 +466,11 @@ used when natural pheomena happened
   \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
 \right]\text{ので、～}
+```
 indicate as a cause or reason
 
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -442,7 +479,9 @@ indicate as a cause or reason
   \text{N（}\cancel{\text{だ}}\text{）}
 \end{array}
 \right]\text{か、～}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -451,12 +490,14 @@ indicate as a cause or reason
   \text{N（}\cancel{\text{だ}}\text{）}
 \end{array}
 \right]\text{かどうか、～}
+```
 
 Vてみます
 
 ～でしょうか
 Asking without demaning a definite answer
 
+```math
 \left[
 \begin{array}{l}
   \text{人}
@@ -466,9 +507,11 @@ Asking without demaning a definite answer
   \text{N}_{\text{２}}
 \end{array}
 \right]\text{をいただきます}
+```
 When I receive something from someone otherwise use もらいます
 
 
+```math
 \left[
 \begin{array}{l}
   \text{人}
@@ -478,8 +521,10 @@ When I receive something from someone otherwise use もらいます
   \text{N}_{\text{２}}
 \end{array}
 \right]\text{をくださいます}
+```
 When someone give me something, otherwise use くれます
 
+```math
 \left[
 \begin{array}{l}
   \text{人}
@@ -489,28 +534,36 @@ When someone give me something, otherwise use くれます
   \text{N}
 \end{array}
 \right]\text{をやります}
+```
 When I give someone to lower status, to same level use あげます　to higher level use さしあげます
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}}
 \end{array}
 \right]\text{いただきます・くださいます・やります}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}}
 \end{array}
 \right]\text{くださいませんか}
+```
 Politer than てください　but not polite as ていただけませんか
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
   \text{Nの}
 \end{array}
 \right]\text{ために、～}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}}\text{の} \\
@@ -521,7 +574,9 @@ Politer than てください　but not polite as ていただけませんか
   \text{使います・いいです・便利です・役に立ちます・時間がかかります}
 \end{array}
 \right]
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{ます形}}\text{（}\cancel{\text{ます}}\text{）} \\
@@ -529,21 +584,27 @@ Politer than てください　but not polite as ていただけませんか
   \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）}
 \end{array}
 \right]\text{そうです}
+```
 Seems
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}}
 \end{array}
 \right]\text{来ます}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{て形}}
 \end{array}
 \right]\text{くれませんか}
+```
 Ask to do soemthing, not polite as てください & ていただけませんか
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{ます形}} \\
@@ -551,7 +612,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{V}_{\text{ない形}}\text{（}\cancel{\text{い}}\text{）}
 \end{array}
 \right]\text{すぎます}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{ます形}}
@@ -562,7 +625,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{にくいます}
 \end{array}
 \right]
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\rightarrow \text{く）} \\
@@ -570,5 +635,6 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{Nに}
 \end{array}
 \right]\text{します}
+```
 
 L45

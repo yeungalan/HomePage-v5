@@ -368,3 +368,67 @@ Passive voice
   \text{N}_{\text{見える・触れのものもの}}\text{で}
 \end{array}
 \right]\text{つくります}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}}
+\end{array}
+\right]\text{のは}\left[
+\begin{array}{l}
+  \text{形容詞}
+\end{array}
+\right]\text{です}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}}
+\end{array}
+\right]\text{のが}\left[
+\begin{array}{l}
+  \text{形容詞}
+\end{array}
+\right]\text{です}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}}
+\end{array}
+\right]\text{のを}\text{忘れました}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}}
+\end{array}
+\right]\text{のを}\text{知っていますか}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）} \\
+  \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
+\end{array}
+\right]\text{のはNです}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}} \\
+  \text{V}_{\text{ない形}}\text{なくて} \\
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\rightarrow \text{くて）} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\rightarrow \text{で）}
+\end{array}
+\right]\text{、～}
+First past of the sentence indicate the result in the second part
+
+Nで
+used when natural pheomena happened
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）} \\
+  \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
+\end{array}
+\right]\text{ので、～}
+indicate as a cause or reason

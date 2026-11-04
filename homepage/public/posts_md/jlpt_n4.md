@@ -29,6 +29,30 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | III | きます→こよう |
 | III | します→しよう |
 
+## 禁止形
+| グループ | 変形 |
+| --- | --- |
+| I | い→え |
+| II | +ろ |
+| III | きます→こい |
+| III | します→しろ |
+
+
+## 條件形
+| グループ | 変形 |
+| --- | --- |
+| I | い→え+ば |
+| II | +れば |
+| III | きます→くれば |
+| III | します→すれば |
+
+## 受身形
+| グループ | 変形 |
+| --- | --- |
+| I | い→あ＋れ |
+| II | +られ |
+| III | きます→され |
+| III | します→こられ |
 
 ```math
 \left[
@@ -222,4 +246,125 @@ Gives examples without listing everything
 \right]\text{ましょう}
 ```
 
-L33 
+～書いてあります・～読みます
+
+XはYという意味です
+
+```math
+\left[
+\begin{array}{l}
+  \text{文}_{\text{普通形}}
+\end{array}
+\right]\text{と言っていました}
+```
+
+\left[
+\begin{array}{l}
+  \text{文}_{\text{普通形}}
+\end{array}
+\right]\text{とつたえていただけませんか}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{た形}} \\
+  \text{Nの}
+\end{array}
+\right]\text{とおりに、V}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{た形}} \\
+  \text{Nの}
+\end{array}
+\right]\text{あとで、V}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}} \\
+  \text{V}_{\text{ない形}}\text{ないで}
+\end{array}
+\right]\text{V}
+
+```math
+\text{疑問詞＋V}_{\text{條件形}}\text{いいですか}
+```
+
+Nなら、～
+Give information for something they just said
+
+~はありませんか
+Ask for opinions
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{可能形+辞書形}} \\
+  \text{V}_{\text{可能形+ない形}}\text{ない}
+\end{array}
+\right]\text{ように、V}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{可能形+辞書形}}
+\end{array}
+\right]\text{ようになります}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{V}_{\text{ない形}}\text{ない}
+\end{array}
+\right]\text{ようにします}
+
+早い→早く・上手な→上手に
+形容詞＋動詞
+
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{V}_{\text{受身形}}
+\end{array}
+\right]
+
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{N}_{\text{３}}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{V}_{\text{受身形}}
+\end{array}
+\right]
+負面意味
+
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{が・は}\left[
+\begin{array}{l}
+  \text{V}_{\text{受身形}}
+\end{array}
+\right]
+Passive voice
+
+\left[
+\begin{array}{l}
+  \text{N}_{\text{見えない・触れないのもの}}\text{から} \\
+  \text{N}_{\text{見える・触れのものもの}}\text{で}
+\end{array}
+\right]\text{つくります}

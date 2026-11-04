@@ -432,3 +432,143 @@ used when natural pheomena happened
 \end{array}
 \right]\text{ので、～}
 indicate as a cause or reason
+
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）} \\
+  \text{N（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{か、～}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）} \\
+  \text{N（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{かどうか、～}
+
+Vてみます
+
+～でしょうか
+Asking without demaning a definite answer
+
+\left[
+\begin{array}{l}
+  \text{人}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{N}_{\text{２}}
+\end{array}
+\right]\text{をいただきます}
+When I receive something from someone otherwise use もらいます
+
+
+\left[
+\begin{array}{l}
+  \text{人}
+\end{array}
+\right]\text{が}\text{私に}\left[
+\begin{array}{l}
+  \text{N}_{\text{２}}
+\end{array}
+\right]\text{をくださいます}
+When someone give me something, otherwise use くれます
+
+\left[
+\begin{array}{l}
+  \text{人}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{をやります}
+When I give someone to lower status, to same level use あげます　to higher level use さしあげます
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{いただきます・くださいます・やります}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{くださいませんか}
+Politer than てください　but not polite as ていただけませんか
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{Nの}
+\end{array}
+\right]\text{ために、～}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}}\text{の} \\
+  \text{N}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{使います・いいです・便利です・役に立ちます・時間がかかります}
+\end{array}
+\right]
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}}\text{（}\cancel{\text{ます}}\text{）} \\
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\text{）} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{そうです}
+Seems
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{来ます}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{くれませんか}
+Ask to do soemthing, not polite as てください & ていただけませんか
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}} \\
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\text{）} \\
+  \text{V}_{\text{ない形}}\text{（}\cancel{\text{い}}\text{）}
+\end{array}
+\right]\text{すぎます}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{ます形}}
+\end{array}
+\right]\left[
+\begin{array}{l}
+  \text{やすいます} \\
+  \text{にくいます}
+\end{array}
+\right]
+
+\left[
+\begin{array}{l}
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\rightarrow \text{く）} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\rightarrow \text{に）} \\
+  \text{Nに}
+\end{array}
+\right]\text{します}
+
+L45

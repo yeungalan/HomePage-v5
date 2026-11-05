@@ -54,6 +54,32 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | III | きます→され |
 | III | します→こられ |
 
+## 使役形
+| グループ | 変形 |
+| --- | --- |
+| I | い→あ＋せ |
+| II | +させ |
+| III | きます→こさせます |
+| III | します→させます |
+
+## 尊敬語と謙譲語
+| 尊敬語 | ます形 | 謙譲語 |
+| --- | --- | --- |
+| いらっしゃいます | 行きます | まいります |
+| いらっしゃいます | 来ます | まいります |
+| いらっしゃいます | います | おります |
+|  | 行きます | うかがいます |
+|  | 聞きます | うかがいます |
+| めしあがります | 食べます | いただきます |
+| めしあがります | 飲みます | いただきます |
+|  | もらいます | おただきます |
+| くださいます | くれます |  |
+| なさいます | します | いたします |
+| おっしゃいます | 言います | もうします |
+| ごらんになります | みます | はいけんします |
+| ごぞんじです | 知っています | ぞんじております・ぞんじません |
+|  | 会います | おめにかかります |
+
 ```math
 \left[
 \begin{array}{l}
@@ -637,4 +663,132 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{します}
 ```
 
-L45
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{V}_{\text{ない形}} \\
+  \text{V}_{\text{た形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}} \\
+  \text{Nの}
+\end{array}
+\right]\text{場合は、～}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）} \\
+  \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
+\end{array}
+\right]\text{のに、～}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{V}_{\text{て形}}\text{いる} \\
+  \text{V}_{\text{た形}}
+\end{array}
+\right]\text{ところです}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{た形}}
+\end{array}
+\right]\text{ばかりです}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
+  \text{V}_{\text{ない形}}\text{ない} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{な} \\
+  \text{Nの}
+\end{array}
+\right]\text{はずです}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}}
+\end{array}
+\right]\text{そうです。}
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{な} \\
+  \text{Nの}
+\end{array}
+\right]\text{ようです。}
+
+\left[
+\begin{array}{l}
+  \text{声・音・におい・味}
+\end{array}
+\right]\text{がします}
+
+\left[
+\begin{array}{l}
+  \text{人}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{使役形}
+\end{array}
+\right]
+
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{自動詞+使役形}
+\end{array}
+\right]
+Person 1 command Person 2 to do something
+
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{自動詞+使役形}
+\end{array}
+\right]
+Person 1 make Person 2 to do something
+
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{に}\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{他動詞+使役形}
+\end{array}
+\right]
+Person 1 make Person 2 to do something
+
+\left[
+\begin{array}{l}
+  \text{V}_{\text{使役形+て形}}
+\end{array}
+\right]\text{いただけませんか}

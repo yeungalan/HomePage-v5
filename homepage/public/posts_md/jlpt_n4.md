@@ -662,7 +662,7 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{します}
 ```
-
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
@@ -673,7 +673,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{Nの}
 \end{array}
 \right]\text{場合は、～}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -682,7 +684,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
 \right]\text{のに、～}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
@@ -690,13 +694,17 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{V}_{\text{た形}}
 \end{array}
 \right]\text{ところです}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{た形}}
 \end{array}
 \right]\text{ばかりです}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
@@ -706,13 +714,17 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{Nの}
 \end{array}
 \right]\text{はずです}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}}
 \end{array}
 \right]\text{そうです。}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
@@ -721,13 +733,17 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{Nの}
 \end{array}
 \right]\text{ようです。}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{声・音・におい・味}
 \end{array}
 \right]\text{がします}
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{人}
@@ -737,7 +753,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{使役形}
 \end{array}
 \right]
+```
 
+```math
 \left[
 \begin{array}{l}
   \text{人}_{\text{１}}
@@ -751,8 +769,11 @@ Ask to do soemthing, not polite as てください & ていただけませんか
   \text{自動詞+使役形}
 \end{array}
 \right]
+```
+
 Person 1 command Person 2 to do something
 
+```math
 \left[
 \begin{array}{l}
   \text{人}_{\text{１}}
@@ -766,8 +787,11 @@ Person 1 command Person 2 to do something
   \text{自動詞+使役形}
 \end{array}
 \right]
+```
+
 Person 1 make Person 2 to do something
 
+```math
 \left[
 \begin{array}{l}
   \text{人}_{\text{１}}
@@ -785,10 +809,14 @@ Person 1 make Person 2 to do something
   \text{他動詞+使役形}
 \end{array}
 \right]
+```
+
 Person 1 make Person 2 to do something
 
+```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{使役形+て形}}
 \end{array}
 \right]\text{いただけませんか}
+```

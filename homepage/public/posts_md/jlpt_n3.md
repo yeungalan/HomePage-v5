@@ -7,7 +7,7 @@ EDITED_DATE=2026-11-06T00:00:00Z
 TAG=Japanese,JLPT,JLPT N3,文法
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
-AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N3, a short companion to his N4 notes. Each pattern is written as a KaTeX formula showing which forms it connects to, with a brief English gloss. It covers NといえばN, which names the first thing that comes to mind for a topic; 数量詞＋も～, which stresses that a quantity is large; ～は～こと、～ことです for listing reasons; ～のでしょうか for asking a question; a transitive verb's volitional form with としても followed by an intransitive or potential verb in the negative, meaning someone tried to do something but it did not work; and ～のは～ことです, glossed as "if A, then of course it is B".
+AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N3, a short companion to his N4 notes. Each pattern is written as a KaTeX formula showing which forms it connects to, with a brief English gloss. It covers NといえばN, which names the first thing that comes to mind for a topic; 数量詞＋も～, which stresses that a quantity is large; ～は～こと、～ことです for listing reasons; ～のでしょうか for asking a question; a verb's volitional form with としても followed by an intransitive or potential verb in the negative, meaning someone tried to do something but it did not work; and ～のは～ことです, glossed as "if A, then of course it is B".
 ### AUTOMATE FIELD END
 
 ```math
@@ -29,7 +29,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N3, a short comp
 \end{array}
 \right]\text{も～}
 ```
-means a lot
+Stresses that the number or amount is large
 
 ```math
 \left[
@@ -39,6 +39,7 @@ means a lot
 \right]\text{は}\left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
   \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
 \right]\text{こと、…ことです}
@@ -49,17 +50,18 @@ Listing reasons
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
   \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）} \\
   \text{N（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}
 \right]\text{のでしょうか}
 ```
-Ask a question
+Asks a question softly, without demanding a definite answer
 
 ```math
 \left[
 \begin{array}{l}
-  \text{V}_{\text{他動詞＋意向形}}
+  \text{V}_{\text{意向形}}
 \end{array}
 \right]\text{としても}\left[
 \begin{array}{l}
@@ -67,12 +69,13 @@ Ask a question
 \end{array}
 \right]
 ```
-tried to do it but doesnt work
+Even when one tries to do something, it does not happen or cannot be done
 
 ```math
 \left[
 \begin{array}{l}
   \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
   \text{N（}\cancel{\text{だ}}\rightarrow \text{な）} \\
   \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\rightarrow \text{な）}
 \end{array}

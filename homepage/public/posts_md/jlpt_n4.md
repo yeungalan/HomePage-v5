@@ -24,7 +24,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 ## 意向形
 | グループ | 変形 |
 | --- | --- |
-| I | い→お |
+| I | い→お+う |
 | II | +よう |
 | III | きます→こよう |
 | III | します→しよう |
@@ -121,7 +121,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 \right]
 ```
 
-## が[みえます・聞こえます]
+## が[見えます・聞こえます]
 
 Something comes into sight or reaches the ears on its own, independent of one's will
 
@@ -192,7 +192,7 @@ So
 \end{array}
 \right]\text{しまいました・しまいます}
 ```
-Has been completed / will be completed in the future
+Has been completed / will be completed in the future; can also express regret
 
 
 ## ありました
@@ -338,7 +338,7 @@ Gives examples without listing everything
 \begin{array}{l}
   \text{文}_{\text{普通形}}
 \end{array}
-\right]\text{とつたえていただけませんか}
+\right]\text{と伝えていただけませんか}
 ```
 
 ## ～とおりに、～
@@ -346,6 +346,7 @@ Gives examples without listing everything
 ```math
 \left[
 \begin{array}{l}
+  \text{V}_{\text{辞書形}} \\
   \text{V}_{\text{た形}} \\
   \text{Nの}
 \end{array}
@@ -386,7 +387,7 @@ Gives information or advice about a topic the other person just mentioned
 
 ## ～はありませんか
 
-Ask for opinions
+Asks for suggestions or recommendations
 
 ## ～ように、～
 
@@ -534,7 +535,7 @@ Passive voice
 ```math
 \left[
 \begin{array}{l}
-  \text{V}_{\text{辞書形}}
+  \text{V}_{\text{普通形}}
 \end{array}
 \right]\text{のを}\text{知っていますか}
 ```
@@ -731,7 +732,7 @@ Looks like / seems (judging from appearance)
 \begin{array}{l}
   \text{V}_{\text{て形}}
 \end{array}
-\right]\text{来ます}
+\right]\text{きます}
 ```
 
 ## ～てくれませんか
@@ -839,8 +840,7 @@ Asks someone to do something; less polite than てくださいませんか and �
 ```math
 \left[
 \begin{array}{l}
-  \text{V}_{\text{辞書形}} \\
-  \text{V}_{\text{ない形}}\text{ない} \\
+  \text{V}_{\text{普通形}} \\
   \text{形容詞}_{\text{い}} \\
   \text{形容詞}_{\text{な}}\text{な} \\
   \text{Nの}
@@ -853,10 +853,14 @@ Asks someone to do something; less polite than てくださいませんか and �
 ```math
 \left[
 \begin{array}{l}
-  \text{V}_{\text{普通形}}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{だ} \\
+  \text{Nだ}
 \end{array}
-\right]\text{そうです。}
+\right]\text{そうです}
 ```
+Hearsay: I heard that… (the source is often given with によると)
 
 ## ～ようです
 
@@ -868,7 +872,7 @@ Asks someone to do something; less polite than てくださいませんか and �
   \text{形容詞}_{\text{な}}\text{な} \\
   \text{Nの}
 \end{array}
-\right]\text{ようです。}
+\right]\text{ようです}
 ```
 
 ## ～がします

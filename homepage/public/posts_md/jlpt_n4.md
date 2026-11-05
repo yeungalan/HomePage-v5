@@ -80,6 +80,8 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | ごぞんじです | 知っています | ぞんじております・ぞんじません |
 |  | 会います | おめにかかります |
 
+## ～んです
+
 ```math
 \left[
 \begin{array}{l}
@@ -91,6 +93,8 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 \right]\text{んです}
 ```
 
+## ～ていただけませんか
+
 ```math
 \left[
 \begin{array}{l}
@@ -99,9 +103,13 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 \right]\text{いただけませんか}
 ```
 
+## 疑問詞＋～たらいいですか
+
 ```math
 \text{疑問詞＋V}_{\text{た形}}\text{らいいですか}
 ```
+
+## Nは好きです・上手です・あります
 
 ```math
 \text{Nは}\left[
@@ -113,17 +121,23 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 \right]
 ```
 
-が[みえます・聞こえます]
+## が[みえます・聞こえます]
+
 They come into sight / ears independent of one's will
 
-ができます
+## ができます
+
 Be completed / finished
 
-しか
+## しか
+
 Only; always used with a negative, suggests insufficiency or inadequacy
 
-Nは…。Nは…。
+## Nは…。Nは…。
+
 Contrast between two things
+
+## ～ながら～
 
 ```math
 \left[
@@ -137,6 +151,8 @@ Contrast between two things
 \right]
 ```
 
+## ～ています
+
 ```math
 \left[
 \begin{array}{l}
@@ -148,6 +164,8 @@ Contrast between two things
 2. Indicates a habitual behaviour
 3. Show the state resulting from the action (自動詞) …が…
 
+
+## ～し、～し
 
 ```math
 \left[
@@ -161,8 +179,11 @@ Contrast between two things
 \right]\text{し、～}
 ```
 
-それで
+## それで
+
 So
+
+## ～てしまいました・～てしまいます
 
 ```math
 \left[
@@ -174,8 +195,11 @@ So
 Has been completed / will be completed in the future
 
 
-ありました
+## ありました
+
 Found something now. It does not mean it was already there
+
+## ～てあります
 
 ```math
 \left[
@@ -187,6 +211,8 @@ Found something now. It does not mean it was already there
 他動詞
 A situation due to someone's action
 
+## ～ておきます
+
 ```math
 \left[
 \begin{array}{l}
@@ -196,6 +222,8 @@ A situation due to someone's action
 ```
 Necessary action / preparation
 
+## まだ＋肯定
+
 ```math
 \text{まだ}\left[
 \begin{array}{l}
@@ -204,8 +232,11 @@ Necessary action / preparation
 \right]
 ```
 
-とか
+## とか
+
 Gives examples without listing everything
+
+## ～つもりです
 
 ```math
 \left[
@@ -216,6 +247,8 @@ Gives examples without listing everything
 \right]\text{つもりです}
 ```
 
+## ～予定です
+
 ```math
 \left[
 \begin{array}{l}
@@ -225,6 +258,8 @@ Gives examples without listing everything
 \right]\text{予定です}
 ```
 
+## まだ～ていません
+
 ```math
 \text{まだ}\left[
 \begin{array}{l}
@@ -232,6 +267,8 @@ Gives examples without listing everything
 \end{array}
 \right]\text{いません}
 ```
+
+## ～たほうがいいです
 
 ```math
 \left[
@@ -241,6 +278,8 @@ Gives examples without listing everything
 \end{array}
 \right]\text{ほうがいいです}
 ```
+
+## ～でしょう
 
 ```math
 \left[
@@ -253,6 +292,8 @@ Gives examples without listing everything
 \right]\text{でしょう}
 ```
 
+## ～かもしれません
+
 ```math
 \left[
 \begin{array}{l}
@@ -264,6 +305,8 @@ Gives examples without listing everything
 \right]\text{かもしれません}
 ```
 
+## ～ましょう
+
 ```math
 \left[
 \begin{array}{l}
@@ -272,9 +315,13 @@ Gives examples without listing everything
 \right]\text{ましょう}
 ```
 
-～書いてあります・～読みます
+## ～書いてあります・～読みます
 
-XはYという意味です
+
+## XはYという意味です
+
+
+## ～と言っていました
 
 ```math
 \left[
@@ -284,6 +331,8 @@ XはYという意味です
 \right]\text{と言っていました}
 ```
 
+## ～と伝えていただけませんか
+
 ```math
 \left[
 \begin{array}{l}
@@ -291,6 +340,8 @@ XはYという意味です
 \end{array}
 \right]\text{とつたえていただけませんか}
 ```
+
+## ～とおりに、～
 
 ```math
 \left[
@@ -301,6 +352,8 @@ XはYという意味です
 \right]\text{とおりに、V}
 ```
 
+## ～あとで、～
+
 ```math
 \left[
 \begin{array}{l}
@@ -309,6 +362,8 @@ XはYという意味です
 \end{array}
 \right]\text{あとで、V}
 ```
+
+## ～て／～ないで＋V
 
 ```math
 \left[
@@ -319,15 +374,21 @@ XはYという意味です
 \right]\text{V}
 ```
 
+## 疑問詞＋～ばいいですか
+
 ```math
 \text{疑問詞＋V}_{\text{條件形}}\text{いいですか}
 ```
 
-Nなら、～
+## Nなら、～
+
 Give information for something they just said
 
-~はありませんか
+## ~はありませんか
+
 Ask for opinions
+
+## ～ように、～
 
 ```math
 \left[
@@ -338,6 +399,8 @@ Ask for opinions
 \right]\text{ように、V}
 ```
 
+## ～ようになります
+
 ```math
 \left[
 \begin{array}{l}
@@ -345,6 +408,8 @@ Ask for opinions
 \end{array}
 \right]\text{ようになります}
 ```
+
+## ～ようにします
 
 ```math
 \left[
@@ -355,8 +420,11 @@ Ask for opinions
 \right]\text{ようにします}
 ```
 
+## 形容詞＋動詞
+
 早い→早く・上手な→上手に
-形容詞＋動詞
+
+## 受身形：人1は人2に～られます
 
 ```math
 \left[
@@ -373,6 +441,8 @@ Ask for opinions
 \end{array}
 \right]
 ```
+
+## 受身形：人1は人2にNを～られます
 
 ```math
 \left[
@@ -395,6 +465,8 @@ Ask for opinions
 ```
 負面意味
 
+## 受身形：Nが・は～られます
+
 ```math
 \left[
 \begin{array}{l}
@@ -408,6 +480,8 @@ Ask for opinions
 ```
 Passive voice
 
+## Nから・Nでつくります
+
 ```math
 \left[
 \begin{array}{l}
@@ -416,6 +490,8 @@ Passive voice
 \end{array}
 \right]\text{つくります}
 ```
+
+## ～のは形容詞です
 
 ```math
 \left[
@@ -429,6 +505,8 @@ Passive voice
 \right]\text{です}
 ```
 
+## ～のが形容詞です
+
 ```math
 \left[
 \begin{array}{l}
@@ -441,6 +519,8 @@ Passive voice
 \right]\text{です}
 ```
 
+## ～のを忘れました
+
 ```math
 \left[
 \begin{array}{l}
@@ -449,6 +529,8 @@ Passive voice
 \right]\text{のを}\text{忘れました}
 ```
 
+## ～のを知っていますか
+
 ```math
 \left[
 \begin{array}{l}
@@ -456,6 +538,8 @@ Passive voice
 \end{array}
 \right]\text{のを}\text{知っていますか}
 ```
+
+## ～のはNです
 
 ```math
 \left[
@@ -467,6 +551,8 @@ Passive voice
 \end{array}
 \right]\text{のはNです}
 ```
+
+## ～て、～（原因・理由）
 
 ```math
 \left[
@@ -480,8 +566,11 @@ Passive voice
 ```
 First past of the sentence indicate the result in the second part
 
-Nで
+## Nで
+
 used when natural pheomena happened
+
+## ～ので、～
 
 ```math
 \left[
@@ -496,6 +585,8 @@ used when natural pheomena happened
 indicate as a cause or reason
 
 
+## ～か、～
+
 ```math
 \left[
 \begin{array}{l}
@@ -506,6 +597,8 @@ indicate as a cause or reason
 \end{array}
 \right]\text{か、～}
 ```
+
+## ～かどうか、～
 
 ```math
 \left[
@@ -518,10 +611,14 @@ indicate as a cause or reason
 \right]\text{かどうか、～}
 ```
 
-Vてみます
+## Vてみます
 
-～でしょうか
+
+## ～でしょうか
+
 Asking without demaning a definite answer
+
+## 人にNをいただきます
 
 ```math
 \left[
@@ -537,6 +634,8 @@ Asking without demaning a definite answer
 When I receive something from someone otherwise use もらいます
 
 
+## 人が私にNをくださいます
+
 ```math
 \left[
 \begin{array}{l}
@@ -549,6 +648,8 @@ When I receive something from someone otherwise use もらいます
 \right]\text{をくださいます}
 ```
 When someone give me something, otherwise use くれます
+
+## 人にNをやります
 
 ```math
 \left[
@@ -563,6 +664,8 @@ When someone give me something, otherwise use くれます
 ```
 When I give someone to lower status, to same level use あげます　to higher level use さしあげます
 
+## ～ていただきます・～てくださいます・～てやります
+
 ```math
 \left[
 \begin{array}{l}
@@ -570,6 +673,8 @@ When I give someone to lower status, to same level use あげます　to higher 
 \end{array}
 \right]\text{いただきます・くださいます・やります}
 ```
+
+## ～てくださいませんか
 
 ```math
 \left[
@@ -580,6 +685,8 @@ When I give someone to lower status, to same level use あげます　to higher 
 ```
 Politer than てください　but not polite as ていただけませんか
 
+## ～ために、～
+
 ```math
 \left[
 \begin{array}{l}
@@ -588,6 +695,8 @@ Politer than てください　but not polite as ていただけませんか
 \end{array}
 \right]\text{ために、～}
 ```
+
+## ～のに使います・～にいいです
 
 ```math
 \left[
@@ -602,6 +711,8 @@ Politer than てください　but not polite as ていただけませんか
 \right]
 ```
 
+## ～そうです（様態）
+
 ```math
 \left[
 \begin{array}{l}
@@ -613,6 +724,8 @@ Politer than てください　but not polite as ていただけませんか
 ```
 Seems
 
+## ～てきます
+
 ```math
 \left[
 \begin{array}{l}
@@ -620,6 +733,8 @@ Seems
 \end{array}
 \right]\text{来ます}
 ```
+
+## ～てくれませんか
 
 ```math
 \left[
@@ -630,6 +745,8 @@ Seems
 ```
 Ask to do soemthing, not polite as てください & ていただけませんか
 
+## ～すぎます
+
 ```math
 \left[
 \begin{array}{l}
@@ -639,6 +756,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{すぎます}
 ```
+
+## ～やすいです・～にくいです
 
 ```math
 \left[
@@ -653,6 +772,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]
 ```
 
+## ～くします・～にします
+
 ```math
 \left[
 \begin{array}{l}
@@ -662,6 +783,9 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{します}
 ```
+
+## ～場合は、～
+
 ```math
 \left[
 \begin{array}{l}
@@ -675,6 +799,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{場合は、～}
 ```
 
+## ～のに、～
+
 ```math
 \left[
 \begin{array}{l}
@@ -686,6 +812,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{のに、～}
 ```
 
+## ～ところです
+
 ```math
 \left[
 \begin{array}{l}
@@ -696,6 +824,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{ところです}
 ```
 
+## ～たばかりです
+
 ```math
 \left[
 \begin{array}{l}
@@ -703,6 +833,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{ばかりです}
 ```
+
+## ～はずです
 
 ```math
 \left[
@@ -716,6 +848,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{はずです}
 ```
 
+## ～そうです（伝聞）
+
 ```math
 \left[
 \begin{array}{l}
@@ -723,6 +857,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{そうです。}
 ```
+
+## ～ようです
 
 ```math
 \left[
@@ -735,6 +871,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]\text{ようです。}
 ```
 
+## ～がします
+
 ```math
 \left[
 \begin{array}{l}
@@ -742,6 +880,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\text{がします}
 ```
+
+## 使役形：人を～させます
 
 ```math
 \left[
@@ -754,6 +894,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]
 ```
+
+## 使役形：人1は人2を～させます（指示）
 
 ```math
 \left[
@@ -773,6 +915,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 
 Person 1 command Person 2 to do something
 
+## 使役形：人1は人2を～させます（強制）
+
 ```math
 \left[
 \begin{array}{l}
@@ -790,6 +934,8 @@ Person 1 command Person 2 to do something
 ```
 
 Person 1 make Person 2 to do something
+
+## 使役形：人1は人2にNを～させます
 
 ```math
 \left[
@@ -812,6 +958,8 @@ Person 1 make Person 2 to do something
 ```
 
 Person 1 make Person 2 to do something
+
+## ～させていただけませんか
 
 ```math
 \left[

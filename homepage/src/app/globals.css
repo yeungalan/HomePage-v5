@@ -473,3 +473,68 @@
     0 10px 10px rgba(0, 0, 0, 0.2),
     0 20px 20px rgba(0, 0, 0, 0.15);
 }
+/* Printing a post with Ctrl/Cmd+P (see PrintMode.tsx). Site chrome is marked
+   `data-hide-print`; what is left (title, date, article) prints as a plain
+   black-on-white document without the site's backgrounds, shadows and colors. */
+@media print {
+  @page {
+    margin: 15mm;
+  }
+
+  [data-hide-print] {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* next-themes puts `color-scheme: dark` on <html> in dark mode, which
+     paints the page margins dark; paper is always light. */
+  :root {
+    color-scheme: light !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  /* Code blocks lose their dark theme; a thin border keeps them apart. */
+  pre {
+    border: 1px solid #999 !important;
+    white-space: pre-wrap !important;
+  }
+
+  table,
+  th,
+  td {
+    border-color: #999 !important;
+  }
+
+  /* Don't split a formula, code block, table or image across two pages,
+     or leave a heading alone at the bottom of a page. */
+  .katex-display,
+  pre,
+  table,
+  img,
+  figure {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+}

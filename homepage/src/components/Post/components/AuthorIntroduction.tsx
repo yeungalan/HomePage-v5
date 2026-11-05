@@ -8,7 +8,7 @@ export const AuthorIntroduction: React.FC = () => {
   const category = useCurrentNoteDataSelector(data => data?.data.category)
 
   return (
-    <div className="mt-16 pt-8 border-t border-gray-200">
+    <div data-hide-print className="mt-16 pt-8 border-t border-gray-200">
       <div className="flex flex-col md:flex-row gap-6 items-center">
         {/* Author/Category Image */}
         <div className="flex-shrink-0">

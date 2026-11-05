@@ -33,7 +33,7 @@ export const MobileLanguageDropdown: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center gap-2 mb-4 xl:hidden">
+    <div data-hide-print className="flex items-center gap-2 mb-4 xl:hidden">
       <Icon icon="mdi:translate" className="text-gray-500 dark:text-gray-400 flex-shrink-0" />
       <select
         value={currentLanguage}

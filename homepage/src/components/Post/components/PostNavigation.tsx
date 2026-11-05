@@ -40,7 +40,7 @@ export const PostNavigation: React.FC<PostNavigationProps> = ({ prevPost, nextPo
   if (!prevPost && !nextPost) return null;
 
   return (
-    <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+    <nav data-hide-print className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
       <div className="grid grid-cols-2 gap-4">
         {/* Older post — Previous (←) */}
         <div className="col-start-1">

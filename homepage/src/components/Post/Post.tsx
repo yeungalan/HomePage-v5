@@ -20,6 +20,7 @@ import { NoteLeftSidebar } from './components/NoteLeftSidebar'
 import { NoteRightSidebar } from './components/NoteRightSidebar'
 import { MobileLanguageDropdown } from './components/MobileLanguageDropdown'
 import { PostNavigation } from './components/PostNavigation'
+import { PrintMode } from './components/PrintMode'
 
 const Post: React.FC<PostProps> = ({
   markdownContent,
@@ -119,6 +120,7 @@ const Post: React.FC<PostProps> = ({
 
   return (
     <div className="min-h-screen">
+      <PrintMode />
       <LanguageContext.Provider value={languageData}>
         <CurrentNoteNidContext.Provider value={currentNid}>
           <CurrentNoteDataContext.Provider value={currentNote}>
@@ -128,12 +130,14 @@ const Post: React.FC<PostProps> = ({
                 'relative mx-auto grid min-h-[calc(100vh-6.5rem-10rem)] max-w-[60rem]',
                 'gap-4 md:grid-cols-1 xl:max-w-[calc(60rem+400px)] xl:grid-cols-[1fr_minmax(auto,60rem)_1fr]',
                 'mt-12',
-                'md:mt-24'
+                'md:mt-24',
+                'print:mt-0 print:block print:min-h-0 print:max-w-none'
               )}
             >
               {/* Left Sidebar */}
               <div
                 key={`left-${contentKey}`}
+                data-hide-print
                 className="relative hidden min-w-0 xl:flex xl:flex-col xl:w-60"
               >
                 <NoteLeftSidebar />
@@ -183,7 +187,7 @@ const Post: React.FC<PostProps> = ({
               </PaperWithMainContainer>
 
               {/* Right Sidebar */}
-              <div className="relative min-w-0 hidden xl:flex xl:flex-col xl:w-60">
+              <div data-hide-print className="relative min-w-0 hidden xl:flex xl:flex-col xl:w-60">
                 <NoteRightSidebar />
               </div>
             </div>

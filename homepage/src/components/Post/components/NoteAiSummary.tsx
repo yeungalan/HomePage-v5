@@ -12,6 +12,7 @@ export const NoteAiSummary: React.FC = () => {
 
   return (
     <section
+      data-hide-print
       aria-label={t('post.aiSummary')}
       className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/60"
     >

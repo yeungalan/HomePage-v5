@@ -7,7 +7,7 @@ EDITED_DATE=2026-11-05T00:00:00Z
 TAG=Japanese,JLPT,JLPT N4,文法
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
-AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens with tables for forming the potential form (可能形) and the volitional form (意向形) for group I, II and III verbs, noting that the object particle を changes to が with the potential form. Most patterns are written as KaTeX formulas showing which forms each one connects to, including ～んです, ～ていただけませんか, 疑問詞＋～たらいいですか, ～ながら, ～ています, ～し、～し, ～てしまいます, ～てあります, ～ておきます, ～つもりです, ～予定です, まだ～ていません, ～たほうがいいです, ～でしょう, ～かもしれません and ～ましょう. Short English explanations cover the nuances of みえます and 聞こえます, ができます, しか with a negative, contrastive は, それで, ありました and とか, and the three uses of ～ています: an ongoing action, a habit, and a resulting state.
+AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens with conjugation tables for the potential, volitional, imperative, conditional, passive and causative forms of group I, II and III verbs, followed by a table of honorific (尊敬語) and humble (謙譲語) expressions. The rest is a long list of patterns, each with its own heading, a KaTeX formula showing which forms it connects to and short English notes on nuance. They range from ～んです, ～ながら, ～てしまいます, ～てあります and ～ておきます to quoting with ～と言っていました, ～ように and ～ようになります, the three passive patterns, nominalising の, ～かどうか, the giving and receiving verbs いただきます, くださいます and やります, ～そうです in both its appearance and hearsay senses, ～ようです, ～はずです and ～ところです. It ends with the causative patterns for making or letting someone do something and ～させていただけませんか.
 ### AUTOMATE FIELD END
 
 # JLPT N4 Grammar Notes

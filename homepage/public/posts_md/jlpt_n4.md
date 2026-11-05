@@ -3,7 +3,7 @@ Topic=JLPT N4 Grammar Notes
 PRIMARY_LANGUAGE=en
 ID=jlpt-n4-grammar
 CREATED_DATE=2026-11-03T00:00:00Z
-EDITED_DATE=2026-11-03T00:00:00Z
+EDITED_DATE=2026-11-05T00:00:00Z
 TAG=Japanese,JLPT,JLPT N4,文法
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
@@ -29,7 +29,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | III | きます→こよう |
 | III | します→しよう |
 
-## 禁止形
+## 命令形
 | グループ | 変形 |
 | --- | --- |
 | I | い→え |
@@ -38,7 +38,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | III | します→しろ |
 
 
-## 條件形
+## 条件形
 | グループ | 変形 |
 | --- | --- |
 | I | い→え+ば |
@@ -51,8 +51,8 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | --- | --- |
 | I | い→あ＋れ |
 | II | +られ |
-| III | きます→され |
-| III | します→こられ |
+| III | きます→こられ |
+| III | します→され |
 
 ## 使役形
 | グループ | 変形 |
@@ -72,7 +72,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 |  | 聞きます | うかがいます |
 | めしあがります | 食べます | いただきます |
 | めしあがります | 飲みます | いただきます |
-|  | もらいます | おただきます |
+|  | もらいます | いただきます |
 | くださいます | くれます |  |
 | なさいます | します | いたします |
 | おっしゃいます | 言います | もうします |
@@ -109,10 +109,10 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 \text{疑問詞＋V}_{\text{た形}}\text{らいいですか}
 ```
 
-## Nは好きです・上手です・あります
+## Nが好きです・上手です・あります
 
 ```math
-\text{Nは}\left[
+\text{Nが}\left[
 \begin{array}{l}
   \text{好きです・嫌いです} \\
   \text{上手です・下手です} \\
@@ -123,7 +123,7 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 
 ## が[みえます・聞こえます]
 
-They come into sight / ears independent of one's will
+Something comes into sight or reaches the ears on its own, independent of one's will
 
 ## ができます
 
@@ -162,7 +162,7 @@ Contrast between two things
 ```
 1. Indicates an action in progress
 2. Indicates a habitual behaviour
-3. Show the state resulting from the action (自動詞) …が…
+3. Shows the state resulting from an action (自動詞): …が…ています
 
 
 ## ～し、～し
@@ -197,7 +197,7 @@ Has been completed / will be completed in the future
 
 ## ありました
 
-Found something now. It does not mean it was already there
+Expresses finding something just now; it does not mean it was there in the past
 
 ## ～てあります
 
@@ -315,7 +315,7 @@ Gives examples without listing everything
 \right]\text{ましょう}
 ```
 
-## ～書いてあります・～読みます
+## ～と書いてあります・～と読みます
 
 
 ## XはYという意味です
@@ -377,14 +377,14 @@ Gives examples without listing everything
 ## 疑問詞＋～ばいいですか
 
 ```math
-\text{疑問詞＋V}_{\text{條件形}}\text{いいですか}
+\text{疑問詞＋V}_{\text{条件形}}\text{いいですか}
 ```
 
 ## Nなら、～
 
-Give information for something they just said
+Gives information or advice about a topic the other person just mentioned
 
-## ~はありませんか
+## ～はありませんか
 
 Ask for opinions
 
@@ -463,7 +463,7 @@ Ask for opinions
 \end{array}
 \right]
 ```
-負面意味
+Often has a negative nuance: the subject is troubled by the action (迷惑の受身)
 
 ## 受身形：Nが・は～られます
 
@@ -485,8 +485,8 @@ Passive voice
 ```math
 \left[
 \begin{array}{l}
-  \text{N}_{\text{見えない・触れないのもの}}\text{から} \\
-  \text{N}_{\text{見える・触れのものもの}}\text{で}
+  \text{N}_{\text{見えない・触れないもの}}\text{から} \\
+  \text{N}_{\text{見える・触れるもの}}\text{で}
 \end{array}
 \right]\text{つくります}
 ```
@@ -564,11 +564,11 @@ Passive voice
 \end{array}
 \right]\text{、～}
 ```
-First past of the sentence indicate the result in the second part
+The first part of the sentence gives the cause of the result in the second part
 
 ## Nで
 
-used when natural pheomena happened
+Used for causes such as natural phenomena, accidents and events
 
 ## ～ので、～
 
@@ -582,7 +582,7 @@ used when natural pheomena happened
 \end{array}
 \right]\text{ので、～}
 ```
-indicate as a cause or reason
+Indicates a cause or reason
 
 
 ## ～か、～
@@ -616,7 +616,7 @@ indicate as a cause or reason
 
 ## ～でしょうか
 
-Asking without demaning a definite answer
+Asks politely without demanding a definite answer
 
 ## 人にNをいただきます
 
@@ -631,7 +631,7 @@ Asking without demaning a definite answer
 \end{array}
 \right]\text{をいただきます}
 ```
-When I receive something from someone otherwise use もらいます
+Used when receiving something from someone of higher status; otherwise use もらいます
 
 
 ## 人が私にNをくださいます
@@ -647,7 +647,7 @@ When I receive something from someone otherwise use もらいます
 \end{array}
 \right]\text{をくださいます}
 ```
-When someone give me something, otherwise use くれます
+Used when someone of higher status gives me something; otherwise use くれます
 
 ## 人にNをやります
 
@@ -662,7 +662,7 @@ When someone give me something, otherwise use くれます
 \end{array}
 \right]\text{をやります}
 ```
-When I give someone to lower status, to same level use あげます　to higher level use さしあげます
+Used when giving something to someone of lower status (or to animals and plants); to an equal use あげます, to someone of higher status use さしあげます
 
 ## ～ていただきます・～てくださいます・～てやります
 
@@ -683,7 +683,7 @@ When I give someone to lower status, to same level use あげます　to higher 
 \end{array}
 \right]\text{くださいませんか}
 ```
-Politer than てください　but not polite as ていただけませんか
+Politer than てください, but not as polite as ていただけませんか
 
 ## ～ために、～
 
@@ -722,7 +722,7 @@ Politer than てください　but not polite as ていただけませんか
 \end{array}
 \right]\text{そうです}
 ```
-Seems
+Looks like / seems (judging from appearance)
 
 ## ～てきます
 
@@ -743,7 +743,7 @@ Seems
 \end{array}
 \right]\text{くれませんか}
 ```
-Ask to do soemthing, not polite as てください & ていただけませんか
+Asks someone to do something; less polite than てくださいませんか and ていただけませんか
 
 ## ～すぎます
 
@@ -752,7 +752,7 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \begin{array}{l}
   \text{V}_{\text{ます形}} \\
   \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\text{）} \\
-  \text{V}_{\text{ない形}}\text{（}\cancel{\text{い}}\text{）}
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\text{）}
 \end{array}
 \right]\text{すぎます}
 ```
@@ -766,8 +766,8 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \end{array}
 \right]\left[
 \begin{array}{l}
-  \text{やすいます} \\
-  \text{にくいます}
+  \text{やすいです} \\
+  \text{にくいです}
 \end{array}
 \right]
 ```
@@ -790,10 +790,10 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \left[
 \begin{array}{l}
   \text{V}_{\text{辞書形}} \\
-  \text{V}_{\text{ない形}} \\
+  \text{V}_{\text{ない形}}\text{ない} \\
   \text{V}_{\text{た形}} \\
   \text{形容詞}_{\text{い}} \\
-  \text{形容詞}_{\text{な}} \\
+  \text{形容詞}_{\text{な}}\text{な} \\
   \text{Nの}
 \end{array}
 \right]\text{場合は、～}
@@ -895,26 +895,6 @@ Ask to do soemthing, not polite as てください & ていただけませんか
 \right]
 ```
 
-## 使役形：人1は人2を～させます（指示）
-
-```math
-\left[
-\begin{array}{l}
-  \text{人}_{\text{１}}
-\end{array}
-\right]\text{は}\left[
-\begin{array}{l}
-  \text{人}_{\text{２}}
-\end{array}
-\right]\text{を}\left[
-\begin{array}{l}
-  \text{自動詞+使役形}
-\end{array}
-\right]
-```
-
-Person 1 command Person 2 to do something
-
 ## 使役形：人1は人2を～させます（強制）
 
 ```math
@@ -933,7 +913,27 @@ Person 1 command Person 2 to do something
 \right]
 ```
 
-Person 1 make Person 2 to do something
+Person 1 makes Person 2 do something (forcing)
+
+## 使役形：人1は人2を～させます（許可）
+
+```math
+\left[
+\begin{array}{l}
+  \text{人}_{\text{１}}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{人}_{\text{２}}
+\end{array}
+\right]\text{を}\left[
+\begin{array}{l}
+  \text{自動詞+使役形}
+\end{array}
+\right]
+```
+
+Person 1 lets Person 2 do something (permission)
 
 ## 使役形：人1は人2にNを～させます
 
@@ -957,7 +957,7 @@ Person 1 make Person 2 to do something
 \right]
 ```
 
-Person 1 make Person 2 to do something
+Person 1 makes or lets Person 2 do something; with a transitive verb (他動詞) the person takes に
 
 ## ～させていただけませんか
 

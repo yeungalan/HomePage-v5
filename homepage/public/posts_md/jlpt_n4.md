@@ -3,7 +3,7 @@ Topic=JLPT N4 Grammar Notes
 PRIMARY_LANGUAGE=en
 ID=jlpt-n4-grammar
 CREATED_DATE=2026-11-03T00:00:00Z
-EDITED_DATE=2026-11-05T00:00:00Z
+EDITED_DATE=2026-11-06T00:00:00Z
 TAG=Japanese,JLPT,JLPT N4,文法
 CATEGORY=Japanese
 CATEGORY_CAPTION=Japanese
@@ -19,7 +19,11 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 | II | +られ |
 | III | きます→こられます |
 | III | します→できます |
-を→が (with the potential form, the object particle を becomes が)
+
+```math
+\text{を}\rightarrow\text{が}
+```
+With the potential form, the object particle を becomes が
 
 ## 意向形
 | グループ | 変形 |
@@ -123,18 +127,59 @@ AI_SUMMARY=This post collects Alan's grammar notes for the JLPT N4. It opens wit
 
 ## が[見えます・聞こえます]
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{が}\left[
+\begin{array}{l}
+  \text{見えます} \\
+  \text{聞こえます}
+\end{array}
+\right]
+```
 Something comes into sight or reaches the ears on its own, independent of one's will
 
 ## ができます
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{ができます}
+```
 Be completed / finished
 
 ## しか
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{しか}\left[
+\begin{array}{l}
+  \text{V}_{\text{ない形}}\text{ない}
+\end{array}
+\right]
+```
 Only; always used with a negative, suggests insufficiency or inadequacy
 
 ## Nは…。Nは…。
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}_{\text{１}}
+\end{array}
+\right]\text{は…。}\left[
+\begin{array}{l}
+  \text{N}_{\text{２}}
+\end{array}
+\right]\text{は…。}
+```
 Contrast between two things
 
 ## ～ながら～
@@ -181,6 +226,17 @@ Contrast between two things
 
 ## それで
 
+```math
+\left[
+\begin{array}{l}
+  \text{文}
+\end{array}
+\right]\text{。それで、}\left[
+\begin{array}{l}
+  \text{文}
+\end{array}
+\right]
+```
 So
 
 ## ～てしまいました・～てしまいます
@@ -197,6 +253,13 @@ Has been completed / will be completed in the future; can also express regret
 
 ## ありました
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{が}\text{ありました}
+```
 Expresses finding something just now; it does not mean it was there in the past
 
 ## ～てあります
@@ -234,6 +297,19 @@ Necessary action / preparation
 
 ## とか
 
+```math
+\left[
+\begin{array}{l}
+  \text{N} \\
+  \text{V}_{\text{普通形}}
+\end{array}
+\right]\text{とか、}\left[
+\begin{array}{l}
+  \text{N} \\
+  \text{V}_{\text{普通形}}
+\end{array}
+\right]\text{とか}
+```
 Gives examples without listing everything
 
 ## ～つもりです
@@ -317,9 +393,28 @@ Gives examples without listing everything
 
 ## ～と書いてあります・～と読みます
 
+```math
+\text{「～」と}\left[
+\begin{array}{l}
+  \text{書いてあります} \\
+  \text{読みます}
+\end{array}
+\right]
+```
 
 ## XはYという意味です
 
+```math
+\left[
+\begin{array}{l}
+  \text{X}
+\end{array}
+\right]\text{は}\left[
+\begin{array}{l}
+  \text{Y}
+\end{array}
+\right]\text{という意味です}
+```
 
 ## ～と言っていました
 
@@ -383,10 +478,24 @@ Gives examples without listing everything
 
 ## Nなら、～
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{なら、～}
+```
 Gives information or advice about a topic the other person just mentioned
 
 ## ～はありませんか
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}
+\end{array}
+\right]\text{はありませんか}
+```
 Asks for suggestions or recommendations
 
 ## ～ように、～
@@ -423,7 +532,18 @@ Asks for suggestions or recommendations
 
 ## 形容詞＋動詞
 
-早い→早く・上手な→上手に
+```math
+\left[
+\begin{array}{l}
+  \text{形容詞}_{\text{い}}\text{（}\cancel{\text{い}}\rightarrow \text{く）} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{な}}\rightarrow \text{に）}
+\end{array}
+\right]\text{V}
+```
+
+```math
+\text{早い}\rightarrow\text{早く}\text{・}\text{上手な}\rightarrow\text{上手に}
+```
 
 ## 受身形：人1は人2に～られます
 
@@ -569,6 +689,13 @@ The first part of the sentence gives the cause of the result in the second part
 
 ## Nで
 
+```math
+\left[
+\begin{array}{l}
+  \text{N}_{\text{自然現象・事故・出来事}}
+\end{array}
+\right]\text{で、～}
+```
 Used for causes such as natural phenomena, accidents and events
 
 ## ～ので、～
@@ -614,9 +741,26 @@ Indicates a cause or reason
 
 ## Vてみます
 
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{て形}}
+\end{array}
+\right]\text{みます}
+```
 
 ## ～でしょうか
 
+```math
+\left[
+\begin{array}{l}
+  \text{V}_{\text{普通形}} \\
+  \text{形容詞}_{\text{い}} \\
+  \text{形容詞}_{\text{な}}\text{（}\cancel{\text{だ}}\text{）} \\
+  \text{N（}\cancel{\text{だ}}\text{）}
+\end{array}
+\right]\text{でしょうか}
+```
 Asks politely without demanding a definite answer
 
 ## 人にNをいただきます

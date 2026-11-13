@@ -68,6 +68,15 @@ export const zhHK: Messages = {
   tags: {
     subtitle: '帶有此標籤的文章（{{count}}）',
   },
+  notFound: {
+    eyebrow: '錯誤 404',
+    title: '找不到頁面',
+    description: '抱歉，你要找的頁面不存在，可能已被移走、改名或刪除。',
+    requestedPath: '要求的網址',
+    home: '返回首頁',
+    back: '返回上一頁',
+    suggestions: '或者看看這些頁面',
+  },
   arch: {
     title: '系統架構',
     subtitle: '基礎設施概覽',

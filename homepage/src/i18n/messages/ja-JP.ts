@@ -68,6 +68,15 @@ export const jaJP: Messages = {
   tags: {
     subtitle: 'このタグが付いた投稿（{{count}}）',
   },
+  notFound: {
+    eyebrow: 'エラー 404',
+    title: 'ページが見つかりません',
+    description: 'お探しのページは存在しないか、移動または削除された可能性があります。',
+    requestedPath: 'リクエストされたアドレス',
+    home: 'ホームに戻る',
+    back: '前のページに戻る',
+    suggestions: 'こちらのページはいかがですか',
+  },
   arch: {
     title: 'アーキテクチャ',
     subtitle: 'インフラ概要',

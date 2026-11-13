@@ -72,6 +72,18 @@ export const enUS = {
   tags: {
     subtitle: 'Posts tagged with this topic ({{count}})',
   },
+  notFound: {
+    /** Small label above the 404 page title. */
+    eyebrow: 'Error 404',
+    title: 'Page not found',
+    description: "Sorry, the page you're looking for doesn't exist. It may have been moved, renamed or removed.",
+    /** Screen-reader label for the chip showing the address that was asked for. */
+    requestedPath: 'Requested address',
+    home: 'Back to home',
+    back: 'Go back',
+    /** Heading above the links to the site's sections. */
+    suggestions: 'Or try one of these',
+  },
   arch: {
     title: 'Architecture',
     subtitle: 'Infrastructure Overview',

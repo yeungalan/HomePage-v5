@@ -454,25 +454,128 @@
   }
 }
 
-/* 404 Page */
-.hit-the-floor {
-  font-size: 12em;
-  font-weight: bold;
-  font-family: Helvetica;
-  text-shadow:
-    0 1px 0 #ccc,
-    0 2px 0 #c9c9c9,
-    0 3px 0 #bbb,
-    0 4px 0 #b9b9b9,
-    0 5px 0 #aaa,
-    0 6px 1px rgba(0, 0, 0, 0.1),
-    0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    0 3px 5px rgba(0, 0, 0, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
+/* 404 page (src/app/not-found.tsx, src/components/not-found/) */
+
+/* The confused-face logo. Its colors are variables so the dark strokes turn
+   light in dark mode. Each part has its own loop: the eyes blink, the question
+   marks wobble, the surprise lines twitch and the cheeks glow, while .nf-float
+   bobs the whole face above its shadow. */
+.nf-logo {
+  --nf-lines: #656980;
+  --nf-question: #7b91c3;
+  --nf-face: #383238;
+  --nf-cheeks: #fddcda;
+  overflow: visible;
 }
+
+.dark .nf-logo {
+  --nf-lines: #a2a8c6;
+  --nf-question: #8ea3d8;
+  --nf-face: #ece8ec;
+  --nf-cheeks: #f3aab6;
+}
+
+.nf-logo-lines {
+  fill: var(--nf-lines);
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  animation: nf-twitch 4s ease-in-out infinite;
+}
+
+.nf-logo-question {
+  fill: var(--nf-question);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: nf-wobble 3.6s ease-in-out infinite;
+}
+
+.nf-logo-face {
+  fill: var(--nf-face);
+}
+
+.nf-logo-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nf-blink 5s ease-in-out infinite;
+}
+
+.nf-logo-question-small {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: nf-wobble-small 3.6s ease-in-out -1.8s infinite;
+}
+
+.nf-logo-cheeks {
+  fill: var(--nf-cheeks);
+  animation: nf-glow 4s ease-in-out infinite;
+}
+
+.nf-float {
+  animation: nf-float 6s ease-in-out infinite;
+}
+
+/* Shrinks and fades as the face rises. */
+.nf-shadow {
+  animation: nf-shadow 6s ease-in-out infinite;
+}
+
+/* Faint dot grid behind the content, fading out towards the edges. */
+.nf-grid {
+  background-image: radial-gradient(rgb(24 24 27 / 0.09) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 38%, #000 20%, transparent 75%);
+}
+
+.dark .nf-grid {
+  background-image: radial-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px);
+}
+
+@keyframes nf-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes nf-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.8); opacity: 0.55; }
+}
+
+@keyframes nf-wobble {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg) translateY(-4px); }
+  75% { transform: rotate(8deg) translateY(-2px); }
+}
+
+@keyframes nf-wobble-small {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(8deg); }
+  75% { transform: rotate(-6deg); }
+}
+
+@keyframes nf-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@keyframes nf-twitch {
+  0%, 60%, 72%, 84%, 100% { transform: translate(0, 0) rotate(0deg); }
+  66% { transform: translate(-3px, -5px) rotate(-6deg); }
+  78% { transform: translate(-2px, -3px) rotate(-4deg); }
+}
+
+@keyframes nf-glow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-logo *,
+  .nf-float,
+  .nf-shadow {
+    animation: none !important;
+  }
+}
+
 /* Printing a post with Ctrl/Cmd+P (see PrintMode.tsx). Site chrome is marked
    `data-hide-print`; what is left (title, date, article) prints as a plain
    black-on-white document without the site's backgrounds, shadows and colors. */

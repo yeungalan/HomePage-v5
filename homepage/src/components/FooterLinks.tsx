@@ -52,7 +52,22 @@ export const FooterInfo = () => {
         <FooterLinkSection />
       </div>
 
-      <FooterBottom />
+      {/*
+        The copyright lines and the language/theme switchers are flex siblings,
+        not an absolutely positioned overlay, so the text can never run under
+        the switchers. From md up they share a row with the switchers pushed to
+        the right; when the text is too long for both to fit (narrow windows,
+        longer translations), the switchers wrap onto their own line below it,
+        still right-aligned so the upward language dropdown stays on screen.
+      */}
+      <div className="mt-12 flex flex-col gap-6 md:mt-6 md:flex-row md:flex-wrap md:items-end md:gap-x-8">
+        <FooterBottom />
+
+        <div className="flex items-center justify-center gap-3 md:ml-auto">
+          <LocaleSwitcher />
+          <ThemeSwitcher />
+        </div>
+      </div>
     </>
   )
 }
@@ -168,13 +183,14 @@ const FooterBottom = () => {
   }
 
   return (
-    <div className="mt-12 space-y-3 text-center md:mt-6 md:text-left text-white">
+    <div className="space-y-3 text-center text-white md:text-left">
       <div>
         <span>© {date.replace('{{now}}', COPYRIGHT_YEAR)} </span>
         <span>{t('footer.copyright')}</span>
         <span>.</span>
         <span>
-          <Divider className="inline" />
+          {/* Below md the revision drops to its own line, so the divider would dangle. */}
+          <Divider className="hidden md:inline" />
         </span>
         <span
           className="mt-3 block md:mt-0 md:inline cursor-pointer select-none hover:opacity-80 transition-opacity"
@@ -199,12 +215,6 @@ const FooterBottom = () => {
               {t(icp.textKey)}
             </StyledLink>
           </>
-        )}
-
-        {icp ? (
-          <Divider className="inline" />
-        ) : (
-          <Divider className="hidden md:inline" />
         )}
       </div>
     </div>
@@ -236,13 +246,8 @@ export const RealFooter = () => {
       className="relative z-[1] mt-32 border-t border-x-uk-separator-opaque-light bg-stone-500 py-6 text-base-content/80 dark:border-uk-separator-opaque-dark dark:bg-black"
     >
       <div className="px-4 sm:px-8">
-        <div className="relative mx-auto max-w-7xl lg:px-8">
+        <div className="mx-auto max-w-7xl lg:px-8">
           <FooterInfo />
-
-          <div className="mt-6 flex items-center justify-center gap-3 md:absolute md:bottom-0 md:right-0 md:mt-0">
-            <LocaleSwitcher />
-            <ThemeSwitcher />
-          </div>
         </div>
       </div>
     </footer>

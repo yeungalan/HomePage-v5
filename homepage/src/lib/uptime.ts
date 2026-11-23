@@ -114,6 +114,20 @@ export async function fetchUptimeMonitors(pageId: string, signal?: AbortSignal) 
   return new Map(body.data.map((raw) => [raw.monitorId, toMonitor(raw, timezone)]));
 }
 
+/**
+ * A check result such as "503 Service Unavailable" or "Connection Timeout".
+ * HTTP status codes stay in front of their description, but UptimeRobot's own
+ * codes (333333 for a timeout, 300001 for an expired certificate, 0 for a closed
+ * port) mean nothing to a reader and are left out. Events whose code is a phrase,
+ * such as "Start by user" when a monitor starts, aren't check results: their
+ * description is a placeholder ("Unknown error"), so they get no reason.
+ */
+const describeReason = ({ code = '', detail }: NonNullable<RawLog['reason']>) => {
+  const description = detail?.short ?? '';
+  if (/^[1-5]\d\d$/.test(code)) return `${code} ${description}`.trim();
+  return /^\d*$/.test(code) ? description : '';
+};
+
 /** The most recent up/down events for one monitor, newest first. */
 export async function fetchUptimeEvents(pageId: string, monitorId: number, limit: number, signal?: AbortSignal) {
   const body = await getJson<{ monitor: { logs?: RawLog[] } }>(
@@ -125,13 +139,12 @@ export async function fetchUptimeEvents(pageId: string, monitorId: number, limit
   return logs.slice(0, limit).map((log, i): UptimeEvent => {
     const at = new Date(log.dateGMTISO);
     const end = i === 0 ? Date.now() : new Date(logs[i - 1].dateGMTISO).getTime();
-    const { code, detail } = log.reason ?? {};
     return {
       isUp: log.class === 'success',
       at,
       seconds: Math.max(0, Math.round((end - at.getTime()) / 1000)),
       ongoing: i === 0,
-      reason: [code && code !== '0' ? code : '', detail?.short ?? ''].filter(Boolean).join(' '),
+      reason: describeReason(log.reason ?? {}),
     };
   });
 }

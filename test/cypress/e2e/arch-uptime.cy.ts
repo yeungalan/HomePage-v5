@@ -66,7 +66,10 @@ const jenkinsDetail = {
   monitor: {
     logs: [
       { class: 'danger', dateGMTISO: iso(2 * HOUR), reason: { code: '503', detail: { short: 'Service Unavailable' } } },
-      { class: 'success', dateGMTISO: iso(72 * HOUR), reason: { code: '200', detail: { short: 'OK' } } },
+      { class: 'success', dateGMTISO: iso(26 * HOUR), reason: { code: '200', detail: { short: 'OK' } } },
+      { class: 'danger', dateGMTISO: iso(27 * HOUR), reason: { code: '333333', detail: { short: 'Connection Timeout' } } },
+      // How UptimeRobot logs a monitor being started.
+      { class: 'success', dateGMTISO: iso(72 * HOUR), reason: { code: 'Start by user', detail: { short: 'Unknown error' } } },
     ],
   },
 }
@@ -115,11 +118,20 @@ describe('Architecture uptime', () => {
         expect([...$ratios].map((el) => el.textContent)).to.deep.equal(['99.50%', '98.12%'])
       })
       cy.contains('Last downtime').next().should('contain.text', 'lasted 10 min')
-      cy.get('[data-cy="uptime-events"] li').should('have.length', 2)
+      cy.get('[data-cy="uptime-events"] li').should('have.length', 4)
       cy.get('[data-cy="uptime-events"] li').first()
         .should('contain.text', 'Down')
         .and('contain.text', '(ongoing)')
         .and('contain.text', '503 Service Unavailable')
+      // HTTP status codes stay; UptimeRobot's own codes and placeholder reasons don't.
+      cy.get('[data-cy="uptime-events"] li').eq(1).should('contain.text', '200 OK')
+      cy.get('[data-cy="uptime-events"] li').eq(2)
+        .should('contain.text', 'Connection Timeout')
+        .and('not.contain.text', '333333')
+      cy.get('[data-cy="uptime-events"] li').last()
+        .should('contain.text', 'Up')
+        .and('not.contain.text', 'Start by user')
+        .and('not.contain.text', 'Unknown error')
       cy.contains('a', 'View on status page')
         .should('have.attr', 'href', 'https://stats.uptimerobot.com/JKvyVhBqBO/789132921')
     })

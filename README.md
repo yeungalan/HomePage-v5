@@ -11,9 +11,11 @@ It is a [Next.js](https://nextjs.org) 16 app (App Router, React 19, Tailwind CSS
 ├── homepage/                 The Next.js app (this is what Vercel deploys)
 │   ├── public/
 │   │   ├── posts_md/         Blog posts, one Markdown file per language
-│   │   └── assets/images/    Images used by pages and posts
+│   │   ├── assets/images/    Images used by pages and posts
+│   │   └── icons/            Home-screen icons listed in the web app manifest
+│   ├── scripts/              generate-icons.mjs, which draws the favicon and app icons
 │   └── src/
-│       ├── app/              Routes (App Router), sitemap.ts, robots.ts
+│       ├── app/              Routes (App Router), sitemap.ts, robots.ts, manifest.ts, site icons
 │       ├── components/       UI components (Post/ renders blog posts)
 │       ├── constants/        Site config, animation presets, globe settings
 │       ├── data/             Page content kept as TypeScript (projects, friends, goals, …)
@@ -42,6 +44,7 @@ npm run dev        # http://localhost:3000
 | `npm run build` | Production build (pages are pre-rendered at build time) |
 | `npm run start` | Serve the production build on port 3000 |
 | `npm run lint` | ESLint (Next.js core-web-vitals and TypeScript rules) |
+| `npm run icons` | Regenerate the favicon and app icons (see [Site icon](#site-icon)) |
 
 A plain `npm ci` / `npm install` works. Don't add `--legacy-peer-deps`; if an install hits a peer-dependency conflict, fix the dependency instead.
 
@@ -149,6 +152,20 @@ This is separate from post translations, which are separate Markdown files as de
 ## Icons
 
 Icons come from [MingCute](https://www.mingcute.com) through Iconify: `<Icon icon="mingcute:link-line" />` from `@iconify/react`. `src/components/IconifyConfig.tsx` registers the whole MingCute set from `@iconify-json/mingcute`, so those icons load without calling the Iconify API. Icon names are listed in `homepage/node_modules/@iconify-json/mingcute/icons.json`. A few menu icons use other Iconify sets (such as `mdi:` and `mage:`), which are fetched from the Iconify API.
+
+## Site icon
+
+The favicon is a white "A" in Geist (the site's typeface) on a rounded square of the accent colour, Asagi teal `#33A6B8`. `homepage/scripts/generate-icons.mjs` holds the design and writes every size from it; run `npm run icons` in `homepage/` after changing it:
+
+| File | Used for |
+|---|---|
+| `src/app/icon.svg` | Browser tabs and bookmarks in current browsers |
+| `src/app/favicon.ico` | 16, 32 and 48 px fallback for older browsers, Windows and crawlers |
+| `src/app/apple-icon.png` | iOS home screen (180 px, opaque) |
+| `public/icons/icon-192.png`, `icon-512.png` | Android and installed-app icons, listed in `src/app/manifest.ts` |
+| `public/icons/icon-maskable-512.png` | Android adaptive icon, cropped to the launcher's shape |
+
+Next.js adds the `<link>` tags for the files in `src/app` by itself, so the root layout's metadata has no `icons` field; setting one would stop Next.js linking `icon.svg` and `apple-icon.png`.
 
 ## Tests
 

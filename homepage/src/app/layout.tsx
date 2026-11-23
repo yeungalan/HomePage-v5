@@ -46,7 +46,9 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_CONFIG.author.name, url: SITE_CONFIG.url }],
   creator: SITE_CONFIG.author.name,
   publisher: SITE_CONFIG.author.name,
-  icons: { icon: "/favicon.ico" },
+  // No `icons` here: Next.js links favicon.ico, icon.svg, apple-icon.png and
+  // manifest.ts from this folder itself, and an `icons` field would hide the
+  // SVG and iOS icons. `npm run icons` regenerates them.
   alternates: {
     canonical: "/",
   },

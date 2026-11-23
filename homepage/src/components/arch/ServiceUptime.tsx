@@ -8,16 +8,9 @@ import { HEALTH_STATUS_COLORS } from '@/constants/colors'
 import { UPTIME_STATUS_PAGE_ID, UPTIME_STATUS_PAGE_URL } from '@/data/infrastructure'
 import { useUptimeEvents } from '@/hooks/use-uptime'
 import { useI18n } from '@/i18n'
+import { STATUS_LABEL_KEY } from '@/lib/arch-status'
 import { OFFICIAL_STATUS_PAGES, type OfficialStatus } from '@/lib/official-status'
 import { formatDuration, formatRatio, type UptimeMonitor } from '@/lib/uptime'
-
-const STATUS_LABEL_KEY: Record<ServiceStatus, string> = {
-  healthy: 'up',
-  unhealthy: 'down',
-  warning: 'warning',
-  paused: 'paused',
-  unknown: 'unknown',
-}
 
 /** Translated label for a service status ("Up", "Down", …). */
 export const useStatusLabel = () => {

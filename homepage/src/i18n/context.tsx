@@ -17,39 +17,18 @@ import {
   isLocale,
   type Locale,
 } from './config'
-import { MESSAGES } from './messages'
-
-type Vars = Record<string, string | number>
+import { translate, type TranslateFn, type TranslateVars } from './translate'
 
 interface I18nContextValue {
   locale: Locale
   setLocale: (locale: Locale) => void
   /** Translate a dot-path key (e.g. `nav.home`) with optional interpolation. */
-  t: (key: string, vars?: Vars) => string
+  t: TranslateFn
   /** True once the persisted/detected locale has been resolved on the client. */
   ready: boolean
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null)
-
-/** Resolve a dot-path (`a.b.c`) against a nested message object. */
-const lookup = (messages: unknown, key: string): string | undefined => {
-  const value = key
-    .split('.')
-    .reduce<unknown>((acc, part) =>
-      acc && typeof acc === 'object'
-        ? (acc as Record<string, unknown>)[part]
-        : undefined,
-    messages)
-  return typeof value === 'string' ? value : undefined
-}
-
-const interpolate = (template: string, vars?: Vars): string => {
-  if (!vars) return template
-  return template.replace(/\{\{\s*(\w+)\s*\}\}/g, (match, name: string) =>
-    name in vars ? String(vars[name]) : match,
-  )
-}
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
   // Start from the default locale so the server-rendered markup and the first
@@ -90,13 +69,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const t = useCallback(
-    (key: string, vars?: Vars): string => {
-      const template =
-        lookup(MESSAGES[locale], key) ??
-        lookup(MESSAGES[DEFAULT_LOCALE], key) ??
-        key
-      return interpolate(template, vars)
-    },
+    (key: string, vars?: TranslateVars): string => translate(locale, key, vars),
     [locale],
   )
 

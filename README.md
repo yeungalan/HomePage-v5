@@ -20,7 +20,7 @@ It is a [Next.js](https://nextjs.org) 16 app (App Router, React 19, Tailwind CSS
 │       ├── constants/        Site config, animation presets, globe settings
 │       ├── data/             Page content kept as TypeScript (projects, friends, goals, …)
 │       ├── i18n/             UI translations (en-US, zh-HK, ja-JP)
-│       └── lib/              Post loading, tags, dates, globe helpers
+│       └── lib/              Post loading, tags, dates, globe helpers, Markdown for agents
 ├── test/                     Cypress end-to-end tests (a separate npm package)
 ├── .github/workflows/        CI: build the app and run Cypress on every push and PR
 └── CLAUDE.md                 Writing rules for the site (no emoji, AI summaries)
@@ -62,6 +62,24 @@ A plain `npm ci` / `npm install` works. Don't add `--legacy-peer-deps`; if an in
 | `/projects`, `/friends` | Project and friend links |
 | `/api/posts` | All post metadata as JSON |
 | `/testComponent/*` | Component playgrounds used during development |
+
+## Markdown for agents
+
+Every page above (except `/api/posts` and `/testComponent/*`) also comes as Markdown, for AI agents and other tools that ask for it with an `Accept: text/markdown` header:
+
+```sh
+curl -H 'Accept: text/markdown' https://alanyeung.co/posts/cissp
+```
+
+The response has `Content-Type: text/markdown; charset=utf-8`, `Vary: Accept` and a `Link` header naming the canonical page. It starts with YAML front matter (title, URL and language; for a post also its summary, dates, category, tags and translations), then the whole page, then the site's navigation and footer.
+
+- Posts come as written, minus icons, with embedded maps and videos turned into links and site-relative links made absolute.
+- Pages drawn in the browser get their data written out: the airports and routes behind the `/world` globe, the `/goals` clocks and progress (at request time, in UTC), and the live status of every `/arch` service (re-read at most once a minute).
+- Unknown URLs, posts and tags get a Markdown 404.
+
+Browsers never send `text/markdown`, so they get HTML as before. The check doesn't weigh q-values: any `Accept` header that lists `text/markdown` gets Markdown.
+
+`next.config.ts` rewrites those requests to the route handlers under `src/app/md/` (`/posts/cissp` → `/md/posts/cissp`), which build each page with `src/lib/markdown/` from the same data the HTML page renders. The `/md/` paths are kept out of search engines in `robots.txt`.
 
 ## Writing a post
 
@@ -169,7 +187,7 @@ Next.js adds the `<link>` tags for the files in `src/app` by itself, so the root
 
 ## Tests
 
-The Cypress suite in `test/` checks that the site renders in every interface language and that its interactive controls work. The specs cover the page background, buttons, keyboard navigation, language switching, LaTeX rendering and tag pages.
+The Cypress suite in `test/` checks that the site renders in every interface language and that its interactive controls work. The specs cover the page background, buttons, keyboard navigation, language switching, LaTeX rendering, tag pages and the Markdown versions of pages.
 
 ```sh
 cd homepage && npm ci && npm run build

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { RealFooter } from '@/components/FooterLinks';
 import Post from '@/components/Post';
-import { getPosts, getPostBySlug, parseSlugLanguage } from '@/lib/posts';
+import { getPosts, getPostBySlug, getPostSlugs, parseSlugLanguage } from '@/lib/posts';
 import { SITE_CONFIG } from '@/constants/site';
 
 /** Build the canonical URL slug for a given base slug + language variant. */
@@ -17,12 +17,7 @@ function hreflangFor(language: string, primaryLanguage: string): string {
 }
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.flatMap((post) =>
-    post.availableLanguages.map((lang) => ({
-      slug: lang === 'default' ? post.baseSlug : `${post.baseSlug}_${lang}`,
-    }))
-  );
+  return (await getPostSlugs()).map((slug) => ({ slug }));
 }
 
 interface PageProps {

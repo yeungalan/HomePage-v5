@@ -155,6 +155,14 @@ export async function getPosts(): Promise<Post[]> {
   );
 }
 
+/** URL slug of every language variant of every post (`cissp`, `cissp_en`, …). */
+export async function getPostSlugs(): Promise<string[]> {
+  const posts = await getPosts();
+  return posts.flatMap((post) =>
+    post.availableLanguages.map((lang) => (lang === 'default' ? post.baseSlug : `${post.baseSlug}_${lang}`))
+  );
+}
+
 /**
  * Get a specific post by slug with its content and available languages
  */

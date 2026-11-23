@@ -25,6 +25,10 @@ Every post's `### AUTOMATE FIELD` block carries an `AI_SUMMARY=` line: a 100–1
 
 Describe the post from the outside, as a reader would: refer to the author as "Alan", "he" or 作者/他 (Japanese: 筆者 or the name), never "I", "my", 我 or 私. For guides and notes, describe what the post covers ("This post explains…", 文章介紹…), not what "we" will do.
 
+## Markdown versions of pages
+
+Agents that send `Accept: text/markdown` get every page as Markdown instead of HTML: `homepage/next.config.ts` rewrites them to the route handlers in `homepage/src/app/md/`, which render the page with `homepage/src/lib/markdown/`. The Markdown reads the same data as the page, but its layout is written separately, so when you add a page or change what a page shows (not just its data), update its Markdown version too, and list a new page in `MARKDOWN_PAGES` in `next.config.ts`. The no-emoji rule applies to it as well.
+
 ## Publishing
 
 Work on `main` and push to `origin main` when done — Vercel deploys from `main`, and the Cypress E2E workflow runs on every push.

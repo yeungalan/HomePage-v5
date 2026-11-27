@@ -27,6 +27,7 @@ export const QUOTES = [
   'Freedom has many difficulties and democracy is not perfect - John F. Kennedy',
   'Sometimes, letting go is the greatest courage. As long as the journey was brilliant, the journey itself is the ending. Ask me if I truly regret it — a little, yes. But the moment I turned away, that regret was scattered by the wind. — Anonymous',
   "Don't let anyone turn your sky into a ceiling",
+  "Keep moving forward, don't linger; only then comes what's next — Cathay Pacific",
 ] as const;
 
 const QUOTES_ZH_HK = [
@@ -56,6 +57,7 @@ const QUOTES_ZH_HK = [
   '自由有諸多艱難，民主並非完美 — 約翰·甘迺迪',
   '有的時候 放棄才是最大的勇氣 只要過程是精彩的 那這個過程就是結局 你要問我真的很遺憾嗎 確實有點 當我掉頭 那種遺憾卻又被風吹散了 — 佚名',
   '別讓任何人把你的天空變成天花板',
+  '向前走 別停留 然後 才有然後 — 國泰航空',
 ] as const;
 
 const QUOTES_JA_JP = [
@@ -85,6 +87,7 @@ const QUOTES_JA_JP = [
   '自由には多くの困難があり、民主主義は完璧ではない — ジョン・F・ケネディ',
   '時には、諦めることこそが最大の勇気だ。過程さえ輝いていれば、その過程こそが結末になる。本当に悔いはないかと訊かれれば、少しはある。だが振り返って歩き出した瞬間、その悔いは風に吹き散らされていた。 — 作者不詳',
   '誰にも、あなたの空を天井に変えさせてはいけない',
+  '前へ進め、立ち止まるな。そうしてこそ、その先がある — キャセイパシフィック航空',
 ] as const;
 
 export const QUOTES_BY_LOCALE: Record<Locale, readonly string[]> = {
